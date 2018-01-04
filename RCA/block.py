@@ -1,10 +1,18 @@
 
 class Block(object):
     """
-    Parent Interface for all non-moving Display surfaces
-    reference:
-    http://inventwithpython.com/pygame/chapter2.html
-    
+    Parent for all blocks on the map
     """
     pass
-    
+
+class StationaryBlock(Block):
+    """
+    Parent for all Non-Moving blocks on the map
+    """
+    pass
+
+class MovingBlock(Block):
+    """
+    Parent for all Moving blocks on the map
+    """
+    pass
