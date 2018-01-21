@@ -23,11 +23,11 @@ class R1(SpriteRCA):
     def moveLeft(self, pixels):
         self.rect.x -= pixels
  
-    def moveForward(self, speed):
-        self.rect.y += self.speed * speed / 20
+    def moveDown(self, speed):
+        self.rect.y += speed
  
-    def moveBackward(self, speed):
-        self.rect.y -= self.speed * speed / 20
+    def moveUp(self, speed):
+        self.rect.y -= speed
  
     def changeSpeed(self, speed):
         self.speed = speed

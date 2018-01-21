@@ -14,7 +14,7 @@ while running
     draw the next frame
 end
 
-based on: http://www.101computing.net/pygame-how-tos/
+based on: http://www.101computing.net/pg-how-tos/
 """
 
 import pygame as pg
@@ -43,8 +43,8 @@ class Engine():
         self.screen = pg.display.set_mode(self.size)
         pg.display.set_caption("A rectangle.")
         self.all_sprites_list = pg.sprite.Group()
-        rr = R1()
-        self.all_sprites_list.add(rr)
+        self.rr = R1()
+        self.all_sprites_list.add(self.rr)
     
     def mainloop(self):
         """
@@ -72,6 +72,15 @@ class Engine():
         for event in pg.event.get():
             if event.type==pg.QUIT:
                 self.running = False
+        keys = pg.key.get_pressed()
+        if keys[pg.K_LEFT]:
+            self.rr.moveLeft(5)
+        if keys[pg.K_RIGHT]:
+            self.rr.moveRight(5)
+        if keys[pg.K_UP]:
+            self.rr.moveUp(5)
+        if keys[pg.K_DOWN]:
+            self.rr.moveDown(5)
 
     def logic(self):
         """
@@ -84,6 +93,7 @@ class Engine():
         """
         Using the information from the logic method, draws the next frame.
         """
+        self.screen.fill((0,0,0))
         self.all_sprites_list.draw(self.screen)
         pg.display.flip()
 
