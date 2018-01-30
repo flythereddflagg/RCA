@@ -18,7 +18,7 @@ based on: http://www.101computing.net/pg-how-tos/
 """
 
 import pygame as pg
-from r1 import R1
+from player import Player
 
 
 class Engine():
@@ -43,7 +43,7 @@ class Engine():
         self.screen = pg.display.set_mode(self.size)
         pg.display.set_caption("A rectangle.")
         self.all_sprites_list = pg.sprite.Group()
-        self.rr = R1()
+        self.rr = Player()
         self.all_sprites_list.add(self.rr)
     
     def mainloop(self):
@@ -93,7 +93,7 @@ class Engine():
         """
         Using the information from the logic method, draws the next frame.
         """
-        self.screen.fill((0,0,0))
+        self.screen.fill((0,255,0))
         self.all_sprites_list.draw(self.screen)
         pg.display.flip()
 
