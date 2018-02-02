@@ -13,30 +13,51 @@ class Player(SpriteRCA):
             "./sprites/player_sprite/player_sprite_walking_east_west_1.png",
             "./sprites/player_sprite/player_sprite_walking_east_west_2.png",
             ]
-        self.images = [
-            pg.image.load(i).convert_alpha() 
-            for i in range(len(self.img_paths))]
-        self.image = self.images[1]
-        #self.image = pg.image.load(
-        #    "./sprites/player_sprite/player_sprite_facing_south.png"
-        #    ).convert_alpha() # 12 X 22
-        self.image = pg.transform.scale(self.image, (36, 66))
-        #self.image = pg.Surface([60, 80])
-        
+        self.image_list = [ # originally they were (12,22)
+            pg.transform.scale(
+            pg.image.load(i).convert_alpha(), (36, 66))
+            for i in self.img_paths]
+        self.image = self.image_list[1]
         self.rect = self.image.get_rect()
         self.rect.x = 160
         self.rect.y = 100
+        self.counter = 0
+    
     
     def moveRight(self, pixels):
+        self.image = self.image_list[6]\
+            if self.counter < 5 else\
+            self.image_list[5]
+        self.counter += 1
+        if self.counter > 10: self.counter = 0
         self.rect.x += pixels
  
     def moveLeft(self, pixels):
+        self.image = pg.transform.flip(
+            self.image_list[6],True,False)\
+            if self.counter < 5 else\
+            pg.transform.flip(
+            self.image_list[5],True,False)
+        self.counter += 1
+        if self.counter > 10: self.counter = 0
         self.rect.x -= pixels
  
     def moveDown(self, speed):
+        self.image = pg.transform.flip(
+            self.image_list[4],True,False)\
+            if self.counter < 5 else\
+            self.image_list[4]
+        self.counter += 1
+        if self.counter > 10: self.counter = 0
         self.rect.y += speed
  
     def moveUp(self, speed):
+        self.image = pg.transform.flip(
+            self.image_list[3],True,False)\
+            if self.counter < 5 else\
+            self.image_list[3]
+        self.counter += 1
+        if self.counter > 10: self.counter = 0
         self.rect.y -= speed
  
     def changeSpeed(self, speed):

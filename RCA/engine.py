@@ -25,7 +25,7 @@ class Engine():
     def __init__(self, config = None):
         """
         Receives a dictionary (config) with all the keys being configuration 
-        variables and the corresponding values. Uses these to configure and 
+        variables and the coplresponding values. Uses these to configure and 
         initialize the game. Must do the following:
             - Start
             - Set up the configuration
@@ -43,8 +43,8 @@ class Engine():
         self.screen = pg.display.set_mode(self.size)
         pg.display.set_caption("A rectangle.")
         self.all_sprites_list = pg.sprite.Group()
-        self.rr = Player()
-        self.all_sprites_list.add(self.rr)
+        self.plr = Player()
+        self.all_sprites_list.add(self.plr)
     
     def mainloop(self):
         """
@@ -74,13 +74,13 @@ class Engine():
                 self.running = False
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT]:
-            self.rr.moveLeft(5)
+            self.plr.moveLeft(5)
         if keys[pg.K_RIGHT]:
-            self.rr.moveRight(5)
+            self.plr.moveRight(5)
         if keys[pg.K_UP]:
-            self.rr.moveUp(5)
+            self.plr.moveUp(5)
         if keys[pg.K_DOWN]:
-            self.rr.moveDown(5)
+            self.plr.moveDown(5)
 
     def logic(self):
         """
@@ -93,7 +93,7 @@ class Engine():
         """
         Using the information from the logic method, draws the next frame.
         """
-        self.screen.fill((0,255,0))
+        self.screen.fill((255,255,255))
         self.all_sprites_list.draw(self.screen)
         pg.display.flip()
 
