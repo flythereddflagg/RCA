@@ -22,9 +22,16 @@ class Player(SpriteRCA):
         self.rect.x = 160
         self.rect.y = 100
         self.counter = 0
+        self.direction = 0 # 0:N 1:E 2:S 3:W 
+        self.standing = [
+            self.image_list[0],
+            self.image_list[2],
+            self.image_list[1],
+            pg.transform.flip(self.image_list[2],True,False)]
     
     
     def moveRight(self, pixels):
+        self.direction = 1
         self.image = self.image_list[6]\
             if self.counter < 5 else\
             self.image_list[5]
@@ -33,6 +40,7 @@ class Player(SpriteRCA):
         self.rect.x += pixels
  
     def moveLeft(self, pixels):
+        self.direction = 3
         self.image = pg.transform.flip(
             self.image_list[6],True,False)\
             if self.counter < 5 else\
@@ -43,6 +51,7 @@ class Player(SpriteRCA):
         self.rect.x -= pixels
  
     def moveDown(self, speed):
+        self.direction = 2
         self.image = pg.transform.flip(
             self.image_list[4],True,False)\
             if self.counter < 5 else\
@@ -52,6 +61,7 @@ class Player(SpriteRCA):
         self.rect.y += speed
  
     def moveUp(self, speed):
+        self.direction = 0
         self.image = pg.transform.flip(
             self.image_list[3],True,False)\
             if self.counter < 5 else\
@@ -62,3 +72,6 @@ class Player(SpriteRCA):
  
     def changeSpeed(self, speed):
         self.speed = speed
+    
+    def stand(self):
+        self.image = self.standing[self.direction]

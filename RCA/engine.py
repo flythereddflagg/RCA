@@ -19,6 +19,7 @@ based on: http://www.101computing.net/pg-how-tos/
 
 import pygame as pg
 from player import Player
+from background import Bg1
 
 
 class Engine():
@@ -43,8 +44,13 @@ class Engine():
         self.screen = pg.display.set_mode(self.size)
         pg.display.set_caption("A rectangle.")
         self.all_sprites_list = pg.sprite.Group()
+        self.bgs = pg.sprite.Group()
         self.plr = Player()
         self.all_sprites_list.add(self.plr)
+        for i in range(8):
+            for j in range(6):
+                x = Bg1(i*100,j*100)
+                self.bgs.add(x)
     
     def mainloop(self):
         """
@@ -75,12 +81,14 @@ class Engine():
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT]:
             self.plr.moveLeft(5)
-        if keys[pg.K_RIGHT]:
+        elif keys[pg.K_RIGHT]:
             self.plr.moveRight(5)
-        if keys[pg.K_UP]:
+        elif keys[pg.K_UP]:
             self.plr.moveUp(5)
-        if keys[pg.K_DOWN]:
+        elif keys[pg.K_DOWN]:
             self.plr.moveDown(5)
+        else:
+            self.plr.stand()
 
     def logic(self):
         """
@@ -88,15 +96,21 @@ class Engine():
         look like
         """
         self.all_sprites_list.update()
+        self.bgs.update()
 
     def draw(self):
         """
         Using the information from the logic method, draws the next frame.
         """
-        self.screen.fill((255,255,255))
+        self.screen.fill((119,119,119))
+        #self.draw_background()
+        self.bgs.draw(self.screen)
         self.all_sprites_list.draw(self.screen)
         pg.display.flip()
-
+    
+        
+        
+    
 
 def main():
     eng = Engine()
