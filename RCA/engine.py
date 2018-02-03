@@ -81,14 +81,20 @@ class Engine():
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT]:
             self.plr.moveLeft(5)
-        elif keys[pg.K_RIGHT]:
+        if keys[pg.K_RIGHT]:
             self.plr.moveRight(5)
-        elif keys[pg.K_UP]:
+        if keys[pg.K_UP]:
             self.plr.moveUp(5)
-        elif keys[pg.K_DOWN]:
+        if keys[pg.K_DOWN]:
             self.plr.moveDown(5)
-        else:
+        if not (keys[pg.K_LEFT] or\
+                keys[pg.K_RIGHT] or\
+                keys[pg.K_UP] or\
+                keys[pg.K_DOWN]):
             self.plr.stand()
+        if keys[pg.K_BACKSPACE]:
+            self.running = False
+
 
     def logic(self):
         """

@@ -8,6 +8,7 @@ while running
     get events (key strokes and stuff)
     figure out what should happen in the next frame
     draw the next frame
+    update the screen
 end
 
 based on: http://www.101computing.net/pygame-how-tos/
