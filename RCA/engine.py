@@ -20,6 +20,7 @@ based on: http://www.101computing.net/pg-how-tos/
 import pygame as pg
 from player import Player
 from background import Bg1
+from math import fabs, sqrt
 
 
 class Engine():
@@ -39,13 +40,14 @@ class Engine():
         self.clock = pg.time.Clock()
         self.SCREENWIDTH = 800
         self.SCREENHEIGHT = 600
+        self.CAMERASLACK = 100 # pixels before background moves
          
         self.size = (self.SCREENWIDTH, self.SCREENHEIGHT)
         self.screen = pg.display.set_mode(self.size)
         pg.display.set_caption("A rectangle.")
         self.all_sprites_list = pg.sprite.Group()
         self.bgs = pg.sprite.Group()
-        self.plr = Player()
+        self.plr = Player(self.bgs)
         self.all_sprites_list.add(self.plr)
         for i in range(8):
             for j in range(6):
@@ -101,6 +103,7 @@ class Engine():
         Executes necessary game logic and decides what the next frame should 
         look like
         """
+                    
         self.all_sprites_list.update()
         self.bgs.update()
 
