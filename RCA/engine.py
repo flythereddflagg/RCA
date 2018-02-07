@@ -22,6 +22,8 @@ from player import Player
 from background import Bg1
 from math import fabs, sqrt
 
+N,E,S,W = tuple(range(4))
+
 
 class Engine():
     def __init__(self, config = None):
@@ -82,13 +84,13 @@ class Engine():
                 self.running = False
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT]:
-            self.plr.moveLeft(5)
+            self.plr.move(5,W)
         if keys[pg.K_RIGHT]:
-            self.plr.moveRight(5)
+            self.plr.move(5,E)
         if keys[pg.K_UP]:
-            self.plr.moveUp(5)
+            self.plr.move(5,N)
         if keys[pg.K_DOWN]:
-            self.plr.moveDown(5)
+            self.plr.move(5,S)
         if not (keys[pg.K_LEFT] or\
                 keys[pg.K_RIGHT] or\
                 keys[pg.K_UP] or\
