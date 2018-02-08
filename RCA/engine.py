@@ -21,8 +21,8 @@ import pygame as pg
 from player import Player
 from background import Bg1
 from math import fabs, sqrt
+from constants import *
 
-N,E,S,W = tuple(range(4))
 
 
 class Engine():
@@ -37,14 +37,10 @@ class Engine():
             - Set up all your sprites and backgrounds
         """
         pg.init()
-        self.FPS = 30
         self.running = True
         self.clock = pg.time.Clock()
-        self.SCREENWIDTH = 800
-        self.SCREENHEIGHT = 600
-        self.CAMERASLACK = 100 # pixels before background moves
          
-        self.size = (self.SCREENWIDTH, self.SCREENHEIGHT)
+        self.size = (SCREENWIDTH, SCREENHEIGHT)
         self.screen = pg.display.set_mode(self.size)
         pg.display.set_caption("A rectangle.")
         self.all_sprites_list = pg.sprite.Group()
@@ -71,7 +67,7 @@ class Engine():
             self.logic()
             self.draw()
             pg.display.flip()
-            self.clock.tick(self.FPS)
+            self.clock.tick(FPS)
         pg.quit()
     
     def events(self):

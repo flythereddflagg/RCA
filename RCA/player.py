@@ -1,5 +1,6 @@
 from rca_sprite import SpriteRCA
 import pygame as pg
+from constants import *
 
 class Player(SpriteRCA):
     
@@ -20,17 +21,16 @@ class Player(SpriteRCA):
             for i in self.img_paths]
         self.image = self.image_list[1]
         self.rect = self.image.get_rect()
-        self.rect.x = 400
-        self.rect.y = 300
+        self.rect.x = CENTERX
+        self.rect.y = CENTERY
         self.counter = 0
         self.bgs = bgs
-        self.direction = 0 # 0:N 1:E 2:S 3:W 
+        self.direction = S
         self.standing = [
             self.image_list[0],
             self.image_list[2],
             self.image_list[1],
             pg.transform.flip(self.image_list[2],True,False)]
-        self.CAMERASLACK = 100
         self.consts = (
         # stand, walk1, walk2
             (   self.image_list[0],
@@ -54,57 +54,58 @@ class Player(SpriteRCA):
     def mv_bgs(self,pixels, dr=None):
         if dr == None: dr = self.direction
         for i in self.bgs.sprites():
-            if dr == 0:
+            if dr == N:
                 i.rect.y += pixels
-            elif dr == 1:
+            elif dr == E:
                 i.rect.x -= pixels
-            elif dr == 2:
+            elif dr == S:
                 i.rect.y -= pixels
-            elif dr == 3:
+            elif dr == W:
                 i.rect.x += pixels
         
     
     def move(self, pixels, dir):
         self.direction = dir
         self.image = self.consts[dir][1]\
-            if self.counter < 5 else\
+            if self.counter < PLRANIRT / 2 else\
             self.consts[dir][2]
         self.counter += 1
-        if self.counter > 10: self.counter = 0
-        if self.rect.x < 400 - self.CAMERASLACK or\
-            self.rect.x > 400 + self.CAMERASLACK or\
-            self.rect.y < 300 - self.CAMERASLACK or\
-            self.rect.y > 300 + self.CAMERASLACK:
+        if self.counter > PLRANIRT: self.counter = 0 # reset counter
+        if self.rect.x < CENTERX - CAMERASLACK or\
+            self.rect.x > CENTERX + CAMERASLACK or\
+            self.rect.y < CENTERY - CAMERASLACK or\
+            self.rect.y > CENTERY + CAMERASLACK:
+            #self.cam_correct()
             self.mv_bgs(pixels)
             #self.cam_correct()
         else:
-            if dir == 0:
+            if dir == N:
                 self.rect.y -= pixels
-            elif dir == 1:
+            elif dir == E:
                 self.rect.x += pixels
-            elif dir == 2:
+            elif dir == S:
                 self.rect.y += pixels
-            elif dir == 3:
+            elif dir == W:
                 self.rect.x -= pixels
     
     def cam_correct(self):
-        while self.rect.x < 400 - self.CAMERASLACK or\
-                self.rect.x > 400 + self.CAMERASLACK or\
-                self.rect.y < 300 - self.CAMERASLACK or\
-                self.rect.y > 300 + self.CAMERASLACK:
-            if self.rect.y > 300 + self.CAMERASLACK:
+        while self.rect.x < CENTERX - CAMERASLACK or\
+                self.rect.x > CENTERX + CAMERASLACK or\
+                self.rect.y < CENTERY - CAMERASLACK or\
+                self.rect.y > CENTERY + CAMERASLACK:
+            if self.rect.y > CENTERY + CAMERASLACK:
                 self.rect.y -= 1
-                self.mv_bgs(1,2)
-            if self.rect.y < 300 - self.CAMERASLACK:
+                self.mv_bgs(1,S)
+            if self.rect.y < CENTERY - CAMERASLACK:
                 self.rect.y += 1
-                self.mv_bgs(1,0)
+                self.mv_bgs(1,N)
             
-            if self.rect.x > 400 + self.CAMERASLACK:
+            if self.rect.x > CENTERX + CAMERASLACK:
                 self.rect.x -= 1
-                self.mv_bgs(1,1)
-            if self.rect.x < 400 - self.CAMERASLACK:
+                self.mv_bgs(1,E)
+            if self.rect.x < CENTERX - CAMERASLACK:
                 self.rect.x += 1
-                self.mv_bgs(1,3)
+                self.mv_bgs(1,W)
     
     def stand(self):
         self.cam_correct()
