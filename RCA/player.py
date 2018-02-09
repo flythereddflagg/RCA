@@ -54,7 +54,7 @@ class Player(SpriteRCA):
     def mv_bgs(self,pixels, dr=None):
         if dr == None: dr = self.direction
         for i in self.bgs.sprites():
-            if dr == N:
+            if   dr == N:
                 i.rect.y += pixels
             elif dr == E:
                 i.rect.x -= pixels
@@ -72,14 +72,12 @@ class Player(SpriteRCA):
         self.counter += 1
         if self.counter > PLRANIRT: self.counter = 0 # reset counter
         if self.rect.x < CENTERX - CAMERASLACK or\
-            self.rect.x > CENTERX + CAMERASLACK or\
-            self.rect.y < CENTERY - CAMERASLACK or\
-            self.rect.y > CENTERY + CAMERASLACK:
-            #self.cam_correct()
+                self.rect.x > CENTERX + CAMERASLACK or\
+                self.rect.y < CENTERY - CAMERASLACK or\
+                self.rect.y > CENTERY + CAMERASLACK:
             self.mv_bgs(pixels)
-            #self.cam_correct()
         else:
-            if dir == N:
+            if   dir == N:
                 self.rect.y -= pixels
             elif dir == E:
                 self.rect.x += pixels
