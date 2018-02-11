@@ -1,7 +1,7 @@
 from rca_sprite import SpriteRCA
 import pygame as pg
 
-class Bg1(SpriteRCA):
+class BackgroundTest(SpriteRCA):
     def __init__(self, xpos, ypos):
         super().__init__()
         img_path = "./sprites/backgrounds/trail_ew.png"

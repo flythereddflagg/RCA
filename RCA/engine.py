@@ -1,7 +1,6 @@
 """
 File          : engine.py
 Author        : Mark Redd
-Last Modified : 180120
 
 main program flow
 Start
@@ -16,12 +15,12 @@ end
 
 based on: http://www.101computing.net/pg-how-tos/
 """
-
-import pygame as pg
-from player import Player
-from background import Bg1
-from math import fabs, sqrt
 from constants import *
+from player import Player
+from background import BackgroundTest
+from event_manager import EventManager
+from logic_manager import LogicManager
+from drawing_manager import DrawingManager
 
 
 
@@ -39,18 +38,29 @@ class Engine():
         pg.init()
         self.running = True
         self.clock = pg.time.Clock()
-         
-        self.size = (SCREENWIDTH, SCREENHEIGHT)
-        self.screen = pg.display.set_mode(self.size)
-        pg.display.set_caption("A rectangle.")
-        self.all_sprites_list = pg.sprite.Group()
-        self.bgs = pg.sprite.Group()
-        self.plr = Player(self.bgs)
-        self.all_sprites_list.add(self.plr)
+        self.screen = pg.display.set_mode(SCRNSIZE)
+        pg.display.set_caption("RCA")
+        self.all_sprites = pg.sprite.Group() # everything
+        self.background  = pg.sprite.Group() # background tiles
+        self.players     = pg.sprite.Group() # sprites you can control
+        self.blocks      = pg.sprite.Group() # non-moving sprites
+        self.friends     = pg.sprite.Group() # moving friendly sprites
+        self.foes        = pg.sprite.Group() # enemies
+        self.hud         = pg.sprite.Group() # HUD (health, money etc.)
+        self.misc        = pg.sprite.Group() # other (dialog boxes etc.)
+        # set up player
+        self.player = Player(self)
+        self.players.add(self.player)
+        self.all_sprites.add(self.player)
         for i in range(8):
-            for j in range(6):
-                x = Bg1(i*100,j*100)
-                self.bgs.add(x)
+            for j in range(8):
+                x = BackgroundTest(i*100,j*100)
+                self.background.add(x)
+                self.all_sprites.add(x)
+        
+        self.eman = EventManager(self)
+        self.lman = LogicManager(self)
+        self.dman = DrawingManager(self)
     
     def mainloop(self):
         """
@@ -62,58 +72,14 @@ class Engine():
                 draw the next frame
             end the game when the loop exits
         """
+        
         while self.running:
-            self.events()
-            self.logic()
-            self.draw()
+            self.eman.events()
+            self.lman.logic()
+            self.dman.draw()
             pg.display.flip()
             self.clock.tick(FPS)
         pg.quit()
-    
-    def events(self):
-        """
-        Handles all events in the game and produces appropriate commands
-        to be fed to the logic function.
-        """
-        for event in pg.event.get():
-            if event.type==pg.QUIT:
-                self.running = False
-        keys = pg.key.get_pressed()
-        if keys[pg.K_LEFT]:
-            self.plr.move(5,W)
-        if keys[pg.K_RIGHT]:
-            self.plr.move(5,E)
-        if keys[pg.K_UP]:
-            self.plr.move(5,N)
-        if keys[pg.K_DOWN]:
-            self.plr.move(5,S)
-        if not (keys[pg.K_LEFT] or\
-                keys[pg.K_RIGHT] or\
-                keys[pg.K_UP] or\
-                keys[pg.K_DOWN]):
-            self.plr.stand()
-        if keys[pg.K_BACKSPACE]:
-            self.running = False
-
-
-    def logic(self):
-        """
-        Executes necessary game logic and decides what the next frame should 
-        look like
-        """
-                    
-        self.all_sprites_list.update()
-        self.bgs.update()
-
-    def draw(self):
-        """
-        Using the information from the logic method, draws the next frame.
-        """
-        self.screen.fill((119,119,119))
-        #self.draw_background()
-        self.bgs.draw(self.screen)
-        self.all_sprites_list.draw(self.screen)
-        pg.display.flip()
     
         
         

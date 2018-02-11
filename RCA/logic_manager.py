@@ -1,7 +1,15 @@
 # logic_manager.py
-import pygame as pg
+from constants import *
 
 
 class LogicManager():
-    pass
-
+    
+    def __init__(self, eng):
+        self.eng = eng
+        self.all_sprites = self.eng.all_sprites
+        self.background = self.eng.background
+        
+    
+    def logic(self):
+        self.all_sprites.update()
+        self.background.update()

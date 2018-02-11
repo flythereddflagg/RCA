@@ -1,10 +1,9 @@
 from rca_sprite import SpriteRCA
-import pygame as pg
 from constants import *
 
 class Player(SpriteRCA):
     
-    def __init__(self, bgs):
+    def __init__(self, root):
         super().__init__()
         self.img_paths = [
             "./sprites/player_sprite/player_sprite_facing_north.png",
@@ -24,7 +23,7 @@ class Player(SpriteRCA):
         self.rect.x = CENTERX
         self.rect.y = CENTERY
         self.counter = 0
-        self.bgs = bgs
+        self.root = root
         self.direction = S
         self.standing = [
             self.image_list[0],
@@ -51,9 +50,9 @@ class Player(SpriteRCA):
         )
     
     
-    def mv_bgs(self,pixels, dr=None):
+    def mv_background(self,pixels, dr=None):
         if dr == None: dr = self.direction
-        for i in self.bgs.sprites():
+        for i in self.root.background.sprites():
             if   dr == N:
                 i.rect.y += pixels
             elif dr == E:
@@ -75,7 +74,7 @@ class Player(SpriteRCA):
                 self.rect.x > CENTERX + CAMERASLACK or\
                 self.rect.y < CENTERY - CAMERASLACK or\
                 self.rect.y > CENTERY + CAMERASLACK:
-            self.mv_bgs(pixels)
+            self.mv_background(pixels)
         else:
             if   dir == N:
                 self.rect.y -= pixels
@@ -93,17 +92,17 @@ class Player(SpriteRCA):
                 self.rect.y > CENTERY + CAMERASLACK:
             if self.rect.y > CENTERY + CAMERASLACK:
                 self.rect.y -= 1
-                self.mv_bgs(1,S)
+                self.mv_background(1,S)
             if self.rect.y < CENTERY - CAMERASLACK:
                 self.rect.y += 1
-                self.mv_bgs(1,N)
+                self.mv_background(1,N)
             
             if self.rect.x > CENTERX + CAMERASLACK:
                 self.rect.x -= 1
-                self.mv_bgs(1,E)
+                self.mv_background(1,E)
             if self.rect.x < CENTERX - CAMERASLACK:
                 self.rect.x += 1
-                self.mv_bgs(1,W)
+                self.mv_background(1,W)
     
     def stand(self):
         self.cam_correct()
