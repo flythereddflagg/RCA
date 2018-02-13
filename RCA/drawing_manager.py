@@ -3,15 +3,15 @@ from constants import *
 
 class DrawingManager():
     def __init__(self, eng):
-        self.eng = eng
-        self.screen = self.eng.screen
+        self.eng        = eng
+        self.screen     = self.eng.screen
         self.background = self.eng.background
         self.players    = self.eng.players   
         self.blocks     = self.eng.blocks    
         self.friends    = self.eng.friends   
         self.foes       = self.eng.foes      
         self.hud        = self.eng.hud       
-        self.misc       = self.eng.misc      
+        self.misc       = self.eng.misc
 
     def draw(self):
         """

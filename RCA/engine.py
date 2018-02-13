@@ -79,11 +79,8 @@ class Engine():
             self.dman.draw()
             pg.display.flip()
             self.clock.tick(FPS)
-        pg.quit()
-    
-        
-        
-    
+  
+  
 
 def main():
     eng = Engine()

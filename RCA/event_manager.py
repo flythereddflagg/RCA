@@ -5,7 +5,7 @@ from constants import *
 class EventManager():
 
     def __init__(self, eng):
-        self.eng = eng
+        self.eng    = eng
         self.player = self.eng.player
         
 
@@ -22,9 +22,9 @@ class EventManager():
             self.player.move(5,N)
         if keys[pg.K_DOWN]:
             self.player.move(5,S)
-        if not (keys[pg.K_LEFT] or\
+        if not (keys[pg.K_LEFT]  or\
                 keys[pg.K_RIGHT] or\
-                keys[pg.K_UP] or\
+                keys[pg.K_UP]    or\
                 keys[pg.K_DOWN]):
             self.player.stand()
         if keys[pg.K_BACKSPACE]:
