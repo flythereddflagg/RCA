@@ -8,30 +8,46 @@ class LogicManager():
         self.eng         = eng
         self.all_sprites = self.eng.all_sprites
         self.background  = self.eng.background
+        self.player      = self.eng.player
+        self.spd_plr     = 5
+        self.eslack      = CENTERX + CAMERASLACK
+        self.wslack      = CENTERX - CAMERASLACK
+        self.nslack      = CENTERY - CAMERASLACK
+        self.sslack      = CENTERY + CAMERASLACK
         
     
     def logic(self):
         self.all_sprites.update()
         self.background.update()
     
-    def move(self, pixels, dir):
-        self.direction = dir
-        self.image = self.consts[dir][1]\
-            if self.counter < PLRANIRT / 2 else\
-            self.consts[dir][2]
-        self.counter += 1
-        if self.counter > PLRANIRT: self.counter = 0 # reset counter
-        if self.rect.x < CENTERX - CAMERASLACK or\
-                self.rect.x > CENTERX + CAMERASLACK or\
-                self.rect.y < CENTERY - CAMERASLACK or\
-                self.rect.y > CENTERY + CAMERASLACK:
-            self.mv_background(pixels)
+    def left(self):
+        if self.player.rect.x > self.wslack:
+            self.player.rect.x -= self.spd_plr
         else:
-            if   dir == N:
-                self.rect.y -= pixels
-            elif dir == E:
-                self.rect.x += pixels
-            elif dir == S:
-                self.rect.y += pixels
-            elif dir == W:
-                self.rect.x -= pixels
+            self.player.mv_background(self.spd_plr)
+        self.player.walk_animate(W)
+        
+    def right(self):
+        if self.player.rect.x < self.eslack:
+            self.player.rect.x += self.spd_plr
+        else:
+            self.player.mv_background(self.spd_plr)
+        self.player.walk_animate(E)
+        
+    def up(self):
+        if self.player.rect.y > self.nslack:
+            self.player.rect.y -= self.spd_plr
+        else:
+            self.player.mv_background(self.spd_plr)
+        self.player.walk_animate(N)
+
+    def down(self):
+        if self.player.rect.y < self.sslack:
+            self.player.rect.y += self.spd_plr
+        else:
+            self.player.mv_background(self.spd_plr)
+        self.player.walk_animate(S)
+    
+    def no_key(self):
+        self.player.stand()
+

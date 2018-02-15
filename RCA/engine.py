@@ -52,15 +52,13 @@ class Engine():
         self.player = Player(self)
         self.players.add(self.player)
         self.all_sprites.add(self.player)
-        for i in range(8):
-            for j in range(8):
-                x = BackgroundTest(i*100,j*100)
-                self.background.add(x)
-                self.all_sprites.add(x)
+        x = BackgroundTest(-300,-300)
+        self.background.add(x)
+        self.all_sprites.add(x)
         
-        self.eman = EventManager(self)
         self.lman = LogicManager(self)
         self.dman = DrawingManager(self)
+        self.eman = EventManager(self)
     
     def mainloop(self):
         """
@@ -79,7 +77,7 @@ class Engine():
             self.dman.draw()
             pg.display.flip()
             self.clock.tick(FPS)
-  
+        pg.quit()
   
 
 def main():

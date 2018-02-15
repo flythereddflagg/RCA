@@ -6,7 +6,7 @@ class EventManager():
 
     def __init__(self, eng):
         self.eng    = eng
-        self.player = self.eng.player
+        self.logic = self.eng.lman
         
 
     def events(self):
@@ -15,18 +15,18 @@ class EventManager():
                 self.eng.running = False
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT]:
-            self.player.move(5,W)
+            self.logic.left()
         if keys[pg.K_RIGHT]:
-            self.player.move(5,E)
+            self.logic.right()
         if keys[pg.K_UP]:
-            self.player.move(5,N)
+            self.logic.up()
         if keys[pg.K_DOWN]:
-            self.player.move(5,S)
+            self.logic.down()
         if not (keys[pg.K_LEFT]  or\
                 keys[pg.K_RIGHT] or\
                 keys[pg.K_UP]    or\
                 keys[pg.K_DOWN]):
-            self.player.stand()
+            self.logic.no_key()
         if keys[pg.K_BACKSPACE]:
             self.eng.running = False
 

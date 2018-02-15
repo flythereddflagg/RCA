@@ -3,7 +3,7 @@ from constants import *
 
 class Player(SpriteRCA):
     
-    def __init__(self, root):
+    def __init__(self, eng):
         super().__init__()
         self.img_paths = [
             "./sprites/player_sprite/player_sprite_facing_north.png",
@@ -23,7 +23,7 @@ class Player(SpriteRCA):
         self.rect.x = CENTERX
         self.rect.y = CENTERY
         self.counter = 0
-        self.root = root
+        self.eng = eng
         self.direction = S
         self.standing = [
             self.image_list[0],
@@ -52,7 +52,7 @@ class Player(SpriteRCA):
     
     def mv_background(self,pixels, dr=None):
         if dr == None: dr = self.direction
-        for i in self.root.background.sprites():
+        for i in self.eng.background.sprites():
             if   dr == N:
                 i.rect.y += pixels
             elif dr == E:
@@ -63,48 +63,34 @@ class Player(SpriteRCA):
                 i.rect.x += pixels
         
     
-    def move(self, pixels, dir):
+    def walk_animate(self, dir):
         self.direction = dir
         self.image = self.consts[dir][1]\
-            if self.counter < PLRANIRT / 2 else\
-            self.consts[dir][2]
+            if self.counter < PLRANIRT / 2\
+            else self.consts[dir][2]
         self.counter += 1
         if self.counter > PLRANIRT: self.counter = 0 # reset counter
+    
+    def cam_correct(self):
         if self.rect.x < CENTERX - CAMERASLACK or\
                 self.rect.x > CENTERX + CAMERASLACK or\
                 self.rect.y < CENTERY - CAMERASLACK or\
                 self.rect.y > CENTERY + CAMERASLACK:
-            self.mv_background(pixels)
-        else:
-            if   dir == N:
-                self.rect.y -= pixels
-            elif dir == E:
-                self.rect.x += pixels
-            elif dir == S:
-                self.rect.y += pixels
-            elif dir == W:
-                self.rect.x -= pixels
-    
-    def cam_correct(self):
-        while self.rect.x < CENTERX - CAMERASLACK or\
-                self.rect.x > CENTERX + CAMERASLACK or\
-                self.rect.y < CENTERY - CAMERASLACK or\
-                self.rect.y > CENTERY + CAMERASLACK:
             if self.rect.y > CENTERY + CAMERASLACK:
-                self.rect.y -= 1
-                self.mv_background(1,S)
+                self.rect.y -= 5
+                self.mv_background(5,S)
             if self.rect.y < CENTERY - CAMERASLACK:
-                self.rect.y += 1
-                self.mv_background(1,N)
+                self.rect.y += 5
+                self.mv_background(5,N)
             
             if self.rect.x > CENTERX + CAMERASLACK:
-                self.rect.x -= 1
-                self.mv_background(1,E)
+                self.rect.x -= 5
+                self.mv_background(5,E)
             if self.rect.x < CENTERX - CAMERASLACK:
-                self.rect.x += 1
-                self.mv_background(1,W)
+                self.rect.x += 5
+                self.mv_background(5,W)
     
     def stand(self):
-        self.cam_correct()
+        #self.cam_correct()
         self.image = self.standing[self.direction]
 
