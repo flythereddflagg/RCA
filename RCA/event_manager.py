@@ -14,6 +14,7 @@ class EventManager():
             if event.type==pg.QUIT:
                 self.eng.running = False
         keys = pg.key.get_pressed()
+        
         if keys[pg.K_LEFT]:
             self.logic.left()
         if keys[pg.K_RIGHT]:

@@ -52,9 +52,9 @@ class Engine():
         self.player = Player(self)
         self.players.add(self.player)
         self.all_sprites.add(self.player)
-        x = BackgroundTest(-300,-300)
-        self.background.add(x)
-        self.all_sprites.add(x)
+        self.bg_zone1 = BackgroundTest(-200,-1200)
+        self.background.add(self.bg_zone1)
+        self.all_sprites.add(self.bg_zone1)
         
         self.lman = LogicManager(self)
         self.dman = DrawingManager(self)
@@ -86,3 +86,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

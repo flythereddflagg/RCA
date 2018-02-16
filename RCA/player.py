@@ -31,7 +31,7 @@ class Player(SpriteRCA):
             self.image_list[1],
             pg.transform.flip(self.image_list[2],True,False)]
         self.consts = (
-        # stand, walk1, walk2
+            # stand, walk1, walk2
             (   self.image_list[0],
                 self.image_list[3],
                 pg.transform.flip(self.image_list[3],True,False)), # N
@@ -46,49 +46,16 @@ class Player(SpriteRCA):
             
             (   pg.transform.flip(self.image_list[2],True,False),
                 pg.transform.flip(self.image_list[6],True,False),
-                pg.transform.flip(self.image_list[5],True,False)), # W
-        )
-    
-    
-    def mv_background(self,pixels, dr=None):
-        if dr == None: dr = self.direction
-        for i in self.eng.background.sprites():
-            if   dr == N:
-                i.rect.y += pixels
-            elif dr == E:
-                i.rect.x -= pixels
-            elif dr == S:
-                i.rect.y -= pixels
-            elif dr == W:
-                i.rect.x += pixels
-        
-    
-    def walk_animate(self, dir):
-        self.direction = dir
-        self.image = self.consts[dir][1]\
+                pg.transform.flip(self.image_list[5],True,False))) # W
+
+    def walk_animate(self, direction):
+        self.direction = direction
+        self.image = self.consts[direction][1]\
             if self.counter < PLRANIRT / 2\
-            else self.consts[dir][2]
+            else self.consts[direction][2]
         self.counter += 1
         if self.counter > PLRANIRT: self.counter = 0 # reset counter
-    
-    def cam_correct(self):
-        if self.rect.x < CENTERX - CAMERASLACK or\
-                self.rect.x > CENTERX + CAMERASLACK or\
-                self.rect.y < CENTERY - CAMERASLACK or\
-                self.rect.y > CENTERY + CAMERASLACK:
-            if self.rect.y > CENTERY + CAMERASLACK:
-                self.rect.y -= 5
-                self.mv_background(5,S)
-            if self.rect.y < CENTERY - CAMERASLACK:
-                self.rect.y += 5
-                self.mv_background(5,N)
-            
-            if self.rect.x > CENTERX + CAMERASLACK:
-                self.rect.x -= 5
-                self.mv_background(5,E)
-            if self.rect.x < CENTERX - CAMERASLACK:
-                self.rect.x += 5
-                self.mv_background(5,W)
+
     
     def stand(self):
         #self.cam_correct()
