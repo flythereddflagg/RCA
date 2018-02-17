@@ -53,6 +53,12 @@ class Engine():
         self.players.add(self.player)
         self.all_sprites.add(self.player)
         self.bg_zone1 = BackgroundTest(-200,-1200)
+        self.block1 = BackgroundTest(
+            CENTERX + 100, 
+            CENTERY + 100,
+            "./sprites/blocks/rock_wall.png")
+        self.blocks.add(self.block1)
+        self.all_sprites.add(self.block1)
         self.background.add(self.bg_zone1)
         self.all_sprites.add(self.bg_zone1)
         
