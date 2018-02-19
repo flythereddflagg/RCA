@@ -10,8 +10,11 @@ class Zone1():
         bgy0 = background_pos_ini[1]
         background_path = "./sprites/backgrounds/zone1.png"
         
-        blocks = [
+        self.blocks = [
             # xpos, ypos, path
-            Block(510 + 60*i,1620,"./sprites/blocks/rock_wall.png")\
+            Block(
+                bgx0 + 510 + 60*i, 
+                bgy0 + 1620,
+                "./sprites/blocks/rock_wall.png")\
             for i in range(10)
             ]

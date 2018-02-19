@@ -17,10 +17,11 @@ based on: http://www.101computing.net/pg-how-tos/
 """
 from constants import *
 from player import Player
-from background import BackgroundTest
+from background import Background
 from event_manager import EventManager
 from logic_manager import LogicManager
 from drawing_manager import DrawingManager
+from zone1 import Zone1
 
 
 
@@ -52,11 +53,9 @@ class Engine():
         self.player = Player(self)
         self.players.add(self.player)
         self.all_sprites.add(self.player)
-        self.bg_zone1 = BackgroundTest(-200,-1200)
-        self.block1 = BackgroundTest(
-            CENTERX + 100, 
-            CENTERY + 100,
-            "./sprites/blocks/rock_wall.png")
+        self.bg_zone1 = Background(-200,-1200)
+        self.block1 = Zone1(self)
+        self.block1 = self.block1.blocks
         self.blocks.add(self.block1)
         self.all_sprites.add(self.block1)
         self.background.add(self.bg_zone1)
