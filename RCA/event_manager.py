@@ -16,13 +16,13 @@ class EventManager():
         keys = pg.key.get_pressed()
         
         if keys[pg.K_LEFT]:
-            self.logic.left()
+            self.logic.direction_key(W)
         if keys[pg.K_RIGHT]:
-            self.logic.right()
+            self.logic.direction_key(E)
         if keys[pg.K_UP]:
-            self.logic.up()
+            self.logic.direction_key(N)
         if keys[pg.K_DOWN]:
-            self.logic.down()
+            self.logic.direction_key(S)
         if not (keys[pg.K_LEFT]  or\
                 keys[pg.K_RIGHT] or\
                 keys[pg.K_UP]    or\
