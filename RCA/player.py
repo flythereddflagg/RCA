@@ -6,17 +6,17 @@ class Player(SpriteRCA):
     def __init__(self, eng):
         super().__init__()
         self.img_paths = [
-            "./sprites/player_sprite/player_sprite_facing_north.png",
-            "./sprites/player_sprite/player_sprite_facing_south.png",
-            "./sprites/player_sprite/player_sprite_facing_east_west.png",
-            "./sprites/player_sprite/player_sprite_walking_north.png",
-            "./sprites/player_sprite/player_sprite_walking_south.png",
-            "./sprites/player_sprite/player_sprite_walking_east_west_1.png",
-            "./sprites/player_sprite/player_sprite_walking_east_west_2.png",
+            "./sprites/player_sprite/larry_st_N.png",
+            "./sprites/player_sprite/larry_st_S.png",
+            "./sprites/player_sprite/larry_st_EW.png",
+            "./sprites/player_sprite/larry_wk_N.png",
+            "./sprites/player_sprite/larry_wk_S.png",
+            "./sprites/player_sprite/larry_wk1_EW.png",
+            "./sprites/player_sprite/larry_wk2_EW.png",
             ]
-        self.image_list = [ # originally they were (12,22)
+        self.image_list = [ # originally they were (16,22)
             pg.transform.scale(
-            pg.image.load(i).convert_alpha(), (36, 66))
+            pg.image.load(i).convert_alpha(), (48, 66))
             for i in self.img_paths]
         self.image = self.image_list[1]
         self.rect = self.image.get_rect()
