@@ -9,6 +9,7 @@ class LogicManager():
         self.all_sprites = self.eng.all_sprites
         self.background  = self.eng.background
         self.player      = self.eng.player
+        
     
     def logic(self):
         self.all_sprites.update()

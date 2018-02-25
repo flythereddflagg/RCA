@@ -1,4 +1,4 @@
-# map_zone1.py
+# map_rca.py
 from constants import *
 
 class MapRCA():
@@ -7,3 +7,5 @@ class MapRCA():
     
     def get_map_sprites(self):
         pass
+    
+    def update_from_file(self):
