@@ -16,7 +16,7 @@ class EventManager():
         keys = pg.key.get_pressed()
         
         if keys[pg.K_u]:
-            self.logic.update_map
+            self.eng.zone1.update()
         
         if keys[pg.K_LEFT]:
             self.logic.direction_key(W)

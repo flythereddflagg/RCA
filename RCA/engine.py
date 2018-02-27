@@ -53,13 +53,14 @@ class Engine():
         self.player = Player(self)
         self.players.add(self.player)
         self.all_sprites.add(self.player)
-        self.bg_zone1 = Background(-200,-1200)
-        self.block1 = Zone1(self)
-        self.block1 = self.block1.blocks
-        self.blocks.add(self.block1)
-        self.all_sprites.add(self.block1)
-        self.background.add(self.bg_zone1)
-        self.all_sprites.add(self.bg_zone1)
+        
+        # background set up
+        self.bkgnd = Background(-200,-1200)
+        self.background.add(self.bkgnd)
+        self.all_sprites.add(self.bkgnd)
+        
+        # Zone 1 class will set up the blocks
+        self.zone1 = Zone1(self)
         
         self.lman = LogicManager(self)
         self.dman = DrawingManager(self)

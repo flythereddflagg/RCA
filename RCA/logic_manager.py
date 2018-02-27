@@ -91,4 +91,8 @@ class LogicManager():
             if self.player.rect.x < WSLACK:
                 self.player.rect.x += PLAYERSPEED
                 self.mv_cam(PLAYERSPEED,W)
+    
+    def update_map(self):
+        print("Updating Map...")
+        
 
