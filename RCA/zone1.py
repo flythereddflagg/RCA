@@ -23,6 +23,7 @@ class Zone1():
         
     
     def update(self):
-        self.blocks = 
+        #self.blocks = 
+        pass
         
         
