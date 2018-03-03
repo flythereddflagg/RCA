@@ -1,4 +1,5 @@
 import pygame as pg
+from rca_exception import RCAException
 
 FPS          = 30 # Frame rate ( in Frames / second)
 SCREENWIDTH  = 800
