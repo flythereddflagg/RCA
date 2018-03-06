@@ -13,7 +13,7 @@ class Zone1():
         self.block_list = []
         self.bgx0 = self.background.rect.x
         self.bgy0 = self.background.rect.y
-        for sprt in self.eng.block_list.sprites():
+        for sprt in self.eng.blocks.sprites():
             sprt.kill()
         with open('zone1.csv', 'r') as f:
             for line in f:
@@ -30,7 +30,7 @@ class Zone1():
                         self.bgy0 + int(row[2]),
                         int(row[3]),
                         int(row[4])))
-        self.eng.block_list.add(self.block_list)
+        self.eng.blocks.add(self.block_list)
         self.eng.all_sprites.add(self.block_list)
         
         
