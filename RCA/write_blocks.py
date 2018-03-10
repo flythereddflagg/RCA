@@ -13,18 +13,27 @@ with open('zone1.csv', 'r') as f:
 
 #pprint(block_list) # 60x27
 
-start_point = 510, 1620
-end_point = 3390, 2100
+start_point = 510, 1756
+end_point = 3100, 1910
 
 x, y = start_point
+size = 24, 24
+scale = 2
+size = 24 * scale, 24 * scale
+angle = 0
 
 while y < end_point[1]:
-    block_list.append(','.join([sprite, str(x), str(y), str(1), str(0)]))
+    block_list.append(','.join([
+        sprite, 
+        str(x), 
+        str(y), 
+        str(scale), 
+        str(angle)]))
     if x < end_point[0]:
-        x += 24
+        x += size[0]
     else:
         x = start_point[0]
-        y += 24
+        y += size[1]
         
         
 
