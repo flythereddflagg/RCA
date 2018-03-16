@@ -30,7 +30,8 @@ class LogicManager():
         if bool(pg.sprite.spritecollide( 
                 self.player, 
                 self.eng.blocks, 
-                False)):
+                False,
+                pg.sprite.collide_mask)):
             ds = range(4)
             if bool_vals[direction-2]:
                 self.mv_plr(PLAYERSPEED, ds[direction-2])

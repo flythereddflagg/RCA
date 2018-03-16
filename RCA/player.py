@@ -47,6 +47,7 @@ class Player(SpriteRCA):
         self.rect = self.image.get_rect()
         self.rect.x = CENTERX
         self.rect.y = CENTERY
+        self.mask = pg.mask.from_surface(self.image)
         self.counter = 0
 
 
