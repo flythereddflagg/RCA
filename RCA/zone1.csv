@@ -1,2 +1,4 @@
 ./sprites/blocks/south_mountain.png,515,1675,1,0
-./sprites/blocks/west_woods.png,0,0,1,0
+./sprites/blocks/north_river.png,1537,10,1,0
+./sprites/blocks/west_woods.png,0,54,1,0
+./sprites/blocks/east_cliff.png,3068,61,1,0
