@@ -55,7 +55,7 @@ class Engine():
         self.all_sprites.add(self.player)
         
         # background set up
-        self.bkgnd = Background(-200,-1200)
+        self.bkgnd = Background(-1500,-1150)
         self.background.add(self.bkgnd)
         self.all_sprites.add(self.bkgnd)
         
