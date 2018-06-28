@@ -7,23 +7,9 @@ class LogicManager():
     def __init__(self, eng):
         self.eng         = eng
         self.all_sprites = self.eng.all_sprites
-        #self.background  = self.eng.background
-        #self.player      = self.eng.player
-        self.accept_input = True
-        '''
-        # set up player
-        self.player = Player(self)
-        self.players.add(self.player)
-        self.all_sprites.add(self.player)
+        self.background  = self.eng.background
+        self.player      = self.eng.player
         
-        # background set up
-        self.bkgnd = Background(-1500,-1150)
-        self.background.add(self.bkgnd)
-        self.all_sprites.add(self.bkgnd)
-        
-        # Zone 1 class will set up the blocks
-        self.zone1 = Zone1(self)
-        '''
     
     def logic(self):
         self.all_sprites.update()
@@ -55,8 +41,7 @@ class LogicManager():
         self.player.walk_animate(direction)
     
     def no_key(self):
-        pass
-        #self.player.stand()
+        self.player.stand()
     
     def mv_cam(self, pixels, dr=None):
         if dr == None: dr = self.player.direction
@@ -110,22 +95,5 @@ class LogicManager():
     
     def update_map(self):
         print("Updating Map...")
-    
-    def key_do(self, key):
-        if not self.accept_input:
-            return
-        
-        if   key == pg.K_u:
-            self.eng.zone1.update()
-        elif key == pg.K_LEFT:
-            self.direction_key(W)
-        elif key == pg.K_RIGHT:
-            self.direction_key(E)
-        elif key == pg.K_UP:
-            self.direction_key(N)
-        elif key == pg.K_DOWN:
-            self.direction_key(S)
-        elif key == pg.K_BACKSPACE:
-            self.eng.running = False
         
 

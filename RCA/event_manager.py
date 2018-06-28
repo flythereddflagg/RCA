@@ -1,36 +1,35 @@
 # event_manager.py
 from constants import *
+from itertools import compress
 
 
 class EventManager():
-
+    """
+    The purpose of thsi class is to capture any events from the user.
+    In-game events will be captured by the game logic (i.e. the logic manager).
+    """
     def __init__(self, eng):
         self.eng    = eng
-        self.logic = self.eng.lman
+        self.logic  = self.eng.logic
         
 
     def events(self):
+        """
+        Captures all events input by the user.
+        """
         for event in pg.event.get():
             if event.type==pg.QUIT:
                 self.eng.running = False
+        
         keys = pg.key.get_pressed()
-        
-        if keys[pg.K_u]:
-            self.eng.zone1.update()
-        
-        if keys[pg.K_LEFT]:
-            self.logic.direction_key(W)
-        if keys[pg.K_RIGHT]:
-            self.logic.direction_key(E)
-        if keys[pg.K_UP]:
-            self.logic.direction_key(N)
-        if keys[pg.K_DOWN]:
-            self.logic.direction_key(S)
-        if not (keys[pg.K_LEFT]  or\
-                keys[pg.K_RIGHT] or\
-                keys[pg.K_UP]    or\
-                keys[pg.K_DOWN]):
+        #print(keys)
+        key_ind = list(compress(range(len(keys)), keys))
+        print(key_ind)
+        if len(key_ind) > 1:
+            print("input sensed")
+            for i in key_ind:
+                self.logic.key_do(i)
+        else:
+            print("no input registered")
             self.logic.no_key()
-        if keys[pg.K_BACKSPACE]:
-            self.eng.running = False
 

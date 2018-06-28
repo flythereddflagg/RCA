@@ -16,12 +16,12 @@ end
 based on: http://www.101computing.net/pg-how-tos/
 """
 from constants import *
-#from player import Player
-#from background import Background
+from player import Player
+from background import Background
 from event_manager import EventManager
 from logic_manager import LogicManager
 from drawing_manager import DrawingManager
-#from zone1 import Zone1
+from zone1 import Zone1
 
 
 
@@ -39,10 +39,8 @@ class Engine():
         pg.init()
         self.running = True
         self.clock = pg.time.Clock()
-        self.screen = pg.display.set_mode(SCREENSIZE)
+        self.screen = pg.display.set_mode(SCRNSIZE)
         pg.display.set_caption("RCA")
-        
-        # Set up all sprite groups
         self.all_sprites = pg.sprite.Group() # everything
         self.background  = pg.sprite.Group() # background tiles
         self.players     = pg.sprite.Group() # sprites you can control
@@ -51,28 +49,38 @@ class Engine():
         self.foes        = pg.sprite.Group() # enemies
         self.hud         = pg.sprite.Group() # HUD (health, money etc.)
         self.misc        = pg.sprite.Group() # other (dialog boxes etc.)
+        # set up player
+        self.player = Player(self)
+        self.players.add(self.player)
+        self.all_sprites.add(self.player)
         
-        # Set up the various managers
-        self.draw  = DrawingManager(self)
-        self.logic = LogicManager(self)
-        self.event = EventManager(self)
+        # background set up
+        self.bkgnd = Background(-1500,-1150)
+        self.background.add(self.bkgnd)
+        self.all_sprites.add(self.bkgnd)
+        
+        # Zone 1 class will set up the blocks
+        self.zone1 = Zone1(self)
+        
+        self.lman = LogicManager(self)
+        self.dman = DrawingManager(self)
+        self.eman = EventManager(self)
     
     def mainloop(self):
         """
         Running this function will execute the initialized game. The loop will
         continue as follows:
             while running
-                get events (key strokes)
+                get events (key strokes and stuff)
                 figure out what should happen in the next frame
-                    (incorperate in-game events)
                 draw the next frame
             end the game when the loop exits
         """
         
         while self.running:
-            self.event.events()
-            self.logic.logic()
-            self.draw.draw()
+            self.eman.events()
+            self.lman.logic()
+            self.dman.draw()
             pg.display.flip()
             self.clock.tick(FPS)
         pg.quit()
