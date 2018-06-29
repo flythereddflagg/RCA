@@ -1,16 +1,41 @@
-# logic_manager.py
+"""
+File     : rca_game.py
+Author   : Mark Redd
+
+"""
 from constants import *
+from player import Player
+from background import Background
+from zone1 import Zone1
 
 
-class LogicManager():
-    
+class RCAGame():
+    """
+    This class defines or refers to another class that defines all game logic.
+    This class may be switched out for another game
+    """
     def __init__(self, eng):
-        self.eng         = eng
-        self.all_sprites = self.eng.all_sprites
-        #self.background  = self.eng.background
-        #self.player      = self.eng.player
-        self.accept_input = False
-        '''
+        self.eng         = eng # get the engine
+
+        # Set up all sprite groups
+        self.all_sprites = pg.sprite.Group() # everything
+        self.background  = pg.sprite.Group() # background tiles
+        self.players     = pg.sprite.Group() # sprites you can control
+        self.blocks      = pg.sprite.Group() # non-moving sprites
+        self.friends     = pg.sprite.Group() # moving friendly sprites
+        self.foes        = pg.sprite.Group() # enemies
+        self.hud         = pg.sprite.Group() # HUD (health, money etc.)
+        self.misc        = pg.sprite.Group() # other (dialog boxes etc.)
+        
+        # set up the groups list
+        self.groups_list = [self.background,
+                            self.blocks,
+                            self.players,
+                            self.friends,
+                            self.foes,
+                            self.hud,
+                            self.misc]
+        
         # set up player
         self.player = Player(self)
         self.players.add(self.player)
@@ -23,11 +48,7 @@ class LogicManager():
         
         # Zone 1 class will set up the blocks
         self.zone1 = Zone1(self)
-        '''
-    
-    def logic(self):
-        self.all_sprites.update()
-    
+
     def direction_key(self, direction):
         bool_vals = [
             self.player.rect.y > NSLACK,
@@ -43,7 +64,7 @@ class LogicManager():
         # if previous move was invalid undo move
         if bool(pg.sprite.spritecollide( 
                 self.player, 
-                self.eng.blocks, 
+                self.blocks, 
                 False,
                 pg.sprite.collide_mask)):
             ds = range(4)
@@ -53,18 +74,14 @@ class LogicManager():
                 self.mv_cam(PLAYERSPEED, ds[direction-2])
          
         self.player.walk_animate(direction)
-    
-    def no_key(self):
-        pass
-        #self.player.stand()
-    
+        
     def mv_cam(self, pixels, dr=None):
         if dr == None: dr = self.player.direction
         for j in [
-                self.eng.background.sprites(),
-                self.eng.blocks.sprites(),
-                self.eng.friends.sprites(),
-                self.eng.foes.sprites()]:
+                self.background.sprites(),
+                self.blocks.sprites(),
+                self.friends.sprites(),
+                self.foes.sprites()]:
             for i in j:
                 self.cam_sprite(dr, i, pixels)
     
@@ -108,8 +125,6 @@ class LogicManager():
                 self.player.rect.x += PLAYERSPEED
                 self.mv_cam(PLAYERSPEED,W)
     
-    def update_map(self):
-        print("Updating Map...")
     
     def key_do(self, key):
         '''
@@ -121,11 +136,10 @@ class LogicManager():
         input. By default it accepts input. If 'self.accept_input' is set to 
         False, no keys are registered.
         '''
-        if (not self.accept_input) or key == NOINPUTINDEX:
-            return
+        if key == NOINPUTINDEX: return
         
         if   key == pg.K_u:
-            self.eng.zone1.update()
+            self.zone1.update()
         elif key == pg.K_LEFT:
             self.direction_key(W)
         elif key == pg.K_RIGHT:
@@ -134,7 +148,13 @@ class LogicManager():
             self.direction_key(N)
         elif key == pg.K_DOWN:
             self.direction_key(S)
-        elif key == pg.K_BACKSPACE:
-            self.eng.running = False
-        
-
+  
+    def no_key(self):
+        self.player.stand()
+    
+    def logic(self):
+        pass
+    
+    def event_do(self, event):
+        #print(event)
+        pass
