@@ -9,7 +9,7 @@ class LogicManager():
         self.all_sprites = self.eng.all_sprites
         #self.background  = self.eng.background
         #self.player      = self.eng.player
-        self.accept_input = True
+        self.accept_input = False
         '''
         # set up player
         self.player = Player(self)
@@ -112,7 +112,16 @@ class LogicManager():
         print("Updating Map...")
     
     def key_do(self, key):
-        if not self.accept_input:
+        '''
+        Runs a command corresponding to a 'key'. Where key is an integer
+        that corresponds to a key press.
+        Whenever called it checks if the key fed to it corresponds to a command.
+        If it does, it runs that command.
+        Before doing anything else it checks if the logic manager is accepting
+        input. By default it accepts input. If 'self.accept_input' is set to 
+        False, no keys are registered.
+        '''
+        if (not self.accept_input) or key == NOINPUTINDEX:
             return
         
         if   key == pg.K_u:

@@ -18,6 +18,9 @@ WSLACK       = CENTERX - CAMERASLACK
 NSLACK       = CENTERY - CAMERASLACK
 SSLACK       = CENTERY + CAMERASLACK
 
+# input constants
+NOINPUTINDEX = 300 # index that registers when there is no input
+
 # animation constants
 PLRANIRT     = 10  # (PLAYER ANIMATE RATE) frames to next player animation
 PLAYERSPEED  = 5   # Player speed in pixels/frame
