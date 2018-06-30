@@ -12,7 +12,7 @@ from zone1 import Zone1
 class RCAGame():
     """
     This class defines or refers to another class that defines all game logic.
-    This class may be switched out for another game
+    This class may be switched out for another game and used in it's place.
     """
     def __init__(self, eng):
         self.eng         = eng # get the engine
@@ -39,34 +39,31 @@ class RCAGame():
         # set up player
         self.player = Player(self)
         self.players.add(self.player)
-        self.all_sprites.add(self.player)
+        self.all_sprites.add(self.player)        
         
-        # background set up
-        self.bkgnd = Background(-1500,-1150)
-        self.background.add(self.bkgnd)
-        self.all_sprites.add(self.bkgnd)
-        
-        # Zone 1 class will set up the blocks
-        self.zone1 = Zone1(self)
+        # Zone class will set up the blocks and background
+        self.cur_zone = Zone1(self)
 
-    def direction_key(self, direction):
+
+    def direction_key(self, direction):  ### this is the next part
         bool_vals = [
             self.player.rect.y > NSLACK,
             self.player.rect.x < ESLACK,
             self.player.rect.y < SSLACK,
-            self.player.rect.x > WSLACK
-            ]
+            self.player.rect.x > WSLACK]
         
         if bool_vals[direction]:
             self.mv_plr(PLAYERSPEED, direction)
         else:
             self.mv_cam(PLAYERSPEED, direction)
+        
         # if previous move was invalid undo move
         if bool(pg.sprite.spritecollide( 
                 self.player, 
                 self.blocks, 
                 False,
                 pg.sprite.collide_mask)):
+            
             ds = range(4)
             if bool_vals[direction-2]:
                 self.mv_plr(PLAYERSPEED, ds[direction-2])
@@ -74,26 +71,7 @@ class RCAGame():
                 self.mv_cam(PLAYERSPEED, ds[direction-2])
          
         self.player.walk_animate(direction)
-        
-    def mv_cam(self, pixels, dr=None):
-        if dr == None: dr = self.player.direction
-        for j in [
-                self.background.sprites(),
-                self.blocks.sprites(),
-                self.friends.sprites(),
-                self.foes.sprites()]:
-            for i in j:
-                self.cam_sprite(dr, i, pixels)
-    
-    def cam_sprite(self, dr, i, pixels):
-        if   dr == N:
-            i.rect.y += pixels
-        elif dr == E:
-            i.rect.x -= pixels
-        elif dr == S:
-            i.rect.y -= pixels
-        elif dr == W:
-            i.rect.x += pixels
+     
     
     def mv_plr(self, pixels, dr=None):
         if dr == None: dr = self.player.direction
@@ -106,14 +84,36 @@ class RCAGame():
         elif dr == W:
             self.player.rect.x -= pixels
     
+        
+    def mv_cam(self, pixels, direction=None):
+        """
+        Moves the camera in @param 'direction' by moving everthing in the
+        opposite direction.
+        """
+        if direction == None: direction = self.player.direction
+        for sprite_group in [self.background.sprites(), self.blocks.sprites(),
+                             self.friends.sprites(),    self.foes.sprites()]:
+            for sprite in sprite_group:
+                if   direction == N:
+                    sprite.rect.y += pixels
+                elif direction == E:
+                    sprite.rect.x -= pixels
+                elif direction == S:
+                    sprite.rect.y -= pixels
+                elif direction == W:
+                    sprite.rect.x += pixels
+    
+    
     def cam_correct(self):
-        if self.player.rect.x < WSLACK or\
-                self.player.rect.x > ESLACK or\
-                self.player.rect.y < NSLACK or\
-                self.player.rect.y > SSLACK:
+        if  self.player.rect.x < WSLACK or\
+            self.player.rect.x > ESLACK or\
+            self.player.rect.y < NSLACK or\
+            self.player.rect.y > SSLACK:
+                
             if self.player.rect.y > SSLACK:
                 self.player.rect.y -= PLAYERSPEED
                 self.mv_cam(PLAYERSPEED,S)
+            
             if self.player.rect.y < NSLACK:
                 self.player.rect.y += PLAYERSPEED
                 self.mv_cam(PLAYERSPEED,N)
@@ -121,6 +121,7 @@ class RCAGame():
             if self.player.rect.x > ESLACK:
                 self.player.rect.x -= PLAYERSPEED
                 self.mv_cam(PLAYERSPEED,E)
+            
             if self.player.rect.x < WSLACK:
                 self.player.rect.x += PLAYERSPEED
                 self.mv_cam(PLAYERSPEED,W)
@@ -148,13 +149,17 @@ class RCAGame():
             self.direction_key(N)
         elif key == pg.K_DOWN:
             self.direction_key(S)
-  
+    
+    
     def no_key(self):
         self.player.stand()
+    
     
     def logic(self):
         pass
     
+    
     def event_do(self, event):
         #print(event)
         pass
+

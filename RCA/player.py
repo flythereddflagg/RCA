@@ -1,5 +1,11 @@
-from rca_sprite import SpriteRCA
+"""
+File     : player.py
+Author   : Mark Redd
+
+Player class. Should define all logic relating to the player.
+"""
 from constants import *
+from rca_sprite import SpriteRCA
 
 class Player(SpriteRCA):
     

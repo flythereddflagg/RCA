@@ -4,7 +4,7 @@ from rca_sprite import SpriteRCA
 
 class Block(SpriteRCA):
     def __init__(self, 
-            img_path, # ="./sprites/blocks/rock.png"
+            img_path,
             xpos, 
             ypos,
             scale = 1,
