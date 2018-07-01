@@ -45,14 +45,15 @@ class RCAGame():
         self.cur_zone = Zone1(self)
 
 
-    def direction_key(self, direction):  ### this is the next part
+    def direction_key(self, direction):
         bool_vals = [
             self.player.rect.y > NSLACK,
             self.player.rect.x < ESLACK,
             self.player.rect.y < SSLACK,
             self.player.rect.x > WSLACK]
-        
-        if bool_vals[direction]:
+        # logic error here
+        #print(bool_vals, self.cur_zone.edge(direction))
+        if bool_vals[direction] or self.cur_zone.edge(direction):
             self.mv_plr(PLAYERSPEED, direction)
         else:
             self.mv_cam(PLAYERSPEED, direction)

@@ -42,3 +42,16 @@ class Zone1():
         self.game.blocks.add(self.block_list)
         self.game.all_sprites.add(self.block_list)
         
+        
+    def edge(self, direction):
+        """
+        Returns True if the edge of the zone is visble inside the frame.
+        Else returns False.
+        """
+        edge_bools = [
+            self.background.rect.y > 0,
+            self.background.rect.x < (SCREENWIDTH - self.background.width),
+            self.background.rect.y < (SCREENHEIGHT - self.background.height),
+            self.background.rect.x > 0]
+        return edge_bools[direction]
+            

@@ -14,3 +14,5 @@ class Background(SpriteRCA):
         self.rect = self.image.get_rect()
         self.rect.x = xpos
         self.rect.y = ypos
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
