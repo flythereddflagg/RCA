@@ -77,9 +77,9 @@ class Engine():
             self.running = False
             
         key_ind = list(compress(range(len(keys)), keys))
-        
+        #print(key_ind)
         if not self.accept_input: return
-        if len(key_ind) > 1:
+        if key_ind:
             for i in key_ind:
                 self.game.key_do(i) 
         else:

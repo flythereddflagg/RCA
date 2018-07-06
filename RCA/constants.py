@@ -21,8 +21,10 @@ CENTERY      = SCREENHEIGHT // 2 # y coordinate for the center of the screen
 NOINPUTINDEX = 300 # index that registers when there is no input
 
 # animation constants
-PLRANIRT     = 10  # (PLAYER ANIMATE RATE) frames to next player animation
-PLAYERSPEED  = 5   # Player speed in pixels/frame
+PLAYERANIMATERATE = 200 # image changes per minute
+PLAYERANIMATEFRAMES =  int(FPS * 60 / PLAYERANIMATERATE) # frames to next player animation
+PLAYERSPEEDTIME   = 150 # player speed in pixels / second
+PLAYERSPEED  = PLAYERSPEEDTIME // FPS  # Player speed in pixels/frame
 CAMERASLACK  = 100 # pixels before camera moves instead of player
 ESLACK       = CENTERX + CAMERASLACK
 WSLACK       = CENTERX - CAMERASLACK
@@ -34,4 +36,3 @@ N,E,S,W      = tuple(range(4))
 
 # colors
 BLACK        = (0,0,0)
-

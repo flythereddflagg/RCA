@@ -54,7 +54,7 @@ class RCAGame():
         # logic error here
         #print(bool_vals, self.cur_zone.edge(direction))
         if bool_vals[direction] or self.cur_zone.edge(direction):
-            self.mv_plr(PLAYERSPEED, direction)
+            self.player.move(PLAYERSPEED, direction)
         else:
             self.mv_cam(PLAYERSPEED, direction)
         
@@ -67,29 +67,18 @@ class RCAGame():
             
             ds = range(4)
             if bool_vals[direction-2]:
-                self.mv_plr(PLAYERSPEED, ds[direction-2])
+                self.player.move(PLAYERSPEED, ds[direction-2])
             else:
                 self.mv_cam(PLAYERSPEED, ds[direction-2])
          
         self.player.walk_animate(direction)
-     
-    
-    def mv_plr(self, pixels, dr=None):
-        if dr == None: dr = self.player.direction
-        if   dr == N:
-            self.player.rect.y -= pixels
-        elif dr == E:
-            self.player.rect.x += pixels
-        elif dr == S:
-            self.player.rect.y += pixels
-        elif dr == W:
-            self.player.rect.x -= pixels
+
     
         
     def mv_cam(self, pixels, direction=None):
         """
-        Moves the camera in @param 'direction' by moving everthing in the
-        opposite direction.
+        Moves the camera in @param 'direction' by moving everything but the
+        player in the opposite direction.
         """
         if direction == None: direction = self.player.direction
         for sprite_group in [self.background.sprites(), self.blocks.sprites(),

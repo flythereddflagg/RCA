@@ -60,10 +60,10 @@ class Player(SpriteRCA):
     def walk_animate(self, direction):
         self.direction = direction
         self.image = self.images[direction][1]\
-            if self.counter < PLRANIRT / 2\
+            if self.counter < PLAYERANIMATEFRAMES / 2\
             else self.images[direction][2]
         self.counter += 1
-        if self.counter > PLRANIRT: self.counter = 0 # reset counter
+        if self.counter > PLAYERANIMATEFRAMES: self.counter = 0 # reset counter
     
 
     def stand(self):
@@ -75,4 +75,15 @@ class Player(SpriteRCA):
         return pg.transform.scale(
             pg.image.load(path).convert_alpha(), 
             self.size)
+    
+    def move(self, pixels, dr=None):
+        if dr == None: dr = self.direction
+        if   dr == N:
+            self.rect.y -= pixels
+        elif dr == E:
+            self.rect.x += pixels
+        elif dr == S:
+            self.rect.y += pixels
+        elif dr == W:
+            self.rect.x -= pixels
 
