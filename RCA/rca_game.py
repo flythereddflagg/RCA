@@ -64,12 +64,16 @@ class RCAGame():
                 self.blocks, 
                 False,
                 pg.sprite.collide_mask)):
-            
-            ds = range(4)
-            if bool_vals[direction-2]:
-                self.player.move(PLAYERSPEED, ds[direction-2])
-            else:
-                self.mv_cam(PLAYERSPEED, ds[direction-2])
+            while bool(pg.sprite.spritecollide( 
+                self.player, 
+                self.blocks, 
+                False,
+                pg.sprite.collide_mask)):
+                ds = range(4)
+                if bool_vals[direction-2]:
+                    self.player.move(1, ds[direction-2])
+                else:
+                    self.mv_cam(1, ds[direction-2])
          
         self.player.walk_animate(direction)
 
