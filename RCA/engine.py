@@ -68,6 +68,7 @@ class Engine():
         """
 
         for event in pg.event.get():
+            #print(event)
             self.game.event_do(event)
             if event.type == pg.QUIT:
                 self.running = False
@@ -75,16 +76,19 @@ class Engine():
         keys = pg.key.get_pressed()
         if keys[pg.K_BACKSPACE]:
             self.running = False
+        
             
-        key_ind = list(compress(range(len(keys)), keys))
-        #print(key_ind)
+        key_indices = list(compress(range(len(keys)), keys))
+        # disregard numlock key
+        if pg.K_NUMLOCK in key_indices: key_indices.remove(pg.K_NUMLOCK)
+        print(key_indices)
         if not self.accept_input: return
-        if key_ind:
-            for i in key_ind:
+        if key_indices:
+            for i in key_indices:
                 self.game.key_do(i) 
         else:
             self.game.no_key()
-    
+
     
     def draw(self):
         """
@@ -94,8 +98,8 @@ class Engine():
         """
         self.game.all_sprites.update()
         self.screen.fill(BLACK)
-        for i in self.game.groups_list:
-            i.draw(self.screen)
+        for group in self.game.groups_list:
+            group.draw(self.screen)
 
 
 def main():
