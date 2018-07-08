@@ -46,6 +46,11 @@ class RCAGame():
 
 
     def direction_key(self, direction):
+        """
+        Instruction set to complete when a direction key is pressed.
+        Generally this will move the player.
+        Takes @param direction
+        """
         bool_vals = [
             self.player.rect.y > NSLACK,
             self.player.rect.x < ESLACK,
@@ -59,21 +64,16 @@ class RCAGame():
             self.mv_cam(PLAYERSPEED, direction)
         
         # if previous move was invalid undo move
-        if bool(pg.sprite.spritecollide( 
+        while bool(pg.sprite.spritecollide( 
                 self.player, 
                 self.blocks, 
                 False,
                 pg.sprite.collide_mask)):
-            while bool(pg.sprite.spritecollide( 
-                self.player, 
-                self.blocks, 
-                False,
-                pg.sprite.collide_mask)):
-                ds = range(4)
-                if bool_vals[direction-2]:
-                    self.player.move(1, ds[direction-2])
-                else:
-                    self.mv_cam(1, ds[direction-2])
+            if bool_vals[direction-2] or\
+                    self.cur_zone.edge(DIRECTIONS[direction-2]):
+                self.player.move(1, DIRECTIONS[direction-2])
+            else:
+                self.mv_cam(1, DIRECTIONS[direction-2])            
          
         self.player.walk_animate(direction)
 

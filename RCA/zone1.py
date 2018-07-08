@@ -45,13 +45,15 @@ class Zone1():
         
     def edge(self, direction):
         """
-        Returns True if the edge of the zone is visble inside the frame.
-        Else returns False.
+        Returns True if the @param 'direction' edge of the zone is visble 
+        inside the frame. Else returns False.
         """
         edge_bools = [
-            self.background.rect.y > 0,
-            self.background.rect.x < (SCREENWIDTH - self.background.width),
-            self.background.rect.y < (SCREENHEIGHT - self.background.height),
-            self.background.rect.x > 0]
+            self.background.rect.y > -PLAYERSPEED,
+            self.background.rect.x < (
+                SCREENWIDTH - self.background.width + PLAYERSPEED),
+            self.background.rect.y < (
+                SCREENHEIGHT - self.background.height + PLAYERSPEED),
+            self.background.rect.x > -PLAYERSPEED]
         return edge_bools[direction]
             

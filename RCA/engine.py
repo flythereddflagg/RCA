@@ -81,7 +81,7 @@ class Engine():
         key_indices = list(compress(range(len(keys)), keys))
         # disregard numlock key
         if pg.K_NUMLOCK in key_indices: key_indices.remove(pg.K_NUMLOCK)
-        print(key_indices)
+        #print(key_indices)
         if not self.accept_input: return
         if key_indices:
             for i in key_indices:
