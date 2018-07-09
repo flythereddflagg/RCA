@@ -134,7 +134,7 @@ class RCAGame():
         if key == NOINPUTINDEX: return
         
         if   key == pg.K_u:
-            self.zone1.update()
+            self.cur_zone.update()
         elif key == pg.K_LEFT:
             self.direction_key(W)
         elif key == pg.K_RIGHT:
