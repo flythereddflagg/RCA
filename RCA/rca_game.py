@@ -22,6 +22,7 @@ class RCAGame():
         self.background  = pg.sprite.Group() # background tiles
         self.players     = pg.sprite.Group() # sprites you can control
         self.blocks      = pg.sprite.Group() # non-moving sprites
+        self.hblocks     = pg.sprite.Group() # collide block sprites                
         self.friends     = pg.sprite.Group() # moving friendly sprites
         self.foes        = pg.sprite.Group() # enemies
         self.hud         = pg.sprite.Group() # HUD (health, money etc.)
@@ -62,6 +63,13 @@ class RCAGame():
             self.player.move(PLAYERSPEED, direction)
         else:
             self.mv_cam(PLAYERSPEED, direction)
+        
+        if bool(pg.sprite.spritecollide( 
+                self.player, 
+                self.hblocks, 
+                False,
+                pg.sprite.collide_rect)):
+            print("EXIT")
         
         # if previous move was invalid undo move
         while bool(pg.sprite.spritecollide( 
