@@ -26,3 +26,5 @@ class Block(SpriteRCA):
         self.rect.x = xpos
         self.rect.y = ypos
         self.mask = pg.mask.from_surface(self.image)
+
+        

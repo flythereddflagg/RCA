@@ -7,6 +7,7 @@ First zone in game.
 """
 from constants import *
 from block import Block
+from exit_block import ExitBlock
 from background import Background
 
 class Zone1():
@@ -16,10 +17,12 @@ class Zone1():
         self.background = Background(-1500, -1150, background_path)
         self.game.background.add(self.background)
         self.game.all_sprites.add(self.background)
+        self.groups = [[], []]
         self.update()
+
     
     def update(self):
-        self.block_list = []
+        self.groups = [[], []]
         self.bgx0 = self.background.rect.x
         self.bgy0 = self.background.rect.y
         for sprt in self.game.blocks.sprites():
@@ -28,19 +31,34 @@ class Zone1():
             for line in f:
                 if line[0] == '#': continue
                 row = line.split(',')
-                if not(len(row) == 5 or len(row) == 0):
+                if not(len(row) == 6 or len(row) == 0):
                     raise RCAException(
                         "Invalid in-game configuration file syntax")
-                self.block_list.append(
-                    # xpos, ypos, path
-                    Block(
-                        row[0],
-                        self.bgx0 + int(row[1]), 
-                        self.bgy0 + int(row[2]),
-                        int(row[3]),
-                        int(row[4])))
-        self.game.blocks.add(self.block_list)
-        self.game.all_sprites.add(self.block_list)
+                btype = int(row[5])
+                if btype == 0:
+                    blk = Block(
+                            row[0],
+                            self.bgx0 + int(row[1]), 
+                            self.bgy0 + int(row[2]),
+                            int(row[3]),
+                            int(row[4]))
+                elif btype == 1:
+                    blk = ExitBlock(
+                            row[0],
+                            self.bgx0 + int(row[1]), 
+                            self.bgy0 + int(row[2]),
+                            int(row[3]),
+                            int(row[4]))
+                else:
+                    raise RCAException(
+                        "ConfError: Class does not exist!")
+                self.groups[int(row[5])].append(blk)
+                    
+        
+        self.game.blocks.add(self.groups[0])
+        self.game.hblocks.add(self.groups[1])
+        self.game.all_sprites.add(self.groups[0])
+        self.game.all_sprites.add(self.groups[1])
         
         
     def edge(self, direction):

@@ -31,6 +31,7 @@ class RCAGame():
         # set up the groups list
         self.groups_list = [self.background,
                             self.blocks,
+                            self.hblocks,
                             self.players,
                             self.friends,
                             self.foes,
@@ -57,19 +58,11 @@ class RCAGame():
             self.player.rect.x < ESLACK,
             self.player.rect.y < SSLACK,
             self.player.rect.x > WSLACK]
-        # logic error here
-        #print(bool_vals, self.cur_zone.edge(direction))
+
         if bool_vals[direction] or self.cur_zone.edge(direction):
             self.player.move(PLAYERSPEED, direction)
         else:
             self.mv_cam(PLAYERSPEED, direction)
-        
-        if bool(pg.sprite.spritecollide( 
-                self.player, 
-                self.hblocks, 
-                False,
-                pg.sprite.collide_rect)):
-            print("EXIT")
         
         # if previous move was invalid undo move
         while bool(pg.sprite.spritecollide( 
@@ -94,7 +87,8 @@ class RCAGame():
         """
         if direction == None: direction = self.player.direction
         for sprite_group in [self.background.sprites(), self.blocks.sprites(),
-                             self.friends.sprites(),    self.foes.sprites()]:
+                             self.hblocks.sprites(), self.friends.sprites(),
+                             self.foes.sprites()]:
             for sprite in sprite_group:
                 if   direction == N:
                     sprite.rect.y += pixels
@@ -158,7 +152,9 @@ class RCAGame():
     
     
     def logic(self):
-        pass
+        for blk in self.hblocks.sprites():
+            if pg.sprite.collide_rect(blk, self.player):
+                blk.blk_do()
     
     
     def event_do(self, event):

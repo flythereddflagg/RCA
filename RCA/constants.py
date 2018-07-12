@@ -39,3 +39,5 @@ N,E,S,W      = DIRECTIONS
 # colors
 BLACK        = (0,0,0)
 
+# misc constants
+ZONECONFALEN = 6 # length of zone configuration array

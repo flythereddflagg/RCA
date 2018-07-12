@@ -1,4 +1,4 @@
-./sprites/blocks/zone1_fg.png,0,0,1,0
-./sprites/blocks/marker.png,2390,-175,8,0
-./sprites/blocks/marker.png,470,1475,3,0
-./sprites/blocks/marker.png,3240,1950,10,0
+./sprites/blocks/zone1_fg.png,0,0,1,0,0
+./sprites/blocks/marker.png,2390,-175,8,0,1
+./sprites/blocks/marker.png,470,1475,3,0,1
+./sprites/blocks/marker.png,3240,1950,10,0,1
