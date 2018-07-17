@@ -21,7 +21,7 @@ CENTERY      = SCREENHEIGHT // 2 # y coordinate for the center of the screen
 NOINPUTINDEX = 300 # index that registers when there is no input
 
 # animation constants
-PLAYERSPEEDTIME   = 150 * 5 # player speed in pixels / second
+PLAYERSPEEDTIME   = 150 # player speed in pixels / second
 PLAYERSPEED  = PLAYERSPEEDTIME // FPS  # Player speed in pixels/frame
 PLAYERANIMATERATE = PLAYERSPEEDTIME # image changes per minute
 # frames to next player animation

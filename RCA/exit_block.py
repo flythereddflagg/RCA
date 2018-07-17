@@ -17,7 +17,7 @@ class ExitBlock(Block):
                 rotate)
     
     def blk_do(self):
-        print("This block did a thing!")
+        return "Zone 2"
 
 
 def main():

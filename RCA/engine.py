@@ -22,10 +22,8 @@ from rca_game import RCAGame
 class Engine():
     def __init__(self, config = None):
         """
-        Receives a dictionary (config) with all the keys being configuration 
-        variables and the coplresponding values. Uses these to configure and 
-        initialize the game. Must do the following:
-            - Start
+        Must do the following:
+            - Start pygame
             - Set up the configuration
             - Define and open a new window
             - Set up all your sprites and backgrounds
@@ -64,7 +62,7 @@ class Engine():
     def events(self):
         """
         Captures all events input by the user. Then calls on the game
-        object to execute any neccesary commands
+        object to execute any necessary commands
         """
 
         for event in pg.event.get():
