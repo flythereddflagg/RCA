@@ -3,16 +3,16 @@ from block import Block
 
 class ExitBlock(Block):
     def __init__(self, 
-            img_path,
-            xpos, 
-            ypos,
+            image_path,
+            xposition, 
+            yposition,
             scale = 1,
             rotate = 0):
         
         super().__init__(
-                img_path,
-                xpos, 
-                ypos,
+                image_path,
+                xposition,
+                yposition,
                 scale,
                 rotate)
     

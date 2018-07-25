@@ -5,7 +5,6 @@ Author   : Mark Redd
 """
 from constants import *
 from player import Player
-from background import Background
 from zone1 import Zone1
 
 
@@ -20,24 +19,34 @@ class RCAGame():
         # Set up all sprite groups
         self.all_sprites = pg.sprite.Group() # everything
         self.background  = pg.sprite.Group() # background tiles
-        self.players     = pg.sprite.Group() # sprites you can control
-        self.blocks      = pg.sprite.Group() # non-moving sprites
-        self.hblocks     = pg.sprite.Group() # collide block sprites                
+        self.foreground  = pg.sprite.Group() # non-interacting blocks
+        self.blocks      = pg.sprite.Group() # non-moving sprites that interact
+        self.players     = pg.sprite.Group() # sprites you can control             
         self.friends     = pg.sprite.Group() # moving friendly sprites
         self.foes        = pg.sprite.Group() # enemies
         self.hud         = pg.sprite.Group() # HUD (health, money etc.)
         self.misc        = pg.sprite.Group() # other (dialog boxes etc.)
         
-        # set up the groups list
-        self.groups_list = [self.background,
-                            self.blocks,
-                            self.hblocks,
-                            self.players,
-                            self.friends,
-                            self.foes,
-                            self.hud,
-                            self.misc]
-        
+        # set up the groups list (this is the order in which you want them to 
+        #   be drawn)
+        self.groups_list = [
+                            self.background,
+                            self.foreground,
+                            self.blocks    ,
+                            self.players   ,
+                            self.friends   ,
+                            self.foes      ,
+                            self.hud       ,
+                            self.misc      ]
+        # define groups that are diegetic (i.e. groups that exist in the game
+        # world and will be affected by camera movement)
+        self.diegetic_groups = [
+                            self.background,
+                            self.foreground,
+                            self.blocks    ,
+                            self.players   ,
+                            self.friends   ,
+                            self.foes      ]
         # set up player
         self.player = Player(self)
         self.players.add(self.player)
@@ -67,7 +76,7 @@ class RCAGame():
         # if previous move was invalid undo move
         while bool(pg.sprite.spritecollide( 
                 self.player, 
-                self.blocks, 
+                self.foreground, 
                 False,
                 pg.sprite.collide_mask)):
             if bool_vals[direction-2] or\
@@ -85,10 +94,10 @@ class RCAGame():
         Moves the camera in @param 'direction' by moving everything but the
         player in the opposite direction.
         """
+        print("Moving camera...")
         if direction == None: direction = self.player.direction
-        for sprite_group in [self.background.sprites(), self.blocks.sprites(),
-                             self.hblocks.sprites(), self.friends.sprites(),
-                             self.foes.sprites()]:
+        for sprite_group_obj in self.diegetic_groups:
+            sprite_group = sprite_group_obj.sprites()
             for sprite in sprite_group:
                 if   direction == N:
                     sprite.rect.y += pixels
@@ -101,6 +110,7 @@ class RCAGame():
     
     
     def cam_correct(self):
+        print("Correcting camera")
         if  self.player.rect.x < WSLACK or\
             self.player.rect.x > ESLACK or\
             self.player.rect.y < NSLACK or\
@@ -152,7 +162,7 @@ class RCAGame():
     
     
     def logic(self):
-        for blk in self.hblocks.sprites():
+        for blk in self.blocks.sprites():
             if pg.sprite.collide_rect(blk, self.player):
                 blk.blk_do()
     

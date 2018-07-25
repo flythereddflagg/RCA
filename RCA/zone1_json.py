@@ -5,6 +5,7 @@ Author   : Mark Redd
 First zone in game.
 
 """
+import json
 from constants import *
 from block import Block
 from exit_block import ExitBlock
@@ -13,20 +14,29 @@ from background import Background
 class Zone1():
     def __init__(self, game):
         self.game = game
-        background_path = "./sprites/backgrounds/zone1.png"
-        self.background = Background(-1500, -1150, background_path)
+        
+        with open("zone1.json", 'r') as f:
+            config = json.load(f)
+        
+        self.background = Background(**config['background'])
         self.game.background.add(self.background)
         self.game.all_sprites.add(self.background)
-        self.groups = [[], []]
-        self.update()
+        
+        self.foreground = Block(**config['foreground'])
+        self.game.foreground.add(self.foreground)
+        self.game.all_sprites.add(self.foreground)
+        
+        for exit_block_conf in config['exit_blocks']:
+            blk = ExitBlock(**exit_block_conf)
+            self.game.blocks.add(blk)
+            self.game.all_sprites.add(blk)
 
-    
     def update(self):
         self.groups = [[], []]
         self.bgx0 = self.background.rect.x
         self.bgy0 = self.background.rect.y
-        for sprt in self.game.blocks.sprites():
-            sprt.kill()
+        for sprite in self.game.blocks.sprites():
+            sprite.kill()
         with open('zone1.csv', 'r') as f:
             for line in f:
                 if line[0] == '#': continue

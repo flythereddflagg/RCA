@@ -55,8 +55,8 @@ class Zone1():
                 self.groups[int(row[5])].append(blk)
                     
         
-        self.game.blocks.add(self.groups[0])
-        self.game.hblocks.add(self.groups[1])
+        self.game.foreground.add(self.groups[0])
+        self.game.blocks.add(self.groups[1])
         self.game.all_sprites.add(self.groups[0])
         self.game.all_sprites.add(self.groups[1])
         
