@@ -14,7 +14,7 @@ class Zone1():
     def __init__(self, game):
         self.game = game
         background_path = "./sprites/backgrounds/zone1.png"
-        self.background = Background(-1500, -1150, background_path)
+        self.background = Background(background_path, -1500, -1150)
         self.game.background.add(self.background)
         self.game.all_sprites.add(self.background)
         self.groups = [[], []]

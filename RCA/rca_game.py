@@ -5,7 +5,8 @@ Author   : Mark Redd
 """
 from constants import *
 from player import Player
-from zone1 import Zone1
+from zone1_json import Zone1
+#from zone1 import Zone1
 
 
 class RCAGame():
@@ -39,12 +40,11 @@ class RCAGame():
                             self.hud       ,
                             self.misc      ]
         # define groups that are diegetic (i.e. groups that exist in the game
-        # world and will be affected by camera movement)
+        # world and will be affected by camera movement) EXCLUDES players
         self.diegetic_groups = [
                             self.background,
                             self.foreground,
                             self.blocks    ,
-                            self.players   ,
                             self.friends   ,
                             self.foes      ]
         # set up player
@@ -94,7 +94,6 @@ class RCAGame():
         Moves the camera in @param 'direction' by moving everything but the
         player in the opposite direction.
         """
-        print("Moving camera...")
         if direction == None: direction = self.player.direction
         for sprite_group_obj in self.diegetic_groups:
             sprite_group = sprite_group_obj.sprites()
@@ -109,30 +108,6 @@ class RCAGame():
                     sprite.rect.x += pixels
     
     
-    def cam_correct(self):
-        print("Correcting camera")
-        if  self.player.rect.x < WSLACK or\
-            self.player.rect.x > ESLACK or\
-            self.player.rect.y < NSLACK or\
-            self.player.rect.y > SSLACK:
-                
-            if self.player.rect.y > SSLACK:
-                self.player.rect.y -= PLAYERSPEED
-                self.mv_cam(PLAYERSPEED,S)
-            
-            if self.player.rect.y < NSLACK:
-                self.player.rect.y += PLAYERSPEED
-                self.mv_cam(PLAYERSPEED,N)
-            
-            if self.player.rect.x > ESLACK:
-                self.player.rect.x -= PLAYERSPEED
-                self.mv_cam(PLAYERSPEED,E)
-            
-            if self.player.rect.x < WSLACK:
-                self.player.rect.x += PLAYERSPEED
-                self.mv_cam(PLAYERSPEED,W)
-    
-    
     def key_do(self, key):
         '''
         Runs a command corresponding to a 'key'. Where key is an integer
@@ -143,7 +118,6 @@ class RCAGame():
         input. By default it accepts input. If 'self.accept_input' is set to 
         False, no keys are registered.
         '''
-        if key == NOINPUTINDEX: return
         
         if   key == pg.K_u:
             self.cur_zone.update()

@@ -8,7 +8,7 @@ from rca_sprite import SpriteRCA
 import pygame as pg
 
 class Background(SpriteRCA):
-    def __init__(self, xposition, yposition, image_path):
+    def __init__(self, image_path, xposition, yposition):
         super().__init__()
         self.image = pg.image.load(image_path).convert_alpha()
         self.rect = self.image.get_rect()
