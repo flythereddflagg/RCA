@@ -1,8 +1,6 @@
 from constants import *
 from rca_sprite import SpriteRCA
 
-# see pygame.transform.rotozoom() ?
-
 class Block(SpriteRCA):
     def __init__(self, 
                 image_path,

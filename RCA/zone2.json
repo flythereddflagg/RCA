@@ -1,0 +1,37 @@
+{
+    "background" : {
+        "image_path" : "./sprites/backgrounds/zone2_bg.png",
+        "xposition"  : -1950, 
+        "yposition"  : -1900
+    },
+    "foreground" : {
+        "image_path" :"./sprites/blocks/zone2_fg.png",
+        "xposition"  : 0, 
+        "yposition"  : 0,
+        "scale"      : 1,
+        "rotate"     : 0
+    },
+    "exit_blocks" : [
+        {
+            "image_path" :"./sprites/blocks/marker.png",
+            "xposition"  : 2386, 
+            "yposition"  : 2000,
+            "scale"      :    8,
+            "rotate"     :    0
+        },
+        {
+            "image_path" :"./sprites/blocks/marker.png",
+            "xposition"  : 1500,
+            "yposition"  : 140,
+            "scale"      :    3,
+            "rotate"     :    0
+        },
+        {
+            "image_path" :"./sprites/blocks/marker.png",
+            "xposition"  : 3015,
+            "yposition"  : 450,
+            "scale"      :    5,
+            "rotate"     :    0
+        }
+    ]
+}

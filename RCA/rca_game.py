@@ -137,7 +137,7 @@ class RCAGame():
     def logic(self):
         for blk in self.blocks.sprites():
             if pg.sprite.collide_rect(blk, self.player):
-                blk.blk_do()
+                self.cur_zone.blk_do(blk)
     
     
     def event_do(self, event):

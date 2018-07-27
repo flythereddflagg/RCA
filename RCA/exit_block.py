@@ -6,8 +6,8 @@ class ExitBlock(Block):
             image_path,
             xposition, 
             yposition,
-            scale = 1,
-            rotate = 0):
+            scale,
+            rotate):
         
         super().__init__(
                 image_path,
@@ -15,9 +15,7 @@ class ExitBlock(Block):
                 yposition,
                 scale,
                 rotate)
-    
-    def blk_do(self):
-        return "Zone 2"
+        self.command = "zone2.json"
 
 
 def main():
