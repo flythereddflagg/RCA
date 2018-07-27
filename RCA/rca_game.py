@@ -5,8 +5,7 @@ Author   : Mark Redd
 """
 from constants import *
 from player import Player
-from zone1_json import Zone1
-#from zone1 import Zone1
+from zone import Zone
 
 
 class RCAGame():
@@ -53,7 +52,7 @@ class RCAGame():
         self.all_sprites.add(self.player)        
         
         # Zone class will set up the blocks and background
-        self.cur_zone = Zone1(self)
+        self.cur_zone = Zone(self, "zone1.json")
 
 
     def direction_key(self, direction):

@@ -1,6 +1,6 @@
 {
     "background" : {
-        "image_path" : "./sprites/backgrounds/zone1.png",
+        "image_path" : "./sprites/backgrounds/zone1_bg.png",
         "xposition"  : -1500, 
         "yposition"  : -1150
     },
