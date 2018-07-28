@@ -71,4 +71,6 @@ class Zone():
     
     def blk_do(self, block_instance):
         zone_path = block_instance.command
+        if zone_path == '': return
+        del self.game.cur_zone
         self.game.cur_zone = Zone(self.game, zone_path)

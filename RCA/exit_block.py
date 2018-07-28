@@ -7,7 +7,8 @@ class ExitBlock(Block):
             xposition, 
             yposition,
             scale,
-            rotate):
+            rotate,
+            command):
         
         super().__init__(
                 image_path,
@@ -15,13 +16,6 @@ class ExitBlock(Block):
                 yposition,
                 scale,
                 rotate)
-        self.command = "zone2.json"
+        self.command = command
 
 
-def main():
-    b = ExitBlock(
-        "./sprites/backgrounds/zone1.png",
-        1,1)
-            
-if __name__ == "__main__":
-    main()

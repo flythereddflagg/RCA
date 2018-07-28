@@ -17,21 +17,24 @@
             "xposition"  : 2386, 
             "yposition"  : 2000,
             "scale"      :    8,
-            "rotate"     :    0
+            "rotate"     :    0,
+            "command"    : "zone1.json"
         },
         {
             "image_path" :"./sprites/blocks/marker.png",
             "xposition"  : 1500,
-            "yposition"  : 140,
+            "yposition"  :  140,
             "scale"      :    3,
-            "rotate"     :    0
+            "rotate"     :    0,
+            "command"    : ""
         },
         {
             "image_path" :"./sprites/blocks/marker.png",
             "xposition"  : 3015,
             "yposition"  : 450,
             "scale"      :    5,
-            "rotate"     :    0
+            "rotate"     :    0,
+            "command"    : ""
         }
     ]
 }
