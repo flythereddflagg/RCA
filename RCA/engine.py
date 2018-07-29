@@ -20,7 +20,7 @@ from itertools import compress
 from rca_game import RCAGame
 
 class Engine():
-    def __init__(self, config = None):
+    def __init__(self, game):
         """
         Must do the following:
             - Start pygame
@@ -36,7 +36,7 @@ class Engine():
         self.accept_input = True
         
         # Set up the game manager
-        self.game = RCAGame(self)
+        self.game = game(self)
     
     def mainloop(self):
         """
@@ -101,7 +101,7 @@ class Engine():
 
 
 def main():
-    eng = Engine()
+    eng = Engine(RCAGame)
     eng.mainloop()
 
 if __name__ == '__main__':
