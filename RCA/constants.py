@@ -2,7 +2,7 @@
 File     : constants.py
 Author   : Mark Redd
 
-Global constants to be used throughtout the game
+Global constants to be used throughout the game
 """
 
 import pygame as pg
@@ -35,6 +35,7 @@ SSLACK       = CENTERY + CAMERASLACK
 # direction constants North:0 East:1 South:2 West:3
 DIRECTIONS   = tuple(range(4))
 N,E,S,W      = DIRECTIONS
+DIRECTION_DICT = {"north": N, "east" : E, "south" : S, "west" : W}
 
 # colors
 BLACK        = (0,0,0)

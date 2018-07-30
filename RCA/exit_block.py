@@ -8,7 +8,9 @@ class ExitBlock(Block):
             yposition,
             scale,
             rotate,
-            command):
+            go_to,
+            coord,
+            direction):
         
         super().__init__(
                 image_path,
@@ -16,6 +18,8 @@ class ExitBlock(Block):
                 yposition,
                 scale,
                 rotate)
-        self.command = command
+        self.go_to = go_to
+        self.coord = coord
+        self.direction = direction
 
 

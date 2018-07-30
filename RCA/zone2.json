@@ -15,10 +15,12 @@
         {
             "image_path" :"./sprites/blocks/marker.png",
             "xposition"  : 2386, 
-            "yposition"  : 2000,
+            "yposition"  : 2075,
             "scale"      :    8,
             "rotate"     :    0,
-            "command"    : "zone1.json"
+            "go_to"      : "zone1.json",
+            "coord"      : [2450,50],
+            "direction"  : "south"
         },
         {
             "image_path" :"./sprites/blocks/marker.png",
@@ -26,7 +28,9 @@
             "yposition"  :  140,
             "scale"      :    3,
             "rotate"     :    0,
-            "command"    : ""
+            "go_to"      : "",
+            "coord"      : [1000,1000],
+            "direction"  : "south"
         },
         {
             "image_path" :"./sprites/blocks/marker.png",
@@ -34,7 +38,9 @@
             "yposition"  : 450,
             "scale"      :    5,
             "rotate"     :    0,
-            "command"    : ""
+            "go_to"      : "",
+            "coord"      : [1000,1000],
+            "direction"  : "south"
         }
     ]
 }

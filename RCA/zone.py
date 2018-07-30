@@ -12,12 +12,12 @@ from exit_block import ExitBlock
 from background import Background
 
 class Zone():
-    def __init__(self, game, config_path):
+    def __init__(self, game, config_path, background_x=None, background_y=None):
         self.game = game
         self.config_path = config_path
         self.background = None
-        self.background_x = None
-        self.background_y = None
+        self.background_x = background_x
+        self.background_y = background_y
         self.update()
     
     def update(self):
@@ -57,7 +57,7 @@ class Zone():
       
     def edge(self, direction):
         """
-        Returns True if the @param 'direction' edge of the zone is visble 
+        Returns True if the @param 'direction' edge of the zone is visible 
         inside the frame. Else returns False.
         """
         edge_bools = [
@@ -70,7 +70,32 @@ class Zone():
         return edge_bools[direction]
     
     def blk_do(self, block_instance):
-        zone_path = block_instance.command
+        if isinstance(block_instance, ExitBlock):
+            self.exit_block_do(block_instance)
+        
+        
+    def exit_block_do(self, block_instance):
+        zone_path = block_instance.go_to
         if zone_path == '': return
-        del self.game.cur_zone
-        self.game.cur_zone = Zone(self.game, zone_path)
+        go_direction = DIRECTION_DICT[block_instance.direction]
+        self.game.cur_zone = Zone(self.game, zone_path,
+            background_x = CENTERX - block_instance.coord[0],
+            background_y = CENTERY - block_instance.coord[1])
+        if   go_direction == E:
+            self.game.player.rect.x = CAMERASLACK
+            self.game.player.rect.y = CENTERY
+        elif go_direction == W:
+            self.game.player.rect.x = SCREENWIDTH - CAMERASLACK
+            self.game.player.rect.y = CENTERY
+        elif go_direction == N:
+            self.game.player.rect.x = CENTERX 
+            self.game.player.rect.y = SCREENHEIGHT - CAMERASLACK
+        elif go_direction == S:
+            self.game.player.rect.x = CENTERX 
+            self.game.player.rect.y = CAMERASLACK
+        else:
+            raise RCAException("Map direction out of bounds!")
+        
+        for direction in DIRECTIONS:
+            while self.game.cur_zone.edge(direction):
+                self.game.mv_cam(1, DIRECTIONS[direction-2])
