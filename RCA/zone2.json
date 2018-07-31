@@ -28,9 +28,9 @@
             "yposition"  :  140,
             "scale"      :    3,
             "rotate"     :    0,
-            "go_to"      : "",
-            "coord"      : [1000,1000],
-            "direction"  : "south"
+            "go_to"      : "zone4.json",
+            "coord"      : [0,0],
+            "direction"  : "west"
         },
         {
             "image_path" :"./sprites/blocks/marker.png",
@@ -38,9 +38,9 @@
             "yposition"  : 450,
             "scale"      :    5,
             "rotate"     :    0,
-            "go_to"      : "",
-            "coord"      : [1000,1000],
-            "direction"  : "south"
+            "go_to"      : "zone5.json",
+            "coord"      : [0,0],
+            "direction"  : "east"
         }
     ]
 }

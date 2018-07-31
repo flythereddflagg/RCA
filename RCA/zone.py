@@ -42,18 +42,21 @@ class Zone():
             self.background.rect.x = self.background_x
             self.background.rect.y = self.background_y 
         
-        self.foreground = Block(**config['foreground'])
-        self.foreground.rect.x += self.background_x
-        self.foreground.rect.y += self.background_y
-        self.game.foreground.add(self.foreground)
-        self.game.all_sprites.add(self.foreground)
-        
-        for exit_block_conf in config['exit_blocks']:
-            blk = ExitBlock(**exit_block_conf)
-            blk.rect.x += self.background_x
-            blk.rect.y += self.background_y
-            self.game.blocks.add(blk)
-            self.game.all_sprites.add(blk)
+        try:
+            self.foreground = Block(**config['foreground'])
+            self.foreground.rect.x += self.background_x
+            self.foreground.rect.y += self.background_y
+            self.game.foreground.add(self.foreground)
+            self.game.all_sprites.add(self.foreground)
+            for exit_block_conf in config['exit_blocks']:
+                blk = ExitBlock(**exit_block_conf)
+                blk.rect.x += self.background_x
+                blk.rect.y += self.background_y
+                self.game.blocks.add(blk)
+                self.game.all_sprites.add(blk)
+        except KeyError:
+            pass
+    
       
     def edge(self, direction):
         """

@@ -1,0 +1,7 @@
+{
+    "background" : {
+        "image_path" : "./sprites/backgrounds/zone5_bg.png",
+        "xposition"  : 0, 
+        "yposition"  : 0
+    }
+}
