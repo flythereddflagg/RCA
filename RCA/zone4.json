@@ -1,7 +1,26 @@
 {
     "background" : {
-        "image_path" : "./sprites/backgrounds/zone4_bg.png",
+        "image_path" : "./sprites/maps/zone4_bg.png",
         "xposition"  : 0, 
         "yposition"  : 0
-    }
+    },
+    "foreground" : {
+        "image_path" :"./sprites/blocks/rock.png",
+        "xposition"  : 0, 
+        "yposition"  : 0,
+        "scale"      : 1,
+        "rotate"     : 0
+    },
+    "exit_blocks" : [
+        {
+            "image_path" :"./sprites/blocks/marker.png",
+            "xposition"  : 100, 
+            "yposition"  : 100,
+            "scale"      :    5,
+            "rotate"     :    0,
+            "go_to"      : "zone1.json",
+            "coord"      : [550,1475],
+            "direction"  : "east"
+        }
+    ]
 }

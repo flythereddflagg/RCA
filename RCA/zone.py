@@ -84,7 +84,9 @@ class Zone():
         self.game.cur_zone = Zone(self.game, zone_path,
             background_x = CENTERX - block_instance.coord[0],
             background_y = CENTERY - block_instance.coord[1])
-        if   go_direction == E:
+        self.game.player.rect.x = CENTERX
+        self.game.player.rect.y = CENTERY
+        '''if   go_direction == E:
             self.game.player.rect.x = CAMERASLACK
             self.game.player.rect.y = CENTERY
         elif go_direction == W:
@@ -101,4 +103,4 @@ class Zone():
         
         for direction in DIRECTIONS:
             while self.game.cur_zone.edge(direction):
-                self.game.mv_cam(1, DIRECTIONS[direction-2])
+                self.game.mv_cam(1, DIRECTIONS[direction-2])'''

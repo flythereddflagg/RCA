@@ -1,11 +1,11 @@
 {
     "background" : {
-        "image_path" : "./sprites/backgrounds/zone1_bg.png",
+        "image_path" : "./sprites/maps/zone1_bg.png",
         "xposition"  : -1500, 
         "yposition"  : -1150
     },
     "foreground" : {
-        "image_path" :"./sprites/blocks/zone1_fg.png",
+        "image_path" :"./sprites/maps/zone1_fg.png",
         "xposition"  : 0, 
         "yposition"  : 0,
         "scale"      : 1,
@@ -19,7 +19,7 @@
             "scale"      :    8,
             "rotate"     :    0,
             "go_to"      : "zone2.json",
-            "coord"      : [2450,1900],
+            "coord"      : [2450,1800],
             "direction"  : "north"
         },
         {
@@ -29,7 +29,7 @@
             "scale"      :    3,
             "rotate"     :    0,
             "go_to"      : "zone3.json",
-            "coord"      : [0,0],
+            "coord"      : [375,1275],
             "direction"  : "west"
         },
         {
