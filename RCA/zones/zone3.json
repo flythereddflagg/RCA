@@ -1,11 +1,11 @@
 {
     "background" : {
-        "image_path" : "./sprites/maps/zone4_bg.png",
+        "image_path" : "./sprites/maps/zone3_bg.png",
         "xposition"  : 0, 
         "yposition"  : 0
     },
     "foreground" : {
-        "image_path" :"./sprites/blocks/rock.png",
+        "image_path" :"./sprites/maps/zone3_fg.png",
         "xposition"  : 0, 
         "yposition"  : 0,
         "scale"      : 1,
@@ -14,13 +14,15 @@
     "exit_blocks" : [
         {
             "image_path" :"./sprites/blocks/marker.png",
-            "xposition"  : 100, 
-            "yposition"  : 100,
+            "xposition"  : 425, 
+            "yposition"  : 1250,
             "scale"      :    5,
             "rotate"     :    0,
-            "go_to"      : "zone1.json",
+            "go_to"      : "zone1",
             "coord"      : [550,1475],
             "direction"  : "east"
         }
     ]
 }
+
+

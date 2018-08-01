@@ -12,9 +12,9 @@ from exit_block import ExitBlock
 from background import Background
 
 class Zone():
-    def __init__(self, game, config_path, background_x=None, background_y=None):
+    def __init__(self, game, config_name, background_x=None, background_y=None):
         self.game = game
-        self.config_path = config_path
+        self.config_path = "./zones/{}.json".format(config_name)
         self.background = None
         self.background_x = background_x
         self.background_y = background_y

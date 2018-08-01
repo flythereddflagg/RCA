@@ -52,7 +52,7 @@ class RCAGame():
         self.all_sprites.add(self.player)        
         
         # Zone class will set up the blocks and background
-        self.cur_zone = Zone(self, "zone1.json")
+        self.cur_zone = Zone(self, "zone1")
 
 
     def direction_key(self, direction):

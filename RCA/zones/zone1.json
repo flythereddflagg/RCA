@@ -18,7 +18,7 @@
             "yposition"  : -175,
             "scale"      :    8,
             "rotate"     :    0,
-            "go_to"      : "zone2.json",
+            "go_to"      : "zone2",
             "coord"      : [2450,1800],
             "direction"  : "north"
         },
@@ -28,7 +28,7 @@
             "yposition"  : 1475,
             "scale"      :    3,
             "rotate"     :    0,
-            "go_to"      : "zone3.json",
+            "go_to"      : "zone3",
             "coord"      : [375,1275],
             "direction"  : "west"
         },
