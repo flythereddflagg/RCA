@@ -5,7 +5,7 @@
         "yposition"  : 0
     },
     "foreground" : {
-        "image_path" :"./sprites/blocks/rock.png",
+        "image_path" :"./sprites/maps/zone5_fg.png",
         "xposition"  : 0, 
         "yposition"  : 0,
         "scale"      : 1,
@@ -14,12 +14,12 @@
     "exit_blocks" : [
         {
             "image_path" :"./sprites/blocks/marker.png",
-            "xposition"  : 100, 
-            "yposition"  : 100,
+            "xposition"  : 1425, 
+            "yposition"  : 1000,
             "scale"      :    5,
             "rotate"     :    0,
-            "go_to"      : "zone1",
-            "coord"      : [550,1475],
+            "go_to"      : "zone2",
+            "coord"      : [2900,500],
             "direction"  : "east"
         }
     ]

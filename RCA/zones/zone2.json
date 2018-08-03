@@ -29,7 +29,7 @@
             "scale"      :    3,
             "rotate"     :    0,
             "go_to"      : "zone4",
-            "coord"      : [0,0],
+            "coord"      : [1760, 190],
             "direction"  : "west"
         },
         {
@@ -39,7 +39,7 @@
             "scale"      :    5,
             "rotate"     :    0,
             "go_to"      : "zone5",
-            "coord"      : [0,0],
+            "coord"      : [1350,1000],
             "direction"  : "east"
         }
     ]
