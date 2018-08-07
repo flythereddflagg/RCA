@@ -128,6 +128,10 @@ class RCAGame():
             self.direction_key(N)
         elif key == pg.K_DOWN:
             self.direction_key(S)
+        elif key == pg.K_z:
+            self.player.use_item_1()
+        elif key == pg.K_x:
+            self.player.use_item_2()
     
     
     def no_key(self):

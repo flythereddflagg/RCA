@@ -21,10 +21,10 @@ class Player(SpriteRCA):
             "./sprites/player_sprite/larry_wk1_EW.png",
             "./sprites/player_sprite/larry_wk2_EW.png"]
         self.original_size = (16,22)
-        self.mult = 3
+        self.size_multiplier = 3
         self.size = (
-            self.original_size[0] * self.mult, 
-            self.original_size[1] * self.mult)
+            self.original_size[0] * self.size_multiplier, 
+            self.original_size[1] * self.size_multiplier)
         self.images = (
             # stand, walk1, walk2
             (   self.gen_img(self.img_paths[0]),
@@ -67,7 +67,6 @@ class Player(SpriteRCA):
     
 
     def stand(self):
-        #self.cam_correct()
         self.image = self.images[self.direction][0]
 
         
@@ -87,3 +86,9 @@ class Player(SpriteRCA):
         elif dr == W:
             self.rect.x -= pixels
 
+    def use_item_1(self):
+        print("Using Item 1!")
+    
+    def use_item_2(self):
+        print("Using item 2!")
+        

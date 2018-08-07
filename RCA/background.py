@@ -2,7 +2,7 @@
 File     : background.py
 Author   : Mark Redd
 
-Simple class to instatiate background graphics
+Simple class to instantiate background graphics
 """
 from rca_sprite import SpriteRCA
 import pygame as pg
