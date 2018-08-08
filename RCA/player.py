@@ -6,10 +6,11 @@ Player class. Should define all logic relating to the player.
 """
 from constants import *
 from rca_sprite import SpriteRCA
+from item import Item
 
 class Player(SpriteRCA):
     
-    def __init__(self, eng):
+    def __init__(self, game):
         super().__init__()
         self.img_paths = [
             "./sprites/player_sprite/larry_st_N.png",
@@ -47,13 +48,16 @@ class Player(SpriteRCA):
                 pg.transform.flip(
                     self.gen_img(self.img_paths[7]), True,False))) # W
 
-        self.eng = eng
+        self.game = game
+        self.game.players.add(self)
+        self.game.all_sprites.add(self) 
         self.direction = S
         self.image = self.images[self.direction][0]
         self.rect = self.image.get_rect()
         self.rect.x = CENTERX
         self.rect.y = CENTERY
         self.mask = pg.mask.from_surface(self.image)
+        self.item = Item("",self)
         self.counter = 0
 
 
@@ -68,6 +72,7 @@ class Player(SpriteRCA):
 
     def stand(self):
         self.image = self.images[self.direction][0]
+        self.item.kill()
 
         
     def gen_img(self, path):
@@ -87,7 +92,10 @@ class Player(SpriteRCA):
             self.rect.x -= pixels
 
     def use_item_1(self):
-        print("Using Item 1!")
+        self.item.rect.x = self.rect.x
+        self.item.rect.y = self.rect.y
+        self.game.players.add(self.item)
+        self.game.all_sprites.add(self.item)
     
     def use_item_2(self):
         print("Using item 2!")

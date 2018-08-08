@@ -47,9 +47,7 @@ class RCAGame():
                             self.friends   ,
                             self.foes      ]
         # set up player
-        self.player = Player(self)
-        self.players.add(self.player)
-        self.all_sprites.add(self.player)        
+        self.player = Player(self)       
         
         # Zone class will set up the blocks and background
         self.cur_zone = Zone(self, "zone1")
