@@ -11,26 +11,23 @@ class Item(SpriteRCA):
     
     def __init__(self, path, player):
         super().__init__()
-        self.img_paths = [
-            "./sprites/items/sword.png"
-            ]
         self.original_size = (32,32)
         self.size_multiplier = 1.5
-        self.size = (
-            int(self.original_size[0] * self.size_multiplier),
-            int(self.original_size[1] * self.size_multiplier))
-        self.images = () 
-        self.direction = S
-        self.image = self.gen_img("./sprites/items/sword.png")
+        
+        self.image = pg.image.load(path).convert_alpha()
+        width, height = self.image.get_size()
+        width *= scale
+        height *= scale
+        self.image = pg.transform.scale(
+                    self.image,
+                    (int(width), int(height))) 
+        self.image = self.base_image
+        
         self.rect = self.image.get_rect()
-        self.rect.x = player.rect.x
-        self.rect.y = player.rect.y
+        self.rect.x = 0
+        self.rect.y = 0
         self.mask = pg.mask.from_surface(self.image)
         
-    def gen_img(self, path):
-        return pg.transform.scale(
-            pg.image.load(path).convert_alpha(), 
-            self.size)
     
     def move(self, pixels, dr=None):
         if dr == None: dr = self.direction

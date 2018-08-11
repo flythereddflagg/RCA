@@ -57,7 +57,7 @@ class Player(SpriteRCA):
         self.rect.x = CENTERX
         self.rect.y = CENTERY
         self.mask = pg.mask.from_surface(self.image)
-        self.item = Item("",self)
+        self.item = Item("./sprites/items/sword.png", self)
         self.counter = 0
 
 
