@@ -91,12 +91,66 @@ class Player(SpriteRCA):
         elif dr == W:
             self.rect.x -= pixels
 
+            
     def use_item_1(self):
         self.item.rect.x = self.rect.x
         self.item.rect.y = self.rect.y
         self.game.players.add(self.item)
         self.game.all_sprites.add(self.item)
+        self.item.use_animate()
+    
     
     def use_item_2(self):
         print("Using item 2!")
+        
+        
+    def direction_key(self, direction):
+        """
+        Instruction set to complete when a direction key is pressed.
+        Generally this will move the player.
+        Takes @param direction
+        """
+        bool_vals = [
+            self.rect.y > NSLACK,
+            self.rect.x < ESLACK,
+            self.rect.y < SSLACK,
+            self.rect.x > WSLACK]
+
+        if bool_vals[direction] or self.game.current_zone.edge(direction):
+            self.move(PLAYERSPEED, direction)
+        else:
+            self.mv_cam(PLAYERSPEED, direction)
+        
+        # if previous move was invalid undo move
+        while bool(pg.sprite.spritecollide( 
+                self, 
+                self.game.foreground, 
+                False,
+                pg.sprite.collide_mask)):
+            if bool_vals[direction-2] or\
+                    self.game.current_zone.edge(DIRECTIONS[direction-2]):
+                self.move(1, DIRECTIONS[direction-2])
+            else:
+                self.mv_cam(1, DIRECTIONS[direction-2])            
+         
+        self.walk_animate(direction)
+
+        
+    def mv_cam(self, pixels, direction=None):
+        """
+        Moves the camera in @param 'direction' by moving everything but the
+        player in the opposite direction.
+        """
+        if direction == None: direction = self.direction
+        for sprite_group_obj in self.game.diegetic_groups:
+            sprite_group = sprite_group_obj.sprites()
+            for sprite in sprite_group:
+                if   direction == N:
+                    sprite.rect.y += pixels
+                elif direction == E:
+                    sprite.rect.x -= pixels
+                elif direction == S:
+                    sprite.rect.y -= pixels
+                elif direction == W:
+                    sprite.rect.x += pixels
         

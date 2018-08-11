@@ -12,21 +12,28 @@ class Item(SpriteRCA):
     def __init__(self, path, player):
         super().__init__()
         self.original_size = (32,32)
-        self.size_multiplier = 1.5
+        scale = 1.5
         
         self.image = pg.image.load(path).convert_alpha()
         width, height = self.image.get_size()
         width *= scale
         height *= scale
-        self.image = pg.transform.scale(
+        self.base_image = pg.transform.scale(
                     self.image,
                     (int(width), int(height))) 
-        self.image = self.base_image
         
+        self.images = (
+            (pg.transform.rotate(self.base_image,  45.0),  -10,-10),
+            (pg.transform.rotate(self.base_image,  90.0),  -20,10),
+            (pg.transform.rotate(self.base_image,  135.0), -30,20),
+            (pg.transform.rotate(self.base_image,  180.0), -10,40),
+            )
+        self.image = self.images[2][0]
         self.rect = self.image.get_rect()
         self.rect.x = 0
         self.rect.y = 0
         self.mask = pg.mask.from_surface(self.image)
+        self.counter = 0
         
     
     def move(self, pixels, dr=None):
@@ -40,5 +47,13 @@ class Item(SpriteRCA):
         elif dr == W:
             self.rect.x -= pixels
 
+            
+    def use_animate(self, direction=None):
+        
+        self.image = self.images[self.counter][0]
+        self.rect.x += self.images[self.counter][1]
+        self.rect.y += self.images[self.counter][2]
+        self.counter += 1
+        if self.counter > len(self.images) - 1: self.counter = 0 # reset
 
         

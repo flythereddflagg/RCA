@@ -50,59 +50,7 @@ class RCAGame():
         self.player = Player(self)       
         
         # Zone class will set up the blocks and background
-        self.cur_zone = Zone(self, "zone1")
-
-
-    def direction_key(self, direction):
-        """
-        Instruction set to complete when a direction key is pressed.
-        Generally this will move the player.
-        Takes @param direction
-        """
-        bool_vals = [
-            self.player.rect.y > NSLACK,
-            self.player.rect.x < ESLACK,
-            self.player.rect.y < SSLACK,
-            self.player.rect.x > WSLACK]
-
-        if bool_vals[direction] or self.cur_zone.edge(direction):
-            self.player.move(PLAYERSPEED, direction)
-        else:
-            self.mv_cam(PLAYERSPEED, direction)
-        
-        # if previous move was invalid undo move
-        while bool(pg.sprite.spritecollide( 
-                self.player, 
-                self.foreground, 
-                False,
-                pg.sprite.collide_mask)):
-            if bool_vals[direction-2] or\
-                    self.cur_zone.edge(DIRECTIONS[direction-2]):
-                self.player.move(1, DIRECTIONS[direction-2])
-            else:
-                self.mv_cam(1, DIRECTIONS[direction-2])            
-         
-        self.player.walk_animate(direction)
-
-    
-        
-    def mv_cam(self, pixels, direction=None):
-        """
-        Moves the camera in @param 'direction' by moving everything but the
-        player in the opposite direction.
-        """
-        if direction == None: direction = self.player.direction
-        for sprite_group_obj in self.diegetic_groups:
-            sprite_group = sprite_group_obj.sprites()
-            for sprite in sprite_group:
-                if   direction == N:
-                    sprite.rect.y += pixels
-                elif direction == E:
-                    sprite.rect.x -= pixels
-                elif direction == S:
-                    sprite.rect.y -= pixels
-                elif direction == W:
-                    sprite.rect.x += pixels
+        self.current_zone = Zone(self, "zone1")
     
     
     def key_do(self, key):
@@ -115,17 +63,17 @@ class RCAGame():
         input. By default it accepts input. If 'self.accept_input' is set to 
         False, no keys are registered.
         '''
-        
+        # dictionary here?
         if   key == pg.K_u:
-            self.cur_zone.update()
+            self.current_zone.update()
         elif key == pg.K_LEFT:
-            self.direction_key(W)
+            self.player.direction_key(W)
         elif key == pg.K_RIGHT:
-            self.direction_key(E)
+            self.player.direction_key(E)
         elif key == pg.K_UP:
-            self.direction_key(N)
+            self.player.direction_key(N)
         elif key == pg.K_DOWN:
-            self.direction_key(S)
+            self.player.direction_key(S)
         elif key == pg.K_z:
             self.player.use_item_1()
         elif key == pg.K_x:
@@ -139,7 +87,7 @@ class RCAGame():
     def logic(self):
         for blk in self.blocks.sprites():
             if pg.sprite.collide_rect(blk, self.player):
-                self.cur_zone.blk_do(blk)
+                self.current_zone.blk_do(blk)
     
     
     def event_do(self, event):

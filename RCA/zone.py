@@ -81,7 +81,7 @@ class Zone():
         zone_path = block_instance.go_to
         if zone_path == '': return
         go_direction = DIRECTION_DICT[block_instance.direction]
-        self.game.cur_zone = Zone(self.game, zone_path,
+        self.game.current_zone = Zone(self.game, zone_path,
             background_x = CENTERX - block_instance.coord[0],
             background_y = CENTERY - block_instance.coord[1])
         self.game.player.rect.x = CENTERX
@@ -102,5 +102,5 @@ class Zone():
             raise RCAException("Map direction out of bounds!")
         
         for direction in DIRECTIONS:
-            while self.game.cur_zone.edge(direction):
+            while self.game.current_zone.edge(direction):
                 self.game.mv_cam(1, DIRECTIONS[direction-2])'''
