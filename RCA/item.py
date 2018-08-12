@@ -34,6 +34,8 @@ class Item(SpriteRCA):
         self.rect.y = 0
         self.mask = pg.mask.from_surface(self.image)
         self.counter = 0
+        self.frame_counter = 0
+        self.animate_frames = 1
         
     
     def move(self, pixels, dr=None):
@@ -49,11 +51,19 @@ class Item(SpriteRCA):
 
             
     def use_animate(self, direction=None):
+        if self.counter > len(self.images) - 1: self.counter = 0 # reset
         
         self.image = self.images[self.counter][0]
         self.rect.x += self.images[self.counter][1]
         self.rect.y += self.images[self.counter][2]
-        self.counter += 1
-        if self.counter > len(self.images) - 1: self.counter = 0 # reset
+        
+        if self.frame_counter < self.animate_frames:
+            self.frame_counter += 1
+        else:
+            self.frame_counter = 0
+            self.counter += 1
+        
+        
+        
 
         
