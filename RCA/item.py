@@ -12,42 +12,30 @@ class Item(SpriteRCA):
     def __init__(self, path, player):
         super().__init__()
         self.original_size = (32,32)
-        scale = 1.5
-        
-        self.image = pg.image.load(path).convert_alpha()
-        width, height = self.image.get_size()
-        width *= scale
-        height *= scale
-        self.base_image = pg.transform.scale(
-                    self.image,
-                    (int(width), int(height))) 
+        self.scale = 3
+
+        paths = [
+            "./sprites/player_sprite/larry_wk1_S.png",
+            "./sprites/items/sword_swing/Larry_swing_S1.png",
+            "./sprites/items/sword_swing/Larry_swing_S2.png",
+            "./sprites/items/sword_swing/Larry_swing_S3.png",
+            ]
         
         self.images = (
-            (pg.transform.rotate(self.base_image,  45.0),  -10,-10),
-            (pg.transform.rotate(self.base_image,  90.0),  -20,10),
-            (pg.transform.rotate(self.base_image,  135.0), -30,20),
-            (pg.transform.rotate(self.base_image,  180.0), -10,40),
+            (self.gen_img(paths[0]), 0,0),
+            (self.gen_img(paths[0]), 0,0),
+            (self.gen_img(paths[1]), -54,-36),
+            (self.gen_img(paths[2]), -54,-36),
+            (self.gen_img(paths[3]), -54,-36),
             )
-        self.image = self.images[2][0]
+        self.image = self.images[0][0]
         self.rect = self.image.get_rect()
         self.rect.x = 0
         self.rect.y = 0
         self.mask = pg.mask.from_surface(self.image)
-        self.counter = 0
+        self.counter = 1
         self.frame_counter = 0
-        self.animate_frames = 1
-        
-    
-    def move(self, pixels, dr=None):
-        if dr == None: dr = self.direction
-        if   dr == N:
-            self.rect.y -= pixels
-        elif dr == E:
-            self.rect.x += pixels
-        elif dr == S:
-            self.rect.y += pixels
-        elif dr == W:
-            self.rect.x -= pixels
+        self.animate_frames = 0
 
             
     def use_animate(self, direction=None):
@@ -64,6 +52,12 @@ class Item(SpriteRCA):
             self.counter += 1
         
         
-        
-
+    def gen_img(self, path):
+        image = pg.image.load(path).convert_alpha()
+        width, height = image.get_size()
+        width *= self.scale
+        height *= self.scale
+        return pg.transform.scale(
+                    image,
+                    (int(width), int(height))) 
         
