@@ -97,7 +97,7 @@ class Player(SpriteRCA):
         self.item.rect.y = self.rect.y
         self.game.players.add(self.item)
         self.game.all_sprites.add(self.item)
-        self.item.use_animate()
+        self.item.use_animate(self.direction)
     
     
     def use_item_2(self):
