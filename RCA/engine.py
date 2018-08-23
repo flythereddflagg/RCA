@@ -34,6 +34,7 @@ class Engine():
         self.screen = pg.display.set_mode(SCREENSIZE)
         pg.display.set_caption("RCA")
         self.accept_input = True
+        self.key_indices = []
         
         # Set up the game manager
         self.game = game(self)
@@ -64,9 +65,7 @@ class Engine():
         Captures all events input by the user. Then calls on the game
         object to execute any necessary commands
         """
-
         for event in pg.event.get():
-            #print(event)
             self.game.event_do(event)
             if event.type == pg.QUIT:
                 self.running = False
@@ -74,15 +73,23 @@ class Engine():
         keys = pg.key.get_pressed()
         if keys[pg.K_BACKSPACE]:
             self.running = False
+            return
         
-            
-        key_indices = list(compress(range(len(keys)), keys))
+        old_keys = self.key_indices
+        self.key_indices = list(compress(range(len(keys)), keys))
+
         # disregard numlock key
-        if pg.K_NUMLOCK in key_indices: key_indices.remove(pg.K_NUMLOCK)
-        #print(key_indices)
+        if pg.K_NUMLOCK in self.key_indices: key_indices.remove(pg.K_NUMLOCK)
+        
+        off_keys = list(set(old_keys).difference(self.key_indices))
+        
         if not self.accept_input: return
-        if key_indices:
-            for i in key_indices:
+        
+        for i in off_keys:
+            self.game.off_key_do(i)
+        
+        if self.key_indices:
+            for i in self.key_indices:
                 self.game.key_do(i) 
         else:
             self.game.no_key()

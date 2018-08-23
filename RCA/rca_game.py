@@ -79,12 +79,17 @@ class RCAGame():
         elif key == pg.K_x:
             self.player.use_item_2()
     
+    def off_key_do(self, key):
+        if key == pg.K_z:
+            self.player.allow_use_item = True
     
     def no_key(self):
         self.player.stand()
     
     
     def logic(self):
+        if self.player.use_animate_bool: 
+            self.player.item.use_animate(self.player.direction)
         for blk in self.blocks.sprites():
             if pg.sprite.collide_rect(blk, self.player):
                 self.current_zone.blk_do(blk)

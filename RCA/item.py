@@ -13,6 +13,7 @@ class Item(SpriteRCA):
         super().__init__()
         self.original_size = (32,32)
         self.scale = 3
+        self.player = player
 
         paths = [
             "./sprites/player_sprite/larry_wk1_S.png",
@@ -81,7 +82,10 @@ class Item(SpriteRCA):
 
             
     def use_animate(self, direction=S):
-        if self.counter >= len(self.images[direction]): self.counter = 0 # reset
+        if self.counter >= len(self.images[direction]): 
+            self.counter = 0 # reset
+            self.player.allow_move = True
+            self.player.use_animate_bool = False
         
         self.image = self.images[direction][self.counter][0]
         self.rect.x += self.images[direction][self.counter][1]
