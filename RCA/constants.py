@@ -39,6 +39,3 @@ DIRECTION_DICT = {"north": N, "east" : E, "south" : S, "west" : W}
 
 # colors
 BLACK        = (0,0,0)
-
-# misc constants
-ZONECONFALEN = 6 # length of zone configuration array
