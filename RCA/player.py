@@ -75,7 +75,7 @@ class Player(SpriteRCA):
 
     def stand(self):
         self.image = self.images[self.direction][0]
-        self.item.kill()
+        #self.item.kill()
 
         
     def gen_img(self, path):
@@ -99,12 +99,10 @@ class Player(SpriteRCA):
         if not self.allow_use_item: return
         self.allow_move = False
         self.allow_use_item = False
-        self.item.rect.x = self.rect.x
-        self.item.rect.y = self.rect.y
+        self.use_animate_bool = True
         self.game.players.add(self.item)
         self.game.all_sprites.add(self.item)
-        self.use_animate_bool = True
-        # add stand after the animation and figure out why the player thing is moving
+
     
     def use_item_2(self):
         print("Using item 2!")

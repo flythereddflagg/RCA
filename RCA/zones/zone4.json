@@ -19,8 +19,10 @@
             "scale"      :    5,
             "rotate"     :    0,
             "go_to"      : "zone2",
-            "coord"      : [1575,150],
-            "direction"  : "east"
+            "coord"      : [1575,300],
+            "direction"  : "east",
+            "playerx"    :   410,
+            "playery"    :   150
         }
     ]
 }

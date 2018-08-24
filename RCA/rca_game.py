@@ -79,9 +79,11 @@ class RCAGame():
         elif key == pg.K_x:
             self.player.use_item_2()
     
+    
     def off_key_do(self, key):
         if key == pg.K_z:
             self.player.allow_use_item = True
+    
     
     def no_key(self):
         self.player.stand()

@@ -20,7 +20,9 @@
             "rotate"     :    0,
             "go_to"      : "zone1",
             "coord"      : [2450,300],
-            "direction"  : "south"
+            "direction"  : "south",
+            "playerx"    :   400,
+            "playery"    :   50
         },
         {
             "image_path" :"./sprites/blocks/marker.png",
@@ -30,7 +32,9 @@
             "rotate"     :    0,
             "go_to"      : "zone4",
             "coord"      : [1760, 190],
-            "direction"  : "west"
+            "direction"  : "west",
+            "playerx"    :   400,
+            "playery"    :   300
         },
         {
             "image_path" :"./sprites/blocks/marker.png",
@@ -40,7 +44,9 @@
             "rotate"     :    0,
             "go_to"      : "zone5",
             "coord"      : [1350,1000],
-            "direction"  : "east"
+            "direction"  : "east",
+            "playerx"    :   400,
+            "playery"    :   300
         }
     ]
 }

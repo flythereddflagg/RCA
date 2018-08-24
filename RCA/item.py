@@ -86,10 +86,11 @@ class Item(SpriteRCA):
             self.counter = 0 # reset
             self.player.allow_move = True
             self.player.use_animate_bool = False
+            self.kill()
         
         self.image = self.images[direction][self.counter][0]
-        self.rect.x += self.images[direction][self.counter][1]
-        self.rect.y += self.images[direction][self.counter][2]
+        self.rect.x = self.player.rect.x + self.images[direction][self.counter][1]
+        self.rect.y = self.player.rect.y + self.images[direction][self.counter][2]
         
         if self.frame_counter < self.animate_frames:
             self.frame_counter += 1

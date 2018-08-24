@@ -84,23 +84,6 @@ class Zone():
         self.game.current_zone = Zone(self.game, zone_path,
             background_x = CENTERX - block_instance.coord[0],
             background_y = CENTERY - block_instance.coord[1])
-        self.game.player.rect.x = CENTERX
-        self.game.player.rect.y = CENTERY
-        '''if   go_direction == E:
-            self.game.player.rect.x = CAMERASLACK
-            self.game.player.rect.y = CENTERY
-        elif go_direction == W:
-            self.game.player.rect.x = SCREENWIDTH - CAMERASLACK
-            self.game.player.rect.y = CENTERY
-        elif go_direction == N:
-            self.game.player.rect.x = CENTERX 
-            self.game.player.rect.y = SCREENHEIGHT - CAMERASLACK
-        elif go_direction == S:
-            self.game.player.rect.x = CENTERX 
-            self.game.player.rect.y = CAMERASLACK
-        else:
-            raise RCAException("Map direction out of bounds!")
-        
-        for direction in DIRECTIONS:
-            while self.game.current_zone.edge(direction):
-                self.game.mv_cam(1, DIRECTIONS[direction-2])'''
+        self.game.player.rect.x = block_instance.playerx
+        self.game.player.rect.y = block_instance.playery
+

@@ -20,7 +20,9 @@
             "rotate"     :    0,
             "go_to"      : "zone2",
             "coord"      : [2900,500],
-            "direction"  : "east"
+            "direction"  : "east",
+            "playerx"    :   400,
+            "playery"    :   300
         }
     ]
 }
