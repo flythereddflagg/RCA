@@ -29,10 +29,10 @@ class Item(SpriteRCA):
             "./sprites/items/sword_swing/Larry_swing_N3.png",
             
             "./sprites/player_sprite/larry_wk1_EW.png",
-            "./sprites/items/sword_swing/Larry_swing_E0.png",
-            "./sprites/items/sword_swing/Larry_swing_E1.png",
-            "./sprites/items/sword_swing/Larry_swing_E2.png",
-            "./sprites/items/sword_swing/Larry_swing_E3.png",
+            "./sprites/items/sword_swing/sword_swing_E0.png",
+            "./sprites/items/sword_swing/sword_swing_E1.png",
+            "./sprites/items/sword_swing/sword_swing_E2.png",
+            "./sprites/items/sword_swing/sword_swing_E3.png",
             
             "./sprites/player_sprite/larry_wk1_EW.png",
             "./sprites/items/sword_swing/Larry_swing_W0.png",
@@ -87,6 +87,7 @@ class Item(SpriteRCA):
             self.player.allow_move = True
             self.player.use_animate_bool = False
             self.kill()
+        
         
         self.image = self.images[direction][self.counter][0]
         self.rect.x = self.player.rect.x + self.images[direction][self.counter][1]
