@@ -75,13 +75,13 @@ class Player(SpriteRCA):
 
     def stand(self):
         self.image = self.images[self.direction][0]
-        #self.item.kill()
 
         
     def gen_img(self, path):
         return pg.transform.scale(
             pg.image.load(path).convert_alpha(), 
             self.size)
+    
     
     def move(self, pixels, dr=None):
         if dr == None: dr = self.direction
@@ -102,7 +102,7 @@ class Player(SpriteRCA):
         self.use_animate_bool = True
         self.game.players.add(self.item)
         self.game.all_sprites.add(self.item)
-        self.image = self.gen_img("./sprites/player_sprite/larry_swing_E0_cut.png")
+        self.image = self.gen_img("./sprites/player_sprite/larry_swing_E0.png")
 
     
     def use_item_2(self):

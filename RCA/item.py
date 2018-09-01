@@ -17,28 +17,28 @@ class Item(SpriteRCA):
 
         paths = [
             "./sprites/player_sprite/larry_wk1_S.png",
-            "./sprites/items/sword_swing/Larry_swing_S0.png",
-            "./sprites/items/sword_swing/Larry_swing_S1.png",
-            "./sprites/items/sword_swing/Larry_swing_S2.png",
-            "./sprites/items/sword_swing/Larry_swing_S3.png",
+            "./sprites/player_sprite/items/sword_swing/sword_swing_S0.png",
+            "./sprites/player_sprite/items/sword_swing/sword_swing_S1.png",
+            "./sprites/player_sprite/items/sword_swing/sword_swing_S2.png",
+            "./sprites/player_sprite/items/sword_swing/sword_swing_S3.png",
             
             "./sprites/player_sprite/larry_wk_N.png",
-            "./sprites/items/sword_swing/Larry_swing_N0.png",
-            "./sprites/items/sword_swing/Larry_swing_N1.png",
-            "./sprites/items/sword_swing/Larry_swing_N2.png",
-            "./sprites/items/sword_swing/Larry_swing_N3.png",
+            "./sprites/player_sprite/items/sword_swing/sword_swing_N0.png",
+            "./sprites/player_sprite/items/sword_swing/sword_swing_N1.png",
+            "./sprites/player_sprite/items/sword_swing/sword_swing_N2.png",
+            "./sprites/player_sprite/items/sword_swing/sword_swing_N3.png",
             
             "./sprites/player_sprite/larry_wk1_EW.png",
-            "./sprites/items/sword_swing/sword_swing_E0.png",
-            "./sprites/items/sword_swing/sword_swing_E1.png",
-            "./sprites/items/sword_swing/sword_swing_E2.png",
-            "./sprites/items/sword_swing/sword_swing_E3.png",
+            "./sprites/player_sprite/items/sword_swing/sword_swing_E0.png",
+            "./sprites/player_sprite/items/sword_swing/sword_swing_E1.png",
+            "./sprites/player_sprite/items/sword_swing/sword_swing_E2.png",
+            "./sprites/player_sprite/items/sword_swing/sword_swing_E3.png",
             
             "./sprites/player_sprite/larry_wk1_EW.png",
-            "./sprites/items/sword_swing/Larry_swing_W0.png",
-            "./sprites/items/sword_swing/Larry_swing_W1.png",
-            "./sprites/items/sword_swing/Larry_swing_W2.png",
-            "./sprites/items/sword_swing/Larry_swing_W3.png",
+            "./sprites/player_sprite/items/sword_swing/sword_swing_W0.png",
+            "./sprites/player_sprite/items/sword_swing/sword_swing_W1.png",
+            "./sprites/player_sprite/items/sword_swing/sword_swing_W2.png",
+            "./sprites/player_sprite/items/sword_swing/sword_swing_W3.png",
             ]
         
         self.images = {
