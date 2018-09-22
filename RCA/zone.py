@@ -14,7 +14,7 @@ from background import Background
 class Zone():
     def __init__(self, game, config_name, background_x=None, background_y=None):
         self.game = game
-        self.config_path = "./zones/{}.json".format(config_name)
+        self.config_path = DATAPATH.format(config_name)
         self.background = None
         self.background_x = background_x
         self.background_y = background_y

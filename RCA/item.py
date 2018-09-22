@@ -98,14 +98,5 @@ class Item(SpriteRCA):
         else:
             self.frame_counter = 0
             self.counter += 1
-        
-        
-    def gen_img(self, path):
-        image = pg.image.load(path).convert_alpha()
-        width, height = image.get_size()
-        width *= self.scale
-        height *= self.scale
-        return pg.transform.scale(
-                    image,
-                    (int(width), int(height))) 
+
         

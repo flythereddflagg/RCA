@@ -21,11 +21,7 @@ class Player(SpriteRCA):
             "./sprites/player_sprite/larry_st_EW.png",
             "./sprites/player_sprite/larry_wk1_EW.png",
             "./sprites/player_sprite/larry_wk2_EW.png"]
-        self.original_size = (16,22)
-        self.size_multiplier = 3
-        self.size = (
-            self.original_size[0] * self.size_multiplier, 
-            self.original_size[1] * self.size_multiplier)
+        self.scale = 3
         self.images = (
             # stand, walk1, walk2
             (   self.gen_img(self.img_paths[0]),
@@ -77,10 +73,7 @@ class Player(SpriteRCA):
         self.image = self.images[self.direction][0]
 
         
-    def gen_img(self, path):
-        return pg.transform.scale(
-            pg.image.load(path).convert_alpha(), 
-            self.size)
+
     
     
     def move(self, pixels, dr=None):

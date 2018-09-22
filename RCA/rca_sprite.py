@@ -4,6 +4,7 @@ Author        : Mark Redd
 
 Abstract Sprite parent to be imported by any sprite in the game.
 """
+from constants import *
 from pygame.sprite import Sprite
 
 class SpriteRCA(Sprite):
@@ -16,4 +17,13 @@ class SpriteRCA(Sprite):
         the children.
         """
         super().__init__()
+
         
+    def gen_img(self, path):
+        image = pg.image.load(path).convert_alpha()
+        width, height = image.get_size()
+        width *= self.scale
+        height *= self.scale
+        return pg.transform.scale(
+                    image,
+                    (int(width), int(height))) 
