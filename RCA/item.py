@@ -6,40 +6,18 @@ item class. Should define all logic relating to the item.
 """
 from constants import *
 from rca_sprite import SpriteRCA
+import json
 
 class Item(SpriteRCA):
     
     def __init__(self, path, player):
         super().__init__()
-        self.original_size = (32,32)
         self.scale = 3
         self.player = player
-
-        paths = [
-            "./sprites/player_sprite/larry_wk1_S.png",
-            "./sprites/player_sprite/items/sword_swing/sword_swing_S0.png",
-            "./sprites/player_sprite/items/sword_swing/sword_swing_S1.png",
-            "./sprites/player_sprite/items/sword_swing/sword_swing_S2.png",
-            "./sprites/player_sprite/items/sword_swing/sword_swing_S3.png",
-            
-            "./sprites/player_sprite/larry_wk_N.png",
-            "./sprites/player_sprite/items/sword_swing/sword_swing_N0.png",
-            "./sprites/player_sprite/items/sword_swing/sword_swing_N1.png",
-            "./sprites/player_sprite/items/sword_swing/sword_swing_N2.png",
-            "./sprites/player_sprite/items/sword_swing/sword_swing_N3.png",
-            
-            "./sprites/player_sprite/larry_wk1_EW.png",
-            "./sprites/player_sprite/items/sword_swing/sword_swing_E0.png",
-            "./sprites/player_sprite/items/sword_swing/sword_swing_E1.png",
-            "./sprites/player_sprite/items/sword_swing/sword_swing_E2.png",
-            "./sprites/player_sprite/items/sword_swing/sword_swing_E3.png",
-            
-            "./sprites/player_sprite/larry_wk1_EW.png",
-            "./sprites/player_sprite/items/sword_swing/sword_swing_W0.png",
-            "./sprites/player_sprite/items/sword_swing/sword_swing_W1.png",
-            "./sprites/player_sprite/items/sword_swing/sword_swing_W2.png",
-            "./sprites/player_sprite/items/sword_swing/sword_swing_W3.png",
-            ]
+        
+        with open('./data/item_sword.json', 'r') as f:
+            data = json.load(f)
+            paths = data["item paths"]
         
         self.images = {
             S:(
@@ -88,10 +66,15 @@ class Item(SpriteRCA):
             self.player.use_animate_bool = False
             self.kill()
         
+        # load from item files
+        self.player.image = self.gen_img(
+                            "./sprites/player_sprite/larry_swing_E0.png")
         
         self.image = self.images[direction][self.counter][0]
-        self.rect.x = self.player.rect.x + self.images[direction][self.counter][1]
-        self.rect.y = self.player.rect.y + self.images[direction][self.counter][2]
+        self.rect.x = self.player.rect.x +\
+                        self.images[direction][self.counter][1]
+        self.rect.y = self.player.rect.y +\
+                        self.images[direction][self.counter][2]
         
         if self.frame_counter < self.animate_frames:
             self.frame_counter += 1

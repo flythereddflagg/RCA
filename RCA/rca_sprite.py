@@ -17,6 +17,7 @@ class SpriteRCA(Sprite):
         the children.
         """
         super().__init__()
+        self.scale = 1
 
         
     def gen_img(self, path):
@@ -26,4 +27,4 @@ class SpriteRCA(Sprite):
         height *= self.scale
         return pg.transform.scale(
                     image,
-                    (int(width), int(height))) 
+                    (int(width), int(height)))

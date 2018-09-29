@@ -8,6 +8,7 @@ from constants import *
 from rca_sprite import SpriteRCA
 from item import Item
 
+
 class Player(SpriteRCA):
     
     def __init__(self, game):
@@ -95,7 +96,7 @@ class Player(SpriteRCA):
         self.use_animate_bool = True
         self.game.players.add(self.item)
         self.game.all_sprites.add(self.item)
-        self.image = self.gen_img("./sprites/player_sprite/larry_swing_E0.png")
+        
 
     
     def use_item_2(self):
