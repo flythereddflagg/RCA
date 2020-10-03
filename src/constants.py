@@ -33,10 +33,10 @@ PLAYERANIMATEFRAMES = int(FPS * 60 / PLAYERANIMATERATE)
 
 # pixels before camera moves instead of player
 CAMERASLACK         = 100 
-ESLACK              = CENTERX + CAMERASLACK
-WSLACK              = CENTERX - CAMERASLACK
 NSLACK              = CENTERY - CAMERASLACK
 SSLACK              = CENTERY + CAMERASLACK
+ESLACK              = CENTERX + CAMERASLACK
+WSLACK              = CENTERX - CAMERASLACK
 
 # direction constants North:0 East:1 South:2 West:3
 DIRECTIONS      = tuple(range(4))

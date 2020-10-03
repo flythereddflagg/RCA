@@ -75,6 +75,9 @@ class Engine():
             self.running = False
             return
         
+        
+        if not self.accept_input: return
+        
         old_keys = self.key_indices
         self.key_indices = list(compress(range(len(keys)), keys))
 
@@ -82,11 +85,9 @@ class Engine():
         if pg.K_NUMLOCK in self.key_indices: key_indices.remove(pg.K_NUMLOCK)
         
         off_keys = list(set(old_keys).difference(self.key_indices))
-        
-        if not self.accept_input: return
-        
-        for i in off_keys:
-            self.game.off_key_do(i)
+                
+        for key in off_keys:
+            self.game.off_key_do(key)
         
         if self.key_indices:
             for i in self.key_indices:
