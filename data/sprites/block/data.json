@@ -1,0 +1,29 @@
+{
+	"item path prefix" : "./sprites/player_sprite/items/sword_swing/",
+	"holder path prefix" : "./sprites/player_sprite/",
+    "item paths" : [
+        "larry_wk1_S.png",
+        "sword_swing_S0.png",
+        "sword_swing_S1.png",
+        "sword_swing_S2.png",
+        "sword_swing_S3.png",
+        
+        "larry_wk_N.png",
+        "sword_swing_N0.png",
+        "sword_swing_N1.png",
+        "sword_swing_N2.png",
+        "sword_swing_N3.png",
+        
+        "larry_wk1_EW.png",
+        "sword_swing_E0.png",
+        "sword_swing_E1.png",
+        "sword_swing_E2.png",
+        "sword_swing_E3.png",
+        
+        "larry_wk1_EW.png",
+        "sword_swing_W0.png",
+        "sword_swing_W1.png",
+        "sword_swing_W2.png",
+        "sword_swing_W3.png"
+    ]
+}

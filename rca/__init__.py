@@ -1,6 +1,9 @@
 # RCA package
 # notice from copied code
+import os
+import json
 from itertools import compress
+
 import pygame as pg
 
 # Screen Constants 
@@ -16,11 +19,11 @@ CENTERY      = SCREENHEIGHT // 2
 
 # Animation Constants
 # player speed in pixels / second
-PLAYERSPEEDTIME     = 300 * 2
+playerPEEDTIME     = 300 * 2
 # Player speed in pixels/frame
-PLAYERSPEED         = PLAYERSPEEDTIME // FPS
+playerPEED         = playerPEEDTIME // FPS
 # image changes per minute
-PLAYERANIMATERATE   = PLAYERSPEEDTIME 
+PLAYERANIMATERATE   = playerPEEDTIME 
 
 # frames to next player animation
 PLAYERANIMATEFRAMES = int(FPS * 60 / PLAYERANIMATERATE)
@@ -39,7 +42,6 @@ DIRECTION_DICT  = {"north": N, "east" : E, "south" : S, "west" : W}
 
 # colors
 BLACK           = (0,0,0)
-
 
 
 class DictObj(dict):
@@ -72,6 +74,19 @@ class DictObj(dict):
     def __dir__(self):
         return list(self.keys())
 
+def get_data(path):
+    data = DictObj()
+    for root, dirs, files in os.walk(path+"/sprites"):
+        root1 = root.replace("\\", "/")
+        if "data.json" in files:
+            with open(root1+"/data.json") as f:
+                data[root1.split("/")[-1]] = DictObj(**json.load(f))
+        else:
+            data[root1.split("/")[-1]] = DictObj()
+        
+        data[root1.split("/")[-1]].files = files
+    
+    print(data)
 
 
 def init_game(data_path):
@@ -84,22 +99,23 @@ def init_game(data_path):
     # Set up all sprite groups
     all_sprites = pg.sprite.Group() # everything
     background  = pg.sprite.Group() # background tiles
-    foreground  = pg.sprite.Group() # non-interacting blocks
-    blocks      = pg.sprite.Group() # non-moving sprites that interact
-    players     = pg.sprite.Group() # sprites you can control             
-    friends     = pg.sprite.Group() # moving friendly sprites
-    foes        = pg.sprite.Group() # enemies
+    foreground  = pg.sprite.Group() # non-interacting block
+    block       = pg.sprite.Group() # non-moving sprites that interact
+    player      = pg.sprite.Group() # sprites you can control             
+    friend      = pg.sprite.Group() # moving friendly sprites
+    foe         = pg.sprite.Group() # enemies
     hud         = pg.sprite.Group() # HUD (health, money etc.)
     misc        = pg.sprite.Group() # other (dialog boxes etc.)
     # set up groups list (in the order in which you want them to be drawn)
-    groups = [background, foreground, blocks, players, friends, foes, hud, misc]
+    groups = [background, foreground, block, player, friend, foe, hud, misc]
 
     # define groups that are diegetic (i.e. groups that exist in the game
-    # world and will be affected by camera movement) EXCLUDES players
-    diegetic_groups = [background, foreground, blocks, friends, foes]
+    # world and will be affected by camera movement) EXCLUDES player
+    diegetic_groups = [background, foreground, block, friend, foe]
 
     game = DictObj(
         data_path = data_path,
+        data = get_data(data_path),
         clock = pg.time.Clock(),
         screen = pg.display.set_mode(SCREENSIZE),
         accept_input = True,
@@ -110,16 +126,19 @@ def init_game(data_path):
         all_sprites = all_sprites,
         background = background,
         foreground = foreground,
-        blocks = blocks,
-        players = players,         
-        friends = friends,
-        foes = foes,
+        block = block,
+        player = player,         
+        friend = friend,
+        foe = foe,
         hud = hud,
         misc = misc,
         events = [],
         on_keys = [],
         off_keys = [],
     )
+
+    load_zone(game)
+    
     return game
 
     
@@ -162,8 +181,7 @@ def events(game):
 
 
 def logic(game):
-    pass
-    # game.all_sprites.update()
+    game.all_sprites.update()
 
     
 def draw(game):
@@ -177,3 +195,28 @@ def draw(game):
         group.draw(game.screen)
     
     pg.display.flip()
+
+        
+def gen_sprite(path, scale=1):
+    sprite = pg.sprite.Sprite()
+    sprite.image = pg.image.load(path).convert_alpha()
+    width, height = sprite.image.get_size()
+    width *= scale
+    height *= scale
+    sprite.image = pg.transform.scale(
+        sprite.image,(int(width), int(height))
+    )
+    sprite.rect = sprite.image.get_rect()
+    sprite.width = sprite.image.get_width()
+    sprite.height = sprite.image.get_height()
+    sprite.mask = pg.mask.from_surface(sprite.image)
+    
+    return sprite
+    
+
+def load_zone(game):
+    img_path = "./data/sprites/zones/zone1_bg.png"
+    bg = gen_sprite(img_path)
+    bg.rect.x = -1500
+    bg.rect.y = -1150
+    bg.add(game.all_sprites, game.background)
