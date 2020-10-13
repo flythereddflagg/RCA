@@ -1,6 +1,6 @@
 {
 	"item path prefix" : "./sprites/player_sprite/items/sword_swing/",
-	"holder path prefix" : "./sprites/player_sprite/"
+	"holder path prefix" : "./sprites/player_sprite/",
     "item paths" : [
         "larry_wk1_S.png",
         "sword_swing_S0.png",

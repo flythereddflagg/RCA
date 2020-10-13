@@ -75,18 +75,30 @@ class DictObj(dict):
         return list(self.keys())
 
 def get_data(path):
+    path_ = path.replace("\\", "/")
+    path_lst = path.split("/")
+    path_len = len(path_lst)
     data = DictObj()
-    for root, dirs, files in os.walk(path+"/sprites"):
-        root1 = root.replace("\\", "/")
-        if "data.json" in files:
-            with open(root1+"/data.json") as f:
-                data[root1.split("/")[-1]] = DictObj(**json.load(f))
-        else:
-            data[root1.split("/")[-1]] = DictObj()
+
+    for root, dirs, files in os.walk(path):
+        root_ = root.replace("\\", "/")
+        root_lst = root_.split("/")[path_len:]
+        rt = data
+        for branch in root_lst:
+            rt = rt[branch]
+
+        for dir_ in dirs:
+            print(dir_)
+            rt[dir_] = DictObj()
         
-        data[root1.split("/")[-1]].files = files
-    
+        rt.files = files
+        for file_ in files:
+            if file_.endswith(".json"):
+                with open(root + "/" + file_, 'r') as f:
+                    rt[file_[-5]] = DictObj(**json.load(f))
+        
     print(data)
+    return data
 
 
 def init_game(data_path):
