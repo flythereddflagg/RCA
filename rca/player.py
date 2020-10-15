@@ -72,10 +72,7 @@ class Player(SpriteRCA):
 
     def stand(self):
         self.image = self.images[self.direction][0]
-
-        
-
-    
+            
     
     def move(self, pixels, dr=None):
         if dr == None: dr = self.direction

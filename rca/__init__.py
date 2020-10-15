@@ -66,8 +66,8 @@ class DictObj(dict):
     def __repr__(self):
         if self.keys():
             m = max(map(len, list(self.keys()))) + 1
-            return '\n'.join([k.rjust(m) + ': ' + repr(v)
-                              for k, v in sorted(self.items())])
+            return '{\n' + '\n'.join([k.rjust(m) + ': ' + repr(v)
+                              for k, v in sorted(self.items())])+"\n}"
         else:
             return self.__class__.__name__ + "()"
 
@@ -88,16 +88,14 @@ def get_data(path):
             rt = rt[branch]
 
         for dir_ in dirs:
-            print(dir_)
             rt[dir_] = DictObj()
         
         rt.files = files
         for file_ in files:
             if file_.endswith(".json"):
                 with open(root + "/" + file_, 'r') as f:
-                    rt[file_[-5]] = DictObj(**json.load(f))
+                    rt[file_[:-5]] = DictObj(**json.load(f))
         
-    print(data)
     return data
 
 
@@ -149,7 +147,7 @@ def init_game(data_path):
         off_keys = [],
     )
 
-    load_zone(game)
+    load_zone("zone1", game)
     
     return game
 
@@ -226,9 +224,28 @@ def gen_sprite(path, scale=1):
     return sprite
     
 
-def load_zone(game):
-    img_path = "./data/sprites/zones/zone1_bg.png"
-    bg = gen_sprite(img_path)
-    bg.rect.x = -1500
-    bg.rect.y = -1150
+def load_zone(zone_str, game, player_init=None):
+    zone = game.data.sprites.zones[zone_str]
+    assert zone.type == "zone"
+    env = DictObj(**zone.environment)
+    bg = gen_sprite(env.background)
+    fg = gen_sprite(env.foreground)
+    bg.rect.x, bg.rect.y = env.xy
+    fg.rect.x, fg.rect.y = env.xy
     bg.add(game.all_sprites, game.background)
+    fg.add(game.all_sprites, game.foreground)
+
+    for block in zone.blocks:
+        b = DictObj(**block)
+        bsprite = gen_sprite(b.image_path)
+        bsprite.rect.x, bsprite.rect.y = env.xy
+        bsprite.add(game.all_sprites, game.block)
+
+    if player_init is None:
+        # player = game.data.sprites.player
+        player = gen_sprite(
+            "./data/sprites/player/larry_st_S.png",
+            scale=3
+        )
+        player.rect.x, player.rect.y = CENTERX, CENTERY
+        player.add(game.all_sprites, game.player)

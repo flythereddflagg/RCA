@@ -1,18 +1,13 @@
 {
-    "background" : {
-        "image_path" : "./sprites/maps/zone1_bg.png",
+    "environment" : {
+        "background" : "./sprites/maps/zone1_bg.png",
+        "foreground" : "./sprites/maps/zone1_fg.png",
         "xposition"  : -1500, 
         "yposition"  : -1150
     },
-    "foreground" : {
-        "image_path" :"./sprites/maps/zone1_fg.png",
-        "xposition"  : 0, 
-        "yposition"  : 0,
-        "scale"      : 1,
-        "rotate"     : 0
-    },
-    "exit_blocks" : [
-        {
+    "blocks" : [
+        {   
+            "type"       : "exit",
             "image_path" :"./sprites/blocks/marker.png",
             "xposition"  : 2390, 
             "yposition"  : -175,
@@ -26,6 +21,7 @@
             
         },
         {
+            "type"       : "exit",
             "image_path" :"./sprites/blocks/marker.png",
             "xposition"  :  470,
             "yposition"  : 1475,
@@ -38,6 +34,7 @@
             "playery"    :   275
         },
         {
+            "type"       : "exit",
             "image_path" :"./sprites/blocks/marker.png",
             "xposition"  : 3240,
             "yposition"  : 1950,

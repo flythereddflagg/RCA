@@ -1,21 +1,15 @@
 {
-    "background" : {
-        "image_path" : "./sprites/maps/zone1_bg.png",
-        "xposition"  : -1500, 
-        "yposition"  : -1150
+    "type"        : "zone",
+    "environment" : {
+        "background" : "./data/sprites/zones/zone1_bg.png",
+        "foreground" : "./data/sprites/zones/zone1_fg.png",
+        "xy"         : [-1500, -1150]
     },
-    "foreground" : {
-        "image_path" :"./sprites/maps/zone1_fg.png",
-        "xposition"  : 0, 
-        "yposition"  : 0,
-        "scale"      : 1,
-        "rotate"     : 0
-    },
-    "exit_blocks" : [
-        {
-            "image_path" :"./sprites/blocks/marker.png",
-            "xposition"  : 2390, 
-            "yposition"  : -175,
+    "blocks" : [
+        {   
+            "type"       : "exit",
+            "image_path" :"./data/sprites/block/marker.png",
+            "xy"         : [2390, -175],
             "scale"      :    8,
             "rotate"     :    0,
             "go_to"      : "zone2",
@@ -26,7 +20,8 @@
             
         },
         {
-            "image_path" :"./sprites/blocks/marker.png",
+            "type"       : "exit",
+            "image_path" :"./data/sprites/block/marker.png",
             "xposition"  :  470,
             "yposition"  : 1475,
             "scale"      :    3,
@@ -38,7 +33,8 @@
             "playery"    :   275
         },
         {
-            "image_path" :"./sprites/blocks/marker.png",
+            "type"       : "exit",
+            "image_path" :"./data/sprites/block/marker.png",
             "xposition"  : 3240,
             "yposition"  : 1950,
             "scale"      :   10,
