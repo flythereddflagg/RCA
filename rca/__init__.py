@@ -36,12 +36,35 @@ ESLACK              = CENTERX + CAMERASLACK
 WSLACK              = CENTERX - CAMERASLACK
 
 # direction constants North:0 East:1 South:2 West:3
-DIRECTIONS      = tuple(range(4))
+DIRECTIONS      = list(range(4))
 N,E,S,W         = DIRECTIONS
 DIRECTION_DICT  = {"north": N, "east" : E, "south" : S, "west" : W}
 
 # colors
 BLACK           = (0,0,0)
+
+COMMANDS = list(range(7))
+UPDATE, LEFT, RIGHT, UP, DOWN, DO_A, DO_B = COMMANDS
+KEY_MAPPING = {
+    pg.K_u     : UPDATE,
+    pg.K_LEFT  : LEFT,
+    pg.K_RIGHT : RIGHT,
+    pg.K_UP    : UP,
+    pg.K_DOWN  : DOWN,
+    pg.K_z     : DO_A,
+    pg.K_x     : DO_B,
+}
+
+# KEY_MAPPING = {
+#     pg.K_u     : update_zone,
+#     pg.K_LEFT  : lambda g: direction_key(g, W),
+#     pg.K_RIGHT : lambda g: direction_key(g, E),
+#     pg.K_UP    : lambda g: direction_key(g, N),
+#     pg.K_DOWN  : lambda g: direction_key(g, S),
+#     pg.K_z     : action1,
+#     pg.K_x     : action2,
+# }
+
 
 
 class DictObj(dict):
@@ -208,6 +231,7 @@ def draw(game):
 
         
 def gen_sprite(path, scale=1):
+    """Generates sprite with image file at path and scale"""
     sprite = pg.sprite.Sprite()
     sprite.image = pg.image.load(path).convert_alpha()
     width, height = sprite.image.get_size()
@@ -242,10 +266,40 @@ def load_zone(zone_str, game, player_init=None):
         bsprite.add(game.all_sprites, game.block)
 
     if player_init is None:
-        # player = game.data.sprites.player
+        print(game.data.sprites.player)
+
         player = gen_sprite(
             "./data/sprites/player/larry_st_S.png",
             scale=3
         )
         player.rect.x, player.rect.y = CENTERX, CENTERY
         player.add(game.all_sprites, game.player)
+
+
+def move(sprite, pixels, dr):
+    if   dr == N:
+        sprite.rect.y -= pixels
+    elif dr == E:
+        sprite.rect.x += pixels
+    elif dr == S:
+        sprite.rect.y += pixels
+    elif dr == W:
+        sprite.rect.x -= pixels
+
+
+def move_camera(game, pixels, dr):
+    for sprite in game.all_sprites:
+        move(sprite, pixels, DIRECTIONS[dr - 2])
+
+
+def direction_key(game, dr):
+    pass
+
+def action1(game):
+    pass
+
+def action2(game):
+    pass
+
+def update_zone(game):
+    pass
