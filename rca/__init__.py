@@ -19,11 +19,11 @@ CENTERY      = SCREENHEIGHT // 2
 
 # Animation Constants
 # player speed in pixels / second
-playerPEEDTIME     = 300 * 2
+PLAYERPEEDTIME     = 300
 # Player speed in pixels/frame
-playerPEED         = playerPEEDTIME // FPS
+PLAYERSPEED         = PLAYERPEEDTIME // FPS
 # image changes per minute
-PLAYERANIMATERATE   = playerPEEDTIME 
+PLAYERANIMATERATE   = PLAYERPEEDTIME
 
 # frames to next player animation
 PLAYERANIMATEFRAMES = int(FPS * 60 / PLAYERANIMATERATE)
@@ -39,6 +39,7 @@ WSLACK              = CENTERX - CAMERASLACK
 DIRECTIONS      = list(range(4))
 N,E,S,W         = DIRECTIONS
 DIRECTION_DICT  = {"north": N, "east" : E, "south" : S, "west" : W}
+INV_DIR_DICT     = {val:key for key, val in DIRECTION_DICT.items()}
 
 # colors
 BLACK           = (0,0,0)
@@ -54,17 +55,6 @@ KEY_MAPPING = {
     pg.K_z     : DO_A,
     pg.K_x     : DO_B,
 }
-
-# KEY_MAPPING = {
-#     pg.K_u     : update_zone,
-#     pg.K_LEFT  : lambda g: direction_key(g, W),
-#     pg.K_RIGHT : lambda g: direction_key(g, E),
-#     pg.K_UP    : lambda g: direction_key(g, N),
-#     pg.K_DOWN  : lambda g: direction_key(g, S),
-#     pg.K_z     : action1,
-#     pg.K_x     : action2,
-# }
-
 
 
 class DictObj(dict):
@@ -146,11 +136,22 @@ def init_game(data_path):
     # world and will be affected by camera movement) EXCLUDES player
     diegetic_groups = [background, foreground, block, friend, foe]
 
+    command_map = {
+        UPDATE : update_zone,
+        LEFT   : lambda g: direction_key(g, W),
+        RIGHT  : lambda g: direction_key(g, E),
+        UP     : lambda g: direction_key(g, N),
+        DOWN   : lambda g: direction_key(g, S),
+        DO_A   : action1,
+        DO_B   : action2,
+    }
+
     game = DictObj(
         data_path = data_path,
         data = get_data(data_path),
         clock = pg.time.Clock(),
         screen = pg.display.set_mode(SCREENSIZE),
+        command_map = command_map,
         accept_input = True,
         keys_pressed = [],
         running = True,
@@ -214,6 +215,12 @@ def events(game):
 
 
 def logic(game):
+    possible_keys = KEY_MAPPING.keys()
+    for key in game.on_keys:
+        if key in possible_keys:
+            game.command_map[KEY_MAPPING[key]](game)
+    
+    reset_camera(game)
     game.all_sprites.update()
 
     
@@ -291,15 +298,37 @@ def move_camera(game, pixels, dr):
     for sprite in game.all_sprites:
         move(sprite, pixels, DIRECTIONS[dr - 2])
 
+def reset_camera(game):
+    px = game.player.sprites()[0].rect.x
+    py = game.player.sprites()[0].rect.y
+    
+    cxerr, cyerr = px - CENTERX, py - CENTERY, 
+    
+    # TODO add "if map edge not visible" here
+    if abs(cxerr) > CAMERASLACK:
+        movex =  cxerr - cxerr/abs(cxerr) * CAMERASLACK
+        move_camera(game, movex, E)
+
+    if abs(cyerr) > CAMERASLACK:
+        movey =  cyerr - cyerr/abs(cyerr) * CAMERASLACK
+        move_camera(game, movey, S)
+
+
 
 def direction_key(game, dr):
-    pass
+    player = game.player.sprites()[0]
+    move(player, PLAYERSPEED, dr)
+    # TODO add animation here
+    # TODO add move rejection
+
 
 def action1(game):
-    pass
+    print("action1")
+
 
 def action2(game):
-    pass
+    print("action2")
+
 
 def update_zone(game):
-    pass
+    print("update_zone")
