@@ -273,8 +273,6 @@ def load_zone(zone_str, game, player_init=None):
         bsprite.add(game.all_sprites, game.block)
 
     if player_init is None:
-        print(game.data.sprites.player)
-
         player = gen_sprite(
             "./data/sprites/player/larry_st_S.png",
             scale=3
@@ -298,21 +296,35 @@ def move_camera(game, pixels, dr):
     for sprite in game.all_sprites:
         move(sprite, pixels, DIRECTIONS[dr - 2])
 
+
 def reset_camera(game):
     px = game.player.sprites()[0].rect.x
     py = game.player.sprites()[0].rect.y
+    bg = game.background.sprites()[0]
     
     cxerr, cyerr = px - CENTERX, py - CENTERY, 
     
-    # TODO add "if map edge not visible" here
     if abs(cxerr) > CAMERASLACK:
         movex =  cxerr - cxerr/abs(cxerr) * CAMERASLACK
+        # correct camera movement if you are at map edges
+        bgx, bgxsize = bg.rect.x, bg.image.get_width()
+        if bgx - movex < (SCREENWIDTH - bgxsize):
+            movex = (SCREENWIDTH - bgxsize) - bgx  
+        elif bgx - movex > 0:
+            movex = -bgx
+
         move_camera(game, movex, E)
 
     if abs(cyerr) > CAMERASLACK:
         movey =  cyerr - cyerr/abs(cyerr) * CAMERASLACK
-        move_camera(game, movey, S)
+        # correct camera movement if you are at map edges
+        bgy, bgysize = bg.rect.y, bg.image.get_height()
+        if bgy - movey < (SCREENHEIGHT - bgysize):
+            movey = (SCREENHEIGHT - bgysize) - bgy
+        elif bgy - movey > 0:
+            movey = -bgy
 
+        move_camera(game, movey, S)
 
 
 def direction_key(game, dr):
