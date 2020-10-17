@@ -4,7 +4,7 @@ Author   : Mark Redd
 
 Global constants to be used throughout the game
 """
-
+import pygame as pg
 # Screen Constants
 #   Frame rate ( in Frames / second)
 FPS          = 30 

@@ -9,6 +9,8 @@ import pygame as pg
 # Screen Constants 
 # Frame rate ( in Frames / second)
 FPS          = 30 
+# SCREENWIDTH  = 1300
+# SCREENHEIGHT = 768
 SCREENWIDTH  = 800
 SCREENHEIGHT = 600
 # screen size tuple
@@ -293,6 +295,9 @@ def move(sprite, pixels, dr):
 
 
 def move_camera(game, pixels, dr):
+    if abs(pixels) > PLAYERSPEED:
+        print("Err", pixels)
+    else: print(pixels)
     for sprite in game.all_sprites:
         move(sprite, pixels, DIRECTIONS[dr - 2])
 
@@ -329,7 +334,18 @@ def reset_camera(game):
 
 def direction_key(game, dr):
     player = game.player.sprites()[0]
+    fg = game.foreground
+    check_collide = lambda p, fg: pg.sprite.spritecollide(
+        p, fg, False, pg.sprite.collide_mask
+    )
+
     move(player, PLAYERSPEED, dr)
+    # if check_collide(player, fg):
+    #     for i in range(PLAYERSPEED):
+    #         move(player, 1, DIRECTIONS[dr-2])
+    #         if not check_collide(player, fg): 
+    #             break
+
     # TODO add animation here
     # TODO add move rejection
 
