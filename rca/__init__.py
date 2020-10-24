@@ -340,11 +340,11 @@ def direction_key(game, dr):
     )
 
     move(player, PLAYERSPEED, dr)
-    # if check_collide(player, fg):
-    #     for i in range(PLAYERSPEED):
-    #         move(player, 1, DIRECTIONS[dr-2])
-    #         if not check_collide(player, fg): 
-    #             break
+    if check_collide(player, fg):
+        for i in range(PLAYERSPEED):
+            move(player, 1, DIRECTIONS[dr-2])
+            if not check_collide(player, fg): 
+                break
 
     # TODO add animation here
     # TODO add move rejection
