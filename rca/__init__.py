@@ -298,7 +298,6 @@ def move_camera(game, pixels, dr):
         move(sprite, pixels, DIRECTIONS[dr - 2])
 
 
-
 def reset_camera(game):
     px = game.player.sprites()[0].rect.x
     py = game.player.sprites()[0].rect.y
@@ -319,8 +318,8 @@ def reset_camera(game):
 
     if abs(cyerr) > CAMERASLACK:
         movey =  int(cyerr - cyerr/abs(cyerr) * CAMERASLACK)
-        # correct camera movement if you are at map edges
         move_camera(game, movey, S)
+        # correct camera movement if you are at map edges
         if bg.rect.y + bgysize < SCREENHEIGHT or bg.rect.y > 0:
             for i in range(abs(movey)):
                 move_camera(game, movey/abs(movey), N)
@@ -344,7 +343,6 @@ def direction_key(game, dr):
                 break
 
     # TODO add animation here
-    # TODO add move rejection
 
 
 def action1(game):
