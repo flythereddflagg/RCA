@@ -58,7 +58,6 @@ KEY_MAPPING = {
     pg.K_x     : DO_B,
 }
 
-
 class DictObj(dict):
     """
     ******NOTICE***************
@@ -295,42 +294,39 @@ def move(sprite, pixels, dr):
 
 
 def move_camera(game, pixels, dr):
-    if abs(pixels) > PLAYERSPEED:
-        print("Err", pixels)
-    else: print(pixels)
     for sprite in game.all_sprites:
         move(sprite, pixels, DIRECTIONS[dr - 2])
+
 
 
 def reset_camera(game):
     px = game.player.sprites()[0].rect.x
     py = game.player.sprites()[0].rect.y
     bg = game.background.sprites()[0]
+    bgxsize, bgysize = bg.image.get_width(), bg.image.get_height()
     
     cxerr, cyerr = px - CENTERX, py - CENTERY, 
     
     if abs(cxerr) > CAMERASLACK:
-        movex =  cxerr - cxerr/abs(cxerr) * CAMERASLACK
-        # correct camera movement if you are at map edges
-        bgx, bgxsize = bg.rect.x, bg.image.get_width()
-        if bgx - movex < (SCREENWIDTH - bgxsize):
-            movex = (SCREENWIDTH - bgxsize) - bgx  
-        elif bgx - movex > 0:
-            movex = -bgx
-
+        movex =  int(cxerr - cxerr/abs(cxerr) * CAMERASLACK)
         move_camera(game, movex, E)
+        # correct camera movement if you are at map edges
+        if bg.rect.x + bgxsize < SCREENWIDTH or bg.rect.x > 0:
+            for i in range(abs(movex)):
+                move_camera(game, movex/abs(movex), W)
+                if not (bg.rect.x + bgxsize < SCREENWIDTH or bg.rect.x > 0):
+                    break
 
     if abs(cyerr) > CAMERASLACK:
-        movey =  cyerr - cyerr/abs(cyerr) * CAMERASLACK
+        movey =  int(cyerr - cyerr/abs(cyerr) * CAMERASLACK)
         # correct camera movement if you are at map edges
-        bgy, bgysize = bg.rect.y, bg.image.get_height()
-        if bgy - movey < (SCREENHEIGHT - bgysize):
-            movey = (SCREENHEIGHT - bgysize) - bgy
-        elif bgy - movey > 0:
-            movey = -bgy
-
         move_camera(game, movey, S)
-
+        if bg.rect.y + bgysize < SCREENHEIGHT or bg.rect.y > 0:
+            for i in range(abs(movey)):
+                move_camera(game, movey/abs(movey), N)
+                if not (bg.rect.y + bgysize < SCREENHEIGHT or bg.rect.y > 0):
+                    break
+        
 
 def direction_key(game, dr):
     player = game.player.sprites()[0]
@@ -343,6 +339,7 @@ def direction_key(game, dr):
     if check_collide(player, fg):
         for i in range(PLAYERSPEED):
             move(player, 1, DIRECTIONS[dr-2])
+            reset_camera(game)
             if not check_collide(player, fg): 
                 break
 
