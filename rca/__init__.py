@@ -50,10 +50,14 @@ COMMANDS = list(range(7))
 UPDATE, LEFT, RIGHT, UP, DOWN, DO_A, DO_B = COMMANDS
 KEY_MAPPING = {
     pg.K_u     : UPDATE,
-    pg.K_LEFT  : LEFT,
-    pg.K_RIGHT : RIGHT,
-    pg.K_UP    : UP,
-    pg.K_DOWN  : DOWN,
+    # pg.K_LEFT  : LEFT,
+    80         : LEFT,
+    # pg.K_RIGHT : RIGHT,
+    79         : RIGHT,
+    # pg.K_UP    : UP,
+    82         : UP,
+    # pg.K_DOWN  : DOWN,
+    81         : DOWN,
     pg.K_z     : DO_A,
     pg.K_x     : DO_B,
 }
@@ -216,6 +220,9 @@ def events(game):
 
 
 def logic(game):
+    """
+    Implements game logic updating the state of the game object.
+    """
     possible_keys = KEY_MAPPING.keys()
     for key in game.on_keys:
         if key in possible_keys:
