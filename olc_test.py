@@ -46,7 +46,11 @@ def init():
         [[0,0,0], [1,0,0], [0,0,1]], # BOTTOM
         [[0,0,0], [0,0,1], [1,0,0]],
     ], dtype=np.float64)
+    game["xtheta"] = np.radians(0.03)
+    game["ytheta"] = np.radians(0.07)
+    game["ztheta"] = np.radians(0.05)
 
+    game['t_elapsed'] = 0
     return game
 
 
@@ -78,9 +82,33 @@ def logic(game):
 def draw(game):
     # draw everything here
     game["screen"].fill(BLACK)
-    
+    game['t_elapsed'] += game["clock"].get_time()
+    xtheta = game["xtheta"] * game['t_elapsed']
+    ytheta = game["ytheta"] * game['t_elapsed']
+    ztheta = game["ztheta"] * game['t_elapsed']
+
+    x_rot = np.array([
+        [1,             0,                0],
+        [0, np.cos(xtheta), -np.sin(xtheta)],
+        [0, np.sin(xtheta),  np.cos(xtheta)]
+    ])
+    y_rot = np.array([
+        [ np.cos(ytheta), 0, np.sin(ytheta)],
+        [             0,  1,              0],
+        [-np.sin(ytheta), 0, np.cos(ytheta)]
+    ])
+    z_rot = np.array([
+        [np.cos(ztheta), -np.sin(ztheta), 0],
+        [np.sin(ztheta),  np.cos(ztheta), 0],
+        [            0,                0, 1],
+    ])
+
     for tri in game["meshcube"]:
         # rotation transform
+
+        tri = tri @ x_rot
+        tri = tri @ y_rot
+        tri = tri @ z_rot
 
         ttri = tri.copy()
         for i in range(ttri.shape[0]):
