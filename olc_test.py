@@ -9,6 +9,7 @@ THETA = np.radians(90)
 FOV = 1 / np.tan(THETA / 2)
 Q = ZFAR / (ZFAR - ZNEAR)
 
+V_CAMERA = 0, 0, 0 # camera position
 FPS = 30
 BLACK = 0, 0, 0
 
@@ -20,6 +21,29 @@ PROJECTION_MATRIX = np.array([
 ])
 
 
+
+def load_obj_file(path, offset=1):
+    with open(path, 'r') as f:
+        lines = f.readlines()
+    vertices = []
+    faces = []
+    for line in lines:
+        s_line = line.split(' ')
+        if line.startswith("v"):
+            vertices.append([float(x) for x in s_line[1:]])
+        elif line.startswith('f'):
+            faces.append([int(x) for x in s_line[1:]])
+    
+    mesh = np.zeros((len(faces), 3, 3))
+    # print(np.amax(faces), len(vertices))
+    # raise Exception()
+    for i, face in enumerate(faces):
+        mesh[i] += np.array([vertices[j-offset] for j in face])
+    
+    return mesh
+
+
+
 def init():
     pg.init()
     game = {}
@@ -27,25 +51,7 @@ def init():
     game["screen"] = pg.display.set_mode(SCREENSIZE)
     game["clock"] = pg.time.Clock()
 
-    game["meshcube"] = np.array([
-        [[0,0,0], [0,1,0], [1,1,0]], # S
-        [[0,0,0], [1,1,0], [1,0,0]],
-
-        [[1,0,0], [1,1,0], [1,1,1]], # E
-        [[1,0,0], [1,1,1], [1,0,1]],
-        
-        [[1,0,1], [1,1,1], [0,1,1]], # N
-        [[1,0,1], [0,1,1], [0,0,1]],
-        
-        [[0,0,1], [0,1,1], [0,1,0]], # W
-        [[0,0,1], [0,1,0], [0,0,0]],
-        
-        [[0,1,0], [0,1,1], [1,1,1]], # TOP
-        [[0,1,0], [1,1,1], [1,1,0]],
-        
-        [[0,0,0], [1,0,0], [0,0,1]], # BOTTOM
-        [[0,0,0], [0,0,1], [1,0,0]],
-    ], dtype=np.float64)
+    game["meshcube"] = load_obj_file("./weird_thing.obj")
     game["xtheta"] = np.radians(0.03)
     game["ytheta"] = np.radians(0.07)
     game["ztheta"] = np.radians(0.05)
@@ -54,10 +60,9 @@ def init():
     return game
 
 
-def draw_triangle(tri, display, color=(255, 255, 255), width=1):
+def draw_triangle(tri, display, color=(255, 255, 255), width=0):
     # tri should be of shape (3, 2)
-    for i in range(len(tri)):
-        pg.draw.line(display, color, tri[i-1], tri[i])
+    pg.draw.polygon(display, color, tri, width=width)
 
 def transform_tri(tri, transform_matrix):
 
@@ -105,15 +110,33 @@ def draw(game):
 
     for tri in game["meshcube"]:
         # rotation transform
-
         tri = tri @ x_rot
         tri = tri @ y_rot
         tri = tri @ z_rot
-
+        # translation transform
         ttri = tri.copy()
         for i in range(ttri.shape[0]):
-            ttri[i][2] += 3.0
+            ttri[i][2] += 10.0
+        # check normal of triangle to camera to see if we should render it
+        line1 = ttri[1] - ttri[0]
+        line2 = ttri[2] - ttri[0]
+        normal = np.cross(line1, line2)
+        nnorm = normal / np.linalg.norm(normal)
+        if np.dot(nnorm, (ttri[0] - V_CAMERA)) > 0:
+            continue
+        
+        # set the lighting of the triangle
+        light_direction = np.array([0.0, 0.0, -1.0])
+        light_direction /= np.linalg.norm(light_direction)
+        # dot the values together to get the luminace
+        level = np.dot(nnorm, light_direction)
+        level_mod = level*0.9 + 0.05
+        if level_mod < 0: level_mod = 0 # BUG fix this
+        white = np.array([255, 255, 255])
+        color = tuple(level_mod*white)
+        line_w = 0
 
+        # project triangle into 2d space
         p_tri = transform_tri(ttri, PROJECTION_MATRIX)
         for i in range(p_tri.shape[0]):
             for j in range(p_tri.shape[1]):
@@ -122,7 +145,7 @@ def draw(game):
             p_tri[i][1] *= 0.5 * SCRNH
  
 
-        draw_triangle(p_tri, game["screen"])
+        draw_triangle(p_tri, game["screen"], color=color, width=line_w)
 
 
     pg.display.flip()
