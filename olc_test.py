@@ -107,13 +107,18 @@ def draw(game):
         [np.sin(ztheta),  np.cos(ztheta), 0],
         [            0,                0, 1],
     ])
-
-    for tri in game["meshcube"]:
+    
+    new_mesh = game["meshcube"].copy()
+    for i, tri in enumerate(game["meshcube"]):
         # rotation transform
         tri = tri @ x_rot
         tri = tri @ y_rot
         tri = tri @ z_rot
-        # translation transform
+        new_mesh[i][:] = tri
+    
+    new_mesh = np.array(sorted(new_mesh, key=lambda x: sum(y[2] for y in x)/3, reverse=True))
+    for tri in new_mesh:
+        # translation transform    
         ttri = tri.copy()
         for i in range(ttri.shape[0]):
             ttri[i][2] += 10.0
