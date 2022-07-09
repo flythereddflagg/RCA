@@ -41,7 +41,7 @@ WSLACK              = CENTERX - CAMERASLACK
 DIRECTIONS      = list(range(4))
 N,E,S,W         = DIRECTIONS
 DIRECTION_DICT  = {"north": N, "east" : E, "south" : S, "west" : W}
-INV_DIR_DICT     = {val:key for key, val in DIRECTION_DICT.items()}
+INV_DIR_DICT    = {val:key for key, val in DIRECTION_DICT.items()}
 
 # colors
 BLACK           = (0,0,0)
@@ -62,8 +62,16 @@ KEY_MAPPING = {
     pg.K_x     : DO_B,
 }
 
+
+def gen_repeat(iter_):
+    while True:
+        for thing in iter_:
+            yield thing
+
+
 class DictObj(dict):
     """
+    Lets an object be treated like a dictionary.
     ******NOTICE***************
     optimize.py module by Travis E. Oliphant
     
@@ -92,7 +100,11 @@ class DictObj(dict):
     def __dir__(self):
         return list(self.keys())
 
+
 def get_data(path):
+    """
+    Maps all assets and data files to a large state object.
+    """
     path_ = path.replace("\\", "/")
     path_lst = path.split("/")
     path_len = len(path_lst)
@@ -334,6 +346,12 @@ def reset_camera(game):
                     break
         
 
+def animate_sprite(sprite, animation=None):
+    if animation is None:
+        animation = "default"
+    sprite.image = next(sprite.animation[animation])
+
+
 def direction_key(game, dr):
     player = game.player.sprites()[0]
     fg = game.foreground
@@ -350,6 +368,7 @@ def direction_key(game, dr):
                 break
 
     # TODO add animation here
+    animate_sprite(sprite, animation)
 
 
 def action1(game):
