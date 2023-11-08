@@ -15,11 +15,11 @@ class GameState(DictObj):
         # TODO organize groups
         # TODO load game from YAML
         
-        # self.player = Player()
-        # self.player.rect.x = self.CENTERX
-        # self.player.rect.y = self.CENTERY
-        # self.groups.append(pg.sprite.Group())
-        # self.groups[-1].add(self.player)
+        self.player = Player()
+        self.player.rect.x = self.CENTERX
+        self.player.rect.y = self.CENTERY
+        self.groups.append(pg.sprite.Group())
+        self.groups[-1].add(self.player)
     
     def logic(self, game_input):
         # run all game logic here
