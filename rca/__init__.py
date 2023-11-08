@@ -7,13 +7,14 @@ the game running.
 import pygame as pg
 import yaml
 from .game_state import GameState
+from .dict_obj import DictObj
 
 BLACK = (0,0,0)
 
 def init_game(data_path):
     pg.init()
     controllers = []
-
+    
     # detect and load controllers
     for i in range(0, pg.joystick.get_count()):
         controllers.append(pg.joystick.Joystick(i))
@@ -22,20 +23,23 @@ def init_game(data_path):
         print(f"{controllers[-1].get_numbuttons()} buttons detected")
         print(f"{controllers[-1].get_numhats()} joysticks detected")
 
-
+    # read_init_data
     with open(data_path) as f:
         raw_yaml = f.read()
 
-    yaml_data = yaml.load(raw_yaml, Loader=yaml.Loader)
-    game = GameState(**yaml_data)
+    init_data = DictObj(**yaml.load(raw_yaml, Loader=yaml.Loader))
+    # set screen size
+    screen = pg.display.set_mode(
+        [init_data.SCREENWIDTH, init_data.SCREENHEIGHT]
+    )
+    # intialize game
+    game = GameState(**init_data)
     game.clock = pg.time.Clock()
-    game.screen = pg.display.set_mode(game.SCREENSIZE)
+    game.screen = screen
     game.controllers = controllers
     game.INV_KEY_BINDINGS = {
         item:key for key, item in game.KEY_BINDINGS.items()
     }
-
-    print(game.KEY_BINDINGS)
 
     return game
 
@@ -46,7 +50,6 @@ def run_game(game):
 
     while game.running:
         game_input = get_input(game)
-        if game_input: print(game_input)
         game.logic(game_input)
         draw_frame(game)
         
@@ -74,7 +77,6 @@ def get_input(game):
         for i, pressed in enumerate(pg.key.get_pressed()) 
         if (pressed and i in valid_keys)
     ]
-    # if pressed_keys: print(pressed_keys)
 
     if game.KEY_BINDINGS['FORCE_QUIT'] in pressed_keys: return ['QUIT']
 
