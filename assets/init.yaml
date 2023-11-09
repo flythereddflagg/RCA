@@ -29,3 +29,15 @@ KEY_BINDINGS:
   RIGHT: 79
   BUTTON_1: 27
   BUTTON_2: 29
+
+
+# Set up all sprite groups
+SPRITE_GROUPS:
+  - background   # background tiles
+  - foreground   # non-interacting block
+  - trigger      # non-moving sprites that interact
+  - player       # sprites you can control             
+  - friend       # moving friendly sprites
+  - foe          # enemies
+  - hud          # HUD (health, money etc.)
+  - misc         # other (dialog boxes etc.)

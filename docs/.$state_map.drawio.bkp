@@ -1,9 +1,38 @@
-<mxfile host="Electron" modified="2023-11-05T02:33:17.608Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.3 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="AXIIORNt7Lc2iA9RzM0Z" version="22.0.3" type="device">
+<mxfile host="Electron" modified="2023-11-05T05:15:42.256Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.3 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="Gk45F50YvWAbk8nZZ37s" version="22.0.3" type="device">
   <diagram id="nt2FqM-ZqH1bGFiQBt51" name="Page-1">
     <mxGraphModel dx="1418" dy="828" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="0t4l3zZa5UsUITrTezZo-1" value="&lt;b&gt;main.py&lt;/b&gt;&lt;br&gt;This starts the game and provides a bunch of init settings to the game" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="50" y="60" width="170" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="0t4l3zZa5UsUITrTezZo-2" value="GameState" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="570" y="210" width="230" height="294" as="geometry">
+            <mxRectangle x="210" y="280" width="100" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0t4l3zZa5UsUITrTezZo-3" value="Basically just holds the entire gamestate by keeping track of the init settings, sprites and sprite_groups, and any other data that comprise the current state of the game. A game may have multiple game_states in play based on whether you are in game or in a loading screen etc.&lt;br&gt;+ constants: obj_dict&lt;br&gt;+ sprites: sprite_group&lt;br&gt;+ sprite_group1: sprite_group&lt;br&gt;+ sprite_group2: sprite_group&lt;br&gt;...&lt;br&gt;+ sprite_groupn: sprite_group" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="0t4l3zZa5UsUITrTezZo-2">
+          <mxGeometry y="26" width="230" height="234" as="geometry" />
+        </mxCell>
+        <mxCell id="0t4l3zZa5UsUITrTezZo-4" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="0t4l3zZa5UsUITrTezZo-2">
+          <mxGeometry y="260" width="230" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="0t4l3zZa5UsUITrTezZo-5" value="+ method(type): type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="0t4l3zZa5UsUITrTezZo-2">
+          <mxGeometry y="268" width="230" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="0t4l3zZa5UsUITrTezZo-6" value="Engine" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="180" y="222" width="200" height="270" as="geometry" />
+        </mxCell>
+        <mxCell id="0t4l3zZa5UsUITrTezZo-7" value="Drives the game based on the init settings and a provided game.&lt;br&gt;Does three things to drive it. (REPL) but instead of print it draws.&lt;br&gt;&lt;br&gt;+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="0t4l3zZa5UsUITrTezZo-6">
+          <mxGeometry y="26" width="200" height="124" as="geometry" />
+        </mxCell>
+        <mxCell id="0t4l3zZa5UsUITrTezZo-8" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="0t4l3zZa5UsUITrTezZo-6">
+          <mxGeometry y="150" width="200" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="0t4l3zZa5UsUITrTezZo-9" value="+ run_game(type): type&lt;br&gt;+ get_input()&lt;br&gt;+ process_game(input)&lt;br&gt;+ draw_frame()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="0t4l3zZa5UsUITrTezZo-6">
+          <mxGeometry y="158" width="200" height="112" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
