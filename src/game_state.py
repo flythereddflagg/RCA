@@ -1,6 +1,6 @@
 import pygame as pg
 
-import .sprite as sprites
+import src.sprite as sprites
 from .dict_obj import DictObj
 
 class GameState(DictObj):
