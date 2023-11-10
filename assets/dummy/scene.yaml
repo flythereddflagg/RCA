@@ -1,0 +1,19 @@
+background:
+  - type: "Backdrop"
+    asset_path: "./assets/dummy/background.png"
+    startx: -10
+    starty: -10
+
+# data for the foreground
+foreground:
+  - type: "Bedrock"
+    asset_path: "./assets/dummy/foreground.png"
+    startx: "match_bg" # match the background
+    starty: "match_bg"
+
+player:
+  - type: "Character"
+    asset_path: "./assets/dummy/character.png"
+    startx: 'centerx'
+    starty: 'centery'
+

@@ -40,7 +40,7 @@ def init_game(data_path):
     game.INV_KEY_BINDINGS = {
         item:key for key, item in game.KEY_BINDINGS.items()
     }
-
+    game.load_scene(game.default_scene)
     return game
 
 

@@ -1,10 +1,10 @@
 # Screen Constants 
 # Frame rate ( in Frames / second)
 FPS: 30 
-# SCREENWIDTH: 1300
-# SCREENHEIGHT: 768
-SCREENWIDTH: 800
-SCREENHEIGHT: 600
+SCREENWIDTH: 1300
+SCREENHEIGHT: 768
+# SCREENWIDTH: 800
+# SCREENHEIGHT: 600
 
 # amount to scale everything
 SCALE: 1
@@ -41,3 +41,5 @@ SPRITE_GROUPS:
   - foe          # enemies
   - hud          # HUD (health, money etc.)
   - misc         # other (dialog boxes etc.)
+
+default_scene: "./assets/dummy/scene.yaml"
