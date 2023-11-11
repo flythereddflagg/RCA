@@ -12,8 +12,13 @@ foreground:
     starty: "match_bg"
 
 player:
-  - type: "Character"
+  - type: "Player"
     asset_path: "./assets/dummy/character.png"
     startx: 'centerx'
     starty: 'centery'
 
+hud:
+  - type: "Decal"
+    asset_path: "./assets/dummy/hud_element.png"
+    startx: 'centerx'
+    starty: 'centery'

@@ -1,9 +1,13 @@
 import pygame as pg
 import yaml
 
-import src.sprite as sprite
 from .dict_obj import DictObj
+from .sprite import SPRITE_MAP
 from .camera import Camera
+from .player import Player
+
+CLASS_MAP = SPRITE_MAP.copy()
+CLASS_MAP['Player'] = Player
 
 
 class GameState(DictObj):
@@ -14,7 +18,6 @@ class GameState(DictObj):
         # x and y coordinates for the center of the screen
         self.CENTERX = self.SCREENWIDTH  // 2 
         self.CENTERY = self.SCREENHEIGHT // 2
-        self.camera = Camera(self)
         # TODO load game from YAML
         self.groups = [
             pg.sprite.Group() 
@@ -24,6 +27,7 @@ class GameState(DictObj):
             group:i for i, group in enumerate(self.SPRITE_GROUPS)
         }
         self.current_scene = None
+        self.paused = False
     
     def logic(self, game_input):
         # run all game logic here
@@ -46,7 +50,10 @@ class GameState(DictObj):
 
     
     def apply_action(self, action):
-        print(action + "!")
+        if not self.paused:
+            player = self.groups[self.group_enum['player']].sprites()[0]
+            player.apply_action(action)
+
 
 
     def load_scene(self, yaml_path):
@@ -64,6 +71,10 @@ class GameState(DictObj):
             for sprite_dict in self.current_scene[name]:
                 sprite_dict['game'] = self
                 sprite_type = sprite_dict["type"]
-                sprite_instance = sprite.SPRITE_MAP[sprite_type](**sprite_dict)
+                sprite_instance = CLASS_MAP[sprite_type](**sprite_dict)
                 group.add(sprite_instance)
+
+        self.camera = Camera(self)
+        self.camera.zoom(2)
+        
 
