@@ -7,7 +7,7 @@ SCREENHEIGHT: 768
 # SCREENHEIGHT: 600
 
 # amount to scale everything
-INIT_ZOOM: 2
+INIT_ZOOM: 1
 
 # Animation Constants
 # player speed in pixels / second

@@ -22,20 +22,26 @@ class Player(Character):
             case _:
                 print(action + "! (no response)")
         
-        # move rejection TODO this is buggy and slow. Need to optimize.
-        for sprite in self.game.groups\
-            [self.game.group_enum['foreground']]:
-            while pg.sprite.collide_mask(self, sprite) is not None:
-                # means it collided
-                match action:
-                    case "UP":
-                        self.rect.y += self.game.INIT_ZOOM
-                    case "DOWN":
-                        self.rect.y -= self.game.INIT_ZOOM
-                    case "LEFT":
-                        self.rect.x += self.game.INIT_ZOOM
-                    case "RIGHT":
-                        self.rect.x -= self.game.INIT_ZOOM
-                    case _:
-                        break
+        # move rejection for foreground
+        foreground = self.game.groups\
+            [self.game.group_enum['foreground']]
+
+        while pg.sprite.spritecollide(
+            self, foreground,
+            False,
+            pg.sprite.collide_mask
+        ):
+            # means it collided
+            print(action, "rejected")
+            match action:
+                case "UP":
+                    self.rect.y += self.game.INIT_ZOOM*10
+                case "DOWN":
+                    self.rect.y -= self.game.INIT_ZOOM*10
+                case "LEFT":
+                    self.rect.x += self.game.INIT_ZOOM*10
+                case "RIGHT":
+                    self.rect.x -= self.game.INIT_ZOOM*10
+                case _:
+                    break
 
