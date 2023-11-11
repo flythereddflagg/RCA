@@ -9,6 +9,20 @@ SCREENHEIGHT: 768
 # amount to scale everything
 INIT_ZOOM: 1
 
+UNIT_VECTORS:
+  UP: 
+    - 0 
+    - -1
+  RIGHT:
+    - 1 
+    - 0
+  DOWN:
+    - 0
+    - 1
+  LEFT:
+    - -1 
+    - 0
+
 # Animation Constants
 # player speed in pixels / second
 PLAYERPEED: 300

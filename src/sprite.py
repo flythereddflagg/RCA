@@ -81,6 +81,12 @@ class Character(Trigger):
     def update(self):
         pass
 
+    def move(self, direction, distance):
+        addx, addy = [d * distance for d in direction]
+        self.rect.x += addx 
+        self.rect.y += addy
+
+
 SPRITE_MAP = DictObj(**{
     "BaseSprite" : BaseSprite,
     "Backdrop"   : Backdrop,
