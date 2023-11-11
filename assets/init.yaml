@@ -7,11 +7,11 @@ SCREENHEIGHT: 768
 # SCREENHEIGHT: 600
 
 # amount to scale everything
-SCALE: 1
+INIT_ZOOM: 2
 
 # Animation Constants
 # player speed in pixels / second
-PLAYERPEEDTIME: 300
+PLAYERPEED: 300
 
 # pixels before camera moves instead of player
 CAMERASLACK: 100

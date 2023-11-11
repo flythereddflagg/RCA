@@ -18,6 +18,8 @@ class GameState(DictObj):
         # x and y coordinates for the center of the screen
         self.CENTERX = self.SCREENWIDTH  // 2 
         self.CENTERY = self.SCREENHEIGHT // 2
+
+        self.dist_per_frame = self.PLAYERPEED / self.FPS
         # TODO load game from YAML
         self.groups = [
             pg.sprite.Group() 
@@ -75,6 +77,6 @@ class GameState(DictObj):
                 group.add(sprite_instance)
 
         self.camera = Camera(self)
-        self.camera.zoom(2)
+        self.camera.zoom(self.INIT_ZOOM)
         
 

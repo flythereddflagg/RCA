@@ -30,6 +30,7 @@ class Backdrop(BaseSprite):
     """
     def __init__(self, game, asset_path, **options):
         super().__init__(game, asset_path, **options)
+        self.collision_mask = pg.mask.from_surface(self.image)
     
     def update(self):
         pass
