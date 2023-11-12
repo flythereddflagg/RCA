@@ -23,7 +23,7 @@ class Player(Character):
             self.game.group_enum['foreground']
         ]
 
-        for _ in range(sum(self.image.get_rect().size)):
+        for _ in range(int(self.game.dist_per_frame)*2):
             if not pg.sprite.spritecollide(
                 self, foreground,
                 False,

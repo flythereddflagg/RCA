@@ -82,7 +82,8 @@ class Character(Trigger):
         pass
 
     def move(self, direction, distance):
-        addx, addy = [d * distance for d in direction]
+        xunit, yunit = direction
+        addx, addy = distance * xunit, distance * yunit
         self.rect.x += addx 
         self.rect.y += addy
 
