@@ -35,7 +35,7 @@ class GameState(DictObj):
         # run all game logic here
         # quit overrides everything else
         if "QUIT" in game_input:
-            print("QUIT!")
+            print("Safely ending game...")
             self.running = False
             return
 

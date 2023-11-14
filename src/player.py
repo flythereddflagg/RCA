@@ -4,8 +4,8 @@ from .sprite import Character
 
 
 class Player(Character):
-    def __init__(self, game, asset_path, **options):
-        super().__init__(game, asset_path, **options)
+    def __init__(self, game, asset_path, startx, starty, **options):
+        super().__init__(game, asset_path, startx, starty, **options)
 
     def update(self):
         pass
@@ -23,11 +23,29 @@ class Player(Character):
             self.game.group_enum['foreground']
         ]
 
-        for _ in range(int(self.game.dist_per_frame)*2):
-            if not pg.sprite.spritecollide(
+        if pg.sprite.spritecollide(
                 self, foreground,
                 False,
                 pg.sprite.collide_mask
-            ): break
-            self.move(direction, -1)
+        ):
+            jump_dist = int(self.game.dist_per_frame)
+            while jump_dist:
+                if pg.sprite.spritecollide(
+                    self, foreground,
+                    False,
+                    pg.sprite.collide_mask
+                ): 
+                    self.move(direction, -jump_dist)
+                else:
+                    self.move(direction, jump_dist)
+                
+                jump_dist = jump_dist // 2
+            
+            while pg.sprite.spritecollide(
+                self, foreground,
+                False,
+                pg.sprite.collide_mask
+            ):
+                self.move(direction, -1)
+
 

@@ -1,24 +1,26 @@
 background:
   - type: "Backdrop"
     asset_path: "./assets/dummy/background.png"
-    startx: -10
-    starty: -10
-
+    startx: 0
+    starty: 0
+    # scale: 2
 # data for the foreground
 foreground:
   - type: "Bedrock"
     asset_path: "./assets/dummy/foreground.png"
-    startx: "match_bg" # match the background
-    starty: "match_bg"
+    startx: 0 # match the background
+    starty: 0
+    # scale: 2
 
 player:
   - type: "Player"
     asset_path: "./assets/dummy/character.png"
-    startx: 'centerx'
-    starty: 'centery'
+    startx: 'center'
+    starty: 'center'
+    # scale: 2
 
 hud:
   - type: "Decal"
     asset_path: "./assets/dummy/hud_element.png"
-    startx: 'centerx'
-    starty: 'centery'
+    startx: 0
+    starty: 0
