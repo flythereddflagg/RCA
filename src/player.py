@@ -23,29 +23,13 @@ class Player(Character):
             self.game.group_enum['foreground']
         ]
 
-        if pg.sprite.spritecollide(
+        while pg.sprite.spritecollide(
                 self, foreground,
                 False,
                 pg.sprite.collide_mask
         ):
-            jump_dist = int(self.game.dist_per_frame)
-            while jump_dist:
-                if pg.sprite.spritecollide(
-                    self, foreground,
-                    False,
-                    pg.sprite.collide_mask
-                ): 
-                    self.move(direction, -jump_dist)
-                else:
-                    self.move(direction, jump_dist)
-                
-                jump_dist = jump_dist // 2
-            
-            while pg.sprite.spritecollide(
-                self, foreground,
-                False,
-                pg.sprite.collide_mask
-            ):
-                self.move(direction, -1)
+            self.move(direction, -1)
+
+
 
 

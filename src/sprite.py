@@ -63,7 +63,7 @@ class Bedrock(Backdrop):
     """
     def __init__(self, game, asset_path, startx, starty, **options):
         super().__init__(game, asset_path, startx, starty, **options)
-        self.collision_mask = pg.mask.from_surface(self.image)
+        self.mask = pg.mask.from_surface(self.image)
         background = self.game.groups[
             self.game.group_enum['background']
         ].sprites()[0]
