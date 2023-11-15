@@ -18,15 +18,20 @@ class BaseSprite(pg.sprite.Sprite):
         self.image = pg.image.load(self.asset_path).convert_alpha()
         self.rect = self.image.get_rect()
         if scale is not None:
+            self.scale = scale
             new_size = [dim * scale for dim in self.rect.size]
             self.image = pg.transform.scale(self.image, new_size)
             self.rect = self.image.get_rect()
-            
+        else:
+            self.scale = 1
+
         self.options = options
         if not type(startx) is str:
             self.rect.x = startx
         if not type(starty) is str:
             self.rect.y = starty
+        self.startx = startx
+        self.starty = starty
         
 
     def update(self):
@@ -51,6 +56,7 @@ class Decal(BaseSprite):
     """
     def __init__(self, game, asset_path, startx, starty, **options):
         super().__init__(game, asset_path, startx, starty, **options)
+        
     
     def update(self):
         pass

@@ -1,5 +1,13 @@
 import pygame as pg
 
+def in_and_out():
+    times = 5
+    while True:
+        for i in range(times):
+            yield 1.05
+        
+        for i in range(times):
+            yield 1/1.05
 
 class Camera:
     def __init__(self, game):
@@ -9,6 +17,7 @@ class Camera:
         self.mobile_groups = self.game.group_enum.copy()
         del self.mobile_groups['hud']
         del self.mobile_groups['misc']
+        self.in_and_out = in_and_out()
 
     def update(self):
         curx, cury = self.player.rect.x, self.player.rect.y
@@ -31,13 +40,17 @@ class Camera:
                 sprite.rect.y += movey
 
         # TODO add stopping at world border
+        
 
 
     def zoom(self, scale):
+        # if used continuously, this will break sprites. TODO fix this?
+        
         for group, i in self.mobile_groups.items():
             for sprite in self.game.groups[i]:
                 cur_size = sprite.image.get_rect().size
                 new_size = [dim * scale for dim in cur_size]
                 sprite.image = pg.transform.scale(sprite.image, new_size)
+                sprite.mask = pg.mask.from_surface(sprite.image)
         
             
