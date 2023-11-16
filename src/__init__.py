@@ -46,7 +46,6 @@ def init_game(data_path):
 
 def run_game(game):
     game.running = True
-    game_clock = pg.time.Clock()
 
     while game.running:
         game_input = get_input(game)
