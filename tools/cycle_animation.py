@@ -12,10 +12,7 @@ BLACK = (0,0,0)
 SCREENWIDTH, SCREENHEIGHT = 600, 600
 FPS = 30
 
-def gen_from_list(image_list):
-    while True:
-        for image in image_list:
-            yield image
+
     
 
 class PlayerAnimation(BaseSprite):
@@ -38,20 +35,22 @@ class PlayerAnimation(BaseSprite):
             for i in range(self.n_keyframes)
         ]
         self.key_frame_times = [75 for i in self.key_frames]
-        self.key_frame = gen_from_list(self.key_frames)
-        self.key_frame_time = gen_from_list(self.key_frame_times)
+        self.key_frame = self.gen_from_list(self.key_frames)
+        self.key_frame_time = self.gen_from_list(self.key_frame_times)
         self.frame_time = 0
         self.last_frame_time = 0
-        
     
+    def gen_from_list(self, item_list):
+        while True:
+            for item in item_list:
+                yield item
+        
     def update(self):
         cur_time = pg.time.get_ticks()
         if cur_time -  self.last_frame_time > self.frame_time:
             self.image = next(self.key_frame)
             self.frame_time = next(self.key_frame_time)
             self.last_frame_time = cur_time
-
-
 
 
 
@@ -72,8 +71,8 @@ def init_game(animation_path):
     game.clock = pg.time.Clock()
     game.screen = screen
     player = PlayerAnimation(game, animation_path,
-        SCREENWIDTH // 2 - 16, SCREENHEIGHT // 2 - 16,
-        scale=2
+        20,20,
+        scale=10
     )
     group = pg.sprite.Group()
     group.add(player)
