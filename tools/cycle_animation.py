@@ -12,6 +12,12 @@ BLACK = (0,0,0)
 SCREENWIDTH, SCREENHEIGHT = 600, 600
 FPS = 30
 
+def gen_image(image_list):
+    while True:
+        for image in image_list:
+            yield image
+    
+
 class PlayerAnimation(BaseSprite):
     """
     Non-solid sprite that triggers interaction and moves 
@@ -19,9 +25,23 @@ class PlayerAnimation(BaseSprite):
     """
     def __init__(self, game, asset_path, startx, starty, **options):
         super().__init__(game, asset_path, startx, starty, **options)
+        self.animation_image = self.image
+        animation_image_size_y = self.animation_image.get_rect().size[1]
+        self.key_frame_size = [animation_image_size_y, animation_image_size_y]
+        self.n_keyframes = self.animation_image.get_rect().size[0] // \
+            animation_image_size_y
+        self.key_frames = [
+            self.animation_image.subsurface(
+                [
+                    animation_image_size_y * i, 0
+                ] + self.key_frame_size)
+            for i in range(self.n_keyframes)
+        ]
+        self.key_frame = gen_image(self.key_frames)
+        
     
     def update(self):
-        pass
+        self.image = next(self.key_frame)
 
 
 
@@ -61,7 +81,10 @@ def run_game(game):
         if "QUIT" in game_input: 
             game.running = False
             continue
-        # game.logic(game_input)
+        # animation loop logic
+        for group in game.groups:
+            group.update()
+
         draw_frame(game)
         
         game.clock.tick(FPS)
