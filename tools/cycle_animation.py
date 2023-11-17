@@ -2,8 +2,10 @@
 
 # TODO write the code that will load this!
 import sys
+import math
 import pygame as pg
 import yaml
+
 
 from src.sprite import BaseSprite
 from src.dict_obj import DictObj
@@ -11,9 +13,7 @@ from src.dict_obj import DictObj
 BLACK = (0,0,0)
 SCREENWIDTH, SCREENHEIGHT = 600, 600
 FPS = 30
-
-
-    
+# order is ALWAYS up, right, down, left  
 
 class PlayerAnimation(BaseSprite):
     """
@@ -23,21 +23,40 @@ class PlayerAnimation(BaseSprite):
     def __init__(self, game, asset_path, startx, starty, **options):
         super().__init__(game, asset_path, startx, starty, **options)
         self.animation_image = self.image
-        animation_image_size_y = self.animation_image.get_rect().size[1]
-        self.key_frame_size = [animation_image_size_y, animation_image_size_y]
-        self.n_keyframes = self.animation_image.get_rect().size[0] // \
-            animation_image_size_y
-        self.key_frames = [
-            self.animation_image.subsurface(
-                [
-                    animation_image_size_y * i, 0
-                ] + self.key_frame_size)
-            for i in range(self.n_keyframes)
+        self.key_frame_size = (32, 32)
+        self.n_keyframes = [
+            bg // kf
+            for bg, kf in zip(
+                self.animation_image.get_rect().size,  self.key_frame_size
+            )
         ]
+        # self.key_frames = [
+        #     [
+        #         self.animation_image.subsurface(
+        #             [
+        #                 self.key_frame_size[0] * i, self.key_frame_size[1] * j
+        #             ] + self.key_frame_size)
+        #         for i in range(self.n_keyframes[0])
+        #     ]
+        #     for j in range(self.n_keyframes[1])
+        # ]
+        self.key_frames = [
+            [
+                self.animation_image.subsurface(
+                    [
+                        self.key_frame_size[0] * i, self.key_frame_size[1] * j
+                    ] + self.key_frame_size)
+                for i in range(self.n_keyframes[0])
+            ]
+            for j in range(self.n_keyframes[1])
+        ]
+        # TODO fix this so that it cycles through up down right and left
+        # properly
         self.key_frame_times = [75 for i in self.key_frames]
         self.key_frame = self.gen_from_list(self.key_frames)
         self.key_frame_time = self.gen_from_list(self.key_frame_times)
-        self.frame_time = 0
+        self.frame_time = next(self.key_frame_time)
+        self.image = next(self.key_frame)
         self.last_frame_time = 0
     
     def gen_from_list(self, item_list):
@@ -47,7 +66,7 @@ class PlayerAnimation(BaseSprite):
         
     def update(self):
         cur_time = pg.time.get_ticks()
-        if cur_time -  self.last_frame_time > self.frame_time:
+        for _ in range((cur_time -  self.last_frame_time) // self.frame_time):
             self.image = next(self.key_frame)
             self.frame_time = next(self.key_frame_time)
             self.last_frame_time = cur_time
