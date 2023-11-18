@@ -37,9 +37,6 @@ def init_game(data_path):
     game.clock = pg.time.Clock()
     game.screen = screen
     game.controllers = controllers
-    game.INV_KEY_BINDINGS = {
-        item:key for key, item in game.KEY_BINDINGS.items()
-    }
     game.load_scene(game.default_scene)
     return game
 

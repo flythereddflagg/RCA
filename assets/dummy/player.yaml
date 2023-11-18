@@ -13,7 +13,7 @@ animations:
       - 32
     # this will rotate infinitely so length doesn't matter
     key_frame_times:
-      - 75
+      - 20
 
   
 # scale: 2
