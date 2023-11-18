@@ -20,6 +20,9 @@ class GameState(DictObj):
         self.CENTERY = self.SCREENHEIGHT // 2
 
         self.dist_per_frame = self.PLAYERPEED / self.FPS
+        self.IND_UNIT_VECTORS = {
+            d: i for i, d in enumerate(self.UNIT_VECTORS.keys())
+        }
         # TODO load game from YAML
         self.groups = [
             pg.sprite.Group() 
@@ -30,6 +33,9 @@ class GameState(DictObj):
         }
         self.current_scene = None
         self.paused = False
+        self.INV_KEY_BINDINGS = {
+           item:key for key, item in self.KEY_BINDINGS.items()
+        }
     
     def logic(self, game_input):
         # run all game logic here
@@ -54,8 +60,7 @@ class GameState(DictObj):
     def apply_action(self, action):
         if not self.paused:
             player = self.groups[self.group_enum['player']].sprites()[0]
-            player.apply_action(action)
-
+            player.add_todo(action)
 
 
     def load_scene(self, yaml_path):

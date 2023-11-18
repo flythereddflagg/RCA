@@ -7,8 +7,9 @@ SCREENHEIGHT: 768
 # SCREENHEIGHT: 600
 
 # amount to scale everything
-INIT_ZOOM: 2
+INIT_ZOOM: 1
 
+# order is ALWAYS up, right, down, left or 0, 1, 2, 3
 UNIT_VECTORS:
   UP: 
     - 0 

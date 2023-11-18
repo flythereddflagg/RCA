@@ -1,6 +1,7 @@
 """
 This module contains all the basic sprite classes in the game.
 """
+import yaml
 import pygame as pg
 
 from.dict_obj import DictObj
@@ -11,24 +12,17 @@ class BaseSprite(pg.sprite.Sprite):
     Interface for sprites. Anything that inherits from it must 
     implement the "update()" method or else it throws errors.
     """
-    def __init__(self, game, asset_path, startx, starty, scale=None, **options):
+    def __init__(self, game, asset_path, startx, starty, **options):
         super().__init__()
         if asset_path.endswith(".yaml"):
             with open(asset_path) as f:
                 extra_opts = yaml.load(f.read(), Loader=yaml.Loader)
             options = {**options, **extra_opts}
+            asset_path = options["asset_path"]
         self.game = game # a reference to the game the sprite is in
         self.asset_path = asset_path
         self.image = pg.image.load(self.asset_path).convert_alpha()
         self.rect = self.image.get_rect()
-        if scale is not None:
-            self.scale = scale
-            new_size = [dim * scale for dim in self.rect.size]
-            self.image = pg.transform.scale(self.image, new_size)
-            self.rect = self.image.get_rect()
-        else:
-            self.scale = 1
-
         self.options = options
         if not type(startx) is str:
             self.rect.x = startx
@@ -36,6 +30,17 @@ class BaseSprite(pg.sprite.Sprite):
             self.rect.y = starty
         self.startx = startx
         self.starty = starty
+        # process any optional params
+        if "scale" not in self.options.keys():
+            self.options["scale"] = 1
+        self.set_scale(self.options["scale"])
+
+
+    def set_scale(self, scale):
+        self.scale = scale
+        new_size = [dim * scale for dim in self.rect.size]
+        self.image = pg.transform.scale(self.image, new_size)
+        self.rect = self.image.get_rect()
         
 
     def update(self):

@@ -9,7 +9,7 @@ import yaml
 from .game_state import GameState
 from .dict_obj import DictObj
 
-BLACK = (0,0,0)
+BLACK = (0, 0, 0)
 
 def init_game(data_path):
     pg.init()

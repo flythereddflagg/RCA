@@ -13,7 +13,9 @@ from src.dict_obj import DictObj
 BLACK = (0,0,0)
 SCREENWIDTH, SCREENHEIGHT = 600, 600
 FPS = 30
-# order is ALWAYS up, right, down, left  
+# order is ALWAYS up, right, down, left or 0, 1, 2, 3
+UP, RIGHT, DOWN, LEFT = (i for i in range(4))
+CONSTANT_KEY_TIME = 75
 
 class PlayerAnimation(BaseSprite):
     """
@@ -23,7 +25,8 @@ class PlayerAnimation(BaseSprite):
     def __init__(self, game, asset_path, startx, starty, **options):
         super().__init__(game, asset_path, startx, starty, **options)
         self.animation_image = self.image
-        self.key_frame_size = [32, 32]
+        base_key_frame_size = [32, 32]
+        self.key_frame_size = [i * self.scale for i in base_key_frame_size]
         self.n_keyframes = [
             bg // kf
             for bg, kf in zip(
@@ -41,9 +44,9 @@ class PlayerAnimation(BaseSprite):
             ]
             for j in range(self.n_keyframes[1])
         ]
-        self.key_frames = self.key_frame_groups[3]
+        self.key_frames = self.key_frame_groups[RIGHT]
         # TODO update so that keyframes are updated with input
-        self.key_frame_times = [75 for i in self.key_frames]
+        self.key_frame_times = [CONSTANT_KEY_TIME for i in self.key_frames]
         self.key_frame = self.gen_from_list(self.key_frames)
         self.key_frame_time = self.gen_from_list(self.key_frame_times)
         self.frame_time = next(self.key_frame_time)

@@ -1,10 +1,19 @@
 
-asset_path: "./assets/dummy/character_walking.png"
-key_frame_size: 
-  - 32
-  - 32
-startx: 0
-starty: 0
-# startx: 'center'
-# starty: 'center'
+# this yaml file should have the settings specific to the
+# character but not any one scene
+
+# this is the default asset path
+asset_path: "./assets/dummy/character.png"
+# asset_path: "./assets/dummy/character_walking.png"
+animations:
+  - id: walking
+    asset_path: "./assets/dummy/character_walking.png"
+    key_frame_size: 
+      - 32
+      - 32
+    # this will rotate infinitely so length doesn't matter
+    key_frame_times:
+      - 75
+
+  
 # scale: 2
