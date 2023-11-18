@@ -60,11 +60,9 @@ class GameState(DictObj):
 
     def load_scene(self, yaml_path):
         with open(yaml_path) as f:
-            raw_yaml = f.read()
+            yaml_data = yaml.load(f.read(), Loader=yaml.Loader)
 
-        self.current_scene = DictObj(
-            **yaml.load(raw_yaml, Loader=yaml.Loader)
-        )
+        self.current_scene = DictObj(**yaml_data)
 
         for name, group in zip(self.SPRITE_GROUPS, self.groups):
             group.empty() # clear out all groups

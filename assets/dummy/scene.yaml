@@ -14,12 +14,9 @@ foreground:
 
 player:
   - type: "Player"
-    asset_path: "./assets/dummy/character.png"
-    # startx: 'center'
-    # starty: 'center'
+    asset_path: "./assets/dummy/player.yaml"
     startx: 0
     starty: 0
-    # scale: 2
 
 hud:
   - type: "Decal"

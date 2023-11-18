@@ -23,24 +23,15 @@ class PlayerAnimation(BaseSprite):
     def __init__(self, game, asset_path, startx, starty, **options):
         super().__init__(game, asset_path, startx, starty, **options)
         self.animation_image = self.image
-        self.key_frame_size = (32, 32)
+        self.key_frame_size = [32, 32]
         self.n_keyframes = [
             bg // kf
             for bg, kf in zip(
                 self.animation_image.get_rect().size,  self.key_frame_size
             )
         ]
-        # self.key_frames = [
-        #     [
-        #         self.animation_image.subsurface(
-        #             [
-        #                 self.key_frame_size[0] * i, self.key_frame_size[1] * j
-        #             ] + self.key_frame_size)
-        #         for i in range(self.n_keyframes[0])
-        #     ]
-        #     for j in range(self.n_keyframes[1])
-        # ]
-        self.key_frames = [
+
+        self.key_frame_groups = [
             [
                 self.animation_image.subsurface(
                     [
@@ -50,8 +41,8 @@ class PlayerAnimation(BaseSprite):
             ]
             for j in range(self.n_keyframes[1])
         ]
-        # TODO fix this so that it cycles through up down right and left
-        # properly
+        self.key_frames = self.key_frame_groups[3]
+        # TODO update so that keyframes are updated with input
         self.key_frame_times = [75 for i in self.key_frames]
         self.key_frame = self.gen_from_list(self.key_frames)
         self.key_frame_time = self.gen_from_list(self.key_frame_times)

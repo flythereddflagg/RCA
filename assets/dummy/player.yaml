@@ -1,0 +1,10 @@
+
+asset_path: "./assets/dummy/character_walking.png"
+key_frame_size: 
+  - 32
+  - 32
+startx: 0
+starty: 0
+# startx: 'center'
+# starty: 'center'
+# scale: 2

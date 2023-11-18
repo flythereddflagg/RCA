@@ -13,6 +13,10 @@ class BaseSprite(pg.sprite.Sprite):
     """
     def __init__(self, game, asset_path, startx, starty, scale=None, **options):
         super().__init__()
+        if asset_path.endswith(".yaml"):
+            with open(asset_path) as f:
+                extra_opts = yaml.load(f.read(), Loader=yaml.Loader)
+            options = {**options, **extra_opts}
         self.game = game # a reference to the game the sprite is in
         self.asset_path = asset_path
         self.image = pg.image.load(self.asset_path).convert_alpha()
@@ -104,7 +108,7 @@ class Trigger(Bedrock):
 class Character(Trigger):
     """
     Non-solid sprite that triggers interaction and moves 
-    independently of the camera.
+    independently of the camera. Also can be animated.
     """
     def __init__(self, game, asset_path, startx, starty, **options):
         super().__init__(game, asset_path, startx, starty, **options)
