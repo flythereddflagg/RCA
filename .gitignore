@@ -3,5 +3,7 @@
 **__pycache__
 **.vscode
 **.mscbackup
+# IGNORE THE FOLLOWING FOLDERS
 build/
 dist/
+.pytest_cache/
