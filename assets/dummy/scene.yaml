@@ -1,25 +1,25 @@
 background:
-  - type: "Backdrop"
-    asset_path: "./assets/dummy/background.png"
+  - type: Decal
+    asset_path: ./assets/dummy/background.png
     startx: 0
     starty: 0
     # scale: 2
 # data for the foreground
 foreground:
-  - type: "Bedrock"
-    asset_path: "./assets/dummy/foreground.png"
+  - type: Bedrock
+    asset_path: ./assets/dummy/foreground.png
     startx: 0 # match the background
     starty: 0
     # scale: 2
 
 player:
-  - type: "Player"
-    asset_path: "./assets/dummy/player.yaml"
-    startx: 0
-    starty: 0
+  - type: Player
+    asset_path: ./assets/dummy/player.yaml
+    startx: center
+    starty: 900
 
 hud:
-  - type: "Decal"
-    asset_path: "./assets/dummy/hud_element.png"
+  - type: Decal
+    asset_path: ./assets/dummy/hud_element.png
     startx: 0
     starty: 0

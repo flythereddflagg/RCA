@@ -9,8 +9,8 @@ KEY_FRAME_SIZE = 'key_frame_size'
 KEY_FRAME_TIMES = "key_frame_times"
 
 class Player(Character):
-    def __init__(self, game, asset_path, startx, starty, **options):
-        super().__init__(game, asset_path, startx, starty, **options)
+    def __init__(self, **options):
+        super().__init__(**options)
         self.todo_list = []
         self.direction = (0, 0)
         if ANIMATIONS in self.options.keys():
