@@ -13,38 +13,48 @@ class Player(Character):
         super().__init__(**options)
         self.todo_list = []
         self.direction = (0, 0)
+        self.key_frame_groups = {}
         if ANIMATIONS in self.options.keys():
             self.init_animation()
 
     def init_animation(self):
-        animation_data = self.options[ANIMATIONS][0]
-        # set up animation data
         self.default_image = self.image
-        self.animation_image = pg.image.load(animation_data[ASSET_PATH]).convert_alpha()
-        self.key_frame_size = [
-            i * self.scale for i in animation_data[KEY_FRAME_SIZE]
-        ]
-        self.n_keyframes = [
-            bg // kf for bg, kf in zip(
-                self.animation_image.get_rect().size, self.key_frame_size
-            )
-        ]
-        kf_sizex, kf_sizexy = self.key_frame_size
-        n_keyframesx, n_keyframesy = self.n_keyframes
-        self.key_frame_groups = [
-            [
-                self.animation_image.subsurface(
-                    [kf_sizex * i, kf_sizexy * j] + \
-                    self.key_frame_size
-                ) for i in range(n_keyframesx)
-            ] for j in range(n_keyframesy)
-        ]
-        self.key_frames = self.key_frame_groups[RIGHT]
-        self.key_frame_times = animation_data[KEY_FRAME_TIMES]
-        self.key_frame = self.gen_from_list(self.key_frames)
-        self.key_frame_time = self.gen_from_list(self.key_frame_times)
-        self.frame_time = next(self.key_frame_time)
-        self.image = next(self.key_frame)
+
+        for animation_data in self.options[ANIMATIONS]:
+            # load in each animation for a character 
+            # defined in their yaml data
+            animation_image = pg.image.load(
+                animation_data[ASSET_PATH]
+            ).convert_alpha()
+            new_size = [
+                dim * self.scale 
+                for dim in animation_image.get_rect().size
+            ]
+            animation_image = pg.transform.scale(animation_image, new_size)
+            # get the size of each animation frame
+            kf_sizex, kf_sizey = [
+                i * self.scale for i in animation_data[KEY_FRAME_SIZE]
+            ]
+            # calclulate the number of frames in the image
+            n_keyframesx, n_keyframesy = [
+                bg // kf for bg, kf in zip(
+                    animation_image.get_rect().size, [kf_sizex, kf_sizey]
+                )
+            ]
+            # construct a frame group (matrix of sub-images)
+            key_frame_group = [[
+                    animation_image.subsurface(
+                        [kf_sizex * i, kf_sizey * j, kf_sizex, kf_sizey]
+                    ) for i in range(n_keyframesx)
+                ] for j in range(n_keyframesy)
+            ]
+
+            self.key_frame_groups[animation_data['id']] = key_frame_group
+
+        # select the first group TODO make it so this can change
+        self.key_frame_group = self.key_frame_groups["walking"] 
+        # init dummy default values.
+        self.frame_time = 1
         self.last_frame_time = 0
         self.last_direction = None
 
@@ -54,9 +64,9 @@ class Player(Character):
             
         if not self.todo_list:
             self.image = self.default_image
-            self.direction = None
             return
-        self.animate()
+        if self.key_frame_groups:
+            self.animate()
 
         # reset the todo_list
         self.todo_list = []
@@ -70,7 +80,7 @@ class Player(Character):
         animation_data = self.options[ANIMATIONS][0]
         if self.direction != self.last_direction:
             self.last_direction = self.direction
-            self.key_frames = self.key_frame_groups[self.direction]
+            self.key_frames = self.key_frame_group[self.direction]
             self.key_frame_times = animation_data[KEY_FRAME_TIMES]
             self.key_frame = self.gen_from_list(self.key_frames)
             self.key_frame_time = self.gen_from_list(self.key_frame_times)

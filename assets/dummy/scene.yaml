@@ -1,6 +1,13 @@
+hud:
+  - type: Decal
+    asset_path: ./assets/dummy/hud_element.png
+    startx: 0
+    starty: 0
+
 background:
   - type: Decal
     asset_path: ./assets/dummy/background.png
+    # asset_path: ./assets/dummy/null.png
     startx: 0
     starty: 0
     # scale: 2
@@ -17,9 +24,3 @@ player:
     asset_path: ./assets/dummy/player.yaml
     startx: center
     starty: 900
-
-hud:
-  - type: Decal
-    asset_path: ./assets/dummy/hud_element.png
-    startx: 0
-    starty: 0

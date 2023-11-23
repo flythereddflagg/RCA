@@ -1,69 +1,41 @@
-# This file will animate a sprite with a convention I will come up with.
+# This file will animate a sprite
 
-# TODO write the code that will load this!
 import sys
 import math
 import pygame as pg
 import yaml
 
-
-from src.sprite import BaseSprite
+from src.player import Player
+from src.sprite import Decal
 from src.dict_obj import DictObj
 
-BLACK = (0,0,0)
+BLACK = (255,255,255)
 SCREENWIDTH, SCREENHEIGHT = 600, 600
 FPS = 30
 # order is ALWAYS up, right, down, left or 0, 1, 2, 3
 UP, RIGHT, DOWN, LEFT = (i for i in range(4))
 CONSTANT_KEY_TIME = 75
+ANIMATION_DIRECTION = "UP"
 
-class PlayerAnimation(BaseSprite):
+UNIT_VECTORS = {
+    "UP": (0,1),
+    "RIGHT": (1,0),
+    "DOWN": (0,-1),
+    "LEFT": (-1,0),
+}
+DIST_PER_FRAME = 0
+
+class PlayerAnimation(Player):
     """
     Non-solid sprite that triggers interaction and moves 
     independently of the camera.
     """
-    def __init__(self, game, asset_path, startx, starty, **options):
-        super().__init__(game, asset_path, startx, starty, **options)
-        self.animation_image = self.image
-        base_key_frame_size = [32, 32]
-        self.key_frame_size = [i * self.scale for i in base_key_frame_size]
-        self.n_keyframes = [
-            bg // kf
-            for bg, kf in zip(
-                self.animation_image.get_rect().size,  self.key_frame_size
-            )
-        ]
-
-        self.key_frame_groups = [
-            [
-                self.animation_image.subsurface(
-                    [
-                        self.key_frame_size[0] * i, self.key_frame_size[1] * j
-                    ] + self.key_frame_size)
-                for i in range(self.n_keyframes[0])
-            ]
-            for j in range(self.n_keyframes[1])
-        ]
-        self.key_frames = self.key_frame_groups[RIGHT]
-        # TODO update so that keyframes are updated with input
-        self.key_frame_times = [CONSTANT_KEY_TIME for i in self.key_frames]
-        self.key_frame = self.gen_from_list(self.key_frames)
-        self.key_frame_time = self.gen_from_list(self.key_frame_times)
-        self.frame_time = next(self.key_frame_time)
-        self.image = next(self.key_frame)
-        self.last_frame_time = 0
-    
-    def gen_from_list(self, item_list):
-        while True:
-            for item in item_list:
-                yield item
+    def __init__(self, **options):
+        super().__init__(**options)
         
     def update(self):
-        cur_time = pg.time.get_ticks()
-        for _ in range((cur_time -  self.last_frame_time) // self.frame_time):
-            self.image = next(self.key_frame)
-            self.frame_time = next(self.key_frame_time)
-            self.last_frame_time = cur_time
+        self.add_todo(ANIMATION_DIRECTION)
+        super().update()
 
 
 
@@ -83,13 +55,28 @@ def init_game(animation_path):
     )
     game.clock = pg.time.Clock()
     game.screen = screen
-    player = PlayerAnimation(game, animation_path,
-        20,20,
+    game.groups = []
+    game.UNIT_VECTORS = UNIT_VECTORS
+    game.dist_per_frame = DIST_PER_FRAME
+    game.IND_UNIT_VECTORS = {
+            d: i for i, d in enumerate(game.UNIT_VECTORS.keys())
+        }
+    game.group_enum = { "background": 0, "foreground": 1, 'player': 2}
+    bg = Decal(game=game, asset_path="./assets/dummy/null.png",
+        startx=0,starty=0)
+    group = pg.sprite.Group()
+    group.add(bg)
+    game.groups.append(group)
+    game.groups.append(pg.sprite.Group()) # foreground
+    player = PlayerAnimation(
+        game=game, asset_path=animation_path,
+        startx=20,starty=20,
         scale=10
     )
     group = pg.sprite.Group()
     group.add(player)
-    game.groups = [group]
+    game.groups.append(group)
+        
     return game
 
 

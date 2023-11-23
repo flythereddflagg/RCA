@@ -16,14 +16,14 @@ class BaseSprite(pg.sprite.Sprite):
         raise NotImplementedError("update_function has not been overriden.")
 
 
-
 class Decal(BaseSprite):
     """
     Simple Sprite that accepts basic input.
     Backgrounds and other non-interacting sprites
-    should use this class.
+    should use this class. Has an absolute initial reference.
     """
     requirements = [
+        "game",
         "asset_path",
         "startx",
         "starty",
@@ -44,8 +44,7 @@ class Decal(BaseSprite):
         self.rect = self.image.get_rect()
         self.startx = options["startx"]
         self.starty = options["starty"]
-        self.options = options
-
+        self.options = options # make this a dictobj
 
         # process any optional params
         if "scale" not in self.options.keys():
@@ -67,7 +66,7 @@ class Decal(BaseSprite):
 class Bedrock(Decal):
     """
     Sprite that is solid and cannot be walked through but otherwise
-    does not interact.
+    does not interact. Anchors itself to the background.
     """
     def __init__(self, **options):
         super().__init__(**options)
@@ -123,7 +122,6 @@ class Character(Trigger):
 
 
 SPRITE_MAP = DictObj(**{
-    "BaseSprite" : BaseSprite,
     "Decal"      : Decal,
     "Bedrock"    : Bedrock,
     "Trigger"    : Trigger,
