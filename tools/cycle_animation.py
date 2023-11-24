@@ -16,6 +16,7 @@ FPS = 30
 UP, RIGHT, DOWN, LEFT = (i for i in range(4))
 CONSTANT_KEY_TIME = 75
 ANIMATION_DIRECTION = "UP"
+ANIMATION_SELECTION = "sword swing"
 
 UNIT_VECTORS = {
     "UP": (0,1),
@@ -32,6 +33,7 @@ class PlayerAnimation(Player):
     """
     def __init__(self, **options):
         super().__init__(**options)
+        self.key_frame_group = self.key_frame_groups[ANIMATION_SELECTION] 
         
     def update(self):
         self.add_todo(ANIMATION_DIRECTION)
