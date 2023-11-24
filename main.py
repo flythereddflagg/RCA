@@ -14,3 +14,4 @@ if __name__ == "__main__":
 # TODO make a trigger that transfers to the next scene
 # TODO rewrite UML for updated data structure SCHEME
 # TODO write down character and enemy ideas
+# TODO make meaningful TESTS
