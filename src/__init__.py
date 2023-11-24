@@ -30,7 +30,7 @@ def init_game(data_path):
     init_data = DictObj(**yaml.load(raw_yaml, Loader=yaml.Loader))
     # set screen size
     screen = pg.display.set_mode(
-        [init_data.SCREENWIDTH, init_data.SCREENHEIGHT]
+        [init_data.SCREENWIDTH, init_data.SCREENHEIGHT], pg.RESIZABLE
     )
     # intialize game
     game = GameState(**init_data)

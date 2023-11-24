@@ -51,7 +51,8 @@ class Player(Character):
 
             self.key_frame_groups[animation_data['id']] = key_frame_group
 
-        # select the first group TODO make it so this can change
+        # walking group  
+        # TODO: make it so the group can change  
         self.key_frame_group = self.key_frame_groups["walking"] 
         # init dummy default values.
         self.frame_time = 1

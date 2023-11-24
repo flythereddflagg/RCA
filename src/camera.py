@@ -40,10 +40,12 @@ class Camera:
         to avoid seeing the void at the world border.
         """
         # check if world border is visible then set to screen border
+        old_movex, old_movey =  movex, movey
         screen_w, screen_h = pg.display.get_surface().get_size()
         background = self.game.groups[
             self.game.group_enum['background']
         ].sprites()[0]
+
         # in the x direction
         if (background.rect.left + movex > 0 or\
             background.rect.right + movex < screen_w
@@ -59,11 +61,16 @@ class Camera:
                 if background.rect.top + movey > 0\
                 else screen_h - background.rect.bottom
         
+        # if the background is too small for the screen, 
+        # turn off stopping at border
+        if background.rect.size[0] < screen_w: movex = old_movex
+        if background.rect.size[1] < screen_h: movey = old_movey
+
         return movex, movey
 
 
     def zoom(self, scale):
-        # if used continuously, this will break sprites. TODO fix this?
+        # FIXME: if used continuously, this will break sprites. 
         
         for group, i in self.mobile_groups.items():
             for sprite in self.game.groups[i]:
