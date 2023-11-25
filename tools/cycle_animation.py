@@ -33,7 +33,8 @@ class PlayerAnimation(Player):
     """
     def __init__(self, **options):
         super().__init__(**options)
-        self.key_frame_group = self.key_frame_groups[ANIMATION_SELECTION] 
+        self.key_frame_group = self.key_frame_groups[ANIMATION_SELECTION]
+        self.animate_data = self.animation_data[ANIMATION_SELECTION]
         
     def update(self):
         self.add_todo(ANIMATION_DIRECTION)
@@ -127,3 +128,4 @@ if __name__ == "__main__":
 
 # test this with: 
 # python -m tools.cycle_animation ./assets/dummy/character_walking.png
+# FIXME: this script is broken.

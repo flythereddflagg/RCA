@@ -46,7 +46,7 @@ class GameState(DictObj):
 
         # apply all the input
         for action in game_input:
-            self.apply_action(action)
+            self.process_inputs(action)
         
         # update all sprites
         for group in self.groups:
@@ -56,7 +56,8 @@ class GameState(DictObj):
         self.camera.update()
 
     
-    def apply_action(self, action):
+    def process_inputs(self, action):
+        # TODO add more to this so that other characters move and act
         if not self.paused:
             player = self.groups[self.group_enum['player']].sprites()[0]
             player.add_todo(action)

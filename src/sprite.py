@@ -21,6 +21,7 @@ class Decal(BaseSprite):
     Simple Sprite that accepts basic input.
     Backgrounds and other non-interacting sprites
     should use this class. Has an absolute initial reference.
+    Moves with the camera.
     """
     requirements = [
         "game",
@@ -63,10 +64,9 @@ class Decal(BaseSprite):
         pass
 
 
-class Bedrock(Decal):
+class Block(Decal):
     """
-    Sprite that is solid and cannot be walked through but otherwise
-    does not interact. Anchors itself to the background.
+    Same as Decal and anchors itself to the background.
     """
     def __init__(self, **options):
         super().__init__(**options)
@@ -82,38 +82,18 @@ class Bedrock(Decal):
             self.rect.x = bg_map[self.startx][0]
         else:    
             self.rect.x = background.rect.x + self.startx
+
         if self.starty in bg_map.keys():
             self.rect.y = bg_map[self.starty][1]
         else:
             self.rect.y = background.rect.y + self.starty
 
 
-    def update(self):
-        pass
-
-
-class Trigger(Bedrock):
-    """
-    Sprite that can be walked through but triggers an interaction.
-    """
-    def __init__(self, **options):
-        super().__init__(**options)
-    
-    def update(self):
-        pass
-
-
-class Character(Trigger):
+class Character(Block):
     """
     Non-solid sprite that triggers interaction and moves 
     independently of the camera. Also can be animated.
     """
-    def __init__(self, **options):
-        super().__init__(**options)
-    
-    def update(self):
-        pass
-
     def move(self, direction, distance):
         xunit, yunit = direction
         addx, addy = distance * xunit, distance * yunit
@@ -123,7 +103,6 @@ class Character(Trigger):
 
 SPRITE_MAP = DictObj(**{
     "Decal"      : Decal,
-    "Bedrock"    : Bedrock,
-    "Trigger"    : Trigger,
+    "Block"      : Block,
     "Character"  : Character
 })

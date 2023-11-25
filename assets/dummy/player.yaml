@@ -8,6 +8,7 @@ asset_path: "./assets/dummy/character.png"
 animations:
   - id: walking
     asset_path: "./assets/dummy/character_walking.png"
+    repeat: true
     key_frame_size: 
       - 32
       - 32
@@ -16,6 +17,7 @@ animations:
       - 20
     
   - id: sword swing
+    repeat: false
     asset_path: "./assets/dummy/sword.png"
     key_frame_size: 
       - 56
@@ -23,7 +25,4 @@ animations:
     # this will rotate infinitely so length doesn't matter
     key_frame_times:
       - 250
-    # FIXME: this does not have any effect on the speed
 
-  
-# scale: 2

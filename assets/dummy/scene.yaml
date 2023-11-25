@@ -13,7 +13,7 @@ background:
     # scale: 2
 # data for the foreground
 foreground:
-  - type: Bedrock
+  - type: Block
     asset_path: ./assets/dummy/foreground.png
     startx: 0 # match the background
     starty: 0
@@ -22,5 +22,5 @@ foreground:
 player:
   - type: Player
     asset_path: ./assets/dummy/player.yaml
-    startx: center
+    startx: 800
     starty: 900
