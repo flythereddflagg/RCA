@@ -83,14 +83,19 @@ class Player(Character):
         cur_time = pg.time.get_ticks()
         for _ in range((cur_time -  self.last_frame_time) // self.frame_time):
             self.image = next(self.key_frame, None)
-            self.frame_time = next(self.key_frame_time, None)
+            self.frame_time = next(self.key_frame_time, 1)
             self.last_frame_time = cur_time
+        
+        if self.image is None:
+            self.key_frame = None
+            self.image = self.default_image
 
         # FIXME: THis breaks the game figure out how to stop this once we run out of frames.
     
     
     
     def apply_action(self, action):
+        print(action)
         if action in self.game.UNIT_VECTORS.keys():
             self.animate_data = self.animation['walking']
             direction_vec = self.game.UNIT_VECTORS[action]

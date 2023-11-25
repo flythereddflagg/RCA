@@ -5,6 +5,7 @@ from .dict_obj import DictObj
 from .sprite import SPRITE_MAP
 from .camera import Camera
 from .player import Player
+from .direction import Compass
 
 CLASS_MAP = SPRITE_MAP.copy()
 CLASS_MAP['Player'] = Player
@@ -20,9 +21,7 @@ class GameState(DictObj):
         self.CENTERY = self.SCREENHEIGHT // 2
 
         self.dist_per_frame = self.PLAYERPEED / self.FPS
-        self.IND_UNIT_VECTORS = {
-            d: i for i, d in enumerate(self.UNIT_VECTORS.keys())
-        }
+        self.compass = Compass()
         self.groups = [
             pg.sprite.Group() 
             for i in self.SPRITE_GROUPS
