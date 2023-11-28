@@ -87,10 +87,7 @@ def get_input(game):
 def draw_frame(game):
     
     game.screen.fill(BLACK)
-    for group in game.groups:
-        if group.sprites(): 
-            print(group.sprites()[0].image)
-            
+    for group in game.groups:            
         group.draw(game.screen)
     
     pg.display.flip()

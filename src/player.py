@@ -1,25 +1,47 @@
 import pygame as pg
 from .sprite import Character
+from .compass import Compass
 
-UP, RIGHT, DOWN, LEFT = (i for i in range(4))
 
 ANIMATIONS = 'animations'
 ASSET_PATH = 'asset_path'
-KEY_FRAME_SIZE = 'key_frame_size'
-KEY_FRAME_TIMES = "key_frame_times"
 DEFAULT_ANIMATION = "walking"
 
 class Player(Character):
     def __init__(self, **options):
         super().__init__(**options)
         self.todo_list = []
-        self.direction = (0, 0)
+        self.direction = Compass.DOWN
+        self.last_direction = self.direction
+        self.last_animate = None
         self.key_frame_group = None
         self.animate_data = None
+        self.animation_availible = False
+        self.frame_time = 1
+        self.last_frame_time = 0
+        self.last_direction = None
+        self.key_frame = None
+        self.animation_active = False
         if ANIMATIONS in self.options.keys():
             self.init_animation()
+    
+    def update(self):
+        for action in self.todo_list:
+            self.apply_action(action)
+
+        # animate if applicable
+        if self.animation_availible:
+            self.animate()
+            
+        # TODO add code to set it to stand in whatever direction
+        if not self.todo_list and not self.animation_active:
+            self.image = self.default_image
+
+        # reset the todo_list
+        self.todo_list = []
 
     def init_animation(self):
+        self.animation_availible = True
         self.key_frame_groups = {}
         self.animation = {}
         self.default_image = self.image
@@ -37,7 +59,7 @@ class Player(Character):
             animation_image = pg.transform.scale(animation_image, new_size)
             # get the size of each animation frame
             kf_sizex, kf_sizey = [
-                i * self.scale for i in animation[KEY_FRAME_SIZE]
+                i * self.scale for i in animation['key_frame_size']
             ]
             # calclulate the number of frames in the image
             n_keyframesx, n_keyframesy = [
@@ -58,21 +80,6 @@ class Player(Character):
             
         # TODO: make it so the group can change  
         self.animate_data = self.animation[DEFAULT_ANIMATION]
-        # init dummy default values.
-        self.frame_time = 1
-        self.last_frame_time = 0
-        self.last_direction = None
-
-    def update(self):
-        for action in self.todo_list:
-            self.apply_action(action)
-            
-        # TODO add code to set it to stand in whatever direction
-        if not self.todo_list:
-            self.image = self.default_image
-
-        # reset the todo_list
-        self.todo_list = []
 
 
     def add_todo(self, action):
@@ -80,64 +87,69 @@ class Player(Character):
 
 
     def animate(self):
+        # update animation if changed
+        if self.animate_data['id'] != self.last_animate:
+            self.last_animate = self.animate_data['id']
+            if not self.animate_data['repeat']: self.animation_active=True
+            self.key_frames = self.key_frames = self.animate_data\
+                ["key_frames"][self.direction]
+            self.key_frame_times = self.animate_data['key_frame_times']
+
+        # update direction if it has changed
+        if self.direction != self.last_direction:
+            self.last_direction = self.direction
+            self.key_frames = self.animate_data["key_frames"][self.direction]
+        
+            self.key_frame = self.gen_from_list(self.key_frames, 
+                repeat=self.animate_data['repeat']
+            )
+            self.key_frame_time = self.gen_from_list(self.key_frame_times,
+                repeat=self.animate_data['repeat']
+            )
+
+        # check if a frame should be updated
         cur_time = pg.time.get_ticks()
         for _ in range((cur_time -  self.last_frame_time) // self.frame_time):
             self.image = next(self.key_frame, None)
             self.frame_time = next(self.key_frame_time, 1)
             self.last_frame_time = cur_time
         
-        if self.image is None:
-            self.key_frame = None
-            self.image = self.default_image
+        if self.image is None: # animation is done
+            self.animation_active = False
+            self.animate_data = self.animation[self.last_animate]
+    
 
-        # FIXME: THis breaks the game figure out how to stop this once we run out of frames.
-    
-    
-    
     def apply_action(self, action):
-        print(action)
-        if action in self.game.UNIT_VECTORS.keys():
+        if action in Compass.strings: 
+            # ^ means a direction button is being pressed
+            self.move(Compass.vec_map[action], self.game.dist_per_frame)
+            self.direction = Compass.i_map[action]
             self.animate_data = self.animation['walking']
-            direction_vec = self.game.UNIT_VECTORS[action]
-            self.move(direction_vec, self.game.dist_per_frame)
-            self.last_direction = self.direction
-            self.direction = self.game.IND_UNIT_VECTORS[action]
-            if self.direction != self.last_direction:
-                self.animate_data = self.animation['sword swing']
-                self.last_direction = self.direction
-                self.key_frames = self.animate_data["key_frames"]
-                self.key_frame_times = self.animate_data[KEY_FRAME_TIMES]
-                self.key_frame = self.gen_from_list(self.key_frames)
-                self.key_frame_time = self.gen_from_list(self.key_frame_times)
+            # move rejection for foreground
+            foreground = self.game.groups[
+                self.game.group_enum['foreground']
+            ]
+            while pg.sprite.spritecollide(
+                self, foreground, # collide between player and foreground
+                # do not kill, use the masks for collision
+                False, pg.sprite.collide_mask
+            ):
+                self.move(Compass.vec_map[action], -1) # move back
             
         elif action == "BUTTON_1":
-            print("bUTTON 1")
-            self.animate_data = self.animation['sword swing']
-            self.last_direction = self.direction
-            self.key_frames = self.animate_data["key_frames"]
-            self.key_frame_times = self.animate_data[KEY_FRAME_TIMES]
-            self.key_frame = self.gen_from_list(self.key_frames, repeat=False)
-            self.key_frame_time = self.gen_from_list(self.key_frame_times)
+            if not self.animation_active:
+                self.animate_data = self.animation['sword swing']
+
+        # FIXME: pressing button 1 just makes the walk animation go on forever.
+
 
         else:
             print(action + "! (no response)")
             return
         
-        # animate if applicable
-        if self.key_frame:
-            self.animate()
 
-        # move rejection for foreground
-        foreground = self.game.groups[
-            self.game.group_enum['foreground']
-        ]
 
-        while pg.sprite.spritecollide(
-                self, foreground,
-                False,
-                pg.sprite.collide_mask
-        ):
-            self.move(direction_vec, -1)
+
 
     def gen_from_list(self, item_list, repeat=True):
         while True:

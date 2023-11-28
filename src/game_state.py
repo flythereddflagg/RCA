@@ -5,7 +5,6 @@ from .dict_obj import DictObj
 from .sprite import SPRITE_MAP
 from .camera import Camera
 from .player import Player
-from .direction import Compass
 
 CLASS_MAP = SPRITE_MAP.copy()
 CLASS_MAP['Player'] = Player
@@ -19,9 +18,11 @@ class GameState(DictObj):
         # x and y coordinates for the center of the screen
         self.CENTERX = self.SCREENWIDTH  // 2 
         self.CENTERY = self.SCREENHEIGHT // 2
+        self.INV_KEY_BINDINGS = {
+           item:key for key, item in self.KEY_BINDINGS.items()
+        }
 
         self.dist_per_frame = self.PLAYERPEED / self.FPS
-        self.compass = Compass()
         self.groups = [
             pg.sprite.Group() 
             for i in self.SPRITE_GROUPS
@@ -31,9 +32,7 @@ class GameState(DictObj):
         }
         self.current_scene = None
         self.paused = False
-        self.INV_KEY_BINDINGS = {
-           item:key for key, item in self.KEY_BINDINGS.items()
-        }
+
     
     def logic(self, game_input):
         # run all game logic here

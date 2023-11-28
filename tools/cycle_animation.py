@@ -15,8 +15,9 @@ FPS = 30
 # order is ALWAYS up, right, down, left or 0, 1, 2, 3
 UP, RIGHT, DOWN, LEFT = (i for i in range(4))
 CONSTANT_KEY_TIME = 75
-ANIMATION_DIRECTION = "UP"
+ANIMATION_BUTTON = "BUTTON_1"
 ANIMATION_SELECTION = "sword swing"
+DIRECTION_SELECTION = UP
 
 UNIT_VECTORS = {
     "UP": (0,1),
@@ -33,11 +34,11 @@ class PlayerAnimation(Player):
     """
     def __init__(self, **options):
         super().__init__(**options)
-        self.key_frame_group = self.key_frame_groups[ANIMATION_SELECTION]
-        self.animate_data = self.animation_data[ANIMATION_SELECTION]
+        self.animate_data = self.animation[ANIMATION_SELECTION]
+        self.direction = DIRECTION_SELECTION
         
     def update(self):
-        self.add_todo(ANIMATION_DIRECTION)
+        self.add_todo(ANIMATION_BUTTON)
         super().update()
 
 
