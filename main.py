@@ -2,7 +2,7 @@
 if __name__ == "__main__":
     from src import init_game, run_game
     
-    game = init_game("./assets/init.yaml")
+    game = init_game("./assets/__init__.yaml")
     run_game(game)
 
 

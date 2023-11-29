@@ -5,22 +5,27 @@ import pygame as pg
 class Camera:
     def __init__(self, game):
         self.game = game
-        self.player = self.game.groups\
-            [self.game.group_enum['player']].sprites()[0]
-        self.mobile_groups = self.game.group_enum.copy()
-        del self.mobile_groups['hud']
-        del self.mobile_groups['misc']
+        self.player = self.game.groups['player'].sprites()[0]
+        self.mobile_groups = list(self.game.groups.keys())
+        self.mobile_groups.remove('hud')
+        self.mobile_groups.remove('misc')
 
     def update(self):
+        # get the current center of the screen
+        screen_data = pg.display.Info()
+        centerx = screen_data.current_w // 2
+        centery = screen_data.current_h // 2
+        # get current player position
         curx, cury = self.player.rect.x, self.player.rect.y
+
         # if player is inside the cameraslack box, no need to update.
         movex, movey= 0, 0
-        if abs(curx - self.game.CENTERX) > self.game.CAMERASLACK:
-            e_w = 1 if self.game.CENTERX - curx < 0 else -1
-            movex = self.game.CENTERX - curx + e_w * self.game.CAMERASLACK
-        if abs(cury - self.game.CENTERY) > self.game.CAMERASLACK:
-            n_s = 1 if self.game.CENTERY - cury < 0 else -1
-            movey = self.game.CENTERY - cury + n_s * self.game.CAMERASLACK
+        if abs(curx - centerx) > self.game.CAMERASLACK:
+            e_w = 1 if centerx - curx < 0 else -1
+            movex = centerx - curx + e_w * self.game.CAMERASLACK
+        if abs(cury - centery) > self.game.CAMERASLACK:
+            n_s = 1 if centery - cury < 0 else -1
+            movey = centery - cury + n_s * self.game.CAMERASLACK
         
         movex, movey = self.stop_at_border(movex, movey)
 
@@ -28,8 +33,8 @@ class Camera:
 
         # move everything that is moblie to the correct position
         # this simulates moving the camera
-        for group, i in self.mobile_groups.items():
-            for sprite in self.game.groups[i]:
+        for group in self.mobile_groups:
+            for sprite in self.game.groups[group]:
                 sprite.rect.x += movex
                 sprite.rect.y += movey
         
@@ -42,9 +47,7 @@ class Camera:
         # check if world border is visible then set to screen border
         old_movex, old_movey =  movex, movey
         screen_w, screen_h = pg.display.get_surface().get_size()
-        background = self.game.groups[
-            self.game.group_enum['background']
-        ].sprites()[0]
+        background = self.game.groups['background'].sprites()[0]
 
         # in the x direction
         if (background.rect.left + movex > 0 or\
@@ -72,8 +75,8 @@ class Camera:
     def zoom(self, scale):
         # FIXME: if used continuously, this will break sprites. 
         
-        for group, i in self.mobile_groups.items():
-            for sprite in self.game.groups[i]:
+        for group in self.mobile_groups:
+            for sprite in self.game.groups[group]:
                 cur_size = sprite.image.get_rect().size
                 new_size = [dim * scale for dim in cur_size]
                 sprite.image = pg.transform.scale(sprite.image, new_size)

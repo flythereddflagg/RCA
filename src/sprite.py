@@ -35,11 +35,10 @@ class Decal(BaseSprite):
         super().__init__()
 
         self.asset_path = options["asset_path"]
-        if self.asset_path.endswith(".yaml"):
-            with open(self.asset_path) as f:
-                extra_opts = yaml.load(f.read(), Loader=yaml.Loader)
-            options = {**options, **extra_opts}
         self.game = options["game"] # a reference to the game the sprite is in
+        if self.asset_path.endswith(".yaml"):
+            extra_opts = self.game.load_yaml(self.asset_path)
+            options = {**options, **extra_opts}
         self.asset_path = options["asset_path"]
         self.image = pg.image.load(self.asset_path).convert_alpha()
         self.rect = self.image.get_rect()
@@ -71,9 +70,7 @@ class Block(Decal):
     def __init__(self, **options):
         super().__init__(**options)
         self.mask = pg.mask.from_surface(self.image)
-        background = self.game.groups[
-            self.game.group_enum['background']
-        ].sprites()[0]
+        background = self.game.groups['background'].sprites()[0]
 
         bg_map = {
             'center' : background.rect.center,

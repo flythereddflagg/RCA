@@ -5,11 +5,10 @@ this file is the engine and runs everything needed to keep
 the game running.
 """
 import pygame as pg
-import yaml
 from .game_state import GameState
-from .dict_obj import DictObj
 
 BLACK = (0, 0, 0)
+
 
 def init_game(data_path):
     pg.init()
@@ -24,34 +23,18 @@ def init_game(data_path):
         print(f"{controllers[-1].get_numhats()} joysticks detected")
 
     # read_init_data
-    with open(data_path) as f:
-        raw_yaml = f.read()
-
-    init_data = DictObj(**yaml.load(raw_yaml, Loader=yaml.Loader))
+    init_data = GameState.load_yaml(data_path)
     # set screen size
     screen = pg.display.set_mode(
         [init_data.SCREENWIDTH, init_data.SCREENHEIGHT], pg.RESIZABLE
     )
     # intialize game
     game = GameState(**init_data)
-    game.clock = pg.time.Clock()
     game.screen = screen
+    game.clock = pg.time.Clock()
     game.controllers = controllers
     game.load_scene(game.default_scene)
     return game
-
-
-def run_game(game):
-    game.running = True
-
-    while game.running:
-        game_input = get_input(game)
-        game.logic(game_input)
-        draw_frame(game)
-        
-        game.clock.tick(game.FPS)
-    pg.display.quit()
-    pg.quit()
 
 
 def get_input(game):
@@ -67,27 +50,38 @@ def get_input(game):
 
     # get pressed keyboard keys
     # TODO make the input more sophisticated
-    valid_keys = game.INV_KEY_BINDINGS.keys()
+    valid_keys = [key for key in game.INV_KEY_BIND.keys()]
     pressed_keys = [
         i 
         for i, pressed in enumerate(pg.key.get_pressed()) 
         if (pressed and i in valid_keys)
     ]
 
-    if game.KEY_BINDINGS['FORCE_QUIT'] in pressed_keys: return ['QUIT']
+    if game.KEY_BIND['FORCE_QUIT'] in pressed_keys: return ['QUIT']
 
-    game_input = [
-        game.INV_KEY_BINDINGS[pressed_key]
-        for pressed_key in pressed_keys
-    ]
+    game_input = [game.INV_KEY_BIND[key] for key in pressed_keys]
     
     return game_input
+
+
+def run_game(game):
+    game.running = True
+
+    while game.running:
+        game_input = get_input(game)
+        game.logic(game_input)
+        draw_frame(game)
+        game.clock.tick(game.FPS)
+
+    pg.display.quit()
+    pg.quit()
 
 
 def draw_frame(game):
     
     game.screen.fill(BLACK)
-    for group in game.groups:            
-        group.draw(game.screen)
+    for group_name in game.SPRITE_GROUPS:            
+        game.groups[group_name].draw(game.screen)
     
     pg.display.flip()
+

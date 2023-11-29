@@ -1,6 +1,7 @@
 # Screen Constants 
 # Frame rate ( in Frames / second)
-FPS: 30 
+FPS: 30
+# initial screen size
 SCREENWIDTH: 1300
 SCREENHEIGHT: 768
 # SCREENWIDTH: 800
@@ -9,17 +10,12 @@ SCREENHEIGHT: 768
 # amount to scale everything
 INIT_ZOOM: 1
 
-
-# Animation Constants
-# player speed in pixels / second
-PLAYERPEED: 300
-
 # pixels before camera moves instead of player
 CAMERASLACK: 100
 
 # key bindings for keyboard input
 # integer values correspond to pygame convention
-KEY_BINDINGS:
+KEY_BIND:
   REFRESH: 21
   FORCE_QUIT: 42
   START: 40
