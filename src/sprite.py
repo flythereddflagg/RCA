@@ -94,8 +94,16 @@ class Character(Block):
     def move(self, direction, distance):
         xunit, yunit = direction
         addx, addy = distance * xunit, distance * yunit
-        self.rect.x += addx 
-        self.rect.y += addy
+        self.rect.move_ip(addx, addy)
+
+        # move rejection for foreground
+        while pg.sprite.spritecollide(
+            # collide between player and foreground
+            self, self.game.groups['foreground'], 
+            # do not kill, use the masks for collision
+            False, pg.sprite.collide_mask
+        ):
+            self.rect.move_ip(-xunit, -yunit) # move back 1
 
 
 SPRITE_MAP = DictObj(**{

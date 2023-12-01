@@ -73,7 +73,7 @@ class Player(Character):
             self.apply_action(action)
 
         if not self.todo_list and not self.animation_active:
-            self.animate_data = self.animation['stand']
+            self.animate_data = self.animation[DEFAULT_ANIMATION]
 
         # animate if applicable
         if self.animation_availible:
@@ -95,14 +95,17 @@ class Player(Character):
         self.set_image(next(self.key_frame, None))
         self.frame_time = next(self.key_frame_time)
 
+
     def set_image(self, image):
-        # TODO this works but you can clip through walls. Try to make it so you don't do that.
-        center = self.rect.center 
         self.image = image
-        
         if image is None: return
-        self.rect = image.get_rect()
-        self.rect.center = center
+        # rect = self.image.get_rect()
+        # if self.rect.size != rect.size: return
+        # center = self.rect.center
+        # self.rect = rect
+        # self.mask = pg.mask.from_surface(self.image)
+        # self.rect.center = center
+        # FIXME: The clipping is still here and they are not centered
 
 
     def animate(self):
@@ -122,9 +125,6 @@ class Player(Character):
         
         if set_key_frame: self.set_key_frame()
 
-        # check if a frame should be updated
-        # if self.frame_time == 0:
-        #     return
         cur_time = pg.time.get_ticks()
         for _ in range((cur_time -  self.last_frame_time) // self.frame_time):
             self.set_image(next(self.key_frame, None))
@@ -149,18 +149,10 @@ class Player(Character):
             self.direction = Compass.i_map[action]
             self.animate_data = self.animation['walk']
             
-            # move rejection for foreground
-            while pg.sprite.spritecollide(
-                # collide between player and foreground
-                self, self.game.groups['foreground'], 
-                # do not kill, use the masks for collision
-                False, pg.sprite.collide_mask
-            ):
-                self.move(Compass.vec_map[action], -1) # move back
-            
         elif action == "BUTTON_1":
             self.animation_active = True
             self.animate_data = self.animation['sword swing']
+            # TODO: make it so that the action happens only once until you let go of the button.
 
 
         else:
