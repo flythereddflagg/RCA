@@ -80,7 +80,9 @@ def run_game(game):
 def draw_frame(game):
     
     game.screen.fill(BLACK)
-    for group_name in game.SPRITE_GROUPS:            
+    for group_name in game.SPRITE_GROUPS:
+        # if game.groups[group_name].sprites():
+        #     print(game.groups[group_name].sprites()[0]) 
         game.groups[group_name].draw(game.screen)
     
     pg.display.flip()

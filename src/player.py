@@ -88,13 +88,21 @@ class Player(Character):
         self.todo_list.append(action)
 
 
+    def set_key_frame(self):
+        self.key_frame = self.gen_from_list(self.key_frames, 
+            repeat=self.animate_data['repeat']
+        )
+        self.key_frame_time = self.gen_from_list(self.key_frame_times)
+        self.image = next(self.key_frame, None)
+        self.frame_time = next(self.key_frame_time)
+
+
     def animate(self):
         set_key_frame = False
         # update animation if changed
         if self.animate_data['id'] != self.last_animate:
             set_key_frame = True
             self.last_animate = self.animate_data['id']
-            if not self.animate_data['repeat']: self.animation_active=True
             self.key_frames = self.animate_data["key_frames"][self.direction]
             self.key_frame_times = self.animate_data['key_frame_times']
 
@@ -104,13 +112,7 @@ class Player(Character):
             self.last_direction = self.direction
             self.key_frames = self.animate_data["key_frames"][self.direction]
         
-        if set_key_frame:
-            self.key_frame = self.gen_from_list(self.key_frames, 
-                repeat=self.animate_data['repeat']
-            )
-            self.key_frame_time = self.gen_from_list(self.key_frame_times,
-                repeat=self.animate_data['repeat']
-            )
+        if set_key_frame: self.set_key_frame()
 
         # check if a frame should be updated
         # if self.frame_time == 0:
@@ -118,7 +120,7 @@ class Player(Character):
         cur_time = pg.time.get_ticks()
         for _ in range((cur_time -  self.last_frame_time) // self.frame_time):
             self.image = next(self.key_frame, None)
-            self.frame_time = next(self.key_frame_time, 1)
+            self.frame_time = next(self.key_frame_time)
             self.last_frame_time = cur_time
         
         if self.image is None: # animation is done
@@ -126,10 +128,13 @@ class Player(Character):
             last_animate = self.last_animate
             self.last_animate = self.animate_data['id']
             self.animate_data = self.animation[last_animate]
-        # FIXME: BUTTON 1 breaks the game I think the problem is here
+            self.set_key_frame()
+
     
 
     def apply_action(self, action):
+        if self.animation_active: return
+
         if action in Compass.strings: 
             # ^ means a direction button is being pressed
             self.move(Compass.vec_map[action], self.dist_per_frame)
@@ -146,8 +151,8 @@ class Player(Character):
                 self.move(Compass.vec_map[action], -1) # move back
             
         elif action == "BUTTON_1":
-            if not self.animation_active:
-                self.animate_data = self.animation['sword swing']
+            self.animation_active = True
+            self.animate_data = self.animation['sword swing']
 
         # FIXME: pressing button 1 breaks the game. invesitgate???
         # maybe due to how the finishing animation works.

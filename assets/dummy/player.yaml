@@ -26,12 +26,12 @@ animations:
       - 20
     
   - id: sword swing
-    repeat: false
+    repeat: False
     asset_path: "./assets/dummy/sword.png"
     key_frame_size: 
       - 56
       - 56
     # this will rotate infinitely so length doesn't matter
     key_frame_times:
-      - 250
+      - 1000
 
