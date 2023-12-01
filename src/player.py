@@ -106,6 +106,10 @@ class Player(Character):
         # self.mask = pg.mask.from_surface(self.image)
         # self.rect.center = center
         # FIXME: The clipping is still here and they are not centered
+        
+        # OOHHH I have an idea! Set the image to null and load
+        # an image on top of it. Call it animation_image, put it in 
+        # the player sprite group and then you can keep your.
 
 
     def animate(self):
