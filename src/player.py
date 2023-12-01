@@ -72,13 +72,12 @@ class Player(Character):
         for action in self.todo_list:
             self.apply_action(action)
 
+        if not self.todo_list and not self.animation_active:
+            self.animate_data = self.animation['stand']
+
         # animate if applicable
         if self.animation_availible:
             self.animate()
-            
-        # TODO add code to set it to stand in whatever direction
-        if not self.todo_list and not self.animation_active:
-            self.image = self.default_image
 
         # reset the todo_list
         self.todo_list = []
@@ -93,8 +92,17 @@ class Player(Character):
             repeat=self.animate_data['repeat']
         )
         self.key_frame_time = self.gen_from_list(self.key_frame_times)
-        self.image = next(self.key_frame, None)
+        self.set_image(next(self.key_frame, None))
         self.frame_time = next(self.key_frame_time)
+
+    def set_image(self, image):
+        # TODO this works but you can clip through walls. Try to make it so you don't do that.
+        center = self.rect.center 
+        self.image = image
+        
+        if image is None: return
+        self.rect = image.get_rect()
+        self.rect.center = center
 
 
     def animate(self):
@@ -119,7 +127,7 @@ class Player(Character):
         #     return
         cur_time = pg.time.get_ticks()
         for _ in range((cur_time -  self.last_frame_time) // self.frame_time):
-            self.image = next(self.key_frame, None)
+            self.set_image(next(self.key_frame, None))
             self.frame_time = next(self.key_frame_time)
             self.last_frame_time = cur_time
         
@@ -153,9 +161,6 @@ class Player(Character):
         elif action == "BUTTON_1":
             self.animation_active = True
             self.animate_data = self.animation['sword swing']
-
-        # FIXME: pressing button 1 breaks the game. invesitgate???
-        # maybe due to how the finishing animation works.
 
 
         else:
