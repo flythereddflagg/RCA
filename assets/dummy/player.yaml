@@ -6,6 +6,15 @@
 asset_path: "./assets/dummy/character.png"
 # asset_path: "./assets/dummy/character_walking.png"
 animations:
+  - id: "null"
+    asset_path: "./assets/dummy/null.png"
+    repeat: True
+    key_frame_size: 
+      - 32
+      - 32
+    key_frame_times:
+      - 1
+
   - id: stand
     asset_path: "./assets/dummy/character.png"
     repeat: True

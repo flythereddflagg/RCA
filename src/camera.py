@@ -5,7 +5,7 @@ import pygame as pg
 class Camera:
     def __init__(self, game):
         self.game = game
-        self.player = self.game.groups['player'].sprites()[0]
+        self.player = self.game.groups['player'].sprites()[-1]
         self.mobile_groups = list(self.game.groups.keys())
         self.mobile_groups.remove('hud')
         self.mobile_groups.remove('misc')

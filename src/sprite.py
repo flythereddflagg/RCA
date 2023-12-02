@@ -7,16 +7,7 @@ import pygame as pg
 from.dict_obj import DictObj
 
 
-class BaseSprite(pg.sprite.Sprite):
-    """
-    Interface for sprites. Anything that inherits from it must 
-    implement the "update()" method or else it throws errors.
-    """      
-    def update(self):
-        raise NotImplementedError("update_function has not been overriden.")
-
-
-class Decal(BaseSprite):
+class Decal(pg.sprite.Sprite):
     """
     Simple Sprite that accepts basic input.
     Backgrounds and other non-interacting sprites

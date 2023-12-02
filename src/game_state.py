@@ -49,7 +49,7 @@ class GameState(DictObj):
     def process_inputs(self, action):
         # TODO add more to this so that other characters move and act
         if not self.paused:
-            player = self.groups['player'].sprites()[0]
+            player = self.groups['player'].sprites()[-1]
             player.add_todo(action)
 
 

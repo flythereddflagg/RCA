@@ -1,8 +1,9 @@
 import pygame as pg
-from .sprite import Character
+from .sprite import Character, Decal
 from .compass import Compass
 
 DEFAULT_ANIMATION = 'stand'
+NULL_PATH = "./assets/dummy/null.png"
 
 class Player(Character):
     def __init__(self, **options):
@@ -27,6 +28,13 @@ class Player(Character):
         self.key_frame_groups = {}
         self.animation = {}
         self.default_image = self.image
+        self.alt_image = Decal(**{
+            "game": self.game,
+            "asset_path": NULL_PATH,
+            "startx":0,
+            "starty":0,
+        })
+        self.game.groups['player'].add(self.alt_image)
 
         for animation in self.options['animations']:
             # load in each animation for a character 
@@ -63,9 +71,9 @@ class Player(Character):
                 ]
             self.animation[animation['id']] = animation
             self.animation[animation['id']]['key_frames'] = key_frame_group
-            
-        # TODO: make it so the group can change  
+             
         self.animate_data = self.animation[DEFAULT_ANIMATION]
+        self.null_image = self.animation['null']['key_frames'][0][0]
 
 
     def update(self):
@@ -97,19 +105,17 @@ class Player(Character):
 
 
     def set_image(self, image):
+        if self.image == self.null_image:
+            self.alt_image.image = self.null_image
         self.image = image
         if image is None: return
-        # rect = self.image.get_rect()
-        # if self.rect.size != rect.size: return
-        # center = self.rect.center
-        # self.rect = rect
-        # self.mask = pg.mask.from_surface(self.image)
-        # self.rect.center = center
-        # FIXME: The clipping is still here and they are not centered
-        
-        # OOHHH I have an idea! Set the image to null and load
-        # an image on top of it. Call it animation_image, put it in 
-        # the player sprite group and then you can keep your.
+        if self.rect.size == image.get_rect().size: return
+        # set image to blank
+        # then just paste the new image on top of it
+        self.image = self.null_image
+        self.alt_image.image = image
+        self.alt_image.rect = self.alt_image.image.get_rect()
+        self.alt_image.rect.center = self.rect.center
 
 
     def animate(self):
