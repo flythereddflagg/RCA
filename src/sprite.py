@@ -11,6 +11,8 @@ from .compass import Compass
 DEFAULT_ANIMATION = 'stand'
 NULL_PATH = "./assets/dummy/null.png"
 
+
+
 class Decal(pg.sprite.Sprite):
     """
     Simple Sprite that accepts basic input.
@@ -54,9 +56,11 @@ class Decal(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
+
 class Block(Decal):
     """
-    Same as Decal and anchors itself to the background.
+    Same as Decal and initalizes its position to anchor 
+    itself to the background.
     """
     def __init__(self, **options):
         super().__init__(**options)
@@ -77,6 +81,7 @@ class Block(Decal):
             self.rect.y = background.rect.y + self.starty
 
 
+
 class Character(Block):
     """
     Non-solid sprite that triggers interaction and moves 
@@ -90,7 +95,6 @@ class Character(Block):
         self.animate_data = None
         self.last_direction = None
         self.key_frame = None
-        self.animation_availible = False
         self.animation_active = False
         self.frame_time = 1
         self.last_frame_time = 0
@@ -98,7 +102,6 @@ class Character(Block):
         self.last_direction = self.direction
         
         # init animations
-        self.animation_availible = True
         self.key_frame_groups = {}
         self.animation = {}
         self.default_image = self.image
@@ -148,69 +151,9 @@ class Character(Block):
         self.animate_data = self.animation[DEFAULT_ANIMATION]
         self.null_image = self.animation['null']['key_frames'][0][0]
 
-    
-    def gen_from_list(self, item_list, repeat=True):
-        while True:
-            for item in item_list:
-                yield item
-            if not repeat: break
 
-
-    def move(self, direction, distance):
-        xunit, yunit = direction
-        addx, addy = distance * xunit, distance * yunit
-        self.rect.move_ip(addx, addy)
-
-        # move rejection for foreground
-        while pg.sprite.spritecollide(
-            # collide between player and foreground
-            self, self.game.groups['foreground'], 
-            # do not kill, use the masks for collision
-            False, pg.sprite.collide_mask
-        ):
-            self.rect.move_ip(-xunit, -yunit) # move back 1
-    
-    
     def update(self):
-        for action in self.todo_list:
-            self.apply_action(action)
-
-        if not self.todo_list and not self.animation_active:
-            self.animate_data = self.animation[DEFAULT_ANIMATION]
-
-        # animate if applicable
-        if self.animation_availible:
-            self.animate()
-
-        # reset the todo_list
-        self.todo_list = []
-
-
-    def add_todo(self, action):
-        self.todo_list.append(action)
-
-
-    def set_key_frame(self):
-        self.key_frame = self.gen_from_list(
-            self.key_frames, repeat=self.animate_data['repeat']
-        )
-        self.key_frame_time = self.gen_from_list(self.key_frame_times)
-        self.set_image(next(self.key_frame, None))
-        self.frame_time = next(self.key_frame_time)
-
-
-    def set_image(self, image):
-        if self.image == self.null_image:
-            self.alt_image.image = self.null_image
-        self.image = image
-        if image is None: return
-        if self.rect.size == image.get_rect().size: return
-        # set image to blank
-        # then just paste the new image on top of it
-        self.image = self.null_image
-        self.alt_image.image = image
-        self.alt_image.rect = self.alt_image.image.get_rect()
-        self.alt_image.rect.center = self.rect.center
+        self.animate()
 
 
     def animate(self):
@@ -242,13 +185,59 @@ class Character(Block):
             self.last_animate = self.animate_data['id']
             self.animate_data = self.animation[last_animate]
             self.set_key_frame()
-    
-    
-    def apply_action(self, action):
-        raise NotImplementedError(
-            "apply_action MUST BE IMPLEMENTED FOR EACH CHILD"
-        )
 
+
+    def set_image(self, image):
+        if self.image == self.null_image:
+            self.alt_image.image = self.null_image
+        self.image = image
+        if image is None: return
+        if self.rect.size == image.get_rect().size: return
+        # set image to blank
+        # then just paste the new image on top of it
+        self.image = self.null_image
+        self.alt_image.image = image
+        self.alt_image.rect = self.alt_image.image.get_rect()
+        self.alt_image.rect.center = self.rect.center
+
+
+    def set_key_frame(self):
+        self.key_frame = self.gen_from_list(
+            self.key_frames, repeat=self.animate_data['repeat']
+        )
+        self.key_frame_time = self.gen_from_list(self.key_frame_times)
+        self.set_image(next(self.key_frame, None))
+        self.frame_time = next(self.key_frame_time)
+
+
+    def gen_from_list(self, item_list, repeat=True):
+        """
+        generator for images. Repeats forever unless told otherwise.
+        """
+        while True:
+            for item in item_list:
+                yield item
+            if not repeat: break
+
+
+    def move(self, direction, distance):
+        """
+        move the character in a direction with
+        move rejection from colliding with the foreground
+        """
+        xunit, yunit = direction
+        addx, addy = distance * xunit, distance * yunit
+        self.rect.move_ip(addx, addy)
+
+        # move rejection for foreground
+        while pg.sprite.spritecollide(
+            # collide between character and foreground
+            self, self.game.groups['foreground'], 
+            # do not kill, use the masks for collision
+            False, pg.sprite.collide_mask
+        ):
+            self.rect.move_ip(-xunit, -yunit) # move back 1
+    
 
 SPRITE_MAP = DictObj(**{
     "Decal"      : Decal,
