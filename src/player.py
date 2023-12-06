@@ -25,7 +25,6 @@ class Player(Character):
                 self.move(Compass.vec_map[action], self.dist_per_frame)
                 self.direction = Compass.i_map[action]
                 self.animate_data = self.animation['walk']
-                # self.animation_active = False
                 
             elif action == "BUTTON_1":
                 self.keys_held[action] = True
@@ -45,8 +44,6 @@ class Player(Character):
         ]
         
         self.apply_todos()
-        # for action in self.todo_list:
-        #     self.apply_todos(action)
 
         if not self.todo_list and not self.animation_active:
             self.animate_data = self.animation[DEFAULT_ANIMATION]
