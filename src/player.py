@@ -15,19 +15,17 @@ class Player(Character):
         self.button1_action = 'sword swing'
 
 
-    def apply_todos(self, action=None):
-        if self.animation_active: return
-
-        # FIXME: This does not work if we uncomment the line below
-        # (see also the commented out line in update that runs this function)
+    def apply_todos(self):
         
-        # for action in self.todo_list:
-        if True:
+        for action in self.todo_list:
+            if self.animation_active: continue
+
             if action in Compass.strings: 
                 # ^ means a direction button is being pressed
                 self.move(Compass.vec_map[action], self.dist_per_frame)
                 self.direction = Compass.i_map[action]
                 self.animate_data = self.animation['walk']
+                # self.animation_active = False
                 
             elif action == "BUTTON_1":
                 self.keys_held[action] = True
@@ -46,15 +44,14 @@ class Player(Character):
             if not self.keys_held[todo]
         ]
         
-        # self.apply_todos()
-        for action in self.todo_list:
-            self.apply_todos(action)
+        self.apply_todos()
+        # for action in self.todo_list:
+        #     self.apply_todos(action)
 
         if not self.todo_list and not self.animation_active:
             self.animate_data = self.animation[DEFAULT_ANIMATION]
 
-        # animate from parent
-        super().update()
+        self.animate()
 
         # reset the todo_list
         self.todo_list = []
