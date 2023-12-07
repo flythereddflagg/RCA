@@ -42,5 +42,5 @@ animations:
       - 56
     # this will rotate infinitely so length doesn't matter
     key_frame_times:
-      - 75
+      - 50
 

@@ -1,16 +1,17 @@
 # RCA   - Red Castle Avenger
-****
-### By: flythereddflagg
-### Email: redddogjr@gmail.com  
-**2D Version Under Development Now!**
+---
 
-If you are interested in the text adventure beta version of this game you may 
-download it as part of this repository! (Available for Windows only) 
+**Email: redddogjr@gmail.com**
 
-In the repository the path to the executable is shown below:
+## Credits
 
-```
-./bin/RCA_w1_v0-2beta/run_RCA.exe
-```
-
-If you are interested in contributing contact me and submit a pull request!
+- Powered by: Pygame
+- Produced by: FlyTheReddFlagg Games
+- Software tools: Python, Pygame, paint.net, Piskel, VSCodium
+- Created and Directed by: Mark Redd
+- Programming and data structure design: Mark Redd
+- Concept art: Emma Redd
+- Pixel art: Mark Redd
+- Story: Mark Redd
+- Music: Mark Redd, Emma Redd
+- Animation: Mark Redd
