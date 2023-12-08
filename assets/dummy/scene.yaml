@@ -24,3 +24,4 @@ player:
     asset_path: ./assets/dummy/player.yaml
     startx: 800
     starty: 900
+    # scale: 2
