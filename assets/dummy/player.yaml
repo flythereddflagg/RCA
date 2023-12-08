@@ -25,7 +25,7 @@ animations:
       - 1
 
   - id: walk
-    asset_path: "./assets/dummy/character_walking.png"
+    asset_path: "./assets/dummy/ossifrage_walk.png"
     repeat: True
     key_frame_size: 
       - 32
