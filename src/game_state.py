@@ -50,6 +50,7 @@ class GameState(DictObj):
         # TODO add more to this so that other characters move and act
         if not self.paused:
             player = self.groups['player'].sprites()[-1]
+            print(player.options['asset_path'])
             player.add_todo(action)
 
 

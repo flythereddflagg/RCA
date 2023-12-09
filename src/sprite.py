@@ -153,7 +153,8 @@ class Character(Block):
 
 
     def update(self):
-        self.animate()
+        pass
+        # self.animate()
 
 
     def animate(self):

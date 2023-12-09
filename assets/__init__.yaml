@@ -35,7 +35,7 @@ SPRITE_GROUPS:
   # - trigger      # non-moving sprites that interact
   - player       # sprites you can control             
   # - friend       # moving friendly sprites
-  # - foe          # enemies
+  - foe          # enemies
   - hud          # HUD (health, money etc.)
   - misc         # other (dialog boxes etc.)
 

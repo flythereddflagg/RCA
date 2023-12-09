@@ -16,7 +16,7 @@ animations:
       - 1 # TODO set this so that the 0 makes the animation cancel
 
   - id: stand
-    asset_path: "./assets/dummy/ossifrage_stand.png"
+    asset_path: "./assets/dummy/character_stand.png"
     repeat: True
     key_frame_size: 
       - 32
@@ -25,7 +25,7 @@ animations:
       - 1
 
   - id: walk
-    asset_path: "./assets/dummy/ossifrage_walk.png"
+    asset_path: "./assets/dummy/character_walk.png"
     repeat: True
     key_frame_size: 
       - 32

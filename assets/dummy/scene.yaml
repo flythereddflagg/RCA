@@ -25,3 +25,10 @@ player:
     startx: 800
     starty: 900
     # scale: 2
+
+foe:
+  - type: Character
+    asset_path: ./assets/dummy/ossifrage.yaml
+    startx: 700
+    starty: 900
+    # scale: 2

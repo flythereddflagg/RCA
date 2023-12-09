@@ -1,0 +1,31 @@
+
+
+# this is the default asset path
+asset_path: "./assets/dummy/null.png"
+animations:
+  - id: "null"
+    asset_path: "./assets/dummy/null.png"
+    repeat: True
+    key_frame_size: 
+      - 32
+      - 32
+    key_frame_times:
+      - 1 # TODO set this so that the 0 makes the animation cancel
+
+  - id: stand
+    asset_path: "./assets/dummy/ossifrage_stand.png"
+    repeat: True
+    key_frame_size: 
+      - 32
+      - 32
+    key_frame_times:
+      - 1
+
+  - id: walk
+    asset_path: "./assets/dummy/ossifrage_walk.png"
+    repeat: True
+    key_frame_size: 
+      - 32
+      - 32
+    key_frame_times:
+      - 20
