@@ -31,19 +31,19 @@ player:
     # scale: 2
 
 foe:
-  - id: ossifrage
+  - id: ossifrage 1
     type: Ossifrage
     asset_path: ./assets/dummy/ossifrage.yaml
     startx: 700
     starty: 900
     scale: 2
-  - id: ossifrage
+  - id: ossifrage 2
     type: Ossifrage
     asset_path: ./assets/dummy/ossifrage.yaml
     startx: 700
     starty: 1000
     scale: 2
-  - id: ossifrage
+  - id: ossifrage 3
     type: Ossifrage
     asset_path: ./assets/dummy/ossifrage.yaml
     startx: 800
