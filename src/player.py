@@ -1,5 +1,5 @@
 import pygame as pg
-from .sprite import Character, Decal
+from .sprite import Character
 from .compass import Compass
 
 DEFAULT_ANIMATION = 'stand'

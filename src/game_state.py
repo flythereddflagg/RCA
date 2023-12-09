@@ -5,9 +5,11 @@ from .dict_obj import DictObj
 from .sprite import SPRITE_MAP
 from .camera import Camera
 from .player import Player
+from .ossifrage import Ossifrage
 
 CLASS_MAP = SPRITE_MAP.copy()
 CLASS_MAP['Player'] = Player
+CLASS_MAP['Ossifrage'] = Ossifrage
 
 
 class GameState(DictObj):
@@ -17,6 +19,7 @@ class GameState(DictObj):
         self.paused = False
         self.current_scene = None
         self.camera = None
+        self.player = None
         self.INV_KEY_BIND = {v: k for k, v in self.KEY_BIND.items()}
         self.groups = {
             group_name: pg.sprite.Group() 
@@ -48,10 +51,8 @@ class GameState(DictObj):
     
     def process_inputs(self, action):
         # TODO add more to this so that other characters move and act
-        if not self.paused:
-            player = self.groups['player'].sprites()[-1]
-            print(player.options['asset_path'])
-            player.add_todo(action)
+        if not self.paused and self.player:
+            self.player.add_todo(action)
 
 
     def load_scene(self, yaml_path):
@@ -69,7 +70,12 @@ class GameState(DictObj):
             for sprite_dict in self.current_scene[name]:
                 sprite_dict['game'] = self
                 sprite_instance = CLASS_MAP[sprite_dict['type']](**sprite_dict)
+                if sprite_instance.id == "PLAYER":
+                    self.player = sprite_instance
                 group.add(sprite_instance)
+                if isinstance(sprite_instance, CLASS_MAP['Character']):
+                    for group in sprite_instance.groups():
+                        group.add(sprite_instance.alt_image)
 
         self.camera = Camera(self)
         self.camera.zoom(self.INIT_ZOOM)

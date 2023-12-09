@@ -21,6 +21,7 @@ class Decal(pg.sprite.Sprite):
     Moves with the camera.
     """
     requirements = [
+        "id",
         "game",
         "asset_path",
         "startx",
@@ -30,7 +31,7 @@ class Decal(pg.sprite.Sprite):
         assert all([key in options for key in self.requirements]), \
             f"class must be instatiated with all of:\n {self.requirements}"
         super().__init__()
-
+        self.id = options['id']
         self.asset_path = options["asset_path"]
         self.game = options["game"] # a reference to the game the sprite is in
         if self.asset_path.endswith(".yaml"):
@@ -54,6 +55,16 @@ class Decal(pg.sprite.Sprite):
         new_size = [dim * scale for dim in self.rect.size]
         self.image = pg.transform.scale(self.image, new_size)
         self.rect = self.image.get_rect()
+    
+    def __repr__(self):
+        string = super().__repr__()
+        string += f"\n{type(self)}"
+        for key, item in self.__dict__.items():
+            if type(item) in [dict, DictObj]: 
+                string += f"\n{str(key):10.10}: {{...}}"
+                continue
+            string += f"\n{str(key):10.10}: {str(item):30.30}"
+        return string
 
 
 
@@ -89,7 +100,6 @@ class Character(Block):
     """
     def __init__(self, **options):
         super().__init__(**options)
-        self.todo_list = []
         self.last_animate = None
         self.key_frame_group = None
         self.animate_data = None
@@ -106,12 +116,13 @@ class Character(Block):
         self.animation = {}
         self.default_image = self.image
         self.alt_image = Decal(**{
+            "id": self.id + "_alt",
             "game": self.game,
             "asset_path": NULL_PATH,
             "startx":0,
             "starty":0,
         })
-        self.game.groups['player'].add(self.alt_image)
+
         for animation in self.options['animations']:
             # load in each animation for a character 
             # defined in their yaml data
@@ -239,6 +250,7 @@ class Character(Block):
         ):
             self.rect.move_ip(-xunit, -yunit) # move back 1
     
+
 
 SPRITE_MAP = DictObj(**{
     "Decal"      : Decal,

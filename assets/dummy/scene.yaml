@@ -1,11 +1,13 @@
 hud:
-  - type: Decal
+  - id: hearts
+    type: Decal
     asset_path: ./assets/dummy/hud_element.png
     startx: 0
     starty: 0
 
 background:
-  - type: Decal
+  - id: dungeon_tile
+    type: Decal
     asset_path: ./assets/dummy/background.png
     # asset_path: ./assets/dummy/null.png
     startx: 0
@@ -13,22 +15,37 @@ background:
     # scale: 2
 # data for the foreground
 foreground:
-  - type: Block
+  - id: dungeon_walls
+    type: Block
     asset_path: ./assets/dummy/foreground.png
     startx: 0 # match the background
     starty: 0
     # scale: 2
 
 player:
-  - type: Player
+  - id: PLAYER
+    type: Player
     asset_path: ./assets/dummy/player.yaml
     startx: 800
     starty: 900
     # scale: 2
 
 foe:
-  - type: Character
+  - id: ossifrage
+    type: Ossifrage
     asset_path: ./assets/dummy/ossifrage.yaml
     startx: 700
     starty: 900
-    # scale: 2
+    scale: 2
+  - id: ossifrage
+    type: Ossifrage
+    asset_path: ./assets/dummy/ossifrage.yaml
+    startx: 700
+    starty: 1000
+    scale: 2
+  - id: ossifrage
+    type: Ossifrage
+    asset_path: ./assets/dummy/ossifrage.yaml
+    startx: 800
+    starty: 1000
+    scale: 2

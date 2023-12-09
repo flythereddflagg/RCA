@@ -1,7 +1,7 @@
 
 
 # this is the default asset path
-asset_path: "./assets/dummy/null.png"
+asset_path: "./assets/dummy/bird_character_base.png"
 animations:
   - id: "null"
     asset_path: "./assets/dummy/null.png"
