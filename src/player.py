@@ -13,6 +13,7 @@ class Player(Character):
         self.dist_per_frame = self.PLAYERSPEED // self.game.FPS
         self.keys_held = {key:False for key in self.game.KEY_BIND.keys()}
         self.button1_action = 'sword swing'
+        # TODO add hit mask here
 
 
     def apply_todos(self):
