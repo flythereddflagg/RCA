@@ -16,12 +16,15 @@ class Ossifrage(Character):
         self.speed = 200 # pixels per second
         self.dist_per_frame = self.speed // self.game.FPS
 
+
     def update(self):
         cur_time = pg.time.get_ticks()
         if cur_time - self.last_action_time > self.action_time: 
             self.last_action_time = cur_time
             self.action = random.choice(MOVEMENTS)
             self.action_time = random.randint(*ACTION_TIME_RANGE)
+        
+        self.check_collision() # update action if necessaary
         
         self.apply_action(self.action)
 
@@ -44,3 +47,12 @@ class Ossifrage(Character):
             print(self, action + "! (no response)")
             return
 
+
+    def check_collision(self):
+        if pg.sprite.spritecollide(
+            # collide between character and foreground
+            self, self.game.player, 
+            # do not kill, use the masks for collision
+            False, pg.sprite.collide_mask
+        ):
+            pass

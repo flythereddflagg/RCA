@@ -32,7 +32,7 @@ animations:
       - 32
     # this will rotate infinitely so length doesn't matter
     key_frame_times:
-      - 20
+      - 40
     
   - id: sword swing
     repeat: False
@@ -43,4 +43,5 @@ animations:
     # this will rotate infinitely so length doesn't matter
     key_frame_times:
       - 50
+    alt_mask: "./assets/dummy/sword_hit_mask.png"
 

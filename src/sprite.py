@@ -56,6 +56,7 @@ class Decal(pg.sprite.Sprite):
         self.image = pg.transform.scale(self.image, new_size)
         self.rect = self.image.get_rect()
     
+    
     def __repr__(self):
         string = super().__repr__()
         string += f"\n{type(self)}"
