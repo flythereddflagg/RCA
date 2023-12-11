@@ -1,9 +1,13 @@
 # the main function of the game
-if __name__ == "__main__":
+def main():
     from src import init_game, run_game
     
     game = init_game("./assets/__init__.yaml")
     run_game(game)
+
+
+if __name__ == "__main__":
+    main()
 
 
 # make sure you are building out a good framework as you go!!!!
