@@ -49,10 +49,15 @@ class Ossifrage(Character):
 
 
     def check_collision(self):
-        if pg.sprite.spritecollide(
-            # collide between character and foreground
-            self, self.game.player, 
+        collided_players = pg.sprite.spritecollide(
+            # collide between self and player
+            self, self.game.groups['player'], 
             # do not kill, use the masks for collision
             False, pg.sprite.collide_mask
-        ):
-            pass
+        )
+        if collided_players is not None:
+            for player in collided_players:
+                # TODO figure out how to deal damage
+                player.signal(['take damage', 10])
+                print("collide")
+                

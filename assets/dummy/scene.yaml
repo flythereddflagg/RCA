@@ -23,7 +23,7 @@ foreground:
     # scale: 2
 
 player:
-  - id: PLAYER
+  - id: PLAYER # reference to THE main player
     type: Player
     asset_path: ./assets/dummy/player.yaml
     startx: 800
