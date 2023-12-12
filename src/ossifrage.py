@@ -1,4 +1,5 @@
 import random
+import math
 
 import pygame as pg
 from .sprite import Character
@@ -14,7 +15,8 @@ class Ossifrage(Character):
         self.last_action_time = 0
         self.action = None
         self.speed = 200 # pixels per second
-        self.dist_per_frame = self.speed // self.game.FPS
+        # self.dist_per_frame = self.speed // self.game.clock.get_fps()
+        # self.dist_per_frame = math.ceil(self.speed * self.game.dt / 1000)
 
 
     def update(self):
@@ -36,7 +38,12 @@ class Ossifrage(Character):
 
         if action in Compass.strings: 
             # ^ means a direction button is being pressed
-            self.move(Compass.vec_map[action], self.dist_per_frame)
+            fps = self.game.clock.get_fps()
+            fps = 1 if not fps else fps
+            self.move(Compass.vec_map[action], 
+            # self.dist_per_frame
+                self.speed // fps
+            )
             self.direction = Compass.i_map[action]
             self.animate_data = self.animation['walk']
             

@@ -34,6 +34,8 @@ def init_game(data_path):
     game.clock = pg.time.Clock()
     game.controllers = controllers
     game.load_scene(game.INITAL_SCENE)
+    if game.FPS_COUNTER:
+        game.fps_counter = pg.font.SysFont("Sans", 22)
     return game
 
 
@@ -71,7 +73,12 @@ def run_game(game):
         game_input = get_input(game)
         game.logic(game_input)
         draw_frame(game)
-        game.clock.tick(game.FPS)
+        game.dt = (
+            game.clock.tick() 
+            if game.FPS < 1 else 
+            game.clock.tick(game.FPS)
+        )
+
 
     pg.display.quit()
     pg.quit()
@@ -84,6 +91,11 @@ def draw_frame(game):
         # if game.groups[group_name].sprites():
         #     print(game.groups[group_name].sprites()[0]) 
         game.layers[group_name].draw(game.screen)
+
+    if game.FPS_COUNTER:
+        fps = str(int(game.clock.get_fps()))
+        fps_sprite = game.fps_counter.render(fps, True, (255,255,255))
+        game.screen.blit(fps_sprite, (10,10))
     
     pg.display.flip()
 

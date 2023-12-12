@@ -15,6 +15,7 @@ CLASS_MAP['Ossifrage'] = Ossifrage
 class GameState(DictObj):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.dt = 1
         self.running = False
         self.paused = False
         self.current_scene = None

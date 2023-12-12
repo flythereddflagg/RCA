@@ -1,3 +1,4 @@
+import math
 import pygame as pg
 from .sprite import Character
 from .compass import Compass
@@ -11,7 +12,8 @@ class Player(Character):
         self.PLAYERSPEED = 300 # pixels per second
         self.todo_list = []
         self.signals = []
-        self.dist_per_frame = self.PLAYERSPEED // self.game.FPS
+        # self.dist_per_frame = self.PLAYERSPEED // self.game.clock.get_fps()
+        # self.dist_per_frame = math.ceil(self.PLAYERSPEED * self.game.dt / 1000)
         self.keys_held = {key:False for key in self.game.KEY_BIND.keys()}
         self.button1_action = 'sword swing'
         # TODO add hit mask here
@@ -29,9 +31,14 @@ class Player(Character):
         for action in self.todo_list:
             if self.animation_active: continue
 
-            if action in Compass.strings: 
+            if action in Compass.strings:
+                fps = self.game.clock.get_fps()
+                fps = 1 if not fps else fps
                 # ^ means a direction button is being pressed
-                self.move(Compass.vec_map[action], self.dist_per_frame)
+                self.move(Compass.vec_map[action], 
+                # self.dist_per_frame
+                    self.PLAYERSPEED // fps
+                )
                 self.direction = Compass.i_map[action]
                 self.animate_data = self.animation['walk']
                 
