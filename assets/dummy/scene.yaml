@@ -22,15 +22,13 @@ foreground:
     starty: 0
     # scale: 2
 
-player:
+characters:
   - id: PLAYER # reference to THE main player
     type: Player
     asset_path: ./assets/dummy/player.yaml
     startx: 800
     starty: 900
     scale: 2
-
-foe:
   - id: ossifrage 1
     type: Ossifrage
     asset_path: ./assets/dummy/ossifrage.yaml

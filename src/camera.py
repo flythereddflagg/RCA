@@ -6,9 +6,8 @@ class Camera:
     def __init__(self, game):
         self.game = game
         self.player = self.game.player
-        self.mobile_groups = list(self.game.groups.keys())
+        self.mobile_groups = list(self.game.layers.keys())
         self.mobile_groups.remove('hud')
-        self.mobile_groups.remove('misc')
 
     def update(self):
         # get the current center of the screen
@@ -34,7 +33,7 @@ class Camera:
         # move everything that is moblie to the correct position
         # this simulates moving the camera
         for group in self.mobile_groups:
-            for sprite in self.game.groups[group]:
+            for sprite in self.game.layers[group]:
                 sprite.rect.x += movex
                 sprite.rect.y += movey
         
@@ -47,7 +46,7 @@ class Camera:
         # check if world border is visible then set to screen border
         old_movex, old_movey =  movex, movey
         screen_w, screen_h = pg.display.get_surface().get_size()
-        background = self.game.groups['background'].sprites()[0]
+        background = self.game.layers['background'].sprites()[0]
 
         # in the x direction
         if (background.rect.left + movex > 0 or\
@@ -76,7 +75,7 @@ class Camera:
         # FIXME: if used continuously, this will break sprites. 
         
         for group in self.mobile_groups:
-            for sprite in self.game.groups[group]:
+            for sprite in self.game.layers[group]:
                 cur_size = sprite.image.get_rect().size
                 new_size = [dim * scale for dim in cur_size]
                 sprite.image = pg.transform.scale(sprite.image, new_size)

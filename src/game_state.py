@@ -25,6 +25,10 @@ class GameState(DictObj):
             group_name: pg.sprite.Group() 
             for group_name in self.SPRITE_GROUPS
         }
+        self.layers = {
+            group_name: pg.sprite.Group() 
+            for group_name in self.DRAW_LAYERS
+        }
 
     
     def logic(self, game_input):
@@ -42,8 +46,8 @@ class GameState(DictObj):
             self.process_inputs(action)
         
         # update all sprites
-        for group_name in self.SPRITE_GROUPS:
-            self.groups[group_name].update()
+        for group_name in self.DRAW_LAYERS:
+            self.layers[group_name].update()
         
         # finally, update the camera
         if self.camera: self.camera.update()
@@ -62,8 +66,8 @@ class GameState(DictObj):
         """
         self.current_scene = self.load_yaml(yaml_path)
 
-        for name in self.SPRITE_GROUPS:
-            group = self.groups[name]
+        for name in self.DRAW_LAYERS:
+            group = self.layers[name]
             group.empty() # clear out all groups
             if name not in self.current_scene.keys():
                 continue

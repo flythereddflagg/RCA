@@ -77,7 +77,7 @@ class Block(Decal):
     def __init__(self, **options):
         super().__init__(**options)
         self.mask = pg.mask.from_surface(self.image)
-        background = self.game.groups['background'].sprites()[0]
+        background = self.game.layers['background'].sprites()[0]
 
         bg_map = {
             'center' : background.rect.center,
@@ -245,7 +245,7 @@ class Character(Block):
         # move rejection for foreground
         while pg.sprite.spritecollide(
             # collide between character and foreground
-            self, self.game.groups['foreground'], 
+            self, self.game.layers['foreground'], 
             # do not kill, use the masks for collision
             False, pg.sprite.collide_mask
         ):

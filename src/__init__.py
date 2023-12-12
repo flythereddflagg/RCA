@@ -33,7 +33,7 @@ def init_game(data_path):
     game.screen = screen
     game.clock = pg.time.Clock()
     game.controllers = controllers
-    game.load_scene(game.default_scene)
+    game.load_scene(game.INITAL_SCENE)
     return game
 
 
@@ -80,10 +80,10 @@ def run_game(game):
 def draw_frame(game):
     
     game.screen.fill(BLACK)
-    for group_name in game.SPRITE_GROUPS:
+    for group_name in game.DRAW_LAYERS:
         # if game.groups[group_name].sprites():
         #     print(game.groups[group_name].sprites()[0]) 
-        game.groups[group_name].draw(game.screen)
+        game.layers[group_name].draw(game.screen)
     
     pg.display.flip()
 

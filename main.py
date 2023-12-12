@@ -1,9 +1,15 @@
-# the main function of the game
+"""
+File: main.py
+The main() entry point for the game. 
+Initializes the game from a data file and initiates the game
+"""
 def main():
     from src import init_game, run_game
+
+    INIT_SETTINGS_PATH = "./assets/__init__.yaml"
     
-    game = init_game("./assets/__init__.yaml")
-    run_game(game)
+    game_data = init_game(INIT_SETTINGS_PATH)
+    run_game(game_data)
 
 
 if __name__ == "__main__":

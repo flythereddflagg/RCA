@@ -29,14 +29,20 @@ KEY_BIND:
 
 
 # Set up all sprite groups
+DRAW_LAYERS:
+  - background
+  - foreground
+  - characters
+  - hud
+
 SPRITE_GROUPS:
-  - background   # background tiles
-  - foreground   # non-interacting block
+  # - background   # background tiles
+  # - foreground   # non-interacting block
   # - trigger      # non-moving sprites that interact
   - player       # sprites you can control             
   # - friend       # moving friendly sprites
   - foe          # enemies
-  - hud          # HUD (health, money etc.)
-  - misc         # other (dialog boxes etc.)
+  # - hud          # HUD (health, money etc.)
+  # - misc         # other (dialog boxes etc.)
 
-default_scene: "./assets/dummy/scene.yaml"
+INITAL_SCENE: "./assets/dummy/scene.yaml"
