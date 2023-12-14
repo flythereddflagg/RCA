@@ -141,8 +141,9 @@ class Character(Block):
         pass
         # self.animate()
 
-
-    def parse_animation(self, animation):
+# TODO: abstract frame parsing by feeding all the relevant info!
+# Should look like: def parse_animation(self, asset_path, key_frame_size): 
+    def parse_animation(self, animation): 
         assert all([
             key in animation.keys() 
             for key in self.required_animation_keys
