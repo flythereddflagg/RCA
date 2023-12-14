@@ -4,6 +4,8 @@
 
 # this is the default asset path
 asset_path: "./assets/dummy/character.png"
+group_add:
+  - player
 # asset_path: "./assets/dummy/character_walking.png"
 animations:
   - id: "null"
@@ -43,5 +45,5 @@ animations:
     # this will rotate infinitely so length doesn't matter
     key_frame_times:
       - 50
-    alt_mask: "./assets/dummy/sword_hit_mask.png"
+    mask_path: "./assets/dummy/sword_hit_mask.png"
 

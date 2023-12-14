@@ -2,6 +2,8 @@
 
 # this is the default asset path
 asset_path: "./assets/dummy/bird_character_base.png"
+group_add:
+  - foe
 animations:
   - id: "null"
     asset_path: "./assets/dummy/null.png"

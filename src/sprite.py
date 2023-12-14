@@ -99,6 +99,9 @@ class Character(Block):
     Non-solid sprite that triggers interaction and moves 
     independently of the camera. Also can be animated.
     """
+    required_animation_keys = [
+        'asset_path', 'key_frame_size'
+    ]
     def __init__(self, **options):
         super().__init__(**options)
         self.last_animate = None
@@ -111,6 +114,7 @@ class Character(Block):
         self.last_frame_time = 0
         self.direction = Compass.DOWN
         self.last_direction = self.direction
+        self.dist_buffer = 0
         
         # init animations
         self.key_frame_groups = {}
@@ -127,25 +131,66 @@ class Character(Block):
         for animation in self.options['animations']:
             # load in each animation for a character 
             # defined in their yaml data
-            animation_image = pg.image.load(
-                animation['asset_path']
+            self.animation[animation['id']] = self.parse_animation(animation)
+             
+        self.animate_data = self.animation[DEFAULT_ANIMATION]
+        self.null_image = self.animation['null']['key_frames'][0][0]
+
+
+    def update(self):
+        pass
+        # self.animate()
+
+
+    def parse_animation(self, animation):
+        assert all([
+            key in animation.keys() 
+            for key in self.required_animation_keys
+        ])
+        animation_image = pg.image.load(animation['asset_path']).convert_alpha()
+        new_size = [
+            dim * self.scale 
+            for dim in animation_image.get_rect().size
+        ]
+        animation_image = pg.transform.scale(animation_image, new_size)
+        # get the size of each animation frame
+        kf_sizex, kf_sizey = [
+            i * self.scale for i in animation['key_frame_size']
+        ]
+        # calclulate the number of frames in the image
+        n_keyframesx, n_keyframesy = [
+            bg // kf for bg, kf in zip(
+                animation_image.get_rect().size, [kf_sizex, kf_sizey]
+            )
+        ]
+        # construct a frame group (matrix of sub-images)
+        key_frame_group = [[
+                animation_image.subsurface(
+                    [kf_sizex * i, kf_sizey * j, kf_sizex, kf_sizey]
+                ) for i in range(n_keyframesx)
+            ] for j in range(n_keyframesy)
+        ]
+        if len(key_frame_group) == 1:
+            # single frame edge case: give it 4 frames
+            key_frame_group = [
+                key_frame_group[0] for _ in Compass.indicies
+            ]
+        
+        animation['key_frames'] = key_frame_group
+        if 'mask_path' in animation:
+            animation_mask = pg.image.load(
+                animation['mask_path']
             ).convert_alpha()
             new_size = [
                 dim * self.scale 
                 for dim in animation_image.get_rect().size
             ]
-            animation_image = pg.transform.scale(animation_image, new_size)
-            # get the size of each animation frame
-            kf_sizex, kf_sizey = [
-                i * self.scale for i in animation['key_frame_size']
-            ]
-            # calclulate the number of frames in the image
+            animation_mask = pg.transform.scale(animation_mask, new_size)
             n_keyframesx, n_keyframesy = [
                 bg // kf for bg, kf in zip(
                     animation_image.get_rect().size, [kf_sizex, kf_sizey]
                 )
             ]
-            # construct a frame group (matrix of sub-images)
             key_frame_group = [[
                     animation_image.subsurface(
                         [kf_sizex * i, kf_sizey * j, kf_sizex, kf_sizey]
@@ -157,17 +202,9 @@ class Character(Block):
                 key_frame_group = [
                     key_frame_group[0] for _ in Compass.indicies
                 ]
-            self.animation[animation['id']] = animation
-            self.animation[animation['id']]['key_frames'] = key_frame_group
-             
-        self.animate_data = self.animation[DEFAULT_ANIMATION]
-        self.null_image = self.animation['null']['key_frames'][0][0]
+            animation['mask'] = key_frame_group
 
-
-    def update(self):
-        pass
-        # self.animate()
-
+        return animation
 
     def animate(self):
         set_key_frame = False
@@ -212,6 +249,8 @@ class Character(Block):
         self.alt_image.image = image
         self.alt_image.rect = self.alt_image.image.get_rect()
         self.alt_image.rect.center = self.rect.center
+        if 'mask' in self.animate_data.keys():
+            self.alt_image
 
 
     def set_key_frame(self):
@@ -238,6 +277,16 @@ class Character(Block):
         move the character in a direction with
         move rejection from colliding with the foreground
         """
+        # this chunk is to correct for crazy frame rates
+        if distance < 1: # build up a buffer for high frame rates
+            self.dist_buffer += distance
+            distance = 0
+            
+        if self.dist_buffer > 1: # reset the buffer once it exceeds 1
+            distance += self.dist_buffer
+            self.dist_buffer = 0
+
+        distance = int(distance)
         xunit, yunit = direction
         addx, addy = distance * xunit, distance * yunit
         self.rect.move_ip(addx, addy)

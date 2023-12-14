@@ -68,8 +68,8 @@ class GameState(DictObj):
         self.current_scene = self.load_yaml(yaml_path)
 
         for name in self.DRAW_LAYERS:
-            group = self.layers[name]
-            group.empty() # clear out all groups
+            layer = self.layers[name]
+            layer.empty() # clear out all layers
             if name not in self.current_scene.keys():
                 continue
             for sprite_dict in self.current_scene[name]:
@@ -77,10 +77,13 @@ class GameState(DictObj):
                 sprite_instance = CLASS_MAP[sprite_dict['type']](**sprite_dict)
                 if sprite_instance.id == "PLAYER":
                     self.player = sprite_instance
-                group.add(sprite_instance)
+                layer.add(sprite_instance)
+                if "group_add" in sprite_instance.options.keys():
+                    for group in sprite_instance.options['group_add']:
+                        self.groups[group].add(sprite_instance)
                 if isinstance(sprite_instance, CLASS_MAP['Character']):
                     for group in sprite_instance.groups():
-                        group.add(sprite_instance.alt_image)
+                        layer.add(sprite_instance.alt_image)
 
         self.camera = Camera(self)
         self.camera.zoom(self.INIT_ZOOM)

@@ -9,11 +9,11 @@ class Player(Character):
     def __init__(self, **options):
         super().__init__(**options)
         # TODO: redo speeds in terms of subpixels so this can scale
-        self.PLAYERSPEED = 300 # pixels per second
+        self.speed = 300 # pixels per second
         self.todo_list = []
         self.signals = []
-        # self.dist_per_frame = self.PLAYERSPEED // self.game.clock.get_fps()
-        # self.dist_per_frame = math.ceil(self.PLAYERSPEED * self.game.dt / 1000)
+        # self.dist_per_frame = self.speed // self.game.clock.get_fps()
+        # self.dist_per_frame = math.ceil(self.speed * self.game.dt / 1000)
         self.keys_held = {key:False for key in self.game.KEY_BIND.keys()}
         self.button1_action = 'sword swing'
         # TODO add hit mask here
@@ -33,11 +33,10 @@ class Player(Character):
 
             if action in Compass.strings:
                 fps = self.game.clock.get_fps()
-                fps = 1 if not fps else fps
+                if not fps: continue
                 # ^ means a direction button is being pressed
                 self.move(Compass.vec_map[action], 
-                # self.dist_per_frame
-                    self.PLAYERSPEED // fps
+                    self.speed / fps
                 )
                 self.direction = Compass.i_map[action]
                 self.animate_data = self.animation['walk']

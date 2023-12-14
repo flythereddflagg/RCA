@@ -39,10 +39,10 @@ class Ossifrage(Character):
         if action in Compass.strings: 
             # ^ means a direction button is being pressed
             fps = self.game.clock.get_fps()
-            fps = 1 if not fps else fps
+            if not fps: return
             self.move(Compass.vec_map[action], 
             # self.dist_per_frame
-                self.speed // fps
+                self.speed / fps
             )
             self.direction = Compass.i_map[action]
             self.animate_data = self.animation['walk']
@@ -66,5 +66,5 @@ class Ossifrage(Character):
             for player in collided_players:
                 # TODO figure out how to deal damage
                 player.signal(['take damage', 10])
-                print("collide")
+                print("foe hits player")
                 
