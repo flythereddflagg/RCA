@@ -223,6 +223,7 @@ class Character(Block):
         
         if set_key_frame: self.set_key_frame()
 
+        # if enough time has passed, set the new image
         cur_time = pg.time.get_ticks()
         for _ in range((cur_time -  self.last_frame_time) // self.frame_time):
             self.set_image(next(self.key_frame, None))
@@ -249,14 +250,14 @@ class Character(Block):
         self.alt_image.image = image
         self.alt_image.rect = self.alt_image.image.get_rect()
         self.alt_image.rect.center = self.rect.center
-        if 'mask' in self.animate_data.keys():
-            self.alt_image
+        
 
 
     def set_key_frame(self):
         self.key_frame = self.gen_from_list(
             self.key_frames, repeat=self.animate_data['repeat']
         )
+        # TODO: set up mask changes here!
         self.key_frame_time = self.gen_from_list(self.key_frame_times)
         self.set_image(next(self.key_frame, None))
         self.frame_time = next(self.key_frame_time)
