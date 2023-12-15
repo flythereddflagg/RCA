@@ -131,7 +131,18 @@ class Character(Block):
         for animation in self.options['animations']:
             # load in each animation for a character 
             # defined in their yaml data
-            self.animation[animation['id']] = self.parse_animation(animation)
+            animation['key_frames'] = self.parse_animation(
+                animation['asset_path'], animation['key_frame_size']
+            )
+            # add a special mask if it exists
+            if 'mask_path' in animation:
+                animation['mask'] = self.parse_animation(
+                    animation['mask_path'], animation['key_frame_size'],
+                    make_mask=True
+                )
+            self.animation[animation['id']] =  animation
+
+
              
         self.animate_data = self.animation[DEFAULT_ANIMATION]
         self.null_image = self.animation['null']['key_frames'][0][0]
@@ -141,14 +152,9 @@ class Character(Block):
         pass
         # self.animate()
 
-# TODO: abstract frame parsing by feeding all the relevant info!
-# Should look like: def parse_animation(self, asset_path, key_frame_size): 
-    def parse_animation(self, animation): 
-        assert all([
-            key in animation.keys() 
-            for key in self.required_animation_keys
-        ])
-        animation_image = pg.image.load(animation['asset_path']).convert_alpha()
+
+    def parse_animation(self, asset_path, key_frame_size, make_mask=False): 
+        animation_image = pg.image.load(asset_path).convert_alpha()
         new_size = [
             dim * self.scale 
             for dim in animation_image.get_rect().size
@@ -156,7 +162,7 @@ class Character(Block):
         animation_image = pg.transform.scale(animation_image, new_size)
         # get the size of each animation frame
         kf_sizex, kf_sizey = [
-            i * self.scale for i in animation['key_frame_size']
+            i * self.scale for i in key_frame_size
         ]
         # calclulate the number of frames in the image
         n_keyframesx, n_keyframesy = [
@@ -176,36 +182,20 @@ class Character(Block):
             key_frame_group = [
                 key_frame_group[0] for _ in Compass.indicies
             ]
-        
-        animation['key_frames'] = key_frame_group
-        if 'mask_path' in animation:
-            animation_mask = pg.image.load(
-                animation['mask_path']
-            ).convert_alpha()
-            new_size = [
-                dim * self.scale 
-                for dim in animation_image.get_rect().size
-            ]
-            animation_mask = pg.transform.scale(animation_mask, new_size)
-            n_keyframesx, n_keyframesy = [
-                bg // kf for bg, kf in zip(
-                    animation_image.get_rect().size, [kf_sizex, kf_sizey]
+        for direction in key_frame_group:
+            for item in direction:
+                assert isinstance(item, pg.Surface), f"{item} is not surface"
+        if make_mask:
+            key_frame_group = [
+                map(
+                    lambda frame: pg.mask.from_surface(frame),
+                    group
                 )
+                for group in key_frame_group
             ]
-            key_frame_group = [[
-                    animation_image.subsurface(
-                        [kf_sizex * i, kf_sizey * j, kf_sizex, kf_sizey]
-                    ) for i in range(n_keyframesx)
-                ] for j in range(n_keyframesy)
-            ]
-            if len(key_frame_group) == 1:
-                # single frame edge case: give it 4 frames
-                key_frame_group = [
-                    key_frame_group[0] for _ in Compass.indicies
-                ]
-            animation['mask'] = key_frame_group
 
-        return animation
+        return key_frame_group
+
 
     def animate(self):
         set_key_frame = False
