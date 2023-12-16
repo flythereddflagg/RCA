@@ -187,10 +187,10 @@ class Character(Block):
                 assert isinstance(item, pg.Surface), f"{item} is not surface"
         if make_mask:
             key_frame_group = [
-                map(
+                list(map(
                     lambda frame: pg.mask.from_surface(frame),
                     group
-                )
+                ))
                 for group in key_frame_group
             ]
 
@@ -220,6 +220,8 @@ class Character(Block):
             self.set_image(next(self.key_frame, None))
             self.frame_time = next(self.key_frame_time)
             self.last_frame_time = cur_time
+            if 'mask' in self.animate_data.keys():
+                self.alt_image.mask = next(self.alt_image.mask_set)
         
         if self.image is None: # animation is done
             self.animation_active = False
@@ -227,6 +229,7 @@ class Character(Block):
             self.last_animate = self.animate_data['id']
             self.animate_data = self.animation[last_animate]
             self.set_key_frame()
+            self.alt_image.mask = None
 
 
     def set_image(self, image):
@@ -248,10 +251,16 @@ class Character(Block):
         self.key_frame = self.gen_from_list(
             self.key_frames, repeat=self.animate_data['repeat']
         )
-        # TODO: set up mask changes here!
         self.key_frame_time = self.gen_from_list(self.key_frame_times)
         self.set_image(next(self.key_frame, None))
         self.frame_time = next(self.key_frame_time)
+        
+        if 'mask' in self.animate_data.keys():
+            self.alt_image.mask_set = self.gen_from_list(
+                self.animate_data['mask'][self.direction]
+            )
+            self.alt_image.mask = next(self.alt_image.mask_set)
+            
 
 
     def gen_from_list(self, item_list, repeat=True):

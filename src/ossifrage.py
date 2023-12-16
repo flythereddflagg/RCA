@@ -17,6 +17,7 @@ class Ossifrage(Character):
         self.speed = 200 # pixels per second
         # self.dist_per_frame = self.speed // self.game.clock.get_fps()
         # self.dist_per_frame = math.ceil(self.speed * self.game.dt / 1000)
+        self.signals = []
 
 
     def update(self):
@@ -32,6 +33,13 @@ class Ossifrage(Character):
 
         self.animate()
 
+
+    def check_signals(self):
+        if self.signals: print(f"[{self.id}] got signals:\n{self.signals}")
+        self.signals = [] # reset signals
+
+    def signal(self, signal):
+        self.signals.append(signal)
 
     def apply_action(self, action):
         if self.animation_active: return
@@ -65,6 +73,5 @@ class Ossifrage(Character):
         if collided_players is not None:
             for player in collided_players:
                 # TODO figure out how to deal damage
-                player.signal(['take damage', 10])
-                print("foe hits player")
+                player.signal(['damage', 10])
                 
