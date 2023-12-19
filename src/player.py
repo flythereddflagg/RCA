@@ -16,6 +16,7 @@ class Player(Character):
         # self.dist_per_frame = math.ceil(self.speed * self.game.dt / 1000)
         self.keys_held = {key:False for key in self.game.KEY_BIND.keys()}
         self.button1_action = 'sword swing'
+        self.hp = 600
 
 
     def apply_todos(self):
@@ -63,6 +64,9 @@ class Player(Character):
         self.check_collision()
         self.check_signals()
         self.animate()
+        
+        if self.hp <= 0: 
+            self.kill()
 
 
     def add_todo(self, action):
@@ -74,8 +78,10 @@ class Player(Character):
 
     def check_signals(self):
         if self.signals: print(f"[{self.id}] got signals:{self.signals}")
+        for signal in self.signals:
+            if "damage" in signal[0]:
+                self.hp -= signal[1]
         self.signals = [] # reset signals
-    # TODO implement this so it checks stuff from other sprites
 
     def check_collision(self):
         if self.alt_image.mask:
@@ -85,4 +91,5 @@ class Player(Character):
                 # do not kill, use the masks for collision
                 False, pg.sprite.collide_mask
             ):
-                sprite.signal(["slashing damage", 10])
+                sprite.signal(["damage", 10])
+

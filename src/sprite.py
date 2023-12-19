@@ -300,6 +300,10 @@ class Character(Block):
             False, pg.sprite.collide_mask
         ):
             self.rect.move_ip(-xunit, -yunit) # move back 1
+
+    def kill(self):
+        self.alt_image.kill()
+        super().kill()
     
 
 
