@@ -278,14 +278,16 @@ class Character(Block):
         move the character in a direction with
         move rejection from colliding with the foreground
         """
+        if distance < 0:
+            direction = Compass.vec_map[Compass.indicies[Compass.i_map[direction] - 2]]
+            distance *= -1
         # this chunk is to correct for crazy frame rates
-        if distance < 1: # build up a buffer for high frame rates
-            self.dist_buffer += distance
-            distance = 0
+        self.dist_buffer += distance % 1
+        distance -= distance % 1
             
         if self.dist_buffer > 1: # reset the buffer once it exceeds 1
             distance += self.dist_buffer
-            self.dist_buffer = 0
+            self.dist_buffer = distance % 1
 
         distance = int(distance)
         xunit, yunit = direction

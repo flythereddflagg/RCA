@@ -16,7 +16,7 @@ class Ossifrage(Character):
         self.action = None
         self.speed = 200 # pixels per second
         self.signals = []
-        self.hp = 500
+        self.hp = 50
 
 
     def update(self):
@@ -32,9 +32,15 @@ class Ossifrage(Character):
         self.check_signals()
 
         self.animate()
+        
 
         if self.hp <= 0: 
             self.kill()
+
+        if self.animate_data['id'] == 'damage' and self.animation_active:
+            fps = self.game.clock.get_fps()
+            if fps:
+                self.move(Compass.vec_map[self.direction], -3*self.speed / fps)
 
 
     def check_signals(self):
@@ -42,6 +48,9 @@ class Ossifrage(Character):
         for signal in self.signals:
             if "damage" in signal[0]:
                 self.hp -= signal[1]
+                self.animate_data = self.animation['damage']
+                self.animation_active = not self.animate_data["repeat"]
+
         self.signals = [] # reset signals
 
     def signal(self, signal):
@@ -78,6 +87,5 @@ class Ossifrage(Character):
         )
         if collided_players is not None:
             for player in collided_players:
-                # TODO figure out how to deal damage
                 player.signal(['damage', 10])
                 

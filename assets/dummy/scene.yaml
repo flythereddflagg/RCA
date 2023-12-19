@@ -21,6 +21,24 @@ foreground:
     startx: 0 # match the background
     starty: 0
     # scale: 2
+  - id: dungeon_blockade1
+    type: Block
+    asset_path: ./assets/dummy/block.png
+    startx: 548 # match the background
+    starty: 937
+    scale: 2
+  - id: dungeon_blockade2
+    type: Block
+    asset_path: ./assets/dummy/block.png
+    startx: 730 # match the background
+    starty: 750
+    scale: 2
+  - id: dungeon_blockade3
+    type: Block
+    asset_path: ./assets/dummy/block.png
+    startx: 930 # match the background
+    starty: 1000
+    scale: 2
 
 characters:
   - id: PLAYER # reference to THE main player

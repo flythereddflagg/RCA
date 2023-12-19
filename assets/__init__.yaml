@@ -1,6 +1,6 @@
 # Screen Constants 
 # Frame rate ( in Frames / second)
-FPS: 60 # 0 = do not limit FPS
+FPS: 30 # 0 = do not limit FPS
 # FIXME: game is unstable at FPS > about 100
 FPS_COUNTER: false
 # initial screen size
