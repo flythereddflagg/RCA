@@ -38,8 +38,8 @@ characters:
   - id: PLAYER # reference to THE main player
     type: Player
     asset_path: ./assets/dummy/player.yaml
-    startx: 800
-    starty: 900
+    startx: 1430
+    starty: 600
     scale: 1
   - id: ossifrage 1
     type: Ossifrage
@@ -62,7 +62,7 @@ characters:
   - id: dungeon_trigger
     type: Trigger
     asset_path: ./assets/dummy/block.png
-    startx: 548 # match the background
-    starty: 937
+    startx: 1430 # match the background
+    starty: 400
     scale: 1
     scene_path: ./assets/dummy/scene.yaml
