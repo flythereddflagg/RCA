@@ -21,24 +21,18 @@ foreground:
     startx: 0 # match the background
     starty: 0
     # scale: 2
-  - id: dungeon_blockade1
-    type: Block
-    asset_path: ./assets/dummy/block.png
-    startx: 548 # match the background
-    starty: 937
-    scale: 2
-  - id: dungeon_blockade2
-    type: Block
-    asset_path: ./assets/dummy/block.png
-    startx: 730 # match the background
-    starty: 750
-    scale: 2
-  - id: dungeon_blockade3
-    type: Block
-    asset_path: ./assets/dummy/block.png
-    startx: 930 # match the background
-    starty: 1000
-    scale: 2
+  # - id: dungeon_blockade2
+  #   type: Block
+  #   asset_path: ./assets/dummy/block.png
+  #   startx: 730 # match the background
+  #   starty: 750
+  #   scale: 2
+  # - id: dungeon_blockade3
+  #   type: Block
+  #   asset_path: ./assets/dummy/block.png
+  #   startx: 930 # match the background
+  #   starty: 1000
+  #   scale: 2
 
 characters:
   - id: PLAYER # reference to THE main player
@@ -46,7 +40,7 @@ characters:
     asset_path: ./assets/dummy/player.yaml
     startx: 800
     starty: 900
-    scale: 2
+    scale: 1
   - id: ossifrage 1
     type: Ossifrage
     asset_path: ./assets/dummy/ossifrage.yaml
@@ -65,3 +59,11 @@ characters:
     startx: 800
     starty: 1000
     scale: 2
+  - id: dungeon_trigger
+    type: Trigger
+    # type: Block
+    asset_path: ./assets/dummy/block.png
+    startx: 548 # match the background
+    starty: 937
+    scale: 2
+    scene_path: ./assets/dummy/scene2.yaml
