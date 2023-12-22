@@ -25,6 +25,7 @@ class GameState(DictObj):
         self.camera = None
         self.player = None
         self.INV_KEY_BIND = {v: k for k, v in self.KEY_BIND.items()}
+        # TODO add a group single for background sprites
         self.groups = {
             group_name: pg.sprite.Group() 
             for group_name in self.SPRITE_GROUPS
@@ -70,6 +71,9 @@ class GameState(DictObj):
         """
         self.current_scene = self.load_yaml(yaml_path)
 
+        for name in self.SPRITE_GROUPS:
+            self.groups[name].empty()
+
         for name in self.DRAW_LAYERS:
             layer = self.layers[name]
             layer.empty() # clear out all layers
@@ -90,6 +94,7 @@ class GameState(DictObj):
 
         self.camera = Camera(self)
         self.camera.zoom(self.INIT_ZOOM)
+
 
 
     @staticmethod    

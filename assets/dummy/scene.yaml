@@ -63,7 +63,10 @@ characters:
     type: Trigger
     # type: Block
     asset_path: ./assets/dummy/block.png
-    startx: 548 # match the background
-    starty: 937
+    startx: 756 # match the background
+    starty: 1150
     scale: 2
     scene_path: ./assets/dummy/scene2.yaml
+    player_start: # starting pos of the player
+      - 1430
+      - 410

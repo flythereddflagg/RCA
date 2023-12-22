@@ -24,3 +24,8 @@ class Trigger(Block):
     
     def exec_trigger(self):
         self.game.load_scene(self.options['scene_path'])
+        if "player_start" in self.options.keys():
+            startx, starty = self.options['player_start']
+            background = self.game.layers['background'].sprites()[0]
+            self.game.player.rect.x = background.rect.x + startx
+            self.game.player.rect.y = background.rect.y + starty

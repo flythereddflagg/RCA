@@ -99,5 +99,6 @@ class Player(Character):
                 # do not kill, use the masks for collision
                 False, pg.sprite.collide_mask
             ):
+            # TODO make them jump back in the direction of the sword swing
                 sprite.signal(["damage", 10])
 

@@ -62,7 +62,10 @@ characters:
   - id: dungeon_trigger
     type: Trigger
     asset_path: ./assets/dummy/block.png
-    startx: 1430 # match the background
-    starty: 400
-    scale: 1
+    startx: 1430
+    starty: 340
+    scale: 2
     scene_path: ./assets/dummy/scene.yaml
+    player_start: # starting pos of the player
+      - 756
+      - 1110
