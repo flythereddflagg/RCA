@@ -273,18 +273,26 @@ class Character(Block):
             if not repeat: break
 
 
-    def move(self, direction, distance=0, speed=0):
+    def move(
+        self, direction:int|str|tuple, 
+        distance:int=0, speed:int|float=0
+    ) -> None:
         """
         move the character in a direction with
         move rejection from colliding with the foreground
         if speed is given it will override distance
+        @param direction MUST be of type: int, str, or tuple
+        @param distance MUST be of type: int
+        @param speed may be int or float
         """
+        if isinstance(direction, str) or isinstance(direction, tuple):
+            direction = Compass.i_map[direction] # convert to int
         if speed:
             fps = self.game.clock.get_fps()
             if not fps: return
             distance = speed / fps
         if distance < 0:
-            direction = Compass.vec_map[Compass.indicies[Compass.i_map[direction] - 2]]
+            direction = Compass.opposite[direction]
             distance *= -1
         # this chunk is to correct for crazy frame rates
         self.dist_buffer += distance % 1
@@ -295,7 +303,7 @@ class Character(Block):
             self.dist_buffer = distance % 1
 
         distance = int(distance)
-        xunit, yunit = direction
+        xunit, yunit = Compass.vec_map[direction]
         addx, addy = distance * xunit, distance * yunit
         self.rect.move_ip(addx, addy)
 
