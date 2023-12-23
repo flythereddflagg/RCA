@@ -40,7 +40,7 @@ class Ossifrage(Character):
         if self.animate_data['id'] == 'damage' and self.animation_active:
             fps = self.game.clock.get_fps()
             if fps:
-                self.move(Compass.vec_map[self.direction], -3*self.speed / fps)
+                self.move(Compass.vec_map[self.direction], speed=-3*self.speed)
 
 
     def check_signals(self):

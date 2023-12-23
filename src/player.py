@@ -68,10 +68,8 @@ class Player(Character):
             self.kill()
         
         if self.animate_data['id'] == 'damage' and self.animation_active:
-            fps = self.game.clock.get_fps()
-            if fps:
-                self.move(Compass.vec_map[self.direction], -3*self.speed / fps)
-                # TODO fix 'move' to be more abstract
+                self.move(Compass.vec_map[self.direction], speed=-3*self.speed)
+                # TODO maybe move these two lines into one of the functions?
 
     def add_todo(self, action):
         self.todo_list.append(action)

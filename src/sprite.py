@@ -273,11 +273,16 @@ class Character(Block):
             if not repeat: break
 
 
-    def move(self, direction, distance):
+    def move(self, direction, distance=0, speed=0):
         """
         move the character in a direction with
         move rejection from colliding with the foreground
+        if speed is given it will override distance
         """
+        if speed:
+            fps = self.game.clock.get_fps()
+            if not fps: return
+            distance = speed / fps
         if distance < 0:
             direction = Compass.vec_map[Compass.indicies[Compass.i_map[direction] - 2]]
             distance *= -1
