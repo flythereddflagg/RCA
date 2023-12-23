@@ -19,13 +19,20 @@ class Ossifrage(Character):
         self.hp = 50
 
 
-    def update(self):
+    def animate(self):
+        super().animate()
+        if self.animate_data['id'] == 'damage' and self.animation_active:
+            self.move(self.direction, speed=-3*self.speed)
+
+    def choose_action(self):
         cur_time = pg.time.get_ticks()
         if cur_time - self.last_action_time > self.action_time: 
             self.last_action_time = cur_time
             self.action = random.choice(MOVEMENTS)
             self.action_time = random.randint(*ACTION_TIME_RANGE)
-        
+
+    def update(self):
+        self.choose_action() # choose a random action
         self.check_collision() # update action if necessaary
         
         self.apply_action(self.action)
@@ -37,17 +44,13 @@ class Ossifrage(Character):
         if self.hp <= 0: 
             self.kill()
 
-        if self.animate_data['id'] == 'damage' and self.animation_active:
-            fps = self.game.clock.get_fps()
-            if fps:
-                self.move(Compass.vec_map[self.direction], speed=-3*self.speed)
-
 
     def check_signals(self):
         if self.signals: print(f"[{self.id}] got signals:\n{self.signals}")
         for signal in self.signals:
             if "damage" in signal[0]:
                 self.hp -= signal[1]
+                self.direction = signal[2]
                 self.animate_data = self.animation['damage']
                 self.animation_active = not self.animate_data["repeat"]
 
@@ -61,12 +64,7 @@ class Ossifrage(Character):
 
         if action in Compass.strings: 
             # ^ means a direction button is being pressed
-            fps = self.game.clock.get_fps()
-            if not fps: return
-            self.move(Compass.vec_map[action], 
-            # self.dist_per_frame
-                self.speed / fps
-            )
+            self.move(action, speed=self.speed)
             self.direction = Compass.i_map[action]
             self.animate_data = self.animation['walk']
             
@@ -79,6 +77,8 @@ class Ossifrage(Character):
 
 
     def check_collision(self):
+        if self.animate_data['id'] == 'damage' and self.animation_active:
+            return
         collided_players = pg.sprite.spritecollide(
             # collide between self and player
             self, self.game.groups['player'], 
@@ -87,5 +87,7 @@ class Ossifrage(Character):
         )
         if collided_players is not None:
             for player in collided_players:
-                player.signal(['damage', 10])
+                player.signal([
+                    'damage', 10, Compass.opposite[self.direction]
+                ])
                 

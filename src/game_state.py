@@ -59,7 +59,6 @@ class GameState(DictObj):
 
     
     def process_inputs(self, action):
-        # TODO add more to this so that other characters move and act
         if not self.paused and self.player:
             self.player.add_todo(action)
 

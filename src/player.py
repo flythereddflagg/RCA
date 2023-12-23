@@ -32,11 +32,8 @@ class Player(Character):
             if self.animation_active: continue
             # TODO abstract decisions
             if action in Compass.strings:
-                # ^ means a direction button is being pressed
-                fps = self.game.clock.get_fps()
-                if not fps: continue
-                
-                self.move(Compass.vec_map[action], self.speed / fps)
+                # ^ means a direction button is being pressed                
+                self.move(action, speed=self.speed)
                 self.direction = Compass.i_map[action]
                 self.animate_data = self.animation['walk']
                 
@@ -57,19 +54,21 @@ class Player(Character):
         for todo in todo_list_bak:
             self.keys_held[todo] = True
 
-    
+    def animate(self):
+        super().animate()
+        if self.animate_data['id'] == 'damage' and self.animation_active:
+                self.move(self.direction, speed=-3*self.speed)
+
     def update(self):
         self.apply_todos()
         self.check_collision()
         self.check_signals()
         self.animate()
         
-        if self.hp <= 0: 
+        if self.hp <= 0:
+            self.game.player = None
             self.kill()
-        
-        if self.animate_data['id'] == 'damage' and self.animation_active:
-                self.move(Compass.vec_map[self.direction], speed=-3*self.speed)
-                # TODO maybe move these two lines into one of the functions?
+
 
     def add_todo(self, action):
         self.todo_list.append(action)
@@ -83,6 +82,7 @@ class Player(Character):
         for signal in self.signals:
             if "damage" in signal[0]:
                 self.hp -= signal[1]
+                self.direction = signal[2]
                 self.animate_data = self.animation['damage']
                 self.animation_active = not self.animate_data["repeat"]
             # TODO abstract this out into sprite
@@ -90,6 +90,8 @@ class Player(Character):
         self.signals = [] # reset signals
 
     def check_collision(self):
+        if self.animate_data['id'] == 'damage' and self.animation_active:
+            return
         if self.alt_image.mask:
             for sprite in pg.sprite.spritecollide(
                 # collide between character and foreground
@@ -97,6 +99,7 @@ class Player(Character):
                 # do not kill, use the masks for collision
                 False, pg.sprite.collide_mask
             ):
-            # TODO make them jump back in the direction of the sword swing
-                sprite.signal(["damage", 10])
+                sprite.signal([
+                    "damage", 10, Compass.opposite[self.direction]
+                ])
 
