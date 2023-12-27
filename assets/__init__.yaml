@@ -47,4 +47,4 @@ SPRITE_GROUPS:
   # - hud          # HUD (health, money etc.)
   # - misc         # other (dialog boxes etc.)
 
-INITAL_SCENE: "./assets/dummy/scene.yaml"
+INITAL_SCENE: "./assets/red_castle_valley/scene.yaml"
