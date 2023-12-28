@@ -50,8 +50,8 @@ characters:
     scale: 2.5
     scene_path: ./assets/mansion_yard/scene.yaml
     player_start: # starting pos of the player
-      - 1430
-      - 410
+      - 855
+      - 1930
   - id: forest_exit
     type: Trigger
     # type: Block
