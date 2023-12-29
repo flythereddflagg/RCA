@@ -8,7 +8,7 @@ hud:
 background:
   - id: dungeon_tile
     type: Decal
-    asset_path: ./assets/red_castle_valley/background.png
+    asset_path: ./assets/forest/map.png
     # asset_path: ./assets/dummy/null.png
     startx: 0
     starty: 0
@@ -17,7 +17,7 @@ background:
 foreground:
   - id: dungeon_walls
     type: Block
-    asset_path: ./assets/red_castle_valley/foreground.png
+    asset_path: ./assets/forest/foreground.png
     startx: 0 # match the background
     starty: 0
     # scale: 2
@@ -56,13 +56,13 @@ characters:
     type: Trigger
     # type: Block
     asset_path: ./assets/dummy/block.png
-    startx: 135 # match the background
-    starty: 650
+    startx: 390 # match the background
+    starty: 600
     scale: 2.5
-    scene_path: ./assets/forest/scene.yaml
+    scene_path: ./assets/red_castle_valley/scene.yaml
     player_start: # starting pos of the player
-      - 300
-      - 630  
+      - 250
+      - 675 
   - id: mountain_trail_exit
     type: Trigger
     # type: Block
