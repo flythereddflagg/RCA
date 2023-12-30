@@ -10,6 +10,7 @@ class Camera:
         self.mobile_groups.remove('hud')
 
     def update(self):
+        if not self.player: return
         # get the current center of the screen
         screen_data = pg.display.Info()
         centerx = screen_data.current_w // 2
