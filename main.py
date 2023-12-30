@@ -21,10 +21,12 @@ if __name__ == "__main__":
 # GENERAL TO-DO LIST
 # TODO rewrite UML for updated data structure SCHEME
 # TODO write down character and enemy ideas
+# TODO make at least three enemies (not including the dragon)
 # TODO make meaningful TESTS
 # TODO make a pause and save screen or whatever
 # TODO make an inventory system
 # TODO flesh out HUD
 # TODO make a startup screen
+# TODO make a load screen
 # TODO make controllers work
 # TODO implement the RCA W1 story

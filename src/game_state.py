@@ -13,7 +13,7 @@ CLASS_MAP['Player'] = Player
 CLASS_MAP['Ossifrage'] = Ossifrage
 CLASS_MAP['Trigger'] = Trigger
 
-
+# TODO make a separate class as a scene that can be loaded and saved
 
 class GameState(DictObj):
     def __init__(self, **kwargs):
