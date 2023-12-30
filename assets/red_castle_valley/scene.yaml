@@ -61,8 +61,8 @@ characters:
     scale: 2.5
     scene_path: ./assets/forest/scene.yaml
     player_start: # starting pos of the player
-      - 300
-      - 630  
+      - 264
+      - 600 
   - id: mountain_trail_exit
     type: Trigger
     # type: Block
