@@ -40,26 +40,25 @@ characters:
     player_start: # starting pos of the player
       - 855
       - 1
-  - id: forest_exit
+  # - id: forest_exit
+  #   type: Trigger
+  #   asset_path: ./assets/dummy/block.png
+  #   startx: 1410 # match the background
+  #   starty: 1343
+  #   scale: 2.5
+  #   scene_path: ./assets/dummy/scene2.yaml
+  #   player_start: # starting pos of the player
+  #     - 1430
+  #     - 410  
+  - id: alley_exit
     type: Trigger
     # type: Block
     asset_path: ./assets/dummy/block.png
-    startx: 135 # match the background
-    starty: 650
+    startx: 688 # match the background
+    starty: 146
     scale: 2.5
-    scene_path: ./assets/dummy/scene2.yaml
+    scene_path: ./assets/alleyway/scene.yaml
     player_start: # starting pos of the player
-      - 1430
-      - 410  
-  - id: mountain_trail_exit
-    type: Trigger
-    # type: Block
-    asset_path: ./assets/dummy/block.png
-    startx: 1255 # match the background
-    starty: 1030
-    scale: 2.5
-    scene_path: ./assets/dummy/scene2.yaml
-    player_start: # starting pos of the player
-      - 1430
-      - 410
+      - 1100
+      - 167
       # TODO add scene transitions

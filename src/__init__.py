@@ -8,6 +8,8 @@ import pygame as pg
 from .game_state import GameState
 
 BLACK = (0, 0, 0)
+SHOW_KB_INPUT = False
+SHOW_EVENTS = False
 
 
 def init_game(data_path):
@@ -40,24 +42,26 @@ def init_game(data_path):
 
 
 def get_input(game):
+    # TODO set key codes with using pg.key.key_code(name=string) -> int
     game_input = []
 
-    # make the exit button work
     events = pg.event.get()
+    if SHOW_EVENTS:
+        for event in events:
+            print(event.type, event)
     if pg.QUIT in [event.type for event in events]: return ["QUIT"]    
 
-    # get general events
-    # for event in events:
-    #     print(event.type, event)
-
-    # get pressed keyboard keys
     # TODO make the input more sophisticated
-    valid_keys = [key for key in game.INV_KEY_BIND.keys()]
-    pressed_keys = [
+    
+    valid_keys = game.INV_KEY_BIND.keys()
+    all_keys_pressed = [
         i 
         for i, pressed in enumerate(pg.key.get_pressed()) 
-        if (pressed and i in valid_keys)
+        if pressed
     ]
+    if SHOW_KB_INPUT: print(all_keys_pressed)
+
+    pressed_keys = [key for key in all_keys_pressed if key in valid_keys]
 
     if game.KEY_BIND['FORCE_QUIT'] in pressed_keys: return ['QUIT']
 
@@ -75,7 +79,7 @@ def run_game(game):
         draw_frame(game)
         game.dt = (
             game.clock.tick() 
-            if game.FPS < 1 else 
+            if game.FPS < -1 else 
             game.clock.tick(game.FPS)
         )
 
@@ -88,8 +92,6 @@ def draw_frame(game):
     
     game.screen.fill(BLACK)
     for group_name in game.DRAW_LAYERS:
-        # if game.groups[group_name].sprites():
-        #     print(game.groups[group_name].sprites()[0]) 
         game.layers[group_name].draw(game.screen)
 
     if game.FPS_COUNTER:
