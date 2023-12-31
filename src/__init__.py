@@ -50,18 +50,29 @@ def get_input(game):
             print(event.type, event)
 
     # FIXME this change totally broke how get_pressed works.
-    pressed_keys = [
-        pg.key.name(event.key) for event in events if event.type == pg.KEYDOWN
-    ]
-    if pressed_keys: print(pressed_keys)
+    # pressed_keys = [
+    #     # pg.key.name(event.key) for event in events if event.type == pg.KEYDOWN
+    #     (i, pg.key.name(i))
+    #     for i, pressed in enumerate(pg.key.get_pressed())
+    #     if pressed
+    # ]
+    # if pressed_keys: print(pressed_keys)
     if pg.QUIT in [event.type for event in events]: return ["QUIT"]    
 
     # TODO make the input more sophisticated
+    # game_input = [
+    #     game.INV_KEY_BIND[key] 
+    #     for key in pressed_keys 
+    #     if key in game.INV_KEY_BIND.keys()
+    # ]
+    pressed_keys = list(pg.key.get_pressed())
+    for key, bind in game.KEY_BIND.items():
+        print(pg.key.key_code(bind))
     game_input = [
-        game.INV_KEY_BIND[key] 
-        for key in pressed_keys 
-        if key in game.INV_KEY_BIND.keys()
+        key for key, bind in game.KEY_BIND.items()
+        if pressed_keys[pg.key.key_code(bind)]
     ]
+    if game_input: print(game_input)
     if 'FORCE_QUIT' in game_input: return ['QUIT']
     
     return game_input
@@ -73,7 +84,7 @@ def run_game(game):
     while game.running:
         game_input = get_input(game)
         game.logic(game_input)
-        draw_frame(game)
+        # draw_frame(game)
         game.dt = (
             game.clock.tick() 
             if game.FPS < -1 else 
