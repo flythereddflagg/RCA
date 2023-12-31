@@ -49,6 +49,7 @@ def get_input(game):
         for event in events:
             print(event.type, event)
 
+    # FIXME this change totally broke how get_pressed works.
     pressed_keys = [
         pg.key.name(event.key) for event in events if event.type == pg.KEYDOWN
     ]
