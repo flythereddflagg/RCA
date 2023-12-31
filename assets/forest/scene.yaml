@@ -74,4 +74,3 @@ characters:
     player_start: # starting pos of the player
       - 1430
       - 410
-      # TODO add scene transitions

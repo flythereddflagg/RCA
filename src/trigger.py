@@ -14,7 +14,7 @@ class Trigger(Block):
     def check_collision(self):
         collided_players = pg.sprite.spritecollide(
             # collide between self and player
-            self, self.game.groups['player'], 
+            self, self.scene.groups['player'], 
             # do not kill, use the masks for collision
             False, pg.sprite.collide_mask
         )
@@ -23,9 +23,9 @@ class Trigger(Block):
             self.exec_trigger()
     
     def exec_trigger(self):
-        self.game.load_scene(self.options['scene_path'])
+        self.scene.load_scene(self.options['scene_path'])
         if "player_start" in self.options.keys():
             startx, starty = self.options['player_start']
-            background = self.game.layers['background'].sprites()[0]
-            self.game.player.rect.x = background.rect.x + startx
-            self.game.player.rect.y = background.rect.y + starty
+            background = self.scene.layers['background'].sprites()[0]
+            self.scene.player.rect.x = background.rect.x + startx
+            self.scene.player.rect.y = background.rect.y + starty

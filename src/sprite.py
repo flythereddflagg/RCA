@@ -33,9 +33,9 @@ class Decal(pg.sprite.Sprite):
         super().__init__()
         self.id = options['id']
         self.asset_path = options["asset_path"]
-        self.game = options["game"] # a reference to the game the sprite is in
+        self.scene = options["game"] # a reference to the game the sprite is in
         if self.asset_path.endswith(".yaml"):
-            extra_opts = self.game.load_yaml(self.asset_path)
+            extra_opts = self.scene.game.load_yaml(self.asset_path)
             options = {**options, **extra_opts}
         self.asset_path = options["asset_path"]
         self.image = pg.image.load(self.asset_path).convert_alpha()
@@ -77,7 +77,7 @@ class Block(Decal):
     def __init__(self, **options):
         super().__init__(**options)
         self.mask = pg.mask.from_surface(self.image)
-        background = self.game.layers['background'].sprites()[0]
+        background = self.scene.layers['background'].sprites()[0]
 
         bg_map = {
             'center' : background.rect.center,
@@ -122,7 +122,7 @@ class Character(Block):
         self.default_image = self.image
         self.alt_image = Decal(**{
             "id": self.id + "_alt",
-            "game": self.game,
+            "game": self.scene,
             "asset_path": NULL_PATH,
             "startx":0,
             "starty":0,
@@ -288,7 +288,7 @@ class Character(Block):
         if isinstance(direction, str) or isinstance(direction, tuple):
             direction = Compass.i_map[direction] # convert to int
         if speed:
-            fps = self.game.clock.get_fps()
+            fps = self.scene.game.clock.get_fps()
             if not fps: return
             distance = speed / fps
         if distance < 0:
@@ -310,7 +310,7 @@ class Character(Block):
         # move rejection for foreground
         while pg.sprite.spritecollide(
             # collide between character and foreground
-            self, self.game.layers['foreground'], 
+            self, self.scene.layers['foreground'], 
             # do not kill, use the masks for collision
             False, pg.sprite.collide_mask
         ):

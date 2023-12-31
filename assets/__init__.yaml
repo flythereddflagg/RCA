@@ -9,43 +9,24 @@ SCREENHEIGHT: 768
 # SCREENWIDTH: 800
 # SCREENHEIGHT: 600
 
-# amount to scale everything
-INIT_ZOOM: 1
 
-# pixels before camera moves instead of player
-CAMERASLACK: 100
+
+
 
 # key bindings for keyboard input
-# integer values correspond to pygame convention
 KEY_BIND:
-  REFRESH: 21
-  FORCE_QUIT: 42
-  START: 40
-  SELECT: 229
-  UP: 82
-  DOWN: 81
-  LEFT: 80
-  RIGHT: 79
-  BUTTON_1: 27
-  BUTTON_2: 29
+  REFRESH: u
+  FORCE_QUIT: backspace
+  START: return
+  SELECT: p
+  UP: up
+  DOWN: down
+  LEFT: left
+  RIGHT: right
+  BUTTON_1: x
+  BUTTON_2: z
 
-# TODO set up layers and sprite groups per scene?
-# Set up all sprite groups
-DRAW_LAYERS:
-  - background
-  - foreground
-  - characters
-  - hud
 
-SPRITE_GROUPS:
-  # - background   # background tiles
-  # - foreground   # non-interacting block
-  # - trigger      # non-moving sprites that interact
-  - player       # sprites you can control             
-  # - friend       # moving friendly sprites
-  - foe          # enemies
-  # - hud          # HUD (health, money etc.)
-  # - misc         # other (dialog boxes etc.)
 
 INITAL_SCENE: "./assets/red_castle_valley/scene.yaml"
 # INITAL_SCENE: "./assets/dummy/blank_scene.yaml"

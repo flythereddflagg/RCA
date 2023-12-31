@@ -1,3 +1,25 @@
+# TODO set up layers and sprite groups per scene?
+# TODO Move all yaml files into a separate folder?
+# Set up all sprite groups
+DRAW_LAYERS:
+  - background
+  - foreground
+  - characters
+  - hud
+# amount to scale everything
+INIT_ZOOM: 1
+# pixels before camera moves instead of player
+CAMERASLACK: 100
+SPRITE_GROUPS:
+  # - background   # background tiles
+  # - foreground   # non-interacting block
+  # - trigger      # non-moving sprites that interact
+  - player       # sprites you can control             
+  # - friend       # moving friendly sprites
+  - foe          # enemies
+  # - hud          # HUD (health, money etc.)
+  # - misc         # other (dialog boxes etc.)
+
 hud:
   - id: hearts
     type: Decal

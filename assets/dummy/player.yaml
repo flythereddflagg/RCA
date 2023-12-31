@@ -15,7 +15,7 @@ animations:
       - 32
       - 32
     key_frame_times:
-      - 1 # TODO set this so that the 0 makes the animation cancel
+      - 1 # TODO make it so 0 makes a static image
 
   - id: stand
     asset_path: "./assets/dummy/character_stand.png"

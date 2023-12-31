@@ -12,7 +12,7 @@ animations:
       - 32
       - 32
     key_frame_times:
-      - 1 # TODO set this so that the 0 makes the animation cancel
+      - 1
 
   - id: stand
     asset_path: "./assets/dummy/ossifrage_stand.png"

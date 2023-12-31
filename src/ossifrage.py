@@ -81,7 +81,7 @@ class Ossifrage(Character):
             return
         collided_players = pg.sprite.spritecollide(
             # collide between self and player
-            self, self.game.groups['player'], 
+            self, self.scene.groups['player'], 
             # do not kill, use the masks for collision
             False, pg.sprite.collide_mask
         )

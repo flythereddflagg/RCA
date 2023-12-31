@@ -12,9 +12,9 @@ class Player(Character):
         self.speed = 300 # pixels per second
         self.todo_list = []
         self.signals = []
-        # self.dist_per_frame = self.speed // self.game.clock.get_fps()
-        # self.dist_per_frame = math.ceil(self.speed * self.game.dt / 1000)
-        self.keys_held = {key:False for key in self.game.KEY_BIND.keys()}
+        # self.dist_per_frame = self.speed // self.scene.clock.get_fps()
+        # self.dist_per_frame = math.ceil(self.speed * self.scene.dt / 1000)
+        self.keys_held = {key:False for key in self.scene.game.KEY_BIND.keys()}
         self.button1_action = 'sword swing'
         self.hp = 100
 
@@ -47,7 +47,7 @@ class Player(Character):
 
         # reset the todo_list
         self.todo_list = []
-        self.keys_held = {key:False for key in self.game.KEY_BIND.keys()}
+        self.keys_held = {key:False for key in self.scene.game.KEY_BIND.keys()}
         for direction in Compass.strings:
             if direction in todo_list_bak:
                 todo_list_bak.remove(direction)
@@ -66,7 +66,7 @@ class Player(Character):
         self.animate()
         
         if self.hp <= 0:
-            self.game.player = None
+            self.scene.player = None
             self.kill()
 
 
@@ -95,7 +95,7 @@ class Player(Character):
         if self.alt_image.mask:
             for sprite in pg.sprite.spritecollide(
                 # collide between character and foreground
-                self.alt_image, self.game.groups['foe'], 
+                self.alt_image, self.scene.groups['foe'], 
                 # do not kill, use the masks for collision
                 False, pg.sprite.collide_mask
             ):
