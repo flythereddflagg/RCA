@@ -5,7 +5,7 @@ from .sprite import Block
 class Trigger(Block):
     def __init__(self, **options):
         super().__init__(**options)
-
+# TODO set this up so that that an exit puts the player somewhere in particular
 
     def update(self):
         """default behavior is to set up a new scene. Override to change"""

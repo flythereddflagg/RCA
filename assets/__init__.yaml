@@ -25,5 +25,6 @@ KEY_BIND:
 
 
 
-INITAL_SCENE: "./assets/red_castle_valley/scene.yaml"
+INITAL_SCENE: "./assets/scene/red_castle_valley.yaml"
 # INITAL_SCENE: "./assets/dummy/blank_scene.yaml"
+# TODO make a graph struct of all the locations and connections between them

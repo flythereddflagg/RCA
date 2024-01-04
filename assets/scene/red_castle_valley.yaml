@@ -1,0 +1,91 @@
+# TODO set up layers and sprite groups per scene?
+# TODO Move all yaml files into a separate folder?
+# Set up all sprite groups
+DRAW_LAYERS:
+  - background
+  - foreground
+  - characters
+  - hud
+# amount to scale everything
+INIT_ZOOM: 1
+# pixels before camera moves instead of player
+CAMERASLACK: 100
+SPRITE_GROUPS:
+  # - background   # background tiles
+  # - foreground   # non-interacting block
+  # - trigger      # non-moving sprites that interact
+  - player       # sprites you can control             
+  # - friend       # moving friendly sprites
+  - foe          # enemies
+  # - hud          # HUD (health, money etc.)
+  # - misc         # other (dialog boxes etc.)
+
+hud:
+  - id: hearts
+    type: Decal
+    asset_path: ./assets/dummy/hud_element.png
+    startx: 0
+    starty: 0
+
+background:
+  - id: dungeon_tile
+    type: Decal
+    asset_path: ./assets/scene/red_castle_valley/background.png
+    # asset_path: ./assets/dummy/null.png
+    startx: 0
+    starty: 0
+    # scale: 2
+
+foreground:
+  - id: solid_terrain
+    type: Block
+    asset_path: ./assets/scene/red_castle_valley/foreground.png
+    startx: 0 # match the background
+    starty: 0
+  - id: big_ol_rock
+    type: Block
+    asset_path: ./assets/scene/alleyway/rock.png
+    startx: 1230 # match the background
+    starty: 1000
+
+characters:
+  - id: PLAYER # reference to THE main player
+    type: Player
+    asset_path: ./assets/dummy/player.yaml
+    startx: 500
+    starty: 500
+    scale: 1
+  - id: bridge_exit
+    type: Trigger
+    # type: Block
+    asset_path: ./assets/dummy/block.png
+    startx: 845 # match the background
+    starty: -80
+    scale: 2.5
+    scene_path: ./assets/scene/mansion_yard.yaml
+    player_start: # starting pos of the player
+      - 855
+      - 1930
+  - id: forest_exit
+    type: Trigger
+    # type: Block
+    asset_path: ./assets/dummy/block.png
+    startx: 135 # match the background
+    starty: 650
+    scale: 2.5
+    scene_path: ./assets/scene/forest.yaml
+    player_start: # starting pos of the player
+      - 100
+      - 600 
+  # - id: mountain_trail_exit
+  #   type: Trigger
+  #   # type: Block
+  #   asset_path: ./assets/dummy/block.png
+  #   startx: 1230 # match the background
+  #   starty: 1038
+  #   scale: 2.5
+  #   scene_path: ./assets/scene/dummy2.yaml
+  #   player_start: # starting pos of the player
+  #     - 1430
+  #     - 410
+  #     # TODO add scene transitions

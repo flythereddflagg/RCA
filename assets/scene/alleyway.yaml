@@ -1,3 +1,22 @@
+DRAW_LAYERS:
+  - background
+  - foreground
+  - characters
+  - hud
+# amount to scale everything
+INIT_ZOOM: 1
+# pixels before camera moves instead of player
+CAMERASLACK: 100
+SPRITE_GROUPS:
+  # - background   # background tiles
+  # - foreground   # non-interacting block
+  # - trigger      # non-moving sprites that interact
+  - player       # sprites you can control             
+  # - friend       # moving friendly sprites
+  - foe          # enemies
+  # - hud          # HUD (health, money etc.)
+  # - misc         # other (dialog boxes etc.)
+
 hud:
   - id: hearts
     type: Decal
@@ -8,7 +27,7 @@ hud:
 background:
   - id: dungeon_tile
     type: Decal
-    asset_path: ./assets/alleyway/map.png
+    asset_path: ./assets/scene/alleyway/map.png
     # asset_path: ./assets/dummy/null.png
     startx: 0
     starty: 0
@@ -17,7 +36,7 @@ background:
 foreground:
   - id: dungeon_walls
     type: Block
-    asset_path: ./assets/alleyway/foreground.png
+    asset_path: ./assets/scene/alleyway/foreground.png
     startx: 0 # match the background
     starty: 0
     # scale: 2
@@ -48,7 +67,7 @@ characters:
     startx: 1138 # match the background
     starty: 167
     scale: 2.5
-    scene_path: ./assets/mansion_yard/scene.yaml
+    scene_path: ./assets/scene/mansion_yard.yaml
     player_start: # starting pos of the player
       - 800
       - 170 
