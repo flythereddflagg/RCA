@@ -23,7 +23,7 @@ class Trigger(Block):
             self.exec_trigger()
     
     def exec_trigger(self):
-        self.scene.load_scene(self.options['scene_path'])
+        self.scene.game.load_scene(self.options['scene_path'])
         if "player_start" in self.options.keys():
             startx, starty = self.options['player_start']
             background = self.scene.layers['background'].sprites()[0]

@@ -10,9 +10,6 @@ SCREENHEIGHT: 768
 # SCREENHEIGHT: 600
 
 
-
-
-
 # key bindings for keyboard input
 KEY_BIND:
   REFRESH: u
