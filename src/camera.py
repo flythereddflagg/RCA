@@ -21,13 +21,13 @@ class Camera:
 
     def update(self):
         ### FIXME this is test code
-        curtime = pg.time.get_ticks()
-        if curtime - self.last_time > 1000:
-            self.last_time = curtime
-            self.next_factor = next(FACTOR)
+        # curtime = pg.time.get_ticks()
+        # if curtime - self.last_time > 1000:
+        #     self.last_time = curtime
+        #     self.next_factor = next(FACTOR)
             
-        self.zoom(self.next_factor)
-        print(self.cur_zoom)
+        # self.zoom(self.next_factor)
+        # print(self.cur_zoom)
         ### FIXME END this is test code
 
         self.follow_player()
@@ -98,11 +98,17 @@ class Camera:
     def zoom(self, factor):
         self.cur_zoom *= factor
         background = self.scene.layers['background'].sprites()[0]
+        screen_data = pg.display.Info()
+        centerx = screen_data.current_w // 2
+        centery = screen_data.current_h // 2
         bg_w, bg_h = background.rect.size
         bg_x, bg_y = background.rect.topleft
         background.set_scale(factor)
         bg_w_new, bg_h_new = background.rect.size
-        bg_x_new, bg_y_new = background.rect.topleft
+        bg_x_new = centerx - bg_w_new * (centerx - bg_x) / bg_w
+        bg_y_new = centery - bg_h_new * (centery - bg_y) / bg_h
+        background.rect.topleft = (bg_x_new, bg_y_new)
+
         for group in self.mobile_groups:
             if group == 'background': continue
             for sprite in self.scene.layers[group]:
