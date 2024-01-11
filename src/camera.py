@@ -21,13 +21,13 @@ class Camera:
 
     def update(self):
         ### FIXME this is test code
-        # curtime = pg.time.get_ticks()
-        # if curtime - self.last_time > 1000:
-        #     self.last_time = curtime
-        #     self.next_factor = next(FACTOR)
+        curtime = pg.time.get_ticks()
+        if curtime - self.last_time > 1000:
+            self.last_time = curtime
+            self.next_factor = next(FACTOR)
             
-        # self.zoom(self.next_factor)
-        # print(self.cur_zoom)
+        self.zoom(self.next_factor)
+        print(self.cur_zoom)
         ### FIXME END this is test code
 
         self.follow_player()
@@ -39,7 +39,7 @@ class Camera:
         centerx = screen_data.current_w // 2
         centery = screen_data.current_h // 2
         # get current player position
-        curx, cury = self.player.rect.x, self.player.rect.y
+        curx, cury = self.player.rect.center
 
         # if player is inside the cameraslack box, no need to update.
         movex, movey= 0, 0
@@ -61,7 +61,13 @@ class Camera:
                 sprite.rect.x += movex
                 sprite.rect.y += movey
         
-        
+    def center_player(self):
+        tmp_storage = self.scene.data.CAMERASLACK
+        self.scene.data.CAMERASLACK = 0
+        self.follow_player()
+        self.scene.data.CAMERASLACK = tmp_storage
+
+
     def stop_at_border(self, movex, movey):
         """
         Stop at world border. Adjust movex and movey
@@ -97,6 +103,7 @@ class Camera:
 
     def zoom(self, factor):
         self.cur_zoom *= factor
+        self.center_player()
         background = self.scene.layers['background'].sprites()[0]
         screen_data = pg.display.Info()
         centerx = screen_data.current_w // 2
