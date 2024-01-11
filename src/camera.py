@@ -1,6 +1,13 @@
 import pygame as pg
 
-
+### FIXME this is test code
+def inf_gen(iter_):
+    while True:
+        for thing in iter_:
+            yield thing
+SCALE_RUN = 1.05
+FACTOR = inf_gen([SCALE_RUN, 1/SCALE_RUN])
+### FIXME this is test code
 
 class Camera:
     def __init__(self, game):
@@ -8,8 +15,24 @@ class Camera:
         self.player = self.scene.player
         self.mobile_groups = list(self.scene.layers.keys())
         self.mobile_groups.remove('hud')
+        self.cur_zoom = 1
+        self.last_time = 0 # FIXME this is test code
+        self.next_factor = 1 # FIXME this is test code
 
     def update(self):
+        ### FIXME this is test code
+        curtime = pg.time.get_ticks()
+        if curtime - self.last_time > 1000:
+            self.last_time = curtime
+            self.next_factor = next(FACTOR)
+            
+        self.zoom(self.next_factor)
+        print(self.cur_zoom)
+        ### FIXME END this is test code
+
+        self.follow_player()
+
+    def follow_player(self):
         if not self.player: return
         # get the current center of the screen
         screen_data = pg.display.Info()
@@ -72,14 +95,22 @@ class Camera:
         return movex, movey
 
 
-    def zoom(self, scale):
-        # FIXME: if used continuously, this will break sprites. 
-        
+    def zoom(self, factor):
+        self.cur_zoom *= factor
+        background = self.scene.layers['background'].sprites()[0]
+        bg_w, bg_h = background.rect.size
+        bg_x, bg_y = background.rect.topleft
+        background.set_scale(factor)
+        bg_w_new, bg_h_new = background.rect.size
+        bg_x_new, bg_y_new = background.rect.topleft
         for group in self.mobile_groups:
+            if group == 'background': continue
             for sprite in self.scene.layers[group]:
-                cur_size = sprite.image.get_rect().size
-                new_size = [dim * scale for dim in cur_size]
-                sprite.image = pg.transform.scale(sprite.image, new_size)
-                sprite.mask = pg.mask.from_surface(sprite.image)
+                x, y = sprite.rect.center
+                sprite.set_scale(factor)
+                sprite.rect.center = (
+                    bg_x_new + bg_w_new * (x - bg_x) / bg_w, 
+                    bg_y_new + bg_h_new * (y - bg_y) / bg_h
+                )
         
             

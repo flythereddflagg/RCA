@@ -40,6 +40,9 @@ class Decal(pg.sprite.Sprite):
         self.asset_path = options["asset_path"]
         self.image = pg.image.load(self.asset_path).convert_alpha()
         self.rect = self.image.get_rect()
+        self.original_image = self.image
+        self.original_size = self.rect.size
+        self.mask = None
         self.startx = options["startx"]
         self.starty = options["starty"]
         self.options = options # make this a dictobj
@@ -47,14 +50,18 @@ class Decal(pg.sprite.Sprite):
         # process any optional params
         if "scale" not in self.options.keys():
             self.options["scale"] = 1
+        self.scale = 1
         self.set_scale(self.options["scale"])
 
 
-    def set_scale(self, scale):
-        self.scale = scale
-        new_size = [dim * scale for dim in self.rect.size]
-        self.image = pg.transform.scale(self.image, new_size)
+    def set_scale(self, factor):
+        self.scale *= factor
+        if self.scale < 1: self.scale = 1
+        pos = self.rect.center
+        new_size = [dim * self.scale for dim in self.original_size]
+        self.image = pg.transform.scale(self.original_image, new_size)
         self.rect = self.image.get_rect()
+        self.rect.center = pos
     
     
     def __repr__(self):
