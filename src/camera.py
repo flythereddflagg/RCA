@@ -21,13 +21,13 @@ class Camera:
 
     def update(self):
         ### FIXME this is test code
-        curtime = pg.time.get_ticks()
-        if curtime - self.last_time > 1000:
-            self.last_time = curtime
-            self.next_factor = next(FACTOR)
+        # curtime = pg.time.get_ticks()
+        # if curtime - self.last_time > 1000:
+        #     self.last_time = curtime
+        #     self.next_factor = next(FACTOR)
             
-        self.zoom(self.next_factor)
-        print(self.cur_zoom)
+        # self.zoom(self.next_factor)
+        # print(self.cur_zoom)
         ### FIXME END this is test code
 
         self.follow_player()

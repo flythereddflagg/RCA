@@ -66,7 +66,7 @@ characters:
     player_start: # starting pos of the player
       - 855
       - 1930
-  - id: forest_exit
+  - id: forest_red_castle_valley_connection
     type: Trigger
     # type: Block
     asset_path: ./assets/dummy/block.png
@@ -74,9 +74,7 @@ characters:
     starty: 650
     scale: 2.5
     scene_path: ./assets/scene/forest.yaml
-    player_start: # starting pos of the player
-      - 100
-      - 600 
+    exit_dir: RIGHT
   # - id: mountain_trail_exit
   #   type: Trigger
   #   # type: Block

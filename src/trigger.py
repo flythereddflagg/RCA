@@ -1,6 +1,7 @@
 import pygame as pg
 
 from .sprite import Block
+from .compass import Compass
 
 class Trigger(Block):
     def __init__(self, **options):
@@ -24,8 +25,15 @@ class Trigger(Block):
     
     def exec_trigger(self):
         self.scene.game.load_scene(self.options['scene_path'])
-        if "player_start" in self.options.keys():
-            startx, starty = self.options['player_start']
-            background = self.scene.layers['background'].sprites()[0]
-            self.scene.player.rect.x = background.rect.x + startx
-            self.scene.player.rect.y = background.rect.y + starty
+        new_scene = self.scene.game.scene
+        background = new_scene.layers['background'].sprites()[0]
+        sprites = new_scene.layers['characters'].sprites()
+        block = list(filter(lambda x: x.id == self.id, sprites))[0]
+        startx, starty = block.rect.x, block.rect.y
+        player = new_scene.player
+        player.rect.x = background.rect.x + startx
+        player.rect.y = background.rect.y + starty
+        dx, dy = Compass.vec_map[block.options['exit_dir']]
+        player.rect.x += dx*(player.rect.w + block.rect.w)
+        player.rect.y += dy*(player.rect.h + block.rect.w)
+        print(player.rect.center)
