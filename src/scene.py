@@ -60,19 +60,7 @@ class Scene():
         self.camera.zoom(self.data.INIT_ZOOM)
 
 
-    def logic(self, game_input):
-        # run all game logic here
-        # quit overrides everything else
-        if "QUIT" in game_input:
-            print("Safely ending game...")
-            self.running = False
-            return
-
-        if not self.scene: return
-
-        # apply all the input
-        for action in game_input:
-            self.process_inputs(action)
+    def update(self, game_input):
         
         # update all sprites
         for group_name in self.DRAW_LAYERS:

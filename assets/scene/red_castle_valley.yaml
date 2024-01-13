@@ -1,6 +1,7 @@
 # TODO set up layers and sprite groups per scene?
 # TODO Move all yaml files into a separate folder?
 # Set up all sprite groups
+id: red castle valley
 DRAW_LAYERS:
   - background
   - foreground

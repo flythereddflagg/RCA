@@ -6,10 +6,8 @@ Initializes the game from a data file and initiates the game
 def main():
     from src import init_game, run_game
 
-    INIT_SETTINGS_PATH = "./assets/__init__.yaml"
-    
-    game_data = init_game(INIT_SETTINGS_PATH)
-    run_game(game_data)
+    INIT_PATH = "./assets/__init__.yaml"
+    run_game(INIT_PATH)
 
 
 if __name__ == "__main__":

@@ -6,6 +6,10 @@ from .scene import Scene
 
 
 class GameState(DictObj):
+    """
+    connects the hardward to game logic and holds the game state
+    including the scene
+    """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.dt = 1
@@ -23,22 +27,16 @@ class GameState(DictObj):
             self.running = False
             return
 
-        if not self.scene: return
-
         # apply all the input
         for action in game_input:
             self.process_inputs(action)
-        
-        # update all sprites
-        for group_name in self.scene.data.DRAW_LAYERS:
-            self.scene.layers[group_name].update()
-        
-        # finally, update the camera
-        if self.scene.camera: self.scene.camera.update()
 
+        # update everything in the scene
+        if self.scene and not self.paused: self.scene.update()
     
+
     def process_inputs(self, action):
-        if not self.paused and self.scene.player:
+        if self.scene.player:
             self.scene.player.add_todo(action)
 
 

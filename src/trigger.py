@@ -26,8 +26,10 @@ class Trigger(Block):
     def exec_trigger(self):
         self.scene.game.load_scene(self.options['scene_path'])
         new_scene = self.scene.game.scene
+        print(new_scene.data.id)
         background = new_scene.layers['background'].sprites()[0]
         sprites = new_scene.layers['characters'].sprites()
+        print([s.id for s in sprites])
         block = list(filter(lambda x: x.id == self.id, sprites))[0]
         startx, starty = block.rect.x, block.rect.y
         player = new_scene.player
