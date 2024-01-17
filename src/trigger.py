@@ -24,18 +24,20 @@ class Trigger(Block):
             self.exec_trigger()
     
     def exec_trigger(self):
+        # save everything we want to carry into the next scene
+        player = self.scene.player
         self.scene.game.load_scene(self.options['scene_path'])
         new_scene = self.scene.game.scene
-        print(new_scene.data.id)
-        background = new_scene.layers['background'].sprites()[0]
+        new_scene.player = player
+        player.scene = new_scene
+        new_scene.layers['characters'].add(player)
+        new_scene.groups['player'].add(player)
         sprites = new_scene.layers['characters'].sprites()
-        print([s.id for s in sprites])
         block = list(filter(lambda x: x.id == self.id, sprites))[0]
-        startx, starty = block.rect.x, block.rect.y
-        player = new_scene.player
-        player.rect.x = background.rect.x + startx
-        player.rect.y = background.rect.y + starty
+        print(block.id, block.scene.data['id'])
+        print(player.rect.center)
+        player.rect.center = block.rect.center
         dx, dy = Compass.vec_map[block.options['exit_dir']]
-        player.rect.x += dx*(player.rect.w + block.rect.w)
-        player.rect.y += dy*(player.rect.h + block.rect.w)
+        player.rect.x += dx*(player.rect.w/2 + block.rect.w/2)
+        player.rect.y += dy*(player.rect.h/2 + block.rect.h/2)
         print(player.rect.center)

@@ -34,7 +34,6 @@ class Player(Character):
             if action in Compass.strings:
                 # ^ means a direction button is being pressed                
                 self.move(action, speed=self.speed)
-                self.direction = Compass.i_map[action]
                 self.animate_data = self.animation['walk']
                 
             elif action == "BUTTON_1":

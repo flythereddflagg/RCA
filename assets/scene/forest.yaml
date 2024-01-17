@@ -40,38 +40,8 @@ foreground:
     asset_path: ./assets/scene/forest/foreground.png
     startx: 0 # match the background
     starty: 0
-    # scale: 2
-  # - id: dungeon_blockade2
-  #   type: Block
-  #   asset_path: ./assets/dummy/block.png
-  #   startx: 730 # match the background
-  #   starty: 750
-  #   scale: 2
-  # - id: dungeon_blockade3
-  #   type: Block
-  #   asset_path: ./assets/dummy/block.png
-  #   startx: 930 # match the background
-  #   starty: 1000
-  #   scale: 2
 
 characters:
-  - id: PLAYER # reference to THE main player
-    type: Player
-    asset_path: ./assets/dummy/player.yaml
-    startx: 500
-    starty: 500
-    scale: 1
-  - id: bridge_exit
-    type: Trigger
-    # type: Block
-    asset_path: ./assets/dummy/block.png
-    startx: 845 # match the background
-    starty: -80
-    scale: 2.5
-    scene_path: ./assets/scene/mansion_yard.yaml
-    player_start: # starting pos of the player
-      - 855
-      - 1930
   - id: forest_red_castle_valley_connection
     type: Trigger
     # type: Block
@@ -81,14 +51,4 @@ characters:
     scale: 2.5
     scene_path: ./assets/scene/red_castle_valley.yaml
     exit_dir: LEFT
-  - id: mountain_trail_exit
-    type: Trigger
-    # type: Block
-    asset_path: ./assets/dummy/block.png
-    startx: 1255 # match the background
-    starty: 1030
-    scale: 2.5
-    scene_path: ./assets/scene/dummy2.yaml
-    player_start: # starting pos of the player
-      - 1430
-      - 410
+
