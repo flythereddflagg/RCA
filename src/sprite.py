@@ -6,6 +6,7 @@ import pygame as pg
 
 from .dict_obj import DictObj
 from .compass import Compass
+from .animation import Animation
 
 
 DEFAULT_ANIMATION = 'stand'
@@ -35,8 +36,9 @@ class Decal(pg.sprite.Sprite):
         self.asset_path = options["asset_path"]
         self.scene = options["game"] # a reference to the game the sprite is in
         if self.asset_path.endswith(".yaml"):
-            extra_opts = self.scene.game.load_yaml(self.asset_path)
-            options = {**options, **extra_opts}
+            options = {**options, 
+                **self.scene.game.load_yaml(self.asset_path)
+            }
         self.asset_path = options["asset_path"]
         self.image = pg.image.load(self.asset_path).convert_alpha()
         self.rect = self.image.get_rect()
@@ -84,20 +86,9 @@ class Block(Decal):
     def __init__(self, **options):
         super().__init__(**options)
         self.mask = pg.mask.from_surface(self.image)
-        background = self.scene.layers['background'].sprites()[0]
-
-        bg_map = {
-            'center' : background.rect.center,
-        }
-        if self.startx in bg_map.keys():
-            self.rect.x = bg_map[self.startx][0]
-        else:    
-            self.rect.x = background.rect.x + self.startx
-
-        if self.starty in bg_map.keys():
-            self.rect.y = bg_map[self.starty][1]
-        else:
-            self.rect.y = background.rect.y + self.starty
+        background = self.scene.layers['background'].sprites()[0]  
+        self.rect.x = background.rect.x + self.startx
+        self.rect.y = background.rect.y + self.starty
 
 
 
@@ -111,17 +102,23 @@ class Character(Block):
         super().__init__(**options)
         self.direction = Compass.DOWN
         self.dist_buffer = 0
-        self.alt_image = Decal(**{
-            "id": self.id + "_alt",
-            "game": self.scene,
-            "asset_path": NULL_PATH,
-            "startx":0,
-            "starty":0,
-        })
+        self.animation = None
+        self.alt_image = None
+        if 'animations' in self.options.keys():
+            self.animation = Animation(self, **options['animations'])
+            self.alt_image = Decal(**{
+                "id": self.id + "_alt",
+                "game": self.scene,
+                "asset_path": NULL_PATH,
+                "startx":0,
+                "starty":0,
+            })
+
 
     def move(
         self, direction:int|str|tuple, 
-        distance:int=0, speed:int|float=0
+        distance:int=0, speed:int|float=0,
+        reject_foreground:bool=True
     ) -> None:
         """
         move the character in a direction with
@@ -153,7 +150,11 @@ class Character(Block):
         xunit, yunit = Compass.vec_map[direction]
         addx, addy = distance * xunit, distance * yunit
         self.rect.move_ip(addx, addy)
+        
+        if reject_foreground: self.foreground_rejection(xunit, yunit)
 
+
+    def foreground_rejection(self, xunit, yunit):
         # move rejection for foreground
         while pg.sprite.spritecollide(
             # collide between character and foreground
@@ -162,6 +163,7 @@ class Character(Block):
             False, pg.sprite.collide_mask
         ):
             self.rect.move_ip(-xunit, -yunit) # move back 1
+
 
     def kill(self):
         self.alt_image.kill()

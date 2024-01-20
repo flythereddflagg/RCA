@@ -19,6 +19,7 @@ class Player(Character):
         self.hp = 100
 
 
+
     def apply_todos(self):
         todo_list_bak = self.todo_list.copy()
         self.todo_list = [
