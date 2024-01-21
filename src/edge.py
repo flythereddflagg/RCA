@@ -3,7 +3,8 @@ import pygame as pg
 from .sprite import Block
 from .compass import Compass
 
-class Trigger(Block):
+class Edge(Block):
+    """an edge is a sprite that connects two scenes in the map graph"""
     def __init__(self, **options):
         super().__init__(**options)
 # TODO set this up so that that an exit puts the player somewhere in particular

@@ -5,12 +5,12 @@ from .sprite import SPRITE_MAP
 from .camera import Camera
 from .player import Player
 from .ossifrage import Ossifrage
-from .trigger import Trigger
+from .trigger import Edge
 
 CLASS_MAP = SPRITE_MAP.copy()
 CLASS_MAP['Player'] = Player
 CLASS_MAP['Ossifrage'] = Ossifrage
-CLASS_MAP['Trigger'] = Trigger
+CLASS_MAP['Edge'] = Edge
 
 
 class Scene():
