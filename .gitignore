@@ -3,6 +3,7 @@
 **__pycache__
 **.vscode
 **.mscbackup
+**.bkp
 # IGNORE THE FOLLOWING FOLDERS
 build/
 dist/

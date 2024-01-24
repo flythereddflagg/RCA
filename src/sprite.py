@@ -105,7 +105,7 @@ class Character(Block):
         self.animation = None
         self.alt_image = None
         if 'animations' in self.options.keys():
-            self.animation = Animation(self, **options['animations'])
+            self.animation = Animation(self, **self.options)
             self.alt_image = Decal(**{
                 "id": self.id + "_alt",
                 "game": self.scene,

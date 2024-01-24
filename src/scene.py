@@ -5,7 +5,7 @@ from .sprite import SPRITE_MAP
 from .camera import Camera
 from .player import Player
 from .ossifrage import Ossifrage
-from .trigger import Edge
+from .edge import Edge
 
 CLASS_MAP = SPRITE_MAP.copy()
 CLASS_MAP['Player'] = Player

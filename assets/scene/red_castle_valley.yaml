@@ -46,7 +46,7 @@ foreground:
   - id: big_ol_rock
     type: Block
     asset_path: ./assets/scene/alleyway/rock.png
-    startx: 1230 # match the background
+    startx: 1230
     starty: 1000
 
 characters:
@@ -56,26 +56,26 @@ characters:
     startx: 500
     starty: 500
     scale: 1
-  - id: bridge_exit
-    type: Trigger
-    # type: Block
-    asset_path: ./assets/dummy/block.png
-    startx: 845 # match the background
-    starty: -80
-    scale: 2.5
-    scene_path: ./assets/scene/mansion_yard.yaml
-    player_start: # starting pos of the player
-      - 855
-      - 1930
-  - id: forest_red_castle_valley_connection
-    type: Trigger
-    # type: Block
-    asset_path: ./assets/dummy/block.png
-    startx: 135 # match the background
-    starty: 650
-    scale: 2.5
-    scene_path: ./assets/scene/forest.yaml
-    exit_dir: RIGHT
+#   - id: bridge_exit
+#     type: Trigger
+#     # type: Block
+#     asset_path: ./assets/dummy/block.png
+#     startx: 845 # match the background
+#     starty: -80
+#     scale: 2.5
+#     scene_path: ./assets/scene/mansion_yard.yaml
+#     player_start: # starting pos of the player
+#       - 855
+#       - 1930
+#   - id: forest_red_castle_valley_connection
+#     type: Trigger
+#     # type: Block
+#     asset_path: ./assets/dummy/block.png
+#     startx: 135 # match the background
+#     starty: 650
+#     scale: 2.5
+#     scene_path: ./assets/scene/forest.yaml
+#     exit_dir: RIGHT
   # - id: mountain_trail_exit
   #   type: Trigger
   #   # type: Block

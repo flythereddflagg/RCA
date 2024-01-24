@@ -18,7 +18,8 @@ class Player(Character):
         self.button1_action = 'sword swing'
         self.hp = 100
 
-
+    def apply(self, game_input):
+        self.todo_list.extend(game_input)
 
     def apply_todos(self):
         todo_list_bak = self.todo_list.copy()

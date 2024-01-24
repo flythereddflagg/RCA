@@ -4,10 +4,16 @@ The main() entry point for the game.
 Initializes the game from a data file and initiates the game
 """
 def main():
-    from src import init_game, run_game
+    import pygame as pg
+    from src import GameState
 
+    pg.init()
     INIT_PATH = "./assets/__init__.yaml"
-    run_game(INIT_PATH)
+    game = GameState(INIT_PATH)
+    game.run()
+    print("Safely ending game...")
+    pg.display.quit()
+    pg.quit()
 
 
 if __name__ == "__main__":
