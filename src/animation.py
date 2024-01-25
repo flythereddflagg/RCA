@@ -1,32 +1,28 @@
 import operator
+import itertools
+
+import pygame as pg
+
+from .decal import Decal
+
+DEFAULT_ANIMATION = 'stand'
+NULL_PATH = "./assets/dummy/null.png"
 
 class Animation():
-    required_animation_keys = [
-        'asset_path', 'frame_size'
-    ]
     def __init__(self, sprite, **options):
         
         self.sprite = sprite
-        self.frames = {} # a dict of 
-
-        self.last_animate = None
-        self.frame_group = None
-        self.data = None
-        self.frame = None
-        self.animation_active = False
-        self.frame_time = 1
-        self.last_frame_time = 0
+        self.data = {}
+        self.current = None # the current animation
+        self.previous = None # the previous animation
+        self.frame = None # next frame generator
+        self.frame_times = [1] # list of frame times
+        self.frame_time = 1 # the number of ms the current frame should show
+        self.last_frame_time = 0 # the previous frame time
+        self.active = False # is the animation active?
         self.last_direction = self.sprite.direction
-        # init animations
-        self.frame_groups = {}
-        self.animation = {}
-        self.default_image = self.image
-        self.active = False
 
-
-        for animation in self.options['animations']:
-            # load in each animation for a character 
-            # defined in their yaml data
+        for animation in options['animations']:
             animation['frames'] = self.parse_animation(
                 animation['asset_path'], animation['key_frame_size']
             )
@@ -36,13 +32,21 @@ class Animation():
                     animation['mask_path'], animation['key_frame_size'],
                     make_mask=True
                 )
-            self.animation[animation['id']] =  animation
-
-
+            self.data[animation['id']] =  animation
              
-        self.data = self.animation[DEFAULT_ANIMATION]
-        self.null_image = self.animation['null']['frames'][0][0]
+        self.current = self.data[DEFAULT_ANIMATION]
+        self.null_image = self.data['null']['frames'][0][0]
+        self.alt_sprite = Decal(**{
+                "id": self.sprite.id + "_alt",
+                "scene": self.sprite.scene,
+                "asset_path": NULL_PATH,
+            })
+        for group in self.sprite.groups():
+            group.add(self.alt_sprite)
 
+
+    def kill(self):
+        self.alt_sprite.kill()
         
     def parse_animation(self, asset_path, frame_size, make_mask=False): 
         main_image = pg.image.load(asset_path).convert_alpha()
@@ -66,17 +70,17 @@ class Animation():
     def animate(self):
         set_frame = False
         # update animation if changed
-        if self.data['id'] != self.last_animate:
+        if self.current['id'] != self.previous:
             set_frame = True
-            self.last_animate = self.data['id']
-            self.frames = self.data["frames"][self.direction]
-            self.frame_times = self.data['frame_times']
+            self.previous = self.current['id']
+            self.frames = self.current["frames"][self.sprite.direction]
+
 
         # update direction if it has changed
-        if self.direction != self.last_direction:
+        if self.sprite.direction != self.last_direction:
             set_frame = True
-            self.last_direction = self.direction
-            self.frames = self.data["frames"][self.direction]
+            self.last_direction = self.sprite.direction
+            self.frames = self.current["frames"][self.sprite.direction]
         
         if set_frame: self.set_frame()
 
@@ -84,56 +88,47 @@ class Animation():
         cur_time = pg.time.get_ticks()
         for _ in range((cur_time -  self.last_frame_time) // self.frame_time):
             self.set_image(next(self.frame, None))
-            self.frame_time = next(self.frame_time)
+            self.frame_time = next(self.frame_times)
             self.last_frame_time = cur_time
-            if 'mask' in self.data.keys():
-                self.alt_image.mask = next(self.alt_image.mask_set)
+            if 'mask' in self.current.keys():
+                self.alt_sprite.mask = next(self.alt_sprite.mask_set)
         
-        if self.image is None: # animation is done
-            self.animation_active = False
-            last_animate = self.last_animate
-            self.last_animate = self.data['id']
-            self.data = self.animation[last_animate]
+        if self.sprite.image is None: # animation is done
+            self.frames_active = False
+            last_animate = self.previous
+            self.previous = self.current['id']
+            self.current = self.frames[last_animate]
             self.set_frame()
-            self.alt_image.mask = None
+            self.alt_sprite.mask = None
 
 
     def set_image(self, image):
-        if self.image == self.null_image:
-            self.alt_image.image = self.null_image
-        self.image = image
+        if self.sprite.image == self.null_image:
+            self.alt_sprite.image = self.null_image
+        self.sprite.image = image
         if image is None: return
-        if self.rect.size == image.get_rect().size: return
+        if self.sprite.rect.size == image.get_rect().size: return
         # set image to blank
         # then just paste the new image on top of it
-        self.image = self.null_image
-        self.alt_image.image = image
-        self.alt_image.rect = self.alt_image.image.get_rect()
-        self.alt_image.rect.center = self.rect.center
+        self.sprite.image = self.null_image
+        self.alt_sprite.image = image
+        self.alt_sprite.rect = self.alt_sprite.image.get_rect()
+        self.alt_sprite.rect.center = self.sprite.rect.center
         
-
 
     def set_frame(self):
-        self.frame = self.gen_from_list(
-            self.frames, repeat=self.data['repeat']
+        self.frame = (
+            itertools.cycle(self.frames) 
+            if self.current['repeat']
+            else iter(self.frames)
         )
-        self.frame_time = self.gen_from_list(self.frame_times)
+        self.frame_times = itertools.cycle(self.current['key_frame_times'])
         self.set_image(next(self.frame, None))
-        self.frame_time = next(self.frame_time)
+        self.frame_time = next(self.frame_times)
         
-        if 'mask' in self.data.keys():
-            self.alt_image.mask_set = self.gen_from_list(
-                self.data['mask'][self.direction]
+        if 'mask' in self.current.keys():
+            self.alt_sprite.mask_set = itertools.cycle(
+                self.current['mask'][self.sprite.direction]
             )
-            self.alt_image.mask = next(self.alt_image.mask_set)
-            
+            self.alt_sprite.mask = next(self.alt_sprite.mask_set)
 
-
-    def gen_from_list(self, item_list, repeat=True):
-        """
-        generator for images. Repeats forever unless told otherwise.
-        """
-        while True:
-            for item in item_list:
-                yield item
-            if not repeat: break

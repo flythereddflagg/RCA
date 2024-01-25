@@ -3,7 +3,7 @@ hud:
     type: Decal
     asset_path: ./assets/dummy/hud_element.png
     startx: 0
-    starty: 0
+    ,0
 
 background:
   - id: dungeon_tile
@@ -11,27 +11,27 @@ background:
     asset_path: ./assets/dummy/background2.png
     # asset_path: ./assets/dummy/null.png
     startx: 0
-    starty: 0
+    ,0
     # scale: 1
 # data for the foreground
 foreground:
   - id: dungeon_walls
-    type: Block
+    type: Decal
     asset_path: ./assets/dummy/foreground2.png
-    startx: 0 # match the background
-    starty: 0
+    startx: 0
+    ,0
     # scale: 1
   # - id: dungeon_blockade2
-  #   type: Block
+  #   type: Decal
   #   asset_path: ./assets/dummy/block.png
-  #   startx: 730 # match the background
-  #   starty: 750
+  #   startx: 730
+  #   ,750
   #   scale: 1
   # - id: dungeon_blockade3
-  #   type: Block
+  #   type: Decal
   #   asset_path: ./assets/dummy/block.png
-  #   startx: 930 # match the background
-  #   starty: 1000
+  #   startx: 930
+  #   ,1000
   #   scale: 1
 
 characters:
@@ -39,31 +39,31 @@ characters:
     type: Player
     asset_path: ./assets/dummy/player.yaml
     startx: 1430
-    starty: 600
+    ,600
     scale: 1
   - id: ossifrage 1
     type: Ossifrage
     asset_path: ./assets/dummy/ossifrage.yaml
     startx: 700
-    starty: 900
+    ,900
     scale: 1
   - id: ossifrage 2
     type: Ossifrage
     asset_path: ./assets/dummy/ossifrage.yaml
     startx: 700
-    starty: 1000
+    ,1000
     scale: 1
   - id: ossifrage 3
     type: Ossifrage
     asset_path: ./assets/dummy/ossifrage.yaml
     startx: 800
-    starty: 1000
+    ,1000
     scale: 1
   - id: dungeon_trigger
     type: Trigger
     asset_path: ./assets/dummy/block.png
     startx: 1430
-    starty: 340
+    ,340
     scale: 2
     scene_path: ./assets/dummy/scene.yaml
     player_start: # starting pos of the player

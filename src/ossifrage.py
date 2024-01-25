@@ -2,7 +2,7 @@ import random
 import math
 
 import pygame as pg
-from .sprite import Character
+from .character import Character
 from .compass import Compass
 
 MOVEMENTS = Compass.strings + ['STOP', 'STOP', "STOP"]

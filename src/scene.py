@@ -1,16 +1,22 @@
 import pygame as pg
 import yaml
 
-from .sprite import SPRITE_MAP
+from .dict_obj import DictObj
 from .camera import Camera
+from .decal import Decal
+from .character import Character
 from .player import Player
 from .ossifrage import Ossifrage
 from .edge import Edge
 
-CLASS_MAP = SPRITE_MAP.copy()
-CLASS_MAP['Player'] = Player
-CLASS_MAP['Ossifrage'] = Ossifrage
-CLASS_MAP['Edge'] = Edge
+SPRITE_MAP = DictObj(**{
+    "Decal"      : Decal,
+    "Character"  : Character,
+    'Player': Player,
+    'Ossifrage': Ossifrage,
+    'Edge': Edge,
+})
+
 
 
 class Scene():
@@ -44,17 +50,14 @@ class Scene():
             if name not in self.data.keys():
                 continue
             for sprite_dict in self.data[name]:
-                sprite_dict['game'] = self
-                sprite_instance = CLASS_MAP[sprite_dict['type']](**sprite_dict)
+                sprite_dict['scene'] = self
+                sprite_instance = SPRITE_MAP[sprite_dict['type']](**sprite_dict)
                 if sprite_instance.id == "PLAYER":
                     self.player = sprite_instance
                 layer.add(sprite_instance)
                 if "group_add" in sprite_instance.options.keys():
                     for group in sprite_instance.options['group_add']:
                         self.groups[group].add(sprite_instance)
-                if isinstance(sprite_instance, CLASS_MAP['Character']):
-                    for group in sprite_instance.groups():
-                        layer.add(sprite_instance.alt_image)
 
         self.camera = Camera(self)
         self.camera.zoom(self.data.INIT_ZOOM)

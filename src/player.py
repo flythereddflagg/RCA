@@ -1,6 +1,6 @@
 import math
 import pygame as pg
-from .sprite import Character
+from .character import Character
 from .compass import Compass
 
 DEFAULT_ANIMATION = 'stand'
@@ -27,21 +27,22 @@ class Player(Character):
             todo for todo in self.todo_list
             if not self.keys_held[todo]
         ]
-        if not self.todo_list and not self.animation_active:
-            self.animate_data = self.animation[DEFAULT_ANIMATION]
+        if not self.todo_list and not self.animation.active:
+            self.animation.current = self.animation.data[DEFAULT_ANIMATION]
 
         for action in self.todo_list:
-            if self.animation_active: continue
+            if self.animation.active: continue
             # TODO abstract decisions
             if action in Compass.strings:
                 # ^ means a direction button is being pressed                
                 self.move(action, speed=self.speed)
-                self.animate_data = self.animation['walk']
+                self.animation.current = self.animation.data['walk']
                 
             elif action == "BUTTON_1":
                 self.keys_held[action] = True
-                self.animate_data = self.animation[self.button1_action]
-                self.animation_active = not self.animate_data["repeat"]
+                self.animation.current = self.animation.data[
+                    self.button1_action]
+                self.animation.active = not self.animation.current["repeat"]
 
             else:
                 print(action + "! (no response)")
@@ -56,8 +57,8 @@ class Player(Character):
             self.keys_held[todo] = True
 
     def animate(self):
-        super().animate()
-        if self.animate_data['id'] == 'damage' and self.animation_active:
+        self.animation.animate()
+        if self.animation.current['id'] == 'damage' and self.animation.active:
                 self.move(self.direction, speed=-3*self.speed)
 
     def update(self):
@@ -84,19 +85,19 @@ class Player(Character):
             if "damage" in signal[0]:
                 self.hp -= signal[1]
                 self.direction = signal[2]
-                self.animate_data = self.animation['damage']
-                self.animation_active = not self.animate_data["repeat"]
+                self.animation.current = self.animation.data['damage']
+                self.animation.active = not self.animation.current["repeat"]
             # TODO abstract this out into sprite
 
         self.signals = [] # reset signals
 
     def check_collision(self):
-        if self.animate_data['id'] == 'damage' and self.animation_active:
+        if self.animation.current['id'] == 'damage' and self.animation.active:
             return
-        if self.alt_image.mask:
+        if self.animation.alt_sprite.mask:
             for sprite in pg.sprite.spritecollide(
                 # collide between character and foreground
-                self.alt_image, self.scene.groups['foe'], 
+                self.animation.alt_sprite, self.scene.groups['foe'], 
                 # do not kill, use the masks for collision
                 False, pg.sprite.collide_mask
             ):

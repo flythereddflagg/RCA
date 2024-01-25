@@ -22,7 +22,7 @@ hud:
     type: Decal
     asset_path: ./assets/dummy/hud_element.png
     startx: 0
-    starty: 0
+    ,0
 
 background:
   - id: dungeon_tile
@@ -30,27 +30,27 @@ background:
     asset_path: ./assets/scene/alleyway/map.png
     # asset_path: ./assets/dummy/null.png
     startx: 0
-    starty: 0
+    ,0
     # scale: 2
 # data for the foreground
 foreground:
   - id: dungeon_walls
-    type: Block
+    type: Decal
     asset_path: ./assets/scene/alleyway/foreground.png
-    startx: 0 # match the background
-    starty: 0
+    startx: 0
+    ,0
     # scale: 2
   # - id: dungeon_blockade2
-  #   type: Block
+  #   type: Decal
   #   asset_path: ./assets/dummy/block.png
-  #   startx: 730 # match the background
-  #   starty: 750
+  #   startx: 730
+  #   ,750
   #   scale: 2
   # - id: dungeon_blockade3
-  #   type: Block
+  #   type: Decal
   #   asset_path: ./assets/dummy/block.png
-  #   startx: 930 # match the background
-  #   starty: 1000
+  #   startx: 930
+  #   ,1000
   #   scale: 2
 
 characters:
@@ -58,14 +58,14 @@ characters:
     type: Player
     asset_path: ./assets/dummy/player.yaml
     startx: 500
-    starty: 500
+    ,500
     scale: 1
   - id: garden exit
     type: Trigger
-    # type: Block
+    # type: Decal
     asset_path: ./assets/dummy/block.png
-    startx: 1138 # match the background
-    starty: 167
+    startx: 1138
+    ,167
     scale: 2.5
     scene_path: ./assets/scene/mansion_yard.yaml
     player_start: # starting pos of the player

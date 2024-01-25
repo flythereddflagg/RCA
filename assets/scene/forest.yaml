@@ -23,7 +23,7 @@ hud:
     type: Decal
     asset_path: ./assets/dummy/hud_element.png
     startx: 0
-    starty: 0
+    ,0
 
 background:
   - id: dungeon_tile
@@ -31,23 +31,23 @@ background:
     asset_path: ./assets/scene/forest/map.png
     # asset_path: ./assets/dummy/null.png
     startx: 0
-    starty: 0
+    ,0
     # scale: 2
 # data for the foreground
 foreground:
   - id: dungeon_walls
-    type: Block
+    type: Decal
     asset_path: ./assets/scene/forest/foreground.png
-    startx: 0 # match the background
-    starty: 0
+    startx: 0
+    ,0
 
 characters:
   - id: forest_red_castle_valley_connection
     type: Trigger
-    # type: Block
+    # type: Decal
     asset_path: ./assets/dummy/block.png
-    startx: 325 # match the background
-    starty: 575
+    startx: 325
+    ,575
     scale: 2.5
     scene_path: ./assets/scene/red_castle_valley.yaml
     exit_dir: LEFT

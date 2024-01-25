@@ -1,9 +1,9 @@
 import pygame as pg
 
-from .sprite import Block
+from .decal import Decal
 from .compass import Compass
 
-class Edge(Block):
+class Edge(Decal):
     """an edge is a sprite that connects two scenes in the map graph"""
     def __init__(self, **options):
         super().__init__(**options)
