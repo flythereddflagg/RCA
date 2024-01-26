@@ -14,7 +14,7 @@ class Animation():
         self.sprite = sprite
         self.data = {}
         self.current = None # the current animation
-        self.previous = None # the previous animation
+        self.previous = None # the id of the previous animation
         self.frame = None # next frame generator
         self.frame_times = [1] # list of frame times
         self.frame_time = 1 # the number of ms the current frame should show
@@ -41,8 +41,7 @@ class Animation():
                 "scene": self.sprite.scene,
                 "asset_path": NULL_PATH,
             })
-        for group in self.sprite.groups():
-            group.add(self.alt_sprite)
+
 
 
     def kill(self):
@@ -75,7 +74,6 @@ class Animation():
             self.previous = self.current['id']
             self.frames = self.current["frames"][self.sprite.direction]
 
-
         # update direction if it has changed
         if self.sprite.direction != self.last_direction:
             set_frame = True
@@ -94,23 +92,25 @@ class Animation():
                 self.alt_sprite.mask = next(self.alt_sprite.mask_set)
         
         if self.sprite.image is None: # animation is done
-            self.frames_active = False
+            self.active = False
             last_animate = self.previous
             self.previous = self.current['id']
-            self.current = self.frames[last_animate]
+            self.current = self.data[last_animate]
             self.set_frame()
-            self.alt_sprite.mask = None
 
 
     def set_image(self, image):
         if self.sprite.image == self.null_image:
             self.alt_sprite.image = self.null_image
+            self.alt_sprite.kill()
         self.sprite.image = image
         if image is None: return
         if self.sprite.rect.size == image.get_rect().size: return
         # set image to blank
         # then just paste the new image on top of it
         self.sprite.image = self.null_image
+        for group in self.sprite.groups():
+            group.add(self.alt_sprite)
         self.alt_sprite.image = image
         self.alt_sprite.rect = self.alt_sprite.image.get_rect()
         self.alt_sprite.rect.center = self.sprite.rect.center

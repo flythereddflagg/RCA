@@ -54,6 +54,7 @@ class Scene():
                 sprite_instance = SPRITE_MAP[sprite_dict['type']](**sprite_dict)
                 if sprite_instance.id == "PLAYER":
                     self.player = sprite_instance
+                    self.game.player = sprite_instance
                 layer.add(sprite_instance)
                 if "group_add" in sprite_instance.options.keys():
                     for group in sprite_instance.options['group_add']:

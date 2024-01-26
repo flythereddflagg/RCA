@@ -17,7 +17,7 @@ SHOW_EVENTS = True
 class GameState(DictObj):
     """
     connects the hardware to game logic and holds the game state
-    including the scene
+    including the scenes
     """
     def __init__(self, data_path):
         init_data = self.load_yaml(data_path)

@@ -11,9 +11,10 @@ def main():
     INIT_PATH = "./assets/__init__.yaml"
     game = GameState(INIT_PATH)
     game.run()
-    print("Safely ending game...")
+    
     pg.display.quit()
     pg.quit()
+    print("Game ended successfully!")
 
 
 if __name__ == "__main__":

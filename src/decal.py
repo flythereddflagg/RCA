@@ -66,10 +66,12 @@ class Decal(pg.sprite.Sprite):
     def __repr__(self):
         string = super().__repr__()
         string += f"\n{type(self)}"
-        for key, item in self.__dict__.items():
+        for key, item in vars(self).items():
             if type(item) in [dict, DictObj]: 
                 string += f"\n{str(key):10.10}: {{...}}"
                 continue
             string += f"\n{str(key):10.10}: {str(item):30.30}"
         return string
 
+    def signal(self, *args, **kwargs):
+        pass

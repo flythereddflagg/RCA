@@ -1,5 +1,6 @@
-from .decal import Decal
+import pygame as pg
 
+from .decal import Decal
 from .compass import Compass
 from .animation import Animation
 
@@ -21,8 +22,6 @@ class Character(Decal):
         self.animation = None
         if 'animations' in self.options.keys():
             self.animation = Animation(self, **self.options)
-
-
 
     def move(
         self, direction:int|str|tuple, 
