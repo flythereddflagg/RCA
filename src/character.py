@@ -24,7 +24,7 @@ class Character(Decal):
             self.animation = Animation(self, **self.options)
 
     def move(
-        self, direction:int|str|tuple, 
+        self, direction:int|str|tuple|pg.math.Vector2, 
         distance:int=0, speed:int|float=0,
         reject_foreground:bool=True
     ) -> None:
@@ -36,7 +36,7 @@ class Character(Decal):
         @param distance MUST be of type: int
         @param speed may be int or float
         """
-        if isinstance(direction, str) or isinstance(direction, tuple):
+        
             direction = Compass.i_map[direction] # convert to int
         self.direction = direction
         if speed:

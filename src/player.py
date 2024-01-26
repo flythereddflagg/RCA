@@ -17,6 +17,7 @@ class Player(Character):
         self.keys_held = {key:False for key in self.scene.game.KEY_BIND.keys()}
         self.button1_action = 'sword swing'
         self.hp = 100
+        self.damage_direction = pg.math.Vector2(0,1)
 
     def apply(self, game_input):
         self.todo_list.extend(game_input)
@@ -59,7 +60,7 @@ class Player(Character):
     def animate(self):
         self.animation.animate()
         if self.animation.current['id'] == 'damage' and self.animation.active:
-                self.move(self.direction, speed=-3*self.speed)
+                self.move(self.damage_direction, speed=3*self.speed)
 
     def update(self):
         self.apply_todos()
@@ -84,7 +85,7 @@ class Player(Character):
         for signal in self.signals:
             if "damage" in signal[0]:
                 self.hp -= signal[1]
-                self.direction = signal[2]
+                self.damage_direction = signal[2]
                 self.animation.current = self.animation.data['damage']
                 self.animation.active = not self.animation.current["repeat"]
             # TODO abstract this out into sprite

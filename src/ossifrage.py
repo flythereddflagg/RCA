@@ -87,7 +87,11 @@ class Ossifrage(Character):
         )
         if collided_players is not None:
             for player in collided_players:
+                damage_direction = (
+                    pg.math.Vector2(player.rect.center) -
+                    pg.math.Vector2(self.rect.center)
+                ).normalize()
                 player.signal([
-                    'damage', 10, Compass.opposite[self.direction]
+                    'damage', 10, damage_direction
                 ])
                 
