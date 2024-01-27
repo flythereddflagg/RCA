@@ -103,6 +103,6 @@ class Player(Character):
                 False, pg.sprite.collide_mask
             ):
                 sprite.signal([
-                    "damage", 10, Compass.opposite[self.direction]
+                    "damage", 10, Compass.opposite(self.direction)
                 ])
 

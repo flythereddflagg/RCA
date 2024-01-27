@@ -17,6 +17,7 @@ class Ossifrage(Character):
         self.speed = 200 # pixels per second
         self.signals = []
         self.hp = 50
+        self.damage_direction = pg.math.Vector2(0,1)
 
 
     def animate(self):
@@ -50,7 +51,7 @@ class Ossifrage(Character):
         for signal in self.signals:
             if "damage" in signal[0]:
                 self.hp -= signal[1]
-                self.direction = signal[2]
+                self.direction = Compass.index(signal[2])
                 self.animation.current = self.animation.data['damage']
                 self.animation.active = not self.animation.current["repeat"]
 
@@ -65,7 +66,7 @@ class Ossifrage(Character):
         if action in Compass.strings: 
             # ^ means a direction button is being pressed
             self.move(action, speed=self.speed)
-            self.direction = Compass.i_map[action]
+            self.direction = Compass.index(action)
             self.animation.current = self.animation.data['walk']
             
         elif action == "STOP":

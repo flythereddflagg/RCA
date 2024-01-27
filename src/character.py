@@ -37,14 +37,13 @@ class Character(Decal):
         @param speed may be int or float
         """
         
-            direction = Compass.i_map[direction] # convert to int
-        self.direction = direction
+        self.direction = Compass.index(direction)
         if speed:
             fps = self.scene.game.clock.get_fps()
             if not fps: return
             distance = speed / fps
         if distance < 0:
-            direction = Compass.opposite[direction]
+            direction = Compass.opposite(direction)
             distance *= -1
         # this chunk is to correct for crazy frame rates
         self.dist_buffer += distance % 1
@@ -55,7 +54,7 @@ class Character(Decal):
             self.dist_buffer = distance % 1
 
         distance = int(distance)
-        xunit, yunit = Compass.vec_map[direction]
+        xunit, yunit = Compass.vector(direction)
         addx, addy = distance * xunit, distance * yunit
         self.rect.move_ip(addx, addy)
         
