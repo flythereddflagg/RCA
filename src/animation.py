@@ -24,13 +24,16 @@ class Animation():
         self.last_direction = self.sprite.direction
 
         for animation in options['animations']:
+            key_frame_size = [
+                int(x) for x in animation['key_frame_size'].split('x')
+            ]
             animation['frames'] = self.parse_animation(
-                animation['asset_path'], animation['key_frame_size']
+                animation['asset_path'], key_frame_size
             )
             # add a special mask if it exists
             if 'mask_path' in animation:
                 animation['mask'] = self.parse_animation(
-                    animation['mask_path'], animation['key_frame_size'],
+                    animation['mask_path'], key_frame_size,
                     make_mask=True
                 )
             self.data[animation['id']] =  animation

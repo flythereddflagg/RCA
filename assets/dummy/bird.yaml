@@ -9,11 +9,7 @@ animations:
   - id: walking
     asset_path: "./assets/dummy/bird_walking.png"
     key_frame_size: 
-      - 32
-      - 32
-    # this will rotate infinitely so length doesn't matter
+      - 32x32
+    
     key_frame_times:
       - 75
-
-  
-# scale: 2

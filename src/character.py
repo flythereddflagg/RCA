@@ -63,7 +63,8 @@ class Character(Decal):
 
     def foreground_rejection(self, xunit, yunit):
         # move rejection for foreground
-        # FIXME game crashes here when certain collision occur.
+        # FIXME game crashes here when certain collisions occur between
+        # player and ossifrage.
         while pg.sprite.spritecollide(
             # collide between character and foreground
             self, self.scene.layers['foreground'], 
