@@ -102,7 +102,11 @@ class Player(Character):
                 # do not kill, use the masks for collision
                 False, pg.sprite.collide_mask
             ):
+                damage_direction = (
+                    pg.math.Vector2(sprite.rect.center) -
+                    pg.math.Vector2(self.rect.center)
+                ).normalize()
                 sprite.signal([
-                    "damage", 10, Compass.opposite(self.direction)
+                    "damage", 10, damage_direction
                 ])
 

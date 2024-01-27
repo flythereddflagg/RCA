@@ -6,7 +6,8 @@ import pygame as pg
 from .decal import Decal
 
 DEFAULT_ANIMATION = 'stand'
-NULL_PATH = "./assets/dummy/null.png"
+# NULL_PATH = "./assets/dummy/null.png"
+NULL_PATH = "./assets/dummy/block.png"
 
 class Animation():
     def __init__(self, sprite, **options):
@@ -41,6 +42,7 @@ class Animation():
                 "scene": self.sprite.scene,
                 "asset_path": NULL_PATH,
             })
+        self.alt_sprite.rect.center = (500, 500)
 
 
 

@@ -23,7 +23,7 @@ class Ossifrage(Character):
     def animate(self):
         self.animation.animate()
         if self.animation.current['id'] == 'damage' and self.animation.active:
-            self.move(self.direction, speed=-3*self.speed)
+            self.move(self.damage_direction, speed=-3*self.speed)
 
     def choose_action(self):
         cur_time = pg.time.get_ticks()
@@ -51,7 +51,7 @@ class Ossifrage(Character):
         for signal in self.signals:
             if "damage" in signal[0]:
                 self.hp -= signal[1]
-                self.direction = Compass.index(signal[2])
+                self.damage_direction = signal[2]
                 self.animation.current = self.animation.data['damage']
                 self.animation.active = not self.animation.current["repeat"]
 
