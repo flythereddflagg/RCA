@@ -8,31 +8,27 @@ animations:
   - id: "null"
     asset_path: "./assets/dummy/null.png"
     repeat: True
-    key_frame_size: 
-      - 32x32
+    key_frame_size: 32,32
     key_frame_times:
       - 1
 
   - id: stand
     asset_path: "./assets/dummy/ossifrage_stand.png"
     repeat: True
-    key_frame_size: 
-      - 32x32
+    key_frame_size: 32,32
     key_frame_times:
       - 1
 
   - id: walk
     asset_path: "./assets/dummy/ossifrage_walk.png"
     repeat: True
-    key_frame_size: 
-      - 32x32
+    key_frame_size: 32,32
     key_frame_times:
       - 50
 
   - id: damage
     asset_path: "./assets/dummy/ossifrage_damage.png"
     repeat: False
-    key_frame_size: 
-      - 32x32
+    key_frame_size: 32,32
     key_frame_times:
       - 50

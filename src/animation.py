@@ -25,7 +25,7 @@ class Animation():
 
         for animation in options['animations']:
             key_frame_size = [
-                int(x) for x in animation['key_frame_size'].split('x')
+                int(x) for x in animation['key_frame_size'].split(',')
             ]
             animation['frames'] = self.parse_animation(
                 animation['asset_path'], key_frame_size
