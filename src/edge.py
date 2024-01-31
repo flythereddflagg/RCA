@@ -27,8 +27,8 @@ class Edge(Decal):
     def exec_trigger(self):
         # save everything we want to carry into the next scene
         player = self.scene.player
-        self.scene.game.load_scene(self.options['scene_path'])
-        new_scene = self.scene.game.scene
+        game = self.scene.game
+        new_scene = self.scene.load_scene(game, self.options['scene_path'])
         new_scene.player = player
         player.scene = new_scene
         new_scene.layers['characters'].add(player)

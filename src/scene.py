@@ -73,3 +73,9 @@ class Scene():
         # finally, update the camera
         if self.camera: self.camera.update()
 
+    @classmethod
+    def load_scene(cls, game, yaml_path):
+        new_scene = cls(game, yaml_path)
+        game.scene = new_scene
+        return new_scene
+    # TODO implement and test this method
