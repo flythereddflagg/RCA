@@ -54,7 +54,9 @@ class Character(Decal):
             self.dist_buffer = distance % 1
 
         distance = int(distance)
-        xunit, yunit = Compass.vector(direction)
+        # BUG cannot use Compass.vector here because it can cause an
+        # infinte loop in foreground_rejection()
+        xunit, yunit = Compass.unit_vector(direction)
         addx, addy = distance * xunit, distance * yunit
         self.rect.move_ip(addx, addy)
         
@@ -62,15 +64,14 @@ class Character(Decal):
 
 
     def foreground_rejection(self, xunit, yunit):
-        # move rejection for foreground
-        # FIXME game crashes here when certain collisions occur between
-        # player and ossifrage.
-        while pg.sprite.spritecollide(
+        # BUG infinte loop will occur if both int(xunit) and int(yunit) are 0
+        while pg.sprite.spritecollideany(
             # collide between character and foreground
             self, self.scene.layers['foreground'], 
-            # do not kill, use the masks for collision
-            False, pg.sprite.collide_mask
+            # use the masks for collision
+            pg.sprite.collide_mask
         ):
+            print(self.id, "move rejection", xunit, yunit)
             self.rect.move_ip(-xunit, -yunit) # move back 1
 
 

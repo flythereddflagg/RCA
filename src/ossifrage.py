@@ -23,7 +23,7 @@ class Ossifrage(Character):
     def animate(self):
         self.animation.animate()
         if self.animation.current['id'] == 'damage' and self.animation.active:
-            self.move(self.damage_direction, speed=-3*self.speed)
+            self.move(self.damage_direction, speed=3*self.speed)
 
     def choose_action(self):
         cur_time = pg.time.get_ticks()

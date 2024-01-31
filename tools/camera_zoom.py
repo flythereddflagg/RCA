@@ -3,10 +3,10 @@ import pygame as pg
 BLACK = (0,0,0)
 SCALE_RUN = 1.05
 
-def gen_from_iter(iter_):
-    while True:
-        for thing in iter_:
-            yield thing
+# def gen_from_iter(iter_):
+#     while True:
+#         for thing in iter_:
+#             yield thing
 
 class TestSprite(pg.sprite.Sprite):
     def __init__(self, img_path):

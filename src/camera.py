@@ -1,12 +1,12 @@
 import pygame as pg
 
 ### FIXME this is test code
-def inf_gen(iter_):
-    while True:
-        for thing in iter_:
-            yield thing
-SCALE_RUN = 1.05
-FACTOR = inf_gen([SCALE_RUN, 1/SCALE_RUN])
+# def inf_gen(iter_):
+#     while True:
+#         for thing in iter_:
+#             yield thing
+# SCALE_RUN = 1.05
+# FACTOR = inf_gen([SCALE_RUN, 1/SCALE_RUN])
 ### FIXME this is test code
 
 class Camera:
