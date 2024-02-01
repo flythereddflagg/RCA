@@ -33,7 +33,6 @@ class Decal(pg.sprite.Sprite):
         self.asset_path = options["asset_path"]
         self.image = pg.image.load(self.asset_path).convert_alpha()
         self.rect = self.image.get_rect()
-        self.mask = None
         self.original_image = self.image
         self.original_size = self.rect.size
         self.options = options # make this a dictobj
@@ -46,6 +45,7 @@ class Decal(pg.sprite.Sprite):
         if 'start' in options.keys():
             self.start = [int(d) for d in options['start'].split(',')]
             self.mask = pg.mask.from_surface(self.image)
+
             background = self.scene.layers['background'].sprites()[0]
             self.rect.topleft = (
                 pg.math.Vector2(background.rect.topleft) + 

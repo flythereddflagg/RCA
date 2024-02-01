@@ -3,10 +3,13 @@
 # character but not any one scene
 
 # this is the default asset path
+id: PLAYER
+type: Player
+start: 500,500
 asset_path: "./assets/dummy/character.png"
 group_add:
   - player
-# asset_path: "./assets/dummy/character_walking.png"
+
 animations:
   - id: "null"
     asset_path: "./assets/dummy/null.png"

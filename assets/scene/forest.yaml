@@ -40,11 +40,9 @@ foreground:
 
 characters:
   - id: forest_red_castle_valley_connection
-    type: Trigger
-    # type: Decal
+    type: Edge
     asset_path: ./assets/dummy/block.png
-    startx: 325,575
+    start: 325,575
     scale: 2.5
     scene_path: ./assets/scene/red_castle_valley.yaml
     exit_dir: LEFT
-

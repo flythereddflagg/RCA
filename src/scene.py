@@ -21,15 +21,15 @@ SPRITE_MAP = DictObj(**{
 
 class Scene():
     
-    def __init__(self, game, yaml_path):
+    def __init__(self, game, yaml_path, player_path=None):
         """
         All this must do load the data from a YAML file
         and load each sprite into a group
         """
         self.game = game
         self.data = self.game.load_yaml(yaml_path)
-        self.camera = None
-        self.player = None
+
+        
         # TODO add a group single for background sprites
         self.groups = {
             group_name: pg.sprite.Group() 
@@ -41,9 +41,6 @@ class Scene():
         }
         
 
-        for name in self.data.SPRITE_GROUPS:
-            self.groups[name].empty()
-
         for name in self.data.DRAW_LAYERS:
             layer = self.layers[name]
             layer.empty() # clear out all layers
@@ -52,16 +49,27 @@ class Scene():
             for sprite_dict in self.data[name]:
                 sprite_dict['scene'] = self
                 sprite_instance = SPRITE_MAP[sprite_dict['type']](**sprite_dict)
-                if sprite_instance.id == "PLAYER":
-                    self.player = sprite_instance
-                    self.game.player = sprite_instance
                 layer.add(sprite_instance)
                 if "group_add" in sprite_instance.options.keys():
                     for group in sprite_instance.options['group_add']:
                         self.groups[group].add(sprite_instance)
-
+        
         self.camera = Camera(self)
         self.camera.zoom(self.data.INIT_ZOOM)
+        
+        if player_path:
+            player_data = self.game.load_yaml(player_path)
+            player_data['scene'] = self
+            self.player = SPRITE_MAP[player_data['type']](**player_data)
+            if "group_add" in self.player.options.keys():
+                    for group in self.player.options['group_add']:
+                        self.groups[group].add(self.player)
+            self.layers['characters'].add(self.player)
+            self.camera.player = self.player
+        else:
+            self.player = None
+
+        
 
 
     def update(self):
@@ -74,8 +82,9 @@ class Scene():
         if self.camera: self.camera.update()
 
     @classmethod
-    def load_scene(cls, game, yaml_path):
+    def load_scene(cls, cur_scene, game, yaml_path):
         new_scene = cls(game, yaml_path)
         game.scene = new_scene
+        new_scene.camera.player = cur_scene.player
         return new_scene
     # TODO implement and test this method

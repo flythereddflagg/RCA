@@ -45,6 +45,7 @@ class Animation():
                 "scene": self.sprite.scene,
                 "asset_path": NULL_PATH,
             })
+        self.alt_sprite.mask = None
         self.alt_sprite.rect.center = (500, 500)
 
 

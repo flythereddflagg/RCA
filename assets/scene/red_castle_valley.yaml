@@ -43,15 +43,15 @@ foreground:
     start: 1230,1000
 
 characters:
-  - id: PLAYER # reference to THE main player
-    type: Player
-    asset_path: ./assets/dummy/player.yaml
-    start: 500,500
-    scale: 1
-  - id: ossifrage 1
-    type: Ossifrage
-    asset_path: ./assets/dummy/ossifrage.yaml
-    start: 700,900
+  # - id: PLAYER # reference to THE main player
+  #   type: Player
+  #   asset_path: ./assets/dummy/player.yaml
+  #   start: 500,500
+  #   scale: 1
+  # - id: ossifrage 1
+  #   type: Ossifrage
+  #   asset_path: ./assets/dummy/ossifrage.yaml
+  #   start: 700,900
   # - id: bridge_exit
   #   type: Trigger
   #   # type: Decal

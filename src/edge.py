@@ -14,21 +14,21 @@ class Edge(Decal):
         self.check_collision()
     
     def check_collision(self):
-        collided_players = pg.sprite.spritecollide(
+        if pg.sprite.spritecollideany(
             # collide between self and player
             self, self.scene.groups['player'], 
             # do not kill, use the masks for collision
-            False, pg.sprite.collide_mask
-        )
-        if collided_players:
+            pg.sprite.collide_mask
+            # psudo_collide_mask
+        ):
             print("loading scene")
             self.exec_trigger()
     
     def exec_trigger(self):
         # save everything we want to carry into the next scene
-        player = self.scene.player
         game = self.scene.game
-        new_scene = self.scene.load_scene(game, self.options['scene_path'])
+        player = self.scene.player
+        new_scene = self.scene.load_scene(self.scene, game, self.options['scene_path'])
         new_scene.player = player
         player.scene = new_scene
         new_scene.layers['characters'].add(player)
@@ -36,9 +36,19 @@ class Edge(Decal):
         sprites = new_scene.layers['characters'].sprites()
         block = list(filter(lambda x: x.id == self.id, sprites))[0]
         print(block.id, block.scene.data['id'])
-        print(player.rect.center)
+        print("cur pos", player.rect.center)
         player.rect.center = block.rect.center
-        dx, dy = Compass.vec_map[block.options['exit_dir']]
-        player.rect.x += dx*(player.rect.w/2 + block.rect.w/2)
-        player.rect.y += dy*(player.rect.h/2 + block.rect.h/2)
-        print(player.rect.center)
+        print("mid", player.rect.center)
+        dx, dy = Compass.unit_vector(block.options['exit_dir'])
+        player.rect.x += dx*(player.rect.w + block.rect.w)
+        player.rect.y += dy*(player.rect.h + block.rect.h)
+        ## TODO adjust player pos with background??
+        print("after pos", player.rect.center)
+
+
+
+def psudo_collide_mask(left, right):
+    print('HEREs the junk')
+    print('LEFT', left.mask)
+    print('RIGHT', right.mask)
+    return pg.sprite.collide_mask(left, right)

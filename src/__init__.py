@@ -26,7 +26,6 @@ class GameState(DictObj):
         self.running = False
         self.paused = False
         self.scene = None
-        self.player = None
         self.INV_KEY_BIND = {v: k for k, v in self.KEY_BIND.items()}
         self.controllers = []
         
@@ -43,7 +42,7 @@ class GameState(DictObj):
             [self.SCREENWIDTH, self.SCREENHEIGHT], pg.RESIZABLE
         )
         self.clock = pg.time.Clock()
-        self.scene = Scene(self, self.INITAL_SCENE)
+        self.scene = Scene(self, self.INITAL_SCENE, self.PLAYER)
         
         if self.FPS_COUNTER:
             self.fps_counter = pg.font.SysFont("Sans", 22)
@@ -98,8 +97,8 @@ class GameState(DictObj):
             return
 
         # apply all the input
-        if self.player:
-            self.player.apply(game_input)
+        if self.scene.player:
+            self.scene.player.apply(game_input)
 
         # update everything in the scene
         if self.scene and not self.paused: 

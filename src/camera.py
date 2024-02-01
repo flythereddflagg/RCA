@@ -12,7 +12,7 @@ import pygame as pg
 class Camera:
     def __init__(self, game):
         self.scene = game
-        self.player = self.scene.player
+        self.player = None
         self.mobile_groups = list(self.scene.layers.keys())
         self.mobile_groups.remove('hud')
         self.cur_zoom = 1
@@ -31,6 +31,7 @@ class Camera:
         ### FIXME END this is test code
 
         self.follow_player()
+
 
     def follow_player(self):
         if not self.player: return
