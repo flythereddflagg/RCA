@@ -48,6 +48,12 @@ class GameState(DictObj):
             self.fps_counter = pg.font.SysFont("Sans", 22)
 
     
+    def load_scene(self, cur_scene, yaml_path):
+        self.scene = Scene(self, yaml_path)
+        return self.scene
+    # TODO implement and test this method
+
+
     def load_yaml(self, yaml_path):
         with open(yaml_path) as f:
             yaml_data = yaml.load(f.read(), Loader=yaml.Loader)

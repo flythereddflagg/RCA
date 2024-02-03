@@ -28,21 +28,21 @@ class Edge(Decal):
         # save everything we want to carry into the next scene
         game = self.scene.game
         player = self.scene.player
-        new_scene = self.scene.load_scene(self.scene, game, self.options['scene_path'])
-        new_scene.player = player
+        new_scene = game.load_scene(self.scene, self.options['scene_path'])
         player.scene = new_scene
+        new_scene.player = player
+        new_scene.camera.player = player
         new_scene.layers['characters'].add(player)
         new_scene.groups['player'].add(player)
         sprites = new_scene.layers['characters'].sprites()
         block = list(filter(lambda x: x.id == self.id, sprites))[0]
-        print(block.id, block.scene.data['id'])
+        print(block.id, block.scene.data['id'], block.rect.center)
         print("cur pos", player.rect.center)
         player.rect.center = block.rect.center
         print("mid", player.rect.center)
         dx, dy = Compass.unit_vector(block.options['exit_dir'])
-        player.rect.x += dx*(player.rect.w + block.rect.w)
-        player.rect.y += dy*(player.rect.h + block.rect.h)
-        ## TODO adjust player pos with background??
+        player.rect.x += dx*(player.rect.w/2 + block.rect.w/2)
+        player.rect.y += dy*(player.rect.h/2 + block.rect.h/2)
         print("after pos", player.rect.center)
 
 

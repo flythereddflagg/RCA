@@ -31,6 +31,7 @@ class Camera:
         ### FIXME END this is test code
 
         self.follow_player()
+        pass
 
 
     def follow_player(self):
@@ -39,19 +40,24 @@ class Camera:
         screen_data = pg.display.Info()
         centerx = screen_data.current_w // 2
         centery = screen_data.current_h // 2
+        center = pg.math.Vector2(centerx, centery)
         # get current player position
-        curx, cury = self.player.rect.center
+        cur_pos = pg.math.Vector2(self.player.rect.center)
 
         # if player is inside the cameraslack box, no need to update.
-        movex, movey= 0, 0
-        if abs(curx - centerx) > self.scene.data.CAMERASLACK:
-            e_w = 1 if centerx - curx < 0 else -1
-            movex = centerx - curx + e_w * self.scene.data.CAMERASLACK
-        if abs(cury - centery) > self.scene.data.CAMERASLACK:
-            n_s = 1 if centery - cury < 0 else -1
-            movey = centery - cury + n_s * self.scene.data.CAMERASLACK
+        move = center - cur_pos
+        move_len = move.length() 
+        if move_len < self.scene.data.CAMERASLACK: return
+
+        movex, movey = move
+        if move_len > self.scene.data.CAMERASLACK:
+            e_w = 1 if movex < 0 else -1
+            movex = movex + e_w * self.scene.data.CAMERASLACK
+        if move_len > self.scene.data.CAMERASLACK:
+            n_s = 1 if movey < 0 else -1
+            movey = movey + n_s * self.scene.data.CAMERASLACK
         
-        movex, movey = self.stop_at_border(movex, movey)
+        # movex, movey = self.stop_at_border(movex, movey)
 
         if not movex and not movey: return
 
@@ -61,6 +67,7 @@ class Camera:
             for sprite in self.scene.layers[group]:
                 sprite.rect.x += movex
                 sprite.rect.y += movey
+
         
     def center_player(self):
         tmp_storage = self.scene.data.CAMERASLACK

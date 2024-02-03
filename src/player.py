@@ -63,6 +63,7 @@ class Player(Character):
                 self.move(self.damage_direction, speed=3*self.speed)
 
     def update(self):
+        print(self.rect.center)
         self.apply_todos()
         self.check_collision()
         self.check_signals()

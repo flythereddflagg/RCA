@@ -70,8 +70,6 @@ class Scene():
             self.player = None
 
         
-
-
     def update(self):
         
         # update all sprites

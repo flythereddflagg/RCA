@@ -5,7 +5,7 @@
 # this is the default asset path
 id: PLAYER
 type: Player
-start: 500,500
+start: 900,600
 asset_path: "./assets/dummy/character.png"
 group_add:
   - player
