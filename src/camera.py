@@ -16,8 +16,8 @@ class Camera:
         self.mobile_groups = list(self.scene.layers.keys())
         self.mobile_groups.remove('hud')
         self.cur_zoom = 1
-        self.last_time = 0 # FIXME this is test code
-        self.next_factor = 1 # FIXME this is test code
+        # self.last_time = 0 # FIXME this is test code
+        # self.next_factor = 1 # FIXME this is test code
 
     def update(self):
         ### FIXME this is test code
@@ -41,23 +41,21 @@ class Camera:
         centerx = screen_data.current_w // 2
         centery = screen_data.current_h // 2
         center = pg.math.Vector2(centerx, centery)
-        # get current player position
-        cur_pos = pg.math.Vector2(self.player.rect.center)
-
-        # if player is inside the cameraslack box, no need to update.
-        move = center - cur_pos
-        move_len = move.length() 
-        if move_len < self.scene.data.CAMERASLACK: return
-
-        movex, movey = move
-        if move_len > self.scene.data.CAMERASLACK:
-            e_w = 1 if movex < 0 else -1
-            movex = movex + e_w * self.scene.data.CAMERASLACK
-        if move_len > self.scene.data.CAMERASLACK:
-            n_s = 1 if movey < 0 else -1
-            movey = movey + n_s * self.scene.data.CAMERASLACK
+        player_pos = pg.math.Vector2(self.player.rect.center)
+        movex, movey = center - player_pos
         
-        # movex, movey = self.stop_at_border(movex, movey)
+        camera_slack = self.scene.data.CAMERASLACK
+        if abs(movex) > camera_slack:
+            pos_neg = 1 if movex > 0 else -1
+            movex = pos_neg * (abs(movex) - camera_slack)
+        else: movex = 0
+        if abs(movey) > camera_slack:
+            pos_neg = 1 if movey > 0 else -1
+            movey = pos_neg * (abs(movey) - camera_slack)
+        else: movey = 0
+
+        
+        movex, movey = self.stop_at_border(movex, movey)
 
         if not movex and not movey: return
 
@@ -65,8 +63,7 @@ class Camera:
         # this simulates moving the camera
         for group in self.mobile_groups:
             for sprite in self.scene.layers[group]:
-                sprite.rect.x += movex
-                sprite.rect.y += movey
+                sprite.rect.move_ip(movex, movey)
 
         
     def center_player(self):
@@ -103,15 +100,15 @@ class Camera:
         
         # if the background is too small for the screen, 
         # turn off stopping at border
-        if background.rect.size[0] < screen_w: movex = old_movex
-        if background.rect.size[1] < screen_h: movey = old_movey
+        background_w, background_h = background.rect.size
+        if background_w < screen_w: movex = old_movex
+        if background_h < screen_h: movey = old_movey
 
         return movex, movey
 
 
     def zoom(self, factor):
         self.cur_zoom *= factor
-        self.center_player()
         background = self.scene.layers['background'].sprites()[0]
         screen_data = pg.display.Info()
         centerx = screen_data.current_w // 2

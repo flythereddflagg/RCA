@@ -44,6 +44,8 @@ class Edge(Decal):
         player.rect.x += dx*(player.rect.w/2 + block.rect.w/2)
         player.rect.y += dy*(player.rect.h/2 + block.rect.h/2)
         print("after pos", player.rect.center)
+        new_scene.camera.center_player()
+        print("after after pos", player.rect.center)
 
 
 

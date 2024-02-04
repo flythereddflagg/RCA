@@ -45,6 +45,7 @@ class Decal(pg.sprite.Sprite):
         if 'start' in options.keys():
             self.start = [int(d) for d in options['start'].split(',')]
             self.mask = pg.mask.from_surface(self.image)
+            # TODO make mask independent of start
 
             background = self.scene.layers['background'].sprites()[0]
             self.rect.topleft = (

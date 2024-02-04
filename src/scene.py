@@ -55,7 +55,8 @@ class Scene():
                         self.groups[group].add(sprite_instance)
         
         self.camera = Camera(self)
-        self.camera.zoom(self.data.INIT_ZOOM)
+        # self.camera.zoom(self.data.INIT_ZOOM)
+        # FIXME zoom is broken
         
         if player_path:
             player_data = self.game.load_yaml(player_path)
@@ -79,10 +80,4 @@ class Scene():
         # finally, update the camera
         if self.camera: self.camera.update()
 
-    @classmethod
-    def load_scene(cls, cur_scene, game, yaml_path):
-        new_scene = cls(game, yaml_path)
-        game.scene = new_scene
-        new_scene.camera.player = cur_scene.player
-        return new_scene
-    # TODO implement and test this method
+
