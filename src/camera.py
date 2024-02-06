@@ -33,18 +33,36 @@ class Camera:
         self.follow_player()
         pass
 
+    def pan(self, movex, movey):
+        if not movex and not movey: return
+        # move everything that is mobile to the correct position
+        # this simulates moving the camera
+        for group in self.mobile_groups:
+            for sprite in self.scene.layers[group]:
+                sprite.rect.move_ip(-movex, -movey)
 
     def follow_player(self):
         if not self.player: return
         # get the current center of the screen
-        screen_data = pg.display.Info()
-        centerx = screen_data.current_w // 2
-        centery = screen_data.current_h // 2
+        screen_w, screen_h = pg.display.get_surface().get_size()
+        centerx = screen_w // 2
+        centery = screen_h // 2
         center = pg.math.Vector2(centerx, centery)
         player_pos = pg.math.Vector2(self.player.rect.center)
         movex, movey = center - player_pos
         
-        camera_slack = self.scene.data.CAMERASLACK
+        # movex, movey = self.add_camera_slack(
+        #     movex, movey, self.scene.data.CAMERASLACK
+        # )
+
+        movex, movey = self.stop_at_border(movex, movey)
+
+        self.pan(-movex, -movey)
+        
+    
+    def add_camera_slack(self, movex, movey, camera_slack):
+        # takes the vector given by (movex, movey) and reduces it by 
+        # camera slack if either component is greater than camera_slack
         if abs(movex) > camera_slack:
             pos_neg = 1 if movex > 0 else -1
             movex = pos_neg * (abs(movex) - camera_slack)
@@ -53,19 +71,10 @@ class Camera:
             pos_neg = 1 if movey > 0 else -1
             movey = pos_neg * (abs(movey) - camera_slack)
         else: movey = 0
-
         
-        movex, movey = self.stop_at_border(movex, movey)
+        return movex, movey
 
-        if not movex and not movey: return
 
-        # move everything that is moblie to the correct position
-        # this simulates moving the camera
-        for group in self.mobile_groups:
-            for sprite in self.scene.layers[group]:
-                sprite.rect.move_ip(movex, movey)
-
-        
     def center_player(self):
         tmp_storage = self.scene.data.CAMERASLACK
         self.scene.data.CAMERASLACK = 0
@@ -78,31 +87,25 @@ class Camera:
         Stop at world border. Adjust movex and movey
         to avoid seeing the void at the world border.
         """
-        # check if world border is visible then set to screen border
-        old_movex, old_movey =  movex, movey
         screen_w, screen_h = pg.display.get_surface().get_size()
         background = self.scene.layers['background'].sprites()[0]
-
-        # in the x direction
-        if (background.rect.left + movex > 0 or\
-            background.rect.right + movex < screen_w
-        ):
-            movex = -background.rect.left \
-                if background.rect.left + movex > 0\
-                else screen_w - background.rect.right
-        # and in the y direction
-        if (background.rect.top + movey > 0 or\
-            background.rect.bottom + movey < screen_h
-        ):
-            movey = -background.rect.top \
-                if background.rect.top + movey > 0\
-                else screen_h - background.rect.bottom
         
-        # if the background is too small for the screen, 
-        # turn off stopping at border
+        # if background is too small then just return without modifying
         background_w, background_h = background.rect.size
-        if background_w < screen_w: movex = old_movex
-        if background_h < screen_h: movey = old_movey
+        if background_w < screen_w or background_h < screen_h: 
+            return movex, movey
+        
+        # check if world border is visible then set to screen border
+        # in the x direction
+        if background.rect.left + movex > 0:
+            movex = -background.rect.left
+        elif background.rect.right + movex < screen_w:
+            movex = screen_w - background.rect.right
+        # and in the y direction
+        if background.rect.top + movey > 0:
+            movey = -background.rect.top
+        elif background.rect.bottom + movey < screen_h:
+            movey = screen_h - background.rect.bottom
 
         return movex, movey
 

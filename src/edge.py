@@ -25,6 +25,7 @@ class Edge(Decal):
             self.exec_trigger()
     
     def exec_trigger(self):
+        breakpoint()
         # save everything we want to carry into the next scene
         game = self.scene.game
         player = self.scene.player
