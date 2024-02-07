@@ -13,6 +13,7 @@ class Edge(Decal):
         """default behavior is to set up a new scene. Override to change"""
         self.check_collision()
     
+
     def check_collision(self):
         if pg.sprite.spritecollideany(
             # collide between self and player
@@ -24,8 +25,8 @@ class Edge(Decal):
             print("loading scene")
             self.exec_trigger()
     
+
     def exec_trigger(self):
-        breakpoint()
         # save everything we want to carry into the next scene
         game = self.scene.game
         player = self.scene.player
@@ -47,7 +48,6 @@ class Edge(Decal):
         print("after pos", player.rect.center)
         new_scene.camera.center_player()
         print("after after pos", player.rect.center)
-
 
 
 def psudo_collide_mask(left, right):

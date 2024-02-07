@@ -39,6 +39,8 @@ class Camera:
         # this simulates moving the camera
         for group in self.mobile_groups:
             for sprite in self.scene.layers[group]:
+                if sprite.id == "PLAYER":
+                    print("moving PLAYER", -movex, -movey)
                 sprite.rect.move_ip(-movex, -movey)
 
     def follow_player(self):
@@ -51,9 +53,9 @@ class Camera:
         player_pos = pg.math.Vector2(self.player.rect.center)
         movex, movey = center - player_pos
         
-        # movex, movey = self.add_camera_slack(
-        #     movex, movey, self.scene.data.CAMERASLACK
-        # )
+        movex, movey = self.add_camera_slack(
+            movex, movey, self.scene.data.CAMERASLACK
+        )
 
         movex, movey = self.stop_at_border(movex, movey)
 
@@ -94,7 +96,7 @@ class Camera:
         background_w, background_h = background.rect.size
         if background_w < screen_w or background_h < screen_h: 
             return movex, movey
-        
+
         # check if world border is visible then set to screen border
         # in the x direction
         if background.rect.left + movex > 0:
