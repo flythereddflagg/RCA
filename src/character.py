@@ -65,13 +65,14 @@ class Character(Decal):
 
     def foreground_rejection(self, xunit, yunit):
         # BUG infinte loop will occur if both int(xunit) and int(yunit) are 0
+        # FIXME this needs to be optimized so that it doesnt slow the game
+        # currently slows the game to 10 FPS
         while pg.sprite.spritecollideany(
             # collide between character and foreground
             self, self.scene.layers['foreground'], 
             # use the masks for collision
             pg.sprite.collide_mask
         ):
-            print(self.id, "move rejection", xunit, yunit)
             self.rect.move_ip(-xunit, -yunit) # move back 1
 
 

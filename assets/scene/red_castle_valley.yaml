@@ -52,16 +52,14 @@ characters:
   #   type: Ossifrage
   #   asset_path: ./assets/dummy/ossifrage.yaml
   #   start: 700,900
-  # - id: bridge_exit
-  #   type: Trigger
-  #   # type: Decal
-  #   asset_path: ./assets/dummy/block.png
-  #   start: 845,-80
-  #   scale: 2.5
-  #   scene_path: ./assets/scene/mansion_yard.yaml
-  #   player_start: # starting pos of the player
-  #     - 855
-  #     - 1930
+  - id: bridge_exit
+    type: Edge
+    # type: Decal
+    asset_path: ./assets/dummy/block.png
+    start: 845,-80
+    scale: 2.5
+    scene_path: ./assets/scene/mansion_yard.yaml
+    exit_dir: DOWN
   - id: forest_red_castle_valley_connection
     type: Edge
     # type: Decal

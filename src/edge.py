@@ -22,7 +22,7 @@ class Edge(Decal):
             pg.sprite.collide_mask
             # psudo_collide_mask
         ):
-            print("loading scene")
+            # print("loading scene")
             self.exec_trigger()
     
 
@@ -38,20 +38,20 @@ class Edge(Decal):
         new_scene.groups['player'].add(player)
         sprites = new_scene.layers['characters'].sprites()
         block = list(filter(lambda x: x.id == self.id, sprites))[0]
-        print(block.id, block.scene.data['id'], block.rect.center)
-        print("cur pos", player.rect.center)
+        # print(block.id, block.scene.data['id'], block.rect.center)
+        # print("cur pos", player.rect.center)
         player.rect.center = block.rect.center
-        print("mid", player.rect.center)
+        # print("mid", player.rect.center)
         dx, dy = Compass.unit_vector(block.options['exit_dir'])
         player.rect.x += dx*(player.rect.w/2 + block.rect.w/2)
         player.rect.y += dy*(player.rect.h/2 + block.rect.h/2)
-        print("after pos", player.rect.center)
+        # print("after pos", player.rect.center)
         new_scene.camera.center_player()
-        print("after after pos", player.rect.center)
+        # print("after after pos", player.rect.center)
 
 
-def psudo_collide_mask(left, right):
-    print('HEREs the junk')
-    print('LEFT', left.mask)
-    print('RIGHT', right.mask)
-    return pg.sprite.collide_mask(left, right)
+# def psudo_collide_mask(left, right):
+    # print('HEREs the junk')
+    # print('LEFT', left.mask)
+    # print('RIGHT', right.mask)
+#     return pg.sprite.collide_mask(left, right)

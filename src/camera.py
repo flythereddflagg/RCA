@@ -31,6 +31,7 @@ class Camera:
         ### FIXME END this is test code
 
         self.follow_player()
+        self.stop_at_border()
         pass
 
     def pan(self, movex, movey):
@@ -39,9 +40,8 @@ class Camera:
         # this simulates moving the camera
         for group in self.mobile_groups:
             for sprite in self.scene.layers[group]:
-                if sprite.id == "PLAYER":
-                    print("moving PLAYER", -movex, -movey)
                 sprite.rect.move_ip(-movex, -movey)
+
 
     def follow_player(self):
         if not self.player: return
@@ -51,15 +51,18 @@ class Camera:
         centery = screen_h // 2
         center = pg.math.Vector2(centerx, centery)
         player_pos = pg.math.Vector2(self.player.rect.center)
-        movex, movey = center - player_pos
+        movex, movey = player_pos - center
         
         movex, movey = self.add_camera_slack(
             movex, movey, self.scene.data.CAMERASLACK
         )
+        # print(movex,movey,"!")
+        # movex, movey = self.stop_at_border(movex, movey)
+        # print(movex,movey,"!!")
 
-        movex, movey = self.stop_at_border(movex, movey)
 
-        self.pan(-movex, -movey)
+        self.pan(movex, movey)
+        # self.stop_at_border(movex, movey)
         
     
     def add_camera_slack(self, movex, movey, camera_slack):
@@ -77,39 +80,33 @@ class Camera:
         return movex, movey
 
 
+    def stop_at_border(self):
+        screen_w, screen_h = pg.display.get_surface().get_size()
+        background = self.scene.layers['background'].sprites()[0]
+
+        # if background is too small then just return without modifying
+        background_w, background_h = background.rect.size
+        if background_w < screen_w or background_h < screen_h: return
+
+        backx, backy = 0, 0
+        if background.rect.left > 0:
+            backx = background.rect.left
+        elif background.rect.right < screen_w:
+            backx = background.rect.right - screen_w
+
+        if background.rect.top > 0:
+            backy = background.rect.top
+        elif background.rect.bottom< screen_h:
+            backy = background.rect.bottom - screen_h
+
+        self.pan(backx, backy)
+
+
     def center_player(self):
         tmp_storage = self.scene.data.CAMERASLACK
         self.scene.data.CAMERASLACK = 0
         self.follow_player()
         self.scene.data.CAMERASLACK = tmp_storage
-
-
-    def stop_at_border(self, movex, movey):
-        """
-        Stop at world border. Adjust movex and movey
-        to avoid seeing the void at the world border.
-        """
-        screen_w, screen_h = pg.display.get_surface().get_size()
-        background = self.scene.layers['background'].sprites()[0]
-        
-        # if background is too small then just return without modifying
-        background_w, background_h = background.rect.size
-        if background_w < screen_w or background_h < screen_h: 
-            return movex, movey
-
-        # check if world border is visible then set to screen border
-        # in the x direction
-        if background.rect.left + movex > 0:
-            movex = -background.rect.left
-        elif background.rect.right + movex < screen_w:
-            movex = screen_w - background.rect.right
-        # and in the y direction
-        if background.rect.top + movey > 0:
-            movey = -background.rect.top
-        elif background.rect.bottom + movey < screen_h:
-            movey = screen_h - background.rect.bottom
-
-        return movex, movey
 
 
     def zoom(self, factor):

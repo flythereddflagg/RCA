@@ -2,7 +2,7 @@
 # Frame rate ( in Frames / second)
 FPS: 30 # 0 = do not limit FPS
 # FIXME: game is unstable at FPS > about 100
-FPS_COUNTER: false
+FPS_COUNTER: true
 # initial screen size
 SCREENWIDTH: 1300
 SCREENHEIGHT: 768

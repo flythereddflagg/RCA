@@ -21,44 +21,32 @@ hud:
   - id: hearts
     type: Decal
     asset_path: ./assets/dummy/hud_element.png
-    startx: 0
-    ,0
+    startx: 0,0
 
 background:
   - id: dungeon_tile
     type: Decal
     asset_path: ./assets/scene/mansion_yard/background.png
     # asset_path: ./assets/dummy/null.png
-    startx: 0
-    ,0
+    startx: 0,0
     # scale: 2
 # data for the foreground
 foreground:
   - id: dungeon_walls
     type: Decal
     asset_path: ./assets/scene/mansion_yard/foreground.png
-    startx: 0
-    ,0
+    startx: 0,0
     # scale: 2
 
 characters:
-  - id: PLAYER # reference to THE main player
-    type: Player
-    asset_path: ./assets/dummy/player.yaml
-    startx: 500
-    ,500
-    scale: 1
   - id: bridge_exit
-    type: Trigger
+    type: Edge
     # type: Decal
     asset_path: ./assets/dummy/block.png
-    startx: 845
-    ,1969
+    start: 845,1969
     scale: 2.5
     scene_path: ./assets/scene/red_castle_valley.yaml
-    player_start: # starting pos of the player
-      - 855
-      - 1
+    exit_dir: UP
   # - id: forest_exit
   #   type: Trigger
   #   asset_path: ./assets/dummy/block.png
@@ -69,14 +57,14 @@ characters:
   #   player_start: # starting pos of the player
   #     - 1430
   #     - 410  
-  - id: alley_exit
-    type: Trigger
-    # type: Decal
-    asset_path: ./assets/dummy/block.png
-    startx: 688
-    ,146
-    scale: 2.5
-    scene_path: ./assets/scene/alleyway.yaml
-    player_start: # starting pos of the player
-      - 1100
-      - 167
+  # - id: alley_exit
+  #   type: Trigger
+  #   # type: Decal
+  #   asset_path: ./assets/dummy/block.png
+  #   startx: 688
+  #   ,146
+  #   scale: 2.5
+  #   scene_path: ./assets/scene/alleyway.yaml
+  #   player_start: # starting pos of the player
+  #     - 1100
+  #     - 167
