@@ -29,7 +29,7 @@ background:
     type: Decal
     asset_path: ./assets/scene/forest/map.png
     # asset_path: ./assets/dummy/null.png
-    startx: 0,0
+    startx: 0,0 # FIXME this is why we are having the issues in character.py:68; FAVOR COMPOSITION OVER INHERITANCE
     # scale: 2
 # data for the foreground
 foreground:
