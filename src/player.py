@@ -1,11 +1,13 @@
 import math
 import pygame as pg
-from .character import Character
+from .decal import Decal
 from .compass import Compass
+from .movement import Movement
+from .animation import Animation
 
 DEFAULT_ANIMATION = 'stand'
 
-class Player(Character):
+class Player(Decal):
     def __init__(self, **options):
         super().__init__(**options)
         # TODO: redo speeds in terms of subpixels so this can scale
@@ -18,6 +20,8 @@ class Player(Character):
         self.button1_action = 'sword swing'
         self.hp = 100
         self.damage_direction = pg.math.Vector2(0,1)
+        self.move = Movement(self, **options)
+        self.animation = Animation(self, **options)
 
     def apply(self, game_input):
         self.todo_list.extend(game_input)

@@ -1,29 +1,20 @@
 import pygame as pg
 
-from .decal import Decal
 from .compass import Compass
-from .animation import Animation
 
 
-DEFAULT_ANIMATION = 'stand'
-NULL_PATH = "./assets/dummy/null.png"
-
-
-class Character(Decal):
+class Movement():
     """
     Non-solid sprite that triggers interaction and moves 
     independently of the camera. Also can be animated.
     """
 
-    def __init__(self, **options):
-        super().__init__(**options)
+    def __init__(self, sprite, **options):
+        self.sprite = sprite
         self.direction = Compass.DOWN
         self.dist_buffer = 0
-        self.animation = None
-        if 'animations' in self.options.keys():
-            self.animation = Animation(self, **self.options)
 
-    def move(
+    def __call__(
         self, direction:int|str|tuple|pg.math.Vector2, 
         distance:int=0, speed:int|float=0,
         reject_foreground:bool=True
@@ -58,7 +49,7 @@ class Character(Decal):
         # infinte loop in foreground_rejection()
         xunit, yunit = Compass.unit_vector(direction)
         addx, addy = distance * xunit, distance * yunit
-        self.rect.move_ip(addx, addy)
+        self.sprite.rect.move_ip(addx, addy)
         
         if reject_foreground: self.foreground_rejection(xunit, yunit)
 
@@ -69,17 +60,9 @@ class Character(Decal):
         # currently slows the game to 10 FPS
         while pg.sprite.spritecollideany(
             # collide between character and foreground
-            self, self.scene.layers['foreground'], 
+            self.sprite, self.sprite.scene.layers['foreground'], 
             # use the masks for collision
             pg.sprite.collide_mask
         ):
-            self.rect.move_ip(-xunit, -yunit) # move back 1
-
-
-    def kill(self):
-        self.animation.kill()
-        super().kill()
-    
-
-
+            self.sprite.rect.move_ip(-xunit, -yunit) # move back 1
 

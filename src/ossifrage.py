@@ -2,13 +2,14 @@ import random
 import math
 
 import pygame as pg
-from .character import Character
+from .decal import Decal
 from .compass import Compass
+from .movement import Movement
 
 MOVEMENTS = Compass.strings + ['STOP', 'STOP', "STOP"]
 ACTION_TIME_RANGE = [200, 1000]
 
-class Ossifrage(Character):
+class Ossifrage(Decal):
     def __init__(self, **options):
         super().__init__(**options)
         self.action_time = 0
@@ -18,6 +19,7 @@ class Ossifrage(Character):
         self.signals = []
         self.hp = 50
         self.damage_direction = pg.math.Vector2(0,1)
+        self.move = Movement(self, **options)
 
 
     def animate(self):

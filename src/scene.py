@@ -4,14 +4,12 @@ import yaml
 from .dict_obj import DictObj
 from .camera import Camera
 from .decal import Decal
-from .character import Character
 from .player import Player
 from .ossifrage import Ossifrage
 from .edge import Edge
 
 SPRITE_MAP = DictObj(**{
     "Decal"      : Decal,
-    "Character"  : Character,
     'Player': Player,
     'Ossifrage': Ossifrage,
     'Edge': Edge,
