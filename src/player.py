@@ -47,7 +47,6 @@ class Player(Decal):
                 self.keys_held[action] = True
                 self.animation.current = self.animation.data[
                     self.button1_action]
-                self.animation.active = not self.animation.current["repeat"]
 
             else:
                 print(action + "! (no response)")
@@ -91,7 +90,6 @@ class Player(Decal):
                 self.hp -= signal[1]
                 self.damage_direction = signal[2]
                 self.animation.current = self.animation.data['damage']
-                self.animation.active = not self.animation.current["repeat"]
             # TODO abstract this out into sprite
 
         self.signals = [] # reset signals

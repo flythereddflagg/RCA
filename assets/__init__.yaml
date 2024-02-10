@@ -1,6 +1,7 @@
 # Screen Constants 
 # Frame rate ( in Frames / second)
-FPS: 30 # 0 = do not limit FPS
+# FPS: 100 # 0 = do not limit FPS
+FPS: 0
 SHOW_EVENTS: True
 # FIXME: game is unstable at FPS > about 100
 FPS_COUNTER: true
@@ -29,4 +30,3 @@ KEY_BIND:
 INITAL_SCENE: ./assets/scene/red_castle_valley.yaml
 PLAYER: ./assets/dummy/player.yaml
 # INITAL_SCENE: "./assets/dummy/blank_scene.yaml"
-# TODO make a graph struct of all the locations and connections between them

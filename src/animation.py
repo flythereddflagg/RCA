@@ -47,7 +47,6 @@ class Animation():
                 "mask" : None
             })
         self.alt_sprite.mask = None
-        # self.alt_sprite.rect.center = (0, 0)
 
 
 
@@ -80,6 +79,7 @@ class Animation():
             set_frame = True
             self.previous = self.current['id']
             self.frames = self.current["frames"][self.sprite.move.direction]
+            self.active = not self.current["repeat"]
 
         # update direction if it has changed
         if self.sprite.move.direction != self.last_direction:

@@ -56,7 +56,6 @@ class Ossifrage(Decal):
                 self.hp -= signal[1]
                 self.damage_direction = signal[2]
                 self.animation.current = self.animation.data['damage']
-                self.animation.active = not self.animation.current["repeat"]
 
         self.signals = [] # reset signals
 

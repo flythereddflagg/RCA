@@ -55,9 +55,7 @@ class Movement():
 
 
     def foreground_rejection(self, xunit, yunit):
-        # BUG infinte loop will occur if both int(xunit) and int(yunit) are 0
-        # FIXME this needs to be optimized so that it doesnt slow the game
-        # currently slows the game to 10 FPS
+        if not xunit and not yunit: return # protects against infinite loop
         if 'solid' not in self.sprite.scene.groups.keys(): return
         while pg.sprite.spritecollideany(
             # collide between character and foreground

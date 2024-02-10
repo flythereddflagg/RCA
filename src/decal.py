@@ -46,7 +46,7 @@ class Decal(pg.sprite.Sprite):
             )
         self.original_image = self.image
         self.original_size = self.rect.size
-        self.options = options # TODO make this a dictobj?
+        self.options = options
 
         # process any optional params
         if "scale" not in self.options.keys():
