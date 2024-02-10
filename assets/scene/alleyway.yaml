@@ -1,74 +1,38 @@
-DRAW_LAYERS:
+id: <scene name>
+INIT_ZOOM: 1 # amount to scale everything
+CAMERASLACK: 100 # pixels from center screen before the camera moves
+
+DRAW_LAYERS: # layers will be drawn in this order
   - background
   - foreground
-  - characters
   - hud
-# amount to scale everything
-INIT_ZOOM: 1
-# pixels before camera moves instead of player
-CAMERASLACK: 100
 SPRITE_GROUPS:
-  # - background   # background tiles
-  # - foreground   # non-interacting block
-  # - trigger      # non-moving sprites that interact
+  - solid        # solid entities
   - player       # sprites you can control             
-  # - friend       # moving friendly sprites
   - foe          # enemies
-  # - hud          # HUD (health, money etc.)
-  # - misc         # other (dialog boxes etc.)
 
+# sprites in each drawing layer
 hud:
   - id: hearts
     type: Decal
     image: ./assets/dummy/hud_element.png
-    start: 0
-    ,0
+    start: 0,0
+    mask:
 
 background:
-  - id: dungeon_tile
+  - id: alleyway map
     type: Decal
     image: ./assets/scene/alleyway/map.png
-    # image: ./assets/dummy/null.png
-    start: 0
-    ,0
-    # scale: 2
-# data for the foreground
-foreground:
-  - id: dungeon_walls
-    type: Decal
-    image: ./assets/scene/alleyway/foreground.png
-    start: 0
-    ,0
-    # scale: 2
-  # - id: dungeon_blockade2
-  #   type: Decal
-  #   image: ./assets/dummy/block.png
-  #   start: 730
-  #   ,750
-  #   scale: 2
-  # - id: dungeon_blockade3
-  #   type: Decal
-  #   image: ./assets/dummy/block.png
-  #   start: 930
-  #   ,1000
-  #   scale: 2
+    mask: ./assets/scene/alleyway/foreground.png
+    groups: 
+     - solid # a group to be in for certain effects
 
-characters:
-  - id: PLAYER # reference to THE main player
-    type: Player
-    image: ./assets/dummy/player.yaml
-    start: 500
-    ,500
-    scale: 1
-  - id: garden exit
-    type: Trigger
-    # type: Decal
+foreground:
+  - id: alley_exit
+    type: Edge
     image: ./assets/dummy/block.png
-    start: 1138
-    ,167
+    mask: image
+    start: 1138,167
     scale: 2.5
     scene_path: ./assets/scene/mansion_yard.yaml
-    player_start: # starting pos of the player
-      - 800
-      - 170 
- 
+    exit_dir: LEFT

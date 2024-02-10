@@ -1,70 +1,55 @@
-DRAW_LAYERS:
+id: mansion yard
+INIT_ZOOM: 1 # amount to scale everything
+CAMERASLACK: 100 # pixels from center screen before the camera moves
+
+DRAW_LAYERS: # layers will be drawn in this order
   - background
   - foreground
-  - characters
   - hud
-# amount to scale everything
-INIT_ZOOM: 1
-# pixels before camera moves instead of player
-CAMERASLACK: 100
 SPRITE_GROUPS:
-  # - background   # background tiles
-  # - foreground   # non-interacting block
-  # - trigger      # non-moving sprites that interact
+  - solid        # solid entities
   - player       # sprites you can control             
-  # - friend       # moving friendly sprites
   - foe          # enemies
-  # - hud          # HUD (health, money etc.)
-  # - misc         # other (dialog boxes etc.)
 
+# sprites in each drawing layer
 hud:
   - id: hearts
     type: Decal
     image: ./assets/dummy/hud_element.png
     start: 0,0
+    mask:
 
 background:
-  - id: dungeon_tile
+  - id: mansion yard map
     type: Decal
     image: ./assets/scene/mansion_yard/background.png
-    # image: ./assets/dummy/null.png
-    start: 0,0
-    # scale: 2
-# data for the foreground
-foreground:
-  - id: dungeon_walls
-    type: Decal
-    image: ./assets/scene/mansion_yard/foreground.png
-    start: 0,0
-    # scale: 2
+    mask: ./assets/scene/mansion_yard/foreground.png
+    groups: 
+     - solid
 
-characters:
+foreground:
   - id: bridge_exit
     type: Edge
-    # type: Decal
     image: ./assets/dummy/block.png
+    mask: image
     start: 845,1969
     scale: 2.5
     scene_path: ./assets/scene/red_castle_valley.yaml
     exit_dir: UP
-  # - id: forest_exit
-  #   type: Trigger
-  #   image: ./assets/dummy/block.png
-  #   start: 1410
-  #   ,1343
-  #   scale: 2.5
-  #   scene_path: ./assets/scene/dummy2.yaml
-  #   player_start: # starting pos of the player
-  #     - 1430
-  #     - 410  
-  # - id: alley_exit
-  #   type: Trigger
-  #   # type: Decal
-  #   image: ./assets/dummy/block.png
-  #   start: 688
-  #   ,146
-  #   scale: 2.5
-  #   scene_path: ./assets/scene/alleyway.yaml
-  #   player_start: # starting pos of the player
-  #     - 1100
-  #     - 167
+  - id: forest_exit
+    type: Edge
+    image: ./assets/dummy/block.png
+    mask: image
+    start: 1410,1343
+    scale: 2.5
+    scene_path: ./assets/scene/placeholder.yaml
+    exit_dir: UP
+  - id: alley_exit
+    type: Edge
+    image: ./assets/dummy/block.png
+    mask: image
+    start: 688,146
+    scale: 2.5
+    scene_path: ./assets/scene/alleyway.yaml
+    exit_dir: RIGHT
+

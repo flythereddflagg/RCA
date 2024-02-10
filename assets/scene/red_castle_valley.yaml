@@ -29,6 +29,14 @@ background:
      - solid
 
 foreground:
+  - id: big ol rock
+    type: Decal
+    image: ./assets/scene/alleyway/rock.png
+    mask: image
+    start: 1230,950
+    groups: 
+     - solid
+
   - id: ossifrage 1
     type: Ossifrage
     yaml: ./assets/dummy/ossifrage.yaml
@@ -52,11 +60,11 @@ foreground:
     scene_path: ./assets/scene/forest.yaml
     exit_dir: RIGHT
 
-  - id: <unique ID 3>
+  - id: mountain trail exit
     type: Edge
     image: ./assets/dummy/block.png
     mask: image
     start: 1230,1038
     scale: 2.5
-    scene_path: ./assets/scene/dummy2.yaml
+    scene_path: ./assets/scene/scene.yaml
     exit_dir: UP
