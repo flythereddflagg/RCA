@@ -6,8 +6,8 @@ import pygame as pg
 from .decal import Decal
 
 DEFAULT_ANIMATION = 'stand'
-# NULL_PATH = "./assets/dummy/null.png"
-NULL_PATH = "./assets/dummy/block.png"
+NULL_PATH = "./assets/dummy/null.png"
+# NULL_PATH = "./assets/dummy/block.png"
 
 class Animation():
     def __init__(self, sprite, **options):
