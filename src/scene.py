@@ -28,8 +28,6 @@ class Scene():
         self.game = game
         self.data = load_yaml(yaml_path)
 
-        
-        # TODO add a group single for background sprites
         self.groups = {
             group_name: pg.sprite.Group() 
             for group_name in self.data.SPRITE_GROUPS
@@ -39,7 +37,6 @@ class Scene():
             for group_name in self.data.DRAW_LAYERS
         }
         
-
         for name in self.data.DRAW_LAYERS:
             layer = self.layers[name]
             layer.empty() # clear out all layers
@@ -78,5 +75,14 @@ class Scene():
         
         # finally, update the camera
         if self.camera: self.camera.update()
+
+    def kill(self):
+        """deconstructs the scene"""
+        for key, layer in self.layers.items():
+            for sprite in layer.sprites():
+                if sprite is self.player: continue
+                sprite.kill()
+                del sprite
+        self.camera = None
 
 

@@ -1,16 +1,12 @@
 # Screen Constants 
 # Frame rate ( in Frames / second)
-# FPS: 100 # 0 = do not limit FPS
-FPS: 0
-SHOW_EVENTS: True
-# FIXME: game is unstable at FPS > about 100
-FPS_COUNTER: true
+FPS: 90 # game is unstable at FPS > about 100
+# FPS: 0 # do not limit FPS
+SHOW_EVENTS: True # print events in terminal
+FPS_COUNTER: true # print FPS on game screen
 # initial screen size
 SCREENWIDTH: 1300
 SCREENHEIGHT: 768
-# SCREENWIDTH: 800
-# SCREENHEIGHT: 600
-
 
 # key bindings for keyboard input
 KEY_BIND:

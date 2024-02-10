@@ -36,8 +36,8 @@ class Player(Decal):
             self.animation.current = self.animation.data[DEFAULT_ANIMATION]
 
         for action in self.todo_list:
+            # TODO make a complete action list and implement
             if self.animation.active: continue
-            # TODO abstract decisions
             if action in Compass.strings:
                 # ^ means a direction button is being pressed                
                 self.move(action, speed=self.speed)
@@ -90,7 +90,6 @@ class Player(Decal):
                 self.hp -= signal[1]
                 self.damage_direction = signal[2]
                 self.animation.current = self.animation.data['damage']
-            # TODO abstract this out into sprite
 
         self.signals = [] # reset signals
 

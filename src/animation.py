@@ -109,6 +109,7 @@ class Animation():
     def set_image(self, image):
         if self.sprite.image == self.null_image:
             self.alt_sprite.image = self.null_image
+            self.alt_sprite.mask = None
             self.alt_sprite.kill()
         self.sprite.image = image
         if image is None: return

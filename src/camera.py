@@ -3,7 +3,7 @@ import pygame as pg
 ### FIXME this is test code
 # SCALE_RUN = 1.05
 # FACTOR = inf_gen([SCALE_RUN, 1/SCALE_RUN])
-### FIXME this is test code
+### this is test code
 
 class Camera:
     def __init__(self, game):
@@ -12,11 +12,11 @@ class Camera:
         self.mobile_groups = list(self.scene.layers.keys())
         self.mobile_groups.remove('hud')
         self.cur_zoom = 1
-        # self.last_time = 0 # FIXME this is test code
-        # self.next_factor = 1 # FIXME this is test code
+        # self.last_time = 0 # this is test code
+        # self.next_factor = 1 #  this is test code
 
     def update(self):
-        ### FIXME this is test code
+        ### this is test code
         # curtime = pg.time.get_ticks()
         # if curtime - self.last_time > 1000:
         #     self.last_time = curtime
@@ -24,7 +24,7 @@ class Camera:
             
         # self.zoom(self.next_factor)
         # print(self.cur_zoom)
-        ### FIXME END this is test code
+        ### END this is test code
 
         self.follow_player()
         self.stop_at_border()

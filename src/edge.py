@@ -21,6 +21,7 @@ class Edge(Decal):
     
 
     def exec_trigger(self):
+        old_scene = self.scene
         game = self.scene.game
         player = self.scene.player
         new_scene = game.load_scene(self.scene, self.options['scene_path'])
@@ -36,3 +37,4 @@ class Edge(Decal):
         player.rect.x += dx*(player.rect.w/2 + block.rect.w/2)
         player.rect.y += dy*(player.rect.h/2 + block.rect.h/2)
         new_scene.camera.center_player()
+        old_scene.kill() 
