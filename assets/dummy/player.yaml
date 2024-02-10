@@ -5,28 +5,29 @@
 # this is the default asset path
 id: PLAYER
 type: Player
-start: 900,600
-asset_path: "./assets/dummy/character.png"
-group_add:
+start: 900,600 # do i need this?
+image: "./assets/dummy/character.png"
+mask: image
+groups:
   - player
 
 animations:
   - id: "null"
-    asset_path: "./assets/dummy/null.png"
+    image: "./assets/dummy/null.png"
     repeat: True
     key_frame_size: 32,32
     key_frame_times:
       - 1 # TODO make it so 0 makes a static image
 
   - id: stand
-    asset_path: "./assets/dummy/character_stand.png"
+    image: "./assets/dummy/character_stand.png"
     repeat: True
     key_frame_size: 32,32
     key_frame_times:
       - 1
 
   - id: walk
-    asset_path: "./assets/dummy/character_walk.png"
+    image: "./assets/dummy/character_walk.png"
     repeat: True
     key_frame_size: 32,32
     key_frame_times:
@@ -34,7 +35,7 @@ animations:
     
   - id: sword swing
     repeat: False
-    asset_path: "./assets/dummy/sword.png"
+    image: "./assets/dummy/sword.png"
     key_frame_size: 56,56
     key_frame_times:
       - 50
@@ -42,7 +43,7 @@ animations:
 
   - id: damage
     repeat: False
-    asset_path: "./assets/dummy/damage.png"
+    image: "./assets/dummy/damage.png"
     key_frame_size: 32,32
     key_frame_times:
       - 75

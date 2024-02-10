@@ -20,8 +20,8 @@ class Player(Decal):
         self.button1_action = 'sword swing'
         self.hp = 100
         self.damage_direction = pg.math.Vector2(0,1)
-        self.move = Movement(self, **options)
-        self.animation = Animation(self, **options)
+        self.move = Movement(self, **self.options)
+        self.animation = Animation(self, **self.options)
 
     def apply(self, game_input):
         self.todo_list.extend(game_input)

@@ -1,69 +1,69 @@
 hud:
   - id: hearts
     type: Decal
-    asset_path: ./assets/dummy/hud_element.png
-    startx: 0
+    image: ./assets/dummy/hud_element.png
+    start: 0
     ,0
 
 background:
   - id: dungeon_tile
     type: Decal
-    asset_path: ./assets/dummy/background.png
-    # asset_path: ./assets/dummy/null.png
-    startx: 0
+    image: ./assets/dummy/background.png
+    # image: ./assets/dummy/null.png
+    start: 0
     ,0
     # scale: 2
 # data for the foreground
 foreground:
   - id: dungeon_walls
     type: Decal
-    asset_path: ./assets/dummy/foreground.png
-    startx: 0
+    image: ./assets/dummy/foreground.png
+    start: 0
     ,0
     # scale: 2
   # - id: dungeon_blockade2
   #   type: Decal
-  #   asset_path: ./assets/dummy/block.png
-  #   startx: 730
+  #   image: ./assets/dummy/block.png
+  #   start: 730
   #   ,750
   #   scale: 2
   # - id: dungeon_blockade3
   #   type: Decal
-  #   asset_path: ./assets/dummy/block.png
-  #   startx: 930
+  #   image: ./assets/dummy/block.png
+  #   start: 930
   #   ,1000
   #   scale: 2
 
 characters:
   - id: PLAYER # reference to THE main player
     type: Player
-    asset_path: ./assets/dummy/player.yaml
-    startx: 800
+    image: ./assets/dummy/player.yaml
+    start: 800
     ,900
     scale: 1
   - id: ossifrage 1
     type: Ossifrage
-    asset_path: ./assets/dummy/ossifrage.yaml
-    startx: 700
+    image: ./assets/dummy/ossifrage.yaml
+    start: 700
     ,900
     scale: 2
   - id: ossifrage 2
     type: Ossifrage
-    asset_path: ./assets/dummy/ossifrage.yaml
-    startx: 700
+    image: ./assets/dummy/ossifrage.yaml
+    start: 700
     ,1000
     scale: 2
   - id: ossifrage 3
     type: Ossifrage
-    asset_path: ./assets/dummy/ossifrage.yaml
-    startx: 800
+    image: ./assets/dummy/ossifrage.yaml
+    start: 800
     ,1000
     scale: 2
   - id: dungeon_trigger
     type: Trigger
     # type: Decal
-    asset_path: ./assets/dummy/block.png
-    startx: 756
+    image: ./assets/dummy/block.png
+    start: 756
     ,1150
     scale: 2
     scene_path: ./assets/dummy/scene2.yaml

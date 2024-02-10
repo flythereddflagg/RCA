@@ -20,37 +20,37 @@ SPRITE_GROUPS:
 hud:
   - id: hearts
     type: Decal
-    asset_path: ./assets/dummy/hud_element.png
-    startx: 0,0
+    image: ./assets/dummy/hud_element.png
+    start: 0,0
 
 background:
   - id: dungeon_tile
     type: Decal
-    asset_path: ./assets/scene/mansion_yard/background.png
-    # asset_path: ./assets/dummy/null.png
-    startx: 0,0
+    image: ./assets/scene/mansion_yard/background.png
+    # image: ./assets/dummy/null.png
+    start: 0,0
     # scale: 2
 # data for the foreground
 foreground:
   - id: dungeon_walls
     type: Decal
-    asset_path: ./assets/scene/mansion_yard/foreground.png
-    startx: 0,0
+    image: ./assets/scene/mansion_yard/foreground.png
+    start: 0,0
     # scale: 2
 
 characters:
   - id: bridge_exit
     type: Edge
     # type: Decal
-    asset_path: ./assets/dummy/block.png
+    image: ./assets/dummy/block.png
     start: 845,1969
     scale: 2.5
     scene_path: ./assets/scene/red_castle_valley.yaml
     exit_dir: UP
   # - id: forest_exit
   #   type: Trigger
-  #   asset_path: ./assets/dummy/block.png
-  #   startx: 1410
+  #   image: ./assets/dummy/block.png
+  #   start: 1410
   #   ,1343
   #   scale: 2.5
   #   scene_path: ./assets/scene/dummy2.yaml
@@ -60,8 +60,8 @@ characters:
   # - id: alley_exit
   #   type: Trigger
   #   # type: Decal
-  #   asset_path: ./assets/dummy/block.png
-  #   startx: 688
+  #   image: ./assets/dummy/block.png
+  #   start: 688
   #   ,146
   #   scale: 2.5
   #   scene_path: ./assets/scene/alleyway.yaml

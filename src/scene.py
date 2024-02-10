@@ -1,5 +1,6 @@
 import pygame as pg
-import yaml
+
+from .tools import load_yaml
 
 from .dict_obj import DictObj
 from .camera import Camera
@@ -25,7 +26,7 @@ class Scene():
         and load each sprite into a group
         """
         self.game = game
-        self.data = self.game.load_yaml(yaml_path)
+        self.data = load_yaml(yaml_path)
 
         
         # TODO add a group single for background sprites
@@ -48,8 +49,8 @@ class Scene():
                 sprite_dict['scene'] = self
                 sprite_instance = SPRITE_MAP[sprite_dict['type']](**sprite_dict)
                 layer.add(sprite_instance)
-                if "group_add" in sprite_instance.options.keys():
-                    for group in sprite_instance.options['group_add']:
+                if "groups" in sprite_instance.options.keys():
+                    for group in sprite_instance.options['groups']:
                         self.groups[group].add(sprite_instance)
         
         self.camera = Camera(self)
@@ -57,13 +58,13 @@ class Scene():
         # FIXME zoom is broken
         
         if player_path:
-            player_data = self.game.load_yaml(player_path)
+            player_data = load_yaml(player_path)
             player_data['scene'] = self
             self.player = SPRITE_MAP[player_data['type']](**player_data)
-            if "group_add" in self.player.options.keys():
-                    for group in self.player.options['group_add']:
+            if "groups" in self.player.options.keys():
+                    for group in self.player.options['groups']:
                         self.groups[group].add(self.player)
-            self.layers['characters'].add(self.player)
+            self.layers['foreground'].add(self.player)
             self.camera.player = self.player
         else:
             self.player = None

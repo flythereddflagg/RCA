@@ -1,33 +1,34 @@
 
 
 # this is the default asset path
-asset_path: "./assets/dummy/bird_character_base.png"
-group_add:
+image: "./assets/dummy/bird_character_base.png"
+mask: image
+groups:
   - foe
 animations:
   - id: "null"
-    asset_path: "./assets/dummy/null.png"
+    image: "./assets/dummy/null.png"
     repeat: True
     key_frame_size: 32,32
     key_frame_times:
       - 1
 
   - id: stand
-    asset_path: "./assets/dummy/ossifrage_stand.png"
+    image: "./assets/dummy/ossifrage_stand.png"
     repeat: True
     key_frame_size: 32,32
     key_frame_times:
       - 1
 
   - id: walk
-    asset_path: "./assets/dummy/ossifrage_walk.png"
+    image: "./assets/dummy/ossifrage_walk.png"
     repeat: True
     key_frame_size: 32,32
     key_frame_times:
       - 50
 
   - id: damage
-    asset_path: "./assets/dummy/ossifrage_damage.png"
+    image: "./assets/dummy/ossifrage_damage.png"
     repeat: False
     key_frame_size: 32,32
     key_frame_times:

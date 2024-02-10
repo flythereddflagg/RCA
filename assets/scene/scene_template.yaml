@@ -1,0 +1,43 @@
+id: <scene name>
+INIT_ZOOM: 1 # amount to scale everything
+CAMERASLACK: 100 # pixels from center screen before the camera moves
+
+DRAW_LAYERS: # layers will be drawn in this order
+  - background
+  - foreground
+  - hud
+SPRITE_GROUPS:
+  - solid        # solid entities
+  - player       # sprites you can control             
+  - foe          # enemies
+
+# sprites in each drawing layer
+hud:
+  - id: <unique ID 1>
+    type: Decal
+    image: path to
+    start: 0,0
+    mask:
+
+background:
+  - id: <unique ID 2>
+    type: Decal
+    image: <image path>
+    mask: <mask image path>
+    groups: 
+     - solid # a group to be in for certain effects
+
+foreground:
+  - id: <unique ID 2>
+    type: Decal <or subclass>
+    yaml: <path to yaml data>
+    start: 700,900 # where on the background do you want to start?
+
+  - id: <unique ID 3>
+    type: Edge
+    image: <image path>
+    mask: image
+    start: 845,-80 # where on the background do you want to start?
+    scale: 2.5 # x factor to scale the image.
+    scene_path: <new scene path>
+    exit_dir: <direction of exit into this scene>

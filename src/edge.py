@@ -7,10 +7,8 @@ class Edge(Decal):
     """an edge is a sprite that connects two scenes in the map graph"""
     def __init__(self, **options):
         super().__init__(**options)
-# TODO set this up so that that an exit puts the player somewhere in particular
 
     def update(self):
-        """default behavior is to set up a new scene. Override to change"""
         self.check_collision()
     
 
@@ -22,7 +20,6 @@ class Edge(Decal):
             pg.sprite.collide_mask
             # psudo_collide_mask
         ):
-            # print("loading scene")
             self.exec_trigger()
     
 
@@ -34,9 +31,9 @@ class Edge(Decal):
         player.scene = new_scene
         new_scene.player = player
         new_scene.camera.player = player
-        new_scene.layers['characters'].add(player)
+        new_scene.layers['foreground'].add(player)
         new_scene.groups['player'].add(player)
-        sprites = new_scene.layers['characters'].sprites()
+        sprites = new_scene.layers['foreground'].sprites()
         block = list(filter(lambda x: x.id == self.id, sprites))[0]
         # print(block.id, block.scene.data['id'], block.rect.center)
         # print("cur pos", player.rect.center)
@@ -48,10 +45,3 @@ class Edge(Decal):
         # print("after pos", player.rect.center)
         new_scene.camera.center_player()
         # print("after after pos", player.rect.center)
-
-
-# def psudo_collide_mask(left, right):
-    # print('HEREs the junk')
-    # print('LEFT', left.mask)
-    # print('RIGHT', right.mask)
-#     return pg.sprite.collide_mask(left, right)

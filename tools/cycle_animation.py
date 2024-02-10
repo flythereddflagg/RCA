@@ -66,14 +66,14 @@ def init_game(animation_path):
             d: i for i, d in enumerate(game.UNIT_VECTORS.keys())
         }
     game.group_enum = { "background": 0, "foreground": 1, 'player': 2}
-    bg = Decal(game=game, asset_path="./assets/dummy/null.png",
+    bg = Decal(game=game, image="./assets/dummy/null.png",
         startx=0,starty=0)
     group = pg.sprite.Group()
     group.add(bg)
     game.groups.append(group)
     game.groups.append(pg.sprite.Group()) # foreground
     player = PlayerAnimation(
-        game=game, asset_path=animation_path,
+        game=game, image=animation_path,
         startx=20,starty=20,
         scale=10
     )

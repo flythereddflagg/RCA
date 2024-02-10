@@ -30,7 +30,7 @@ class Movement():
         
         self.direction = Compass.index(direction)
         if speed:
-            fps = self.scene.game.clock.get_fps()
+            fps = self.sprite.scene.game.clock.get_fps()
             if not fps: return
             distance = speed / fps
         if distance < 0:
@@ -58,9 +58,10 @@ class Movement():
         # BUG infinte loop will occur if both int(xunit) and int(yunit) are 0
         # FIXME this needs to be optimized so that it doesnt slow the game
         # currently slows the game to 10 FPS
+        if 'solid' not in self.sprite.scene.groups.keys(): return
         while pg.sprite.spritecollideany(
             # collide between character and foreground
-            self.sprite, self.sprite.scene.layers['foreground'], 
+            self.sprite, self.sprite.scene.groups['solid'], 
             # use the masks for collision
             pg.sprite.collide_mask
         ):

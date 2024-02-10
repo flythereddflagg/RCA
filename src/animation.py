@@ -13,7 +13,7 @@ class Animation():
     def __init__(self, sprite, **options):
         
         self.sprite = sprite
-        self.data = {}
+        self.data = options
         self.current = None # the current animation
         self.previous = None # the id of the previous animation
         self.frame = None # next frame generator
@@ -21,14 +21,14 @@ class Animation():
         self.frame_time = 1 # the number of ms the current frame should show
         self.last_frame_time = 0 # the previous frame time
         self.active = False # is the animation active?
-        self.last_direction = self.sprite.direction
+        self.last_direction = self.sprite.move.direction
 
         for animation in options['animations']:
             key_frame_size = [
                 int(x) for x in animation['key_frame_size'].split(',')
             ]
             animation['frames'] = self.parse_animation(
-                animation['asset_path'], key_frame_size
+                animation['image'], key_frame_size
             )
             # add a special mask if it exists
             if 'mask_path' in animation:
@@ -43,7 +43,8 @@ class Animation():
         self.alt_sprite = Decal(**{
                 "id": self.sprite.id + "_alt",
                 "scene": self.sprite.scene,
-                "asset_path": NULL_PATH,
+                "image": NULL_PATH,
+                "mask" : None
             })
         self.alt_sprite.mask = None
         # self.alt_sprite.rect.center = (0, 0)
@@ -53,8 +54,8 @@ class Animation():
     def kill(self):
         self.alt_sprite.kill()
         
-    def parse_animation(self, asset_path, frame_size, make_mask=False): 
-        main_image = pg.image.load(asset_path).convert_alpha()
+    def parse_animation(self, image, frame_size, make_mask=False): 
+        main_image = pg.image.load(image).convert_alpha()
         main_size = main_image.get_size()
         nframesx, nframesy = map(operator.floordiv, main_size, frame_size)
         kf_w, kf_h = frame_size
@@ -78,13 +79,13 @@ class Animation():
         if self.current['id'] != self.previous:
             set_frame = True
             self.previous = self.current['id']
-            self.frames = self.current["frames"][self.sprite.direction]
+            self.frames = self.current["frames"][self.sprite.move.direction]
 
         # update direction if it has changed
-        if self.sprite.direction != self.last_direction:
+        if self.sprite.move.direction != self.last_direction:
             set_frame = True
-            self.last_direction = self.sprite.direction
-            self.frames = self.current["frames"][self.sprite.direction]
+            self.last_direction = self.sprite.move.direction
+            self.frames = self.current["frames"][self.sprite.move.direction]
         
         if set_frame: self.set_frame()
 
@@ -134,7 +135,7 @@ class Animation():
         
         if 'mask' in self.current.keys():
             self.alt_sprite.mask_set = itertools.cycle(
-                self.current['mask'][self.sprite.direction]
+                self.current['mask'][self.sprite.move.direction]
             )
             self.alt_sprite.mask = next(self.alt_sprite.mask_set)
 

@@ -6,13 +6,13 @@ the game running.
 """
 
 import pygame as pg
-import yaml
 
 from .dict_obj import DictObj
 from .scene import Scene
+from .tools import load_yaml
 
 BLACK = (0, 0, 0)
-SHOW_EVENTS = True
+
 
 class GameState(DictObj):
     """
@@ -20,7 +20,7 @@ class GameState(DictObj):
     including the scenes
     """
     def __init__(self, data_path):
-        init_data = self.load_yaml(data_path)
+        init_data = load_yaml(data_path)
         super().__init__(**init_data)
         self.dt = 1
         self.running = False
@@ -51,13 +51,6 @@ class GameState(DictObj):
     def load_scene(self, cur_scene, yaml_path):
         self.scene = Scene(self, yaml_path)
         return self.scene
-    # TODO implement and test this method
-
-
-    def load_yaml(self, yaml_path):
-        with open(yaml_path) as f:
-            yaml_data = yaml.load(f.read(), Loader=yaml.Loader)
-        return DictObj(**yaml_data)
 
 
     def run(self):
@@ -78,7 +71,7 @@ class GameState(DictObj):
         game_input = []
 
         events = pg.event.get()
-        if SHOW_EVENTS:
+        if self.SHOW_EVENTS:
             for event in events:
                 print(event.type, event)
         if pg.QUIT in [event.type for event in events]: return ["QUIT"]    
@@ -89,7 +82,7 @@ class GameState(DictObj):
             key for key, bind in self.KEY_BIND.items()
             if pressed_keys[pg.key.key_code(bind)]
         ]
-        if SHOW_EVENTS and game_input: print(game_input)
+        if self.SHOW_EVENTS and game_input: print(game_input)
         if 'FORCE_QUIT' in game_input: return ['QUIT']
         
         return game_input
