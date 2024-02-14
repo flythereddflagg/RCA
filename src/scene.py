@@ -51,7 +51,7 @@ class Scene():
                         self.groups[group].add(sprite_instance)
         
         self.camera = Camera(self)
-        # self.camera.zoom(self.data.INIT_ZOOM)
+        self.camera.zoom(self.data.INIT_ZOOM)
         # FIXME zoom is broken
         
         if player_path:

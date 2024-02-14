@@ -49,10 +49,9 @@ class Decal(pg.sprite.Sprite):
         self.options = options
 
         # process any optional params
-        if "scale" not in self.options.keys():
-            self.options["scale"] = 1
         self.scale = 1
-        self.set_scale(self.options["scale"])
+        if "scale" in self.options.keys():
+            self.set_scale(self.options["scale"])
         if 'start' in options.keys():
             background = self.scene.layers['background'].sprites()[0]
             self.start = [int(d) for d in options['start'].split(',')]
@@ -60,7 +59,6 @@ class Decal(pg.sprite.Sprite):
                 pg.math.Vector2(background.rect.topleft) + 
                 pg.math.Vector2(self.start)
             )
-
 
 
     def set_scale(self, factor):

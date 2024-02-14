@@ -35,4 +35,5 @@ if __name__ == "__main__":
 # TODO make a load screen
 # TODO make controllers work
 # TODO implement the RCA W1 story
+# TODO make scene transitions a la LTTP (polish)
 

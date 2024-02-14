@@ -82,6 +82,7 @@ class Ossifrage(Decal):
     def check_collision(self):
         if self.animation.current['id'] == 'damage' and self.animation.active:
             return
+        print(self.mask)
         collided_players = pg.sprite.spritecollide(
             # collide between self and player
             self, self.scene.groups['player'], 

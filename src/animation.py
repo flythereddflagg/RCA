@@ -20,10 +20,10 @@ class Animation():
         self.frame_times = [1] # list of frame times
         self.frame_time = 1 # the number of ms the current frame should show
         self.last_frame_time = 0 # the previous frame time
-        self.active = False # is the animation active?
+        self.active = False # is current the animation active?
         self.last_direction = self.sprite.move.direction
 
-        for animation in options['animations']:
+        for animation in self.data['animations']:
             key_frame_size = [
                 int(x) for x in animation['key_frame_size'].split(',')
             ]

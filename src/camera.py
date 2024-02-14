@@ -1,8 +1,9 @@
 import pygame as pg
 
 ### FIXME this is test code
-# SCALE_RUN = 1.05
-# FACTOR = inf_gen([SCALE_RUN, 1/SCALE_RUN])
+from itertools import cycle
+SCALE_RUN = 1.05
+FACTOR = cycle([SCALE_RUN, 1/SCALE_RUN])
 ### this is test code
 
 class Camera:
@@ -12,8 +13,8 @@ class Camera:
         self.mobile_groups = list(self.scene.layers.keys())
         self.mobile_groups.remove('hud')
         self.cur_zoom = 1
-        # self.last_time = 0 # this is test code
-        # self.next_factor = 1 #  this is test code
+        self.last_time = 0 # this is test code
+        self.next_factor = 1 #  this is test code
 
     def update(self):
         ### this is test code
@@ -28,7 +29,7 @@ class Camera:
 
         self.follow_player()
         self.stop_at_border()
-        pass
+
 
     def pan(self, movex, movey):
         if not movex and not movey: return
@@ -62,8 +63,8 @@ class Camera:
         
     
     def add_camera_slack(self, movex, movey, camera_slack):
-        # takes the vector given by (movex, movey) and reduces it by 
-        # camera slack if either component is greater than camera_slack
+        """takes the vector given by (movex, movey) and reduces it by 
+        camera slack if either component is greater than camera_slack"""
         if abs(movex) > camera_slack:
             pos_neg = 1 if movex > 0 else -1
             movex = pos_neg * (abs(movex) - camera_slack)
