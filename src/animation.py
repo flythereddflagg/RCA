@@ -23,21 +23,8 @@ class Animation():
         self.active = False # is current the animation active?
         self.last_direction = self.sprite.move.direction
 
-        for animation in self.data['animations']:
-            key_frame_size = [
-                int(x) for x in animation['key_frame_size'].split(',')
-            ]
-            animation['frames'] = self.parse_animation(
-                animation['image'], key_frame_size
-            )
-            # add a special mask if it exists
-            if 'mask_path' in animation:
-                animation['mask'] = self.parse_animation(
-                    animation['mask_path'], key_frame_size,
-                    make_mask=True
-                )
-            self.data[animation['id']] =  animation
-             
+
+        self.load_animations()
         self.current = self.data[DEFAULT_ANIMATION]
         self.null_image = self.data['null']['frames'][0][0]
         self.alt_sprite = Decal(**{
@@ -48,15 +35,34 @@ class Animation():
             })
         self.alt_sprite.mask = None
 
-
+    def load_animations(self):
+        for animation in self.data['animations']:
+            key_frame_size = [
+                int(x) for x in animation['key_frame_size'].split(',')
+            ]
+            animation['frames'] = self.parse_animation(
+                animation['image'], key_frame_size, self.sprite.scale
+            )
+            # add a special mask if it exists
+            if 'mask_path' in animation:
+                animation['mask'] = self.parse_animation(
+                    animation['mask_path'], key_frame_size, self.sprite.scale,
+                    make_mask=True
+                )
+            self.data[animation['id']] =  animation
 
     def kill(self):
         self.alt_sprite.kill()
         
-    def parse_animation(self, image, frame_size, make_mask=False): 
+    def parse_animation(self, image, frame_size, scale, make_mask=False): 
         main_image = pg.image.load(image).convert_alpha()
+        new_size = pg.math.Vector2(main_image.get_size()) * scale
+        frame_size = pg.math.Vector2(frame_size) * scale
+        main_image = pg.transform.scale(main_image, new_size)
         main_size = main_image.get_size()
-        nframesx, nframesy = map(operator.floordiv, main_size, frame_size)
+        nframesx, nframesy = map(
+            int, map(operator.floordiv, main_size, frame_size)
+        )
         kf_w, kf_h = frame_size
         # construct a frame group (matrix of sub-images)
         frame_group = [[main_image.subsurface([kf_w * i, kf_h * j, kf_w, kf_h]) 

@@ -49,6 +49,7 @@ class Decal(pg.sprite.Sprite):
         self.options = options
 
         # process any optional params
+        self.animation = None
         self.scale = 1
         if "scale" in self.options.keys():
             self.set_scale(self.options["scale"])
@@ -59,7 +60,7 @@ class Decal(pg.sprite.Sprite):
                 pg.math.Vector2(background.rect.topleft) + 
                 pg.math.Vector2(self.start)
             )
-
+        
 
     def set_scale(self, factor):
         self.scale *= factor
@@ -71,6 +72,9 @@ class Decal(pg.sprite.Sprite):
         self.rect.center = pos
         if self.mask:
             self.mask = self.mask.scale(new_size)
+            # FIXME there is an issue with how the mask is reloaded.
+            # RELOAD MASK FROM ORIGINAL???
+        if self.animation: self.animation.load_animations()
     
     
     def __repr__(self):
