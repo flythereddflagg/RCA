@@ -27,13 +27,13 @@ class Animation():
         self.load_animations()
         self.current = self.data[DEFAULT_ANIMATION]
         self.null_image = self.data['null']['frames'][0][0]
+        self.null_mask = pg.mask.from_surface(self.null_image)
         self.alt_sprite = Decal(**{
                 "id": self.sprite.id + "_alt",
                 "scene": self.sprite.scene,
                 "image": NULL_PATH,
-                "mask" : None
+                "mask" : 'image'
             })
-        self.alt_sprite.mask = None
 
     def load_animations(self):
         for animation in self.data['animations']:
@@ -78,7 +78,7 @@ class Animation():
         return frame_group
 
 
-    def animate(self):
+    def update(self):
         set_frame = False
         # update animation if changed
         if self.current['id'] != self.previous:
@@ -115,7 +115,7 @@ class Animation():
     def set_image(self, image):
         if self.sprite.image == self.null_image:
             self.alt_sprite.image = self.null_image
-            self.alt_sprite.mask = None
+            self.alt_sprite.mask = self.null_mask
             self.alt_sprite.kill()
         self.sprite.image = image
         if image is None: return

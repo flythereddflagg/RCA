@@ -44,6 +44,7 @@ class Decal(pg.sprite.Sprite):
             self.mask = pg.mask.from_surface(
                 pg.image.load(mask_path).convert_alpha()
             )
+        self.original_mask = self.mask if self.mask else None
         self.original_image = self.image
         self.original_size = self.rect.size
         self.options = options
@@ -71,7 +72,7 @@ class Decal(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = pos
         if self.mask:
-            self.mask = self.mask.scale(new_size)
+            self.mask = self.original_mask.scale(new_size)
             # FIXME there is an issue with how the mask is reloaded.
             # RELOAD MASK FROM ORIGINAL???
         if self.animation: self.animation.load_animations()

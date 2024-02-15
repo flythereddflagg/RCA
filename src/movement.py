@@ -1,6 +1,7 @@
 import pygame as pg
 
 from .compass import Compass
+from .tools import mask_collision
 
 
 class Movement():
@@ -57,11 +58,6 @@ class Movement():
     def foreground_rejection(self, xunit, yunit):
         if not xunit and not yunit: return # protects against infinite loop
         if 'solid' not in self.sprite.scene.groups.keys(): return
-        while pg.sprite.spritecollideany(
-            # collide between character and foreground
-            self.sprite, self.sprite.scene.groups['solid'], 
-            # use the masks for collision
-            pg.sprite.collide_mask
-        ):
+        while mask_collision(self.sprite, self.sprite.scene.groups['solid']):
             self.sprite.rect.move_ip(-xunit, -yunit) # move back 1
 

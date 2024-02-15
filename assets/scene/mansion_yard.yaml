@@ -1,5 +1,5 @@
 id: mansion yard
-INIT_ZOOM: 1 # amount to scale everything
+INIT_ZOOM: 1.2 # amount to scale everything
 CAMERASLACK: 100 # pixels from center screen before the camera moves
 
 DRAW_LAYERS: # layers will be drawn in this order

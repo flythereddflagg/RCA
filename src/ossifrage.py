@@ -24,7 +24,7 @@ class Ossifrage(Decal):
         self.damage_direction = pg.math.Vector2(0,1)
 
     def animate(self):
-        self.animation.animate()
+        self.animation.update()
         if self.animation.current['id'] == 'damage' and self.animation.active:
             self.move(self.damage_direction, speed=3*self.speed)
 
@@ -82,7 +82,13 @@ class Ossifrage(Decal):
     def check_collision(self):
         if self.animation.current['id'] == 'damage' and self.animation.active:
             return
-        print(self.mask)
+
+        assert isinstance(self.mask, pg.mask.Mask), \
+            f"{self.id} has invlaid mask: {self.mask}"
+        for sprite in self.scene.groups['player'].sprites():
+            assert isinstance(sprite.mask, pg.mask.Mask), \
+                f"{sprite.id} has invalid mask: {sprite.mask}"
+
         collided_players = pg.sprite.spritecollide(
             # collide between self and player
             self, self.scene.groups['player'], 
@@ -91,6 +97,11 @@ class Ossifrage(Decal):
         )
         if collided_players is not None:
             for player in collided_players:
+                if (player.animation and\
+                    player.animation.current['id'] == 'damage' and\
+                    player.animation.active
+                ): continue
+
                 damage_direction = (
                     pg.math.Vector2(player.rect.center) -
                     pg.math.Vector2(self.rect.center)

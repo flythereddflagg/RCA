@@ -61,7 +61,7 @@ class Player(Decal):
             self.keys_held[todo] = True
 
     def animate(self):
-        self.animation.animate()
+        self.animation.update()
         if self.animation.current['id'] == 'damage' and self.animation.active:
                 self.move(self.damage_direction, speed=3*self.speed)
 
@@ -103,6 +103,10 @@ class Player(Decal):
                 # do not kill, use the masks for collision
                 False, pg.sprite.collide_mask
             ):
+                if (sprite.animation and\
+                    sprite.animation.current['id'] == 'damage' and\
+                    sprite.animation.active
+                ): continue
                 damage_direction = (
                     pg.math.Vector2(sprite.rect.center) -
                     pg.math.Vector2(self.rect.center)
