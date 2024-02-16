@@ -24,7 +24,6 @@ class Edge(Decal):
         game = self.scene.game
         player = self.scene.player
         player.set_scale(0) # reset player scale
-        # FIXME player zoom stays in the previous scene's zoom
         
         new_scene = game.load_scene(self.scene, self.options['scene_path'])
         player.scene = new_scene
