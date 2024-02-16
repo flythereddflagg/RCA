@@ -29,6 +29,7 @@ class Edge(Decal):
         new_scene = game.load_scene(self.scene, self.options['scene_path'])
         player.scene = new_scene
         player.set_scale(new_scene.data.INIT_ZOOM)
+        player.animation.previous = '' # force player to update image
         new_scene.player = player
         new_scene.camera.player = player
         new_scene.layers['foreground'].add(player)
