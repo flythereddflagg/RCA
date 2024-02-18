@@ -47,11 +47,9 @@ class GameState(DictObj):
         if self.FPS_COUNTER:
             self.fps_counter = pg.font.SysFont("Sans", 22)
 
-    
-    def load_scene(self, cur_scene, yaml_path):
-        self.scene = Scene(self, yaml_path)
+    def load_scene(self, *args, **kwargs):
+        self.scene = Scene(*args, **kwargs)
         return self.scene
-
 
     def run(self):
         self.running = True
@@ -74,6 +72,8 @@ class GameState(DictObj):
         if self.SHOW_EVENTS:
             for event in events:
                 print(event.type, event)
+                if event.type == 769:
+                    breakpoint()
         if pg.QUIT in [event.type for event in events]: return ["QUIT"]    
 
         # TODO make the input more sophisticated
@@ -108,6 +108,7 @@ class GameState(DictObj):
 
         self.screen.fill(BLACK)
         for group_name in self.scene.data.DRAW_LAYERS:
+            print(self.scene.player.image, "<-- player image")
             self.scene.layers[group_name].draw(self.screen)
 
         if self.FPS_COUNTER:

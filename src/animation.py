@@ -83,6 +83,7 @@ class Animation():
         # update animation if changed
         if self.current['id'] != self.previous:
             set_frame = True
+            # TODO the issue is probably here but I don't know why
             self.previous = self.current['id']
             self.frames = self.current["frames"][self.sprite.move.direction]
             self.active = not self.current["repeat"]

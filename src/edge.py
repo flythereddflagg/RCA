@@ -23,16 +23,12 @@ class Edge(Decal):
         old_scene = self.scene
         game = self.scene.game
         player = self.scene.player
-        player.set_scale(0) # reset player scale
+        # player.set_scale(0) # reset player scale
         
-        new_scene = game.load_scene(self.scene, self.options['scene_path'])
-        player.scene = new_scene
-        player.set_scale(new_scene.data.INIT_ZOOM)
-        player.animation.previous = '' # force player to update image
-        new_scene.player = player
-        new_scene.camera.player = player
-        new_scene.layers['foreground'].add(player)
-        new_scene.groups['player'].add(player)
+        new_scene = game.load_scene(
+            game, self.options['scene_path'], player
+        )
+
         sprites = new_scene.layers['foreground'].sprites()
         block = list(filter(lambda x: x.id == self.id, sprites))[0]
         player.rect.center = block.rect.center

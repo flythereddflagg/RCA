@@ -20,7 +20,7 @@ SPRITE_MAP = DictObj(**{
 
 class Scene():
     
-    def __init__(self, game, yaml_path, player_path=None):
+    def __init__(self, game, yaml_path, player=None):
         """
         All this must do load the data from a YAML file
         and load each sprite into a group
@@ -52,10 +52,8 @@ class Scene():
         
         self.camera = Camera(self)
         
-        # FIXME zoom is broken
-        
-        if player_path:
-            player_data = load_yaml(player_path)
+        if isinstance(player, str):
+            player_data = load_yaml(player)
             player_data['scene'] = self
             self.player = SPRITE_MAP[player_data['type']](**player_data)
             if "groups" in self.player.options.keys():
@@ -63,6 +61,14 @@ class Scene():
                         self.groups[group].add(self.player)
             self.layers['foreground'].add(self.player)
             self.camera.player = self.player
+        elif isinstance(player, Decal):
+            self.player = player
+            self.player.set_scale(0) # reset player scale
+            self.player.scene = self
+            self.layers['foreground'].add(self.player)
+            self.groups['player'].add(player)
+            self.player.animation.previous = ''
+            self.camera.player = self.player 
         else:
             self.player = None
             
