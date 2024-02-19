@@ -64,6 +64,7 @@ class Decal(pg.sprite.Sprite):
         
 
     def set_scale(self, factor):
+        
         self.scale *= factor
         if self.scale < 1: self.scale = 1
         pos = self.rect.center
@@ -73,7 +74,10 @@ class Decal(pg.sprite.Sprite):
         self.rect.center = pos
         if self.mask:
             self.mask = self.original_mask.scale(new_size)
+        if self.animation: print("\nset pre", self.animation.data['stand'])
         if self.animation: self.animation.load_animations()
+        if self.animation: print("\nset post", self.animation.data['stand'])
+
     
     
     def __repr__(self):

@@ -40,9 +40,13 @@ class Animation():
             key_frame_size = [
                 int(x) for x in animation['key_frame_size'].split(',')
             ]
+            if animation['id'] == 'stand': print()
             animation['frames'] = self.parse_animation(
                 animation['image'], key_frame_size, self.sprite.scale
             )
+            if animation['id'] == 'stand': 
+                print(animation['frames'])
+                breakpoint()
             # add a special mask if it exists
             if 'mask_path' in animation:
                 animation['mask'] = self.parse_animation(
@@ -54,7 +58,8 @@ class Animation():
     def kill(self):
         self.alt_sprite.kill()
         
-    def parse_animation(self, image, frame_size, scale, make_mask=False): 
+    def parse_animation(self, image, frame_size, scale, make_mask=False):
+        breakpoint()
         main_image = pg.image.load(image).convert_alpha()
         new_size = pg.math.Vector2(main_image.get_size()) * scale
         frame_size = pg.math.Vector2(frame_size) * scale
