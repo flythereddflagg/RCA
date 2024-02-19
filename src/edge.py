@@ -22,9 +22,7 @@ class Edge(Decal):
     def exec_trigger(self):
         old_scene = self.scene
         game = self.scene.game
-        player = self.scene.player
-        # player.set_scale(0) # reset player scale
-        
+        player = self.scene.player        
         new_scene = game.load_scene(
             game, self.options['scene_path'], player
         )

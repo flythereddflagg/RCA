@@ -73,8 +73,6 @@ class Decal(pg.sprite.Sprite):
         self.rect.center = pos
         if self.mask:
             self.mask = self.original_mask.scale(new_size)
-            # FIXME there is an issue with how the mask is reloaded.
-            # RELOAD MASK FROM ORIGINAL???
         if self.animation: self.animation.load_animations()
     
     

@@ -95,7 +95,7 @@ class Animation():
             self.frames = self.current["frames"][self.sprite.move.direction]
         
         if set_frame: self.set_frame()
-
+        
         # if enough time has passed, set the new image
         cur_time = pg.time.get_ticks()
         for _ in range((cur_time -  self.last_frame_time) // self.frame_time):
@@ -104,6 +104,7 @@ class Animation():
             self.last_frame_time = cur_time
             if 'mask' in self.current.keys():
                 self.alt_sprite.mask = next(self.alt_sprite.mask_set)
+        
         
         if self.sprite.image is None: # animation is done
             self.active = False
@@ -140,7 +141,9 @@ class Animation():
         self.frame_times = itertools.cycle(self.current['key_frame_times'])
         self.set_image(next(self.frame, None))
         self.frame_time = next(self.frame_times)
-        
+        if self.sprite.image is None: 
+            print("WARNING: player image is NONE, Entering debug mode...")
+            breakpoint()
         if 'mask' in self.current.keys():
             self.alt_sprite.mask_set = itertools.cycle(
                 self.current['mask'][self.sprite.move.direction]

@@ -72,8 +72,6 @@ class GameState(DictObj):
         if self.SHOW_EVENTS:
             for event in events:
                 print(event.type, event)
-                if event.type == 769:
-                    breakpoint()
         if pg.QUIT in [event.type for event in events]: return ["QUIT"]    
 
         # TODO make the input more sophisticated
@@ -108,7 +106,6 @@ class GameState(DictObj):
 
         self.screen.fill(BLACK)
         for group_name in self.scene.data.DRAW_LAYERS:
-            print(self.scene.player.image, "<-- player image")
             self.scene.layers[group_name].draw(self.screen)
 
         if self.FPS_COUNTER:
