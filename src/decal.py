@@ -64,21 +64,19 @@ class Decal(pg.sprite.Sprite):
         
 
     def set_scale(self, factor):
-        
+        # TODO make this so it can scale by a absolute value AND a factor
         self.scale *= factor
         if self.scale < 1: self.scale = 1
         pos = self.rect.center
         new_size = [dim * self.scale for dim in self.original_size]
         self.image = pg.transform.scale(self.original_image, new_size)
+        # TODO see if we can change the scaling method for smoother scaling
         self.rect = self.image.get_rect()
         self.rect.center = pos
         if self.mask:
             self.mask = self.original_mask.scale(new_size)
-        if self.animation: print("\nset pre", self.animation.data['stand'])
         if self.animation: self.animation.load_animations()
-        if self.animation: print("\nset post", self.animation.data['stand'])
 
-    
     
     def __repr__(self):
         string = super().__repr__()

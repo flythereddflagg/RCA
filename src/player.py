@@ -10,12 +10,10 @@ DEFAULT_ANIMATION = 'stand'
 class Player(Decal):
     def __init__(self, **options):
         super().__init__(**options)
-        # TODO: redo speeds in terms of subpixels so this can scale
-        self.speed = 300 # pixels per second
+        # TODO LOW implement acceleration and momentum
+        self.speed = 150 # pixels per second at original size
         self.todo_list = []
         self.signals = []
-        # self.dist_per_frame = self.speed // self.scene.clock.get_fps()
-        # self.dist_per_frame = math.ceil(self.speed * self.scene.dt / 1000)
         self.keys_held = {key:False for key in self.scene.game.KEY_BIND.keys()}
         self.button1_action = 'sword swing'
         self.hp = 100
@@ -40,7 +38,7 @@ class Player(Decal):
             if self.animation.active: continue
             if action in Compass.strings:
                 # ^ means a direction button is being pressed                
-                self.move(action, speed=self.speed)
+                self.move(action, speed=self.speed * self.scale)
                 self.animation.current = self.animation.data['walk']
                 
             elif action == "BUTTON_1":

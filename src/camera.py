@@ -1,10 +1,5 @@
 import pygame as pg
 
-### FIXME this is test code
-from itertools import cycle
-SCALE_RUN = 1.05
-FACTOR = cycle([SCALE_RUN, 1/SCALE_RUN])
-### this is test code
 
 class Camera:
     def __init__(self, game):
@@ -13,20 +8,12 @@ class Camera:
         self.mobile_groups = list(self.scene.layers.keys())
         self.mobile_groups.remove('hud')
         self.cur_zoom = 1
-        self.last_time = 0 # this is test code
-        self.next_factor = 1 #  this is test code
+        # TODO extract mobile groups to data files so it can be set there
+        # TODO LOW set in game zoom
+        
+
 
     def update(self):
-        ### this is test code
-        # curtime = pg.time.get_ticks()
-        # if curtime - self.last_time > 1000:
-        #     self.last_time = curtime
-        #     self.next_factor = next(FACTOR)
-            
-        # self.zoom(self.next_factor)
-        # print(self.cur_zoom)
-        ### END this is test code
-
         self.follow_player()
         self.stop_at_border()
 
@@ -53,14 +40,8 @@ class Camera:
         movex, movey = self.add_camera_slack(
             movex, movey, self.scene.data.CAMERASLACK
         )
-        # print(movex,movey,"!")
-        # movex, movey = self.stop_at_border(movex, movey)
-        # print(movex,movey,"!!")
-
-
         self.pan(movex, movey)
-        # self.stop_at_border(movex, movey)
-        
+
     
     def add_camera_slack(self, movex, movey, camera_slack):
         """takes the vector given by (movex, movey) and reduces it by 

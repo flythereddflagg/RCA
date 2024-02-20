@@ -36,4 +36,5 @@ if __name__ == "__main__":
 # TODO make controllers work
 # TODO implement the RCA W1 story
 # TODO make scene transitions a la LTTP (polish)
-
+# TODO make a global zoom that scales the game to the size of the monitor
+# TODO implement Emma's character

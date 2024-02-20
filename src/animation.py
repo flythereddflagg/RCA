@@ -43,9 +43,6 @@ class Animation():
             animation['frames'] = self.parse_animation(
                 animation['image'], key_frame_size, self.sprite.scale
             )
-            # check that it worked.
-            for frames in animation['frames']:
-                assert frames, f'issue: no frames for "{animation["id"]}" {animation}'
             # add a special mask if it exists
             if 'mask_path' in animation:
                 animation['mask'] = self.parse_animation(
@@ -72,7 +69,8 @@ class Animation():
             int, map(operator.floordiv, main_size, frame_size)
         )
         kf_w, kf_h = frame_size
-        assert all([nframesx,nframesy,kf_h,kf_w]), "invalid frame parsing"
+        assert all([nframesx,nframesy,kf_h,kf_w]), \
+            f"invalid frame parsing {[nframesx,nframesy,kf_h,kf_w]}"
         # construct a frame group (matrix of sub-images)
         frame_group = [[main_image.subsurface([kf_w * i, kf_h * j, kf_w, kf_h]) 
                 for i in range(nframesx)
@@ -91,7 +89,6 @@ class Animation():
         # update animation if changed
         if self.current['id'] != self.previous:
             set_frame = True
-            # TODO the issue is probably here but I don't know why
             self.previous = self.current['id']
             self.frames = self.current["frames"][self.sprite.move.direction]
             self.active = not self.current["repeat"]
