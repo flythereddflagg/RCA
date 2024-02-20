@@ -37,38 +37,42 @@ class Animation():
 
     def load_animations(self):
         for animation in self.data['animations']:
-            key_frame_size = [
+            key_frame_size = tuple([
                 int(x) for x in animation['key_frame_size'].split(',')
-            ]
-            if animation['id'] == 'stand': print()
+            ])
             animation['frames'] = self.parse_animation(
                 animation['image'], key_frame_size, self.sprite.scale
             )
-            if animation['id'] == 'stand': 
-                print(animation['frames'])
-                breakpoint()
+            # check that it worked.
+            for frames in animation['frames']:
+                assert frames, f'issue: no frames for "{animation["id"]}" {animation}'
             # add a special mask if it exists
             if 'mask_path' in animation:
                 animation['mask'] = self.parse_animation(
                     animation['mask_path'], key_frame_size, self.sprite.scale,
                     make_mask=True
                 )
+                for frames in animation['frames']:
+                    assert frames, f'issue: no frames for "{animation["id"]}" {animation["frames"]}'
             self.data[animation['id']] =  animation
 
     def kill(self):
         self.alt_sprite.kill()
         
-    def parse_animation(self, image, frame_size, scale, make_mask=False):
-        breakpoint()
-        main_image = pg.image.load(image).convert_alpha()
+    def parse_animation(
+        self, image_path:str, frame_size:tuple[int, int], 
+        scale:float, make_mask:bool=False
+    ):
+        main_image = pg.image.load(image_path).convert_alpha()
         new_size = pg.math.Vector2(main_image.get_size()) * scale
-        frame_size = pg.math.Vector2(frame_size) * scale
+        frame_size = list(map(int, pg.math.Vector2(frame_size) * scale))
         main_image = pg.transform.scale(main_image, new_size)
         main_size = main_image.get_size()
         nframesx, nframesy = map(
             int, map(operator.floordiv, main_size, frame_size)
         )
         kf_w, kf_h = frame_size
+        assert all([nframesx,nframesy,kf_h,kf_w]), "invalid frame parsing"
         # construct a frame group (matrix of sub-images)
         frame_group = [[main_image.subsurface([kf_w * i, kf_h * j, kf_w, kf_h]) 
                 for i in range(nframesx)
@@ -79,7 +83,6 @@ class Animation():
             frame_group = [list(map(pg.mask.from_surface, group))
                 for group in frame_group
             ]
-
         return frame_group
 
 
@@ -146,9 +149,6 @@ class Animation():
         self.frame_times = itertools.cycle(self.current['key_frame_times'])
         self.set_image(next(self.frame, None))
         self.frame_time = next(self.frame_times)
-        if self.sprite.image is None: 
-            print("WARNING: player image is NONE, Entering debug mode...")
-            breakpoint()
         if 'mask' in self.current.keys():
             self.alt_sprite.mask_set = itertools.cycle(
                 self.current['mask'][self.sprite.move.direction]
