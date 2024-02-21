@@ -11,7 +11,8 @@ class Player(Decal):
     def __init__(self, **options):
         super().__init__(**options)
         # TODO LOW implement acceleration and momentum
-        self.speed = 150 # pixels per second at original size
+        # self.speed = 150 # pixels per second at original size
+        self.speed = 300
         self.todo_list = []
         self.signals = []
         self.keys_held = {key:False for key in self.scene.game.KEY_BIND.keys()}

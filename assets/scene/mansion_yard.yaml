@@ -1,5 +1,5 @@
 id: mansion yard
-INIT_ZOOM: 1.2 # amount to scale everything
+INIT_ZOOM: 1.5 # amount to scale everything
 CAMERASLACK: 100 # pixels from center screen before the camera moves
 
 DRAW_LAYERS: # layers will be drawn in this order
@@ -52,4 +52,19 @@ foreground:
     scale: 2.5
     scene_path: ./assets/scene/alleyway.yaml
     exit_dir: RIGHT
-
+  - id: statue_exit 
+    type: Edge
+    image: ./assets/dummy/block.png
+    mask: image
+    start: 1058,222
+    scale: 1
+    scene_path: ./assets/scene/corridor.yaml
+    exit_dir: RIGHT
+  - id: grate exit 
+    type: Edge
+    image: ./assets/dummy/block.png
+    mask: image
+    start: 89,712
+    scale: 1
+    scene_path: ./assets/scene/boss_room.yaml
+    exit_dir: RIGHT

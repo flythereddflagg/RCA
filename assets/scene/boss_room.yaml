@@ -1,0 +1,46 @@
+id: <scene name>
+INIT_ZOOM: 1 # amount to scale everything
+CAMERASLACK: 100 # pixels from center screen before the camera moves
+
+DRAW_LAYERS: # layers will be drawn in this order
+  - background
+  - foreground
+  - hud
+SPRITE_GROUPS:
+  - solid        # solid entities
+  - player       # sprites you can control             
+  - foe          # enemies
+
+# sprites in each drawing layer
+hud:
+  # - id: <unique ID 1>
+  #   type: Decal
+  #   image: path to
+  #   start: 0,0
+  #   mask:
+
+background:
+  - id: <unique ID 2>
+    type: Decal
+    image: ./assets/scene/boss_room/map.png
+    mask: ./assets/scene/boss_room/foreground.png
+    groups: 
+     - solid # a group to be in for certain effects
+
+foreground:
+  - id: grate exit
+    type: Edge
+    image: ./assets/dummy/block.png
+    mask: image
+    start: 117,117
+    scale: 1
+    scene_path: ./assets/scene/mansion_yard.yaml
+    exit_dir: DOWN
+  - id: doorway exit 
+    type: Edge
+    image: ./assets/dummy/block.png
+    mask: image
+    start: 1132,1033
+    scale: 1
+    scene_path: ./assets/scene/corridor.yaml
+    exit_dir: LEFT

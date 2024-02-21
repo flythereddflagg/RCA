@@ -5,9 +5,9 @@ import math
 import pygame as pg
 import yaml
 
-from src.player import Player
 from src.sprite import Decal
-from src.dict_obj import DictObj
+from src.compass import Compass
+from src.animation import Animation
 
 BLACK = (255,255,255)
 SCREENWIDTH, SCREENHEIGHT = 600, 600

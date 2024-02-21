@@ -40,7 +40,7 @@ class Scene():
         for name in self.data.DRAW_LAYERS:
             layer = self.layers[name]
             layer.empty() # clear out all layers
-            if name not in self.data.keys():
+            if name not in self.data.keys() or self.data[name] is None:
                 continue
             for sprite_dict in self.data[name]:
                 sprite_dict['scene'] = self
