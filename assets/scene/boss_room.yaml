@@ -20,7 +20,7 @@ hud:
   #   mask:
 
 background:
-  - id: <unique ID 2>
+  - id: boss room
     type: Decal
     image: ./assets/scene/boss_room/map.png
     mask: ./assets/scene/boss_room/foreground.png
