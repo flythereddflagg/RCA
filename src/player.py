@@ -4,6 +4,7 @@ from .decal import Decal
 from .compass import Compass
 from .movement import Movement
 from .animation import Animation
+from .inventory import Inventory
 
 DEFAULT_ANIMATION = 'stand'
 
@@ -17,10 +18,10 @@ class Player(Decal):
         self.signals = []
         self.keys_held = {key:False for key in self.scene.game.KEY_BIND.keys()}
         self.button1_action = 'sword swing'
-        self.hp = 100
         self.damage_direction = pg.math.Vector2(0,1)
         self.move = Movement(self, **self.options)
         self.animation = Animation(self, **self.options)
+        self.inventory = Inventory(money=0, hp=100, hp_max=0)
 
     def apply(self, game_input):
         self.todo_list.extend(game_input)
@@ -70,7 +71,7 @@ class Player(Decal):
         self.check_signals()
         self.animate()
         
-        if self.hp <= 0:
+        if self.inventory.hp <= 0:
             self.scene.player = None
             self.kill()
 
@@ -86,7 +87,7 @@ class Player(Decal):
         if self.signals: print(f"[{self.id}] got signals:{self.signals}")
         for signal in self.signals:
             if "damage" in signal[0]:
-                self.hp -= signal[1]
+                self.inventory.change_health(-signal[1])
                 self.damage_direction = signal[2]
                 self.animation.current = self.animation.data['damage']
 

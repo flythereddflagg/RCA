@@ -51,6 +51,7 @@ class Decal(pg.sprite.Sprite):
 
         # process any optional params
         self.animation = None
+        self.inventory = None
         self.scale = 1
         if "scale" in self.options.keys():
             self.set_scale(self.options["scale"])
