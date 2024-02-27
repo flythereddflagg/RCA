@@ -69,3 +69,17 @@ foreground:
     scale: 2.5
     scene_path: ./assets/scene/scene.yaml
     exit_dir: UP
+
+  - id: cactus
+    type: Cactus
+    image: ./assets/dummy/cactus.png
+    mask: image
+    start: 600,600
+    scale: 1
+
+  - id: backpack
+    type: Backpack
+    image: ./assets/dummy/backpack.png
+    mask: image
+    start: 600,700
+    scale: 1
