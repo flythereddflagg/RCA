@@ -20,6 +20,7 @@ KEY_BIND:
   RIGHT: right
   BUTTON_1: x
   BUTTON_2: z
+  BUTTON_3: i # for inventory
 
 
 
