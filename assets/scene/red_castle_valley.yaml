@@ -16,7 +16,7 @@ SPRITE_GROUPS:
 hud:
   - id: hearts
     type: Decal
-    image: ./assets/dummy/hud_element.png
+    image: ./assets/block/hud_element.png
     start: 0,0
     mask:
 
@@ -31,7 +31,7 @@ background:
 foreground:
   - id: big ol rock
     type: Decal
-    image: ./assets/scene/alleyway/rock.png
+    image: ./assets/block/rock.png
     mask: image
     start: 1230,950
     groups: 
@@ -39,13 +39,13 @@ foreground:
 
   - id: ossifrage 1
     type: Ossifrage
-    yaml: ./assets/dummy/ossifrage.yaml
+    yaml: ./assets/actor/ossifrage.yaml
     mask: image
     start: 700,900
 
   - id: bridge_exit
     type: Edge
-    image: ./assets/dummy/block.png
+    image: ./assets/block/block.png
     mask: image
     start: 845,-80
     scale: 2.5
@@ -54,7 +54,7 @@ foreground:
 
   - id: forest_red_castle_valley_connection
     type: Edge
-    image: ./assets/dummy/block.png
+    image: ./assets/block/block.png
     mask: image
     start: 135,650
     scale: 2.5
@@ -63,7 +63,7 @@ foreground:
 
   - id: mountain trail exit
     type: Edge
-    image: ./assets/dummy/block.png
+    image: ./assets/block/block.png
     mask: image
     start: 1230,1038
     scale: 2.5
@@ -72,14 +72,14 @@ foreground:
 
   - id: cactus
     type: Cactus
-    image: ./assets/dummy/cactus.png
+    image: ./assets/block/cactus.png
     mask: image
     start: 600,600
     scale: 1
 
   - id: backpack
     type: Backpack
-    image: ./assets/dummy/backpack.png
+    image: ./assets/block/backpack.png
     mask: image
     start: 600,700
     scale: 1

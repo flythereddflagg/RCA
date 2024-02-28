@@ -15,7 +15,7 @@ SPRITE_GROUPS:
 hud:
   - id: hearts
     type: Decal
-    image: ./assets/dummy/hud_element.png
+    image: ./assets/block/hud_element.png
     start: 0,0
     mask:
 
@@ -30,7 +30,7 @@ background:
 foreground:
   - id: bridge_exit
     type: Edge
-    image: ./assets/dummy/block.png
+    image: ./assets/block/block.png
     mask: image
     start: 845,1969
     scale: 2.5
@@ -38,7 +38,7 @@ foreground:
     exit_dir: UP
   - id: forest_exit
     type: Edge
-    image: ./assets/dummy/block.png
+    image: ./assets/block/block.png
     mask: image
     start: 1410,1343
     scale: 2.5
@@ -46,7 +46,7 @@ foreground:
     exit_dir: UP
   - id: alley_exit
     type: Edge
-    image: ./assets/dummy/block.png
+    image: ./assets/block/block.png
     mask: image
     start: 688,146
     scale: 2.5
@@ -54,7 +54,7 @@ foreground:
     exit_dir: RIGHT
   - id: statue_exit 
     type: Edge
-    image: ./assets/dummy/block.png
+    image: ./assets/block/block.png
     mask: image
     start: 1058,222
     scale: 1
@@ -62,7 +62,7 @@ foreground:
     exit_dir: RIGHT
   - id: grate exit 
     type: Edge
-    image: ./assets/dummy/block.png
+    image: ./assets/block/block.png
     mask: image
     start: 89,712
     scale: 1

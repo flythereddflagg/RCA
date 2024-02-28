@@ -30,7 +30,7 @@ background:
 foreground:
   - id: doorway exit 
     type: Edge
-    image: ./assets/dummy/block.png
+    image: ./assets/block/block.png
     mask: image
     start: 90,180
     scale: 1
@@ -38,7 +38,7 @@ foreground:
     exit_dir: RIGHT
   - id: statue_exit 
     type: Edge
-    image: ./assets/dummy/block.png
+    image: ./assets/block/block.png
     mask: image
     start: 1140,159
     scale: 1

@@ -25,5 +25,5 @@ KEY_BIND:
 
 
 INITAL_SCENE: ./assets/scene/red_castle_valley.yaml
-PLAYER: ./assets/dummy/player.yaml
-# INITAL_SCENE: "./assets/dummy/blank_scene.yaml"
+PLAYER: ./assets/actor/player.yaml
+# INITAL_SCENE: ./assets/scene/blank_scene.yaml

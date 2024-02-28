@@ -15,7 +15,7 @@ SPRITE_GROUPS:
 hud:
   - id: hearts
     type: Decal
-    image: ./assets/dummy/hud_element.png
+    image: ./assets/block/hud_element.png
     mask:
     start: 0,0
 
@@ -30,7 +30,7 @@ background:
 foreground:
   - id: forest_red_castle_valley_connection
     type: Edge
-    image: ./assets/dummy/block.png
+    image: ./assets/block/block.png
     mask: image
     start: 325,575
     scale: 2.5

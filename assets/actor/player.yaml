@@ -6,28 +6,28 @@
 id: PLAYER
 type: Player
 start: 900,600 # do i need this?
-image: "./assets/dummy/character.png"
+image: "./assets/actor/player/character.png"
 mask: image
 groups:
   - player
 
 animations:
   - id: "null"
-    image: "./assets/dummy/null.png"
+    image: "./assets/block/null.png"
     repeat: True
     key_frame_size: 32,32
     key_frame_times:
       - 1 # 0 means a static image
 
   - id: stand
-    image: "./assets/dummy/character_stand.png"
+    image: "./assets/actor/player/character_stand.png"
     repeat: True
     key_frame_size: 32,32
     key_frame_times:
       - 1
 
   - id: walk
-    image: "./assets/dummy/character_walk.png"
+    image: "./assets/actor/player/character_walk.png"
     repeat: True
     key_frame_size: 32,32
     key_frame_times:
@@ -35,15 +35,15 @@ animations:
     
   - id: sword swing
     repeat: False
-    image: "./assets/dummy/sword.png"
+    image: "./assets/actor/player/sword.png"
     key_frame_size: 56,56
     key_frame_times:
       - 50
-    mask_path: "./assets/dummy/sword_hit_mask.png"
+    mask_path: "./assets/actor/player/sword_hit_mask.png"
 
   - id: damage
     repeat: False
-    image: "./assets/dummy/damage.png"
+    image: "./assets/actor/player/damage.png"
     key_frame_size: 32,32
     key_frame_times:
       - 75
