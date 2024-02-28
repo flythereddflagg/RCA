@@ -5,6 +5,7 @@ from .compass import Compass
 from .movement import Movement
 from .animation import Animation
 from .inventory import Inventory
+from .tools import list_collided
 
 DEFAULT_ANIMATION = 'stand'
 
@@ -97,11 +98,8 @@ class Player(Decal):
         if self.animation.current['id'] == 'damage' and self.animation.active:
             return
         if self.animation.alt_sprite.mask:
-            for sprite in pg.sprite.spritecollide(
-                # collide between character and foreground
-                self.animation.alt_sprite, self.scene.groups['foe'], 
-                # do not kill, use the masks for collision
-                False, pg.sprite.collide_mask
+            for sprite in list_collided(
+                self.animation.alt_sprite, self.scene.groups['foe']
             ):
                 if (sprite.animation and\
                     sprite.animation.current['id'] == 'damage' and\
