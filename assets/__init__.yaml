@@ -2,7 +2,7 @@
 # Frame rate ( in Frames / second)
 FPS: 90 # game is unstable at FPS > about 100
 # FPS: 0 # do not limit FPS
-SHOW_EVENTS: false # print events in terminal
+SHOW_EVENTS: true # print events in terminal
 FPS_COUNTER: true # print FPS on game screen
 # initial screen size
 SCREENWIDTH: 1300
@@ -18,9 +18,9 @@ KEY_BIND:
   DOWN: down
   LEFT: left
   RIGHT: right
-  BUTTON_1: x
-  BUTTON_2: z
-  BUTTON_3: i # for inventory
+  BUTTON_1: c
+  BUTTON_2: x
+  BUTTON_3: z # for inventory
 
 
 

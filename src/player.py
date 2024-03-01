@@ -23,6 +23,7 @@ class Player(Decal):
         self.move = Movement(self, **self.options)
         self.animation = Animation(self, **self.options)
         self.inventory = Inventory(money=0, hp=100, hp_max=100)
+        self.inventory_screen = None
 
     def apply(self, game_input):
         self.todo_list.extend(game_input)
@@ -49,6 +50,9 @@ class Player(Decal):
                 self.animation.current = self.animation.data[
                     self.button1_action]
 
+            elif action == "BUTTON_3":
+                self.keys_held[action] = True
+
             else:
                 print(action + "! (no response)")
 
@@ -66,8 +70,33 @@ class Player(Decal):
         if self.animation.current['id'] == 'damage' and self.animation.active:
                 self.move(self.damage_direction, speed=3*self.speed)
 
+    def show_inventory(self):
+        if not self.keys_held["BUTTON_3"]:
+            if self.inventory_screen:
+                self.inventory_screen.kill()
+                del self.inventory_screen
+                self.inventory_screen = None
+            return
+
+        if self.inventory_screen: return
+
+        self.inventory_screen = Decal(**{
+                "id": "inventory_screen",
+                "scene": self.scene,
+                "image": "./assets/actor/inventory_screen/backpack.png",
+                'mask': None,
+                'scale': 2
+        })
+        screen_w, screen_h = pg.display.get_surface().get_size()
+        centerx = screen_w // 2
+        centery = screen_h // 2
+        self.inventory_screen.rect.center = (centerx, centery)
+
+        self.scene.layers['hud'].add(self.inventory_screen)
+
     def update(self):
         self.apply_todos()
+        self.show_inventory()
         self.check_collision()
         self.check_signals()
         self.animate()
