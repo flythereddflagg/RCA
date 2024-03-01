@@ -78,6 +78,7 @@ class Player(Decal):
         self.check_collision()
         self.check_signals()
         self.animate()
+        self.inventory.update()
         
         if self.inventory.hp <= 0:
             self.scene.player = None

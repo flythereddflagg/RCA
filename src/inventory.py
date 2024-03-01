@@ -23,15 +23,15 @@ class Inventory(Decal):
         self.active = False
 
         self.rect.center = get_center_screen()
-        self.scene.layers['hud'].add(self)
+        # self.scene.layers['hud'].add(self)
         
 
     def update(self):
-        if self.scene.player.keys_held["BUTTON_3"] and not self.alive():
+        if self.scene.player.keys_held["BUTTON_3"] and not self.active:
             self.active = True
             self.scene.layers['hud'].add(self)
         
-        if not self.scene.player.keys_held["BUTTON_3"] and self.alive():
+        if not self.scene.player.keys_held["BUTTON_3"] and self.active:
             self.active = False
             self.kill()
 
