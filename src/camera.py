@@ -1,5 +1,7 @@
 import pygame as pg
 
+from .tools import get_center_screen
+
 
 class Camera:
     def __init__(self, game):
@@ -11,17 +13,18 @@ class Camera:
         # TODO extract mobile groups to data files so it can be set there
         # TODO LOW set in game zoom
         
-
-
+        
     def update(self):
         self.follow_player()
         self.stop_at_border()
 
 
     def pan(self, movex, movey):
+        """
+        Moves everything mobile to the correct position
+        This simulates moving the camera
+        """
         if not movex and not movey: return
-        # move everything that is mobile to the correct position
-        # this simulates moving the camera
         for group in self.mobile_groups:
             for sprite in self.scene.layers[group]:
                 sprite.rect.move_ip(-movex, -movey)
@@ -29,11 +32,7 @@ class Camera:
 
     def follow_player(self):
         if not self.player: return
-        # get the current center of the screen
-        screen_w, screen_h = pg.display.get_surface().get_size()
-        centerx = screen_w // 2
-        centery = screen_h // 2
-        center = pg.math.Vector2(centerx, centery)
+        center = pg.math.Vector2(*get_center_screen())
         player_pos = pg.math.Vector2(self.player.rect.center)
         movex, movey = player_pos - center
         
@@ -44,8 +43,10 @@ class Camera:
 
     
     def add_camera_slack(self, movex, movey, camera_slack):
-        """takes the vector given by (movex, movey) and reduces it by 
-        camera slack if either component is greater than camera_slack"""
+        """
+        Takes the vector given by (movex, movey) and reduces it by 
+        camera slack if either component is greater than camera_slack
+        """
         if abs(movex) > camera_slack:
             pos_neg = 1 if movex > 0 else -1
             movex = pos_neg * (abs(movex) - camera_slack)
@@ -109,6 +110,4 @@ class Camera:
                 sprite.rect.center = (
                     bg_x_new + bg_w_new * (x - bg_x) / bg_w, 
                     bg_y_new + bg_h_new * (y - bg_y) / bg_h
-                )
-        
-            
+                )   

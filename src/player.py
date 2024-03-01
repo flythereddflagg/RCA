@@ -22,11 +22,12 @@ class Player(Decal):
         self.damage_direction = pg.math.Vector2(0,1)
         self.move = Movement(self, **self.options)
         self.animation = Animation(self, **self.options)
-        self.inventory = Inventory(money=0, hp=100, hp_max=100)
-        self.inventory_screen = None
+        self.inventory = Inventory(self.scene, money=0, hp=100, hp_max=100)
+
 
     def apply(self, game_input):
         self.todo_list.extend(game_input)
+
 
     def apply_todos(self):
         todo_list_bak = self.todo_list.copy()
@@ -65,38 +66,15 @@ class Player(Decal):
         for todo in todo_list_bak:
             self.keys_held[todo] = True
 
+
     def animate(self):
         self.animation.update()
         if self.animation.current['id'] == 'damage' and self.animation.active:
                 self.move(self.damage_direction, speed=3*self.speed)
 
-    def show_inventory(self):
-        if not self.keys_held["BUTTON_3"]:
-            if self.inventory_screen:
-                self.inventory_screen.kill()
-                del self.inventory_screen
-                self.inventory_screen = None
-            return
-
-        if self.inventory_screen: return
-
-        self.inventory_screen = Decal(**{
-                "id": "inventory_screen",
-                "scene": self.scene,
-                "image": "./assets/actor/inventory_screen/backpack.png",
-                'mask': None,
-                'scale': 2
-        })
-        screen_w, screen_h = pg.display.get_surface().get_size()
-        centerx = screen_w // 2
-        centery = screen_h // 2
-        self.inventory_screen.rect.center = (centerx, centery)
-
-        self.scene.layers['hud'].add(self.inventory_screen)
 
     def update(self):
         self.apply_todos()
-        self.show_inventory()
         self.check_collision()
         self.check_signals()
         self.animate()
@@ -108,6 +86,7 @@ class Player(Decal):
 
     def add_todo(self, action):
         self.todo_list.append(action)
+
 
     def signal(self, signal):
         self.signals.append(signal)
@@ -122,6 +101,7 @@ class Player(Decal):
                 self.animation.current = self.animation.data['damage']
 
         self.signals = [] # reset signals
+
 
     def check_collision(self):
         if self.animation.current['id'] == 'damage' and self.animation.active:

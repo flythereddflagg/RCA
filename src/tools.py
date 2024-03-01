@@ -43,3 +43,9 @@ def list_collided(self, other):
     if collided_others is None: return []
     
     return collided_others
+
+def get_center_screen():
+        screen_w, screen_h = pg.display.get_surface().get_size()
+        centerx = screen_w // 2
+        centery = screen_h // 2
+        return (centerx, centery)
