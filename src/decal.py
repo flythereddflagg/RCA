@@ -32,6 +32,7 @@ class Decal(pg.sprite.Sprite):
         super().__init__()
         self.id = options['id']
         self.scene = options["scene"]
+        self.add(self.scene.all_sprites)
         self.image = pg.image.load(options["image"]).convert_alpha()
         self.rect = self.image.get_rect()
         self.mask = None

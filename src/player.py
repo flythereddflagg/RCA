@@ -22,7 +22,7 @@ class Player(Decal):
         self.damage_direction = pg.math.Vector2(0,1)
         self.move = Movement(self, **self.options)
         self.animation = Animation(self, **self.options)
-        self.inventory = Inventory(self.scene, money=0, hp=100, hp_max=100)
+        self.inventory = Inventory(self, money=0, hp=100, hp_max=100)
 
 
     def apply(self, game_input):

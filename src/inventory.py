@@ -6,11 +6,11 @@ N_SLOTS = 8
 
 class Inventory(Decal):
     def __init__(
-        self, scene, money:int=0, hp:int=0, hp_max:int=0, max_money=999
+        self, player, money:int=0, hp:int=0, hp_max:int=0, max_money=999
     ):
         super().__init__(**{
                 "id": "inventory_screen",
-                "scene": scene,
+                "scene": player.scene,
                 "image": "./assets/actor/inventory_screen/backpack.png",
                 "mask": None,
                 "scale": 2
@@ -21,19 +21,22 @@ class Inventory(Decal):
         self.HP_MAX:int = hp_max
         self.max_money = max_money
         self.active = False
+        self.player = player
 
         self.rect.center = get_center_screen()
-        # self.scene.layers['hud'].add(self)
         
 
     def update(self):
-        if self.scene.player.keys_held["BUTTON_3"] and not self.active:
+        # update reference to scene if necessary
+        if self.player.scene is not self.scene: 
+            self.scene = self.player.scene
+        if self.player.keys_held["BUTTON_3"] and not self.active:
             self.active = True
             self.scene.layers['hud'].add(self)
         
-        if not self.scene.player.keys_held["BUTTON_3"] and self.active:
+        if not self.player.keys_held["BUTTON_3"] and self.active:
             self.active = False
-            self.kill()
+            self.scene.layers['hud'].remove(self)
 
 
     def change_money(self, amount:int):
@@ -64,7 +67,7 @@ class Inventory(Decal):
 
     def add_item(self, item:Item):
         for i, slot in enumerate(self.slots):
-            if slot.id is 'empty':
+            if slot.id == 'empty':
                 self.slots[i] = item
                 return self.slots[i]
         
