@@ -16,5 +16,6 @@ class Backpack(Decal):
         for player in list_collided(self, self.scene.groups['player']):
             if player.inventory:
                 new_slot = player.inventory.add_slot()
+                if new_slot is None: return # no more slots can be added
                 self.kill()
             break

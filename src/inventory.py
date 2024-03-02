@@ -1,8 +1,11 @@
+import pygame as pg
+
 from .item import Item
 from .decal import Decal
 from .tools import get_center_screen
+from .compass import Compass
 
-N_SLOTS = 8
+N_SLOTS = 6
 
 class Inventory(Decal):
     def __init__(
@@ -22,9 +25,27 @@ class Inventory(Decal):
         self.max_money = max_money
         self.active = False
         self.player = player
-
         self.rect.center = get_center_screen()
-        
+
+        self.slot_sprites = pg.sprite.Group()
+        angle = rot_gen()
+        for i in range(N_SLOTS):
+            new_slot = Decal(**{
+                "id": f"inventory_slot({i})",
+                "scene": player.scene,
+                "image": "./assets/actor/inventory_screen/slot.png",
+                "mask": None,
+                "scale": 1
+            })
+            new_slot.rect.center = (
+                pg.math.Vector2(self.rect.center) + 
+                (pg.math.Vector2(Compass.unit_vector(Compass.UP)) * 
+                    self.image.get_height()
+                # ).rotate(i / N_SLOTS * 360)
+                ).rotate(2 * 360 / N_SLOTS * i + 360 / N_SLOTS * (i//(N_SLOTS//2)))
+            )
+            self.slot_sprites.add(new_slot)
+
 
     def update(self):
         # update reference to scene if necessary
@@ -32,12 +53,24 @@ class Inventory(Decal):
             self.scene = self.player.scene
         if self.player.keys_held["BUTTON_3"] and not self.active:
             self.active = True
-            self.scene.layers['hud'].add(self)
+            self.toggle()
         
         if not self.player.keys_held["BUTTON_3"] and self.active:
             self.active = False
-            self.scene.layers['hud'].remove(self)
-
+            self.toggle()
+        
+        
+    def toggle(self):
+        toggle_state = (
+            self.scene.layers['hud'].add 
+            if self.active else 
+            self.scene.layers['hud'].remove
+        )
+        toggle_state(self)
+        for i, slot in enumerate(self.slots):
+            if slot is None: continue
+            toggle_state(self.slot_sprites.sprites()[i])
+            
 
     def change_money(self, amount:int):
         new_amount = self.money + amount
