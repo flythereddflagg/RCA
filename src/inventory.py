@@ -12,11 +12,11 @@ class Inventory(Decal):
         self, player, money:int=0, hp:int=0, hp_max:int=0, max_money=999
     ):
         super().__init__(**{
-                "id": "inventory_screen",
-                "scene": player.scene,
-                "image": "./assets/actor/inventory_screen/backpack.png",
-                "mask": None,
-                "scale": 2
+            "id": "inventory_screen",
+            "scene": player.scene,
+            "image": "./assets/actor/inventory_screen/backpack.png",
+            "mask": None,
+            "scale": 2
         })
         self.slots = [None for _ in range(N_SLOTS)]
         self.money:int = money # gold coins
@@ -28,7 +28,6 @@ class Inventory(Decal):
         self.rect.center = get_center_screen()
 
         self.slot_sprites = pg.sprite.Group()
-        angle = rot_gen()
         for i in range(N_SLOTS):
             new_slot = Decal(**{
                 "id": f"inventory_slot({i})",
@@ -42,7 +41,9 @@ class Inventory(Decal):
                 (pg.math.Vector2(Compass.unit_vector(Compass.UP)) * 
                     self.image.get_height()
                 # ).rotate(i / N_SLOTS * 360)
-                ).rotate(2 * 360 / N_SLOTS * i + 360 / N_SLOTS * (i//(N_SLOTS//2)))
+                ).rotate(
+                    2 * 360 / N_SLOTS * i + 360 / N_SLOTS * (i//(N_SLOTS//2))
+                )
             )
             self.slot_sprites.add(new_slot)
 
@@ -102,6 +103,7 @@ class Inventory(Decal):
         for i, slot in enumerate(self.slots):
             if slot.id == 'empty':
                 self.slots[i] = item
+
                 return self.slots[i]
         
         return None
@@ -114,3 +116,6 @@ class Inventory(Decal):
                 return self.slots[i]
         
         return None
+
+    def select(self, item:Item):
+        self.player.button1_action =  item.select()
