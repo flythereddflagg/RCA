@@ -118,4 +118,4 @@ class Inventory(Decal):
         return None
 
     def select(self, item:Item):
-        self.player.button1_action =  item.select()
+        self.player.button1_action = item.select()
