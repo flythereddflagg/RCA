@@ -93,7 +93,7 @@ class Inventory(Decal):
     def add_slot(self):
         for i, slot in enumerate(self.slots):
             if slot is None:
-                self.slots[i] = Item('empty')
+                self.slots[i] = Item(id='empty')
                 return self.slots[i]
         
         return None
@@ -101,7 +101,9 @@ class Inventory(Decal):
 
     def add_item(self, item:Item):
         for i, slot in enumerate(self.slots):
-            if slot.id == 'empty':
+            if slot is not None and slot.id == 'empty':
+                print(f"adding item {item}")
+                # TODO NEXT add item to slot view
                 self.slots[i] = item
 
                 return self.slots[i]

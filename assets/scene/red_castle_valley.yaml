@@ -84,3 +84,11 @@ foreground:
     mask: image
     start: 600,700
     scale: 1
+  
+  - id: sword
+    type: Item
+    image: ./assets/actor/item/sword_icon.png
+    mask: image
+    start: 600,800
+    scale: 1
+    action: sword swing

@@ -10,6 +10,7 @@ from .ossifrage import Ossifrage
 from .edge import Edge
 from .backpack import Backpack
 from .cactus import Cactus
+from .item import Item
 
 SPRITE_MAP = DictObj(**{
     "Decal" : Decal,
@@ -18,6 +19,7 @@ SPRITE_MAP = DictObj(**{
     'Edge': Edge,
     'Backpack': Backpack,
     'Cactus': Cactus,
+    'Item': Item,
 })
 
 
