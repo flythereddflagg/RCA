@@ -89,13 +89,14 @@ class Inventory(Decal):
             if self.active else 
             self.scene.layers['hud'].remove
         )
-        toggle_state(self)
-        toggle_state(self.left_hand)
-        toggle_state(self.right_hand)
-        if self.left_item:
-            toggle_state(self.left_item)
-        if self.right_item:
-            toggle_state(self.right_item)
+        inventory_sprites = [
+            self, self.left_hand, self.right_hand, 
+            self.left_item, self.right_item
+        ]
+        for sprite in inventory_sprites:
+            if sprite is None: continue
+            toggle_state(sprite)
+
         for i, slot in enumerate(self.slots):
             if slot is None: continue
             toggle_state(self.slot_sprites.sprites()[i])
@@ -162,4 +163,4 @@ class Inventory(Decal):
     def select(self, item:Item):
         self.player.button1_action = item.select()
         # TODO NEXT implement the controller and figure out how to select items
-        
+
