@@ -18,7 +18,9 @@ class Inventory(Decal):
             "mask": None,
             "scale": 2
         })
-        self.slots = [None for _ in range(N_SLOTS)]
+        self.left_item:Item = None
+        self.right_item:Item = None
+        self.slots:list[Item] = [None for _ in range(N_SLOTS)]
         self.money:int = money # gold coins
         self.hp:int = hp
         self.HP_MAX:int = hp_max
@@ -46,6 +48,26 @@ class Inventory(Decal):
                 )
             )
             self.slot_sprites.add(new_slot)
+        
+        self.left_hand, self.right_hand = (Decal(**{
+                "id": "inventory_screen",
+                "scene": player.scene,
+                "image": "./assets/actor/inventory_screen/hand.png",
+                "mask": None,
+                "scale": 2
+            })
+            for _ in range(2)
+        )
+        self.right_hand.image = pg.transform.flip(
+            self.right_hand.image, True, False
+        ) # get the right hand where you want it
+
+        self.left_hand.rect.center = self.rect.center + pg.math.Vector2(
+            -self.rect.center[0]//2, 0
+        )
+        self.right_hand.rect.center = self.rect.center + pg.math.Vector2(
+            self.rect.center[0]//2, 0
+        )
 
 
     def update(self):
@@ -68,9 +90,17 @@ class Inventory(Decal):
             self.scene.layers['hud'].remove
         )
         toggle_state(self)
+        toggle_state(self.left_hand)
+        toggle_state(self.right_hand)
+        if self.left_item:
+            toggle_state(self.left_item)
+        if self.right_item:
+            toggle_state(self.right_item)
         for i, slot in enumerate(self.slots):
             if slot is None: continue
             toggle_state(self.slot_sprites.sprites()[i])
+            if slot.id == 'empty': continue
+            toggle_state(slot)
             
 
     def change_money(self, amount:int):
@@ -100,11 +130,21 @@ class Inventory(Decal):
 
 
     def add_item(self, item:Item):
+        if self.left_item is None:
+            self.left_item = item
+            self.left_item.rect.center = self.left_hand.rect.center
+            return item
+        if self.right_item is None:
+            self.right_item = item
+            self.right_item.rect.center = self.right_hand.rect.center
+            return item
         for i, slot in enumerate(self.slots):
             if slot is not None and slot.id == 'empty':
                 print(f"adding item {item}")
-                # TODO NEXT add item to slot view
                 self.slots[i] = item
+                self.slots[i].rect.center = (
+                    self.slot_sprites.sprites()[i].rect.center
+                )
 
                 return self.slots[i]
         
@@ -121,3 +161,5 @@ class Inventory(Decal):
 
     def select(self, item:Item):
         self.player.button1_action = item.select()
+        # TODO NEXT implement the controller and figure out how to select items
+        

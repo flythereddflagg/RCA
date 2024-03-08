@@ -92,3 +92,11 @@ foreground:
     start: 600,800
     scale: 1
     action: sword swing
+
+  - id: hammer
+    type: Item
+    image: ./assets/actor/item/hammer_icon.png
+    mask: image
+    start: 600,900
+    scale: 1
+    action: hammer swing
