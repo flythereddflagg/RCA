@@ -91,7 +91,7 @@ foreground:
     mask: image
     start: 600,800
     scale: 1
-    action: sword swing
+    action: sword
 
   - id: hammer
     type: Item
@@ -99,4 +99,4 @@ foreground:
     mask: image
     start: 600,900
     scale: 1
-    action: hammer swing
+    action: hammer

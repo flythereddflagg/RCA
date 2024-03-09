@@ -33,7 +33,7 @@ animations:
     key_frame_times:
       - 40
     
-  - id: sword swing
+  - id: sword
     repeat: False
     image: "./assets/actor/player/sword.png"
     key_frame_size: 56,56
@@ -47,3 +47,11 @@ animations:
     key_frame_size: 32,32
     key_frame_times:
       - 75
+
+  - id: hammer
+    repeat: False
+    image: "./assets/actor/player/hammer.png"
+    key_frame_size: 32,32
+    key_frame_times:
+      - 40
+      - 100

@@ -12,13 +12,11 @@ DEFAULT_ANIMATION = 'stand'
 class Player(Decal):
     def __init__(self, **options):
         super().__init__(**options)
-        # TODO LOW implement acceleration and momentum
-        # self.speed = 150 # pixels per second at original size
+        # TODO? LOW implement acceleration and momentum
         self.speed = 300
         self.todo_list = []
         self.signals = []
         self.keys_held = {key:False for key in self.scene.game.KEY_BIND.keys()}
-        self.button1_action = 'sword swing'
         self.damage_direction = pg.math.Vector2(0,1)
         self.move = Movement(self, **self.options)
         self.animation = Animation(self, **self.options)
@@ -39,6 +37,7 @@ class Player(Decal):
             self.animation.current = self.animation.data[DEFAULT_ANIMATION]
 
         for action in self.todo_list:
+            self.keys_held[action] = True
             # TODO make a complete action list and implement
             if self.animation.active: continue
             if action in Compass.strings:
@@ -47,12 +46,18 @@ class Player(Decal):
                 self.animation.current = self.animation.data['walk']
                 
             elif action == "BUTTON_1":
-                self.keys_held[action] = True
+                if self.inventory.left_item is None: continue
                 self.animation.current = self.animation.data[
-                    self.button1_action]
+                    self.inventory.left_item.select()
+                ]
+            elif action == "BUTTON_2":
+                if self.inventory.right_item is None: continue
+                self.animation.current = self.animation.data[
+                    self.inventory.right_item.select()
+                ]
 
-            elif action == "BUTTON_3":
-                self.keys_held[action] = True
+            elif action == "BUTTON_3": # inventory
+                pass
 
             else:
                 print(action + "! (no response)")

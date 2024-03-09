@@ -146,7 +146,6 @@ class Inventory(Decal):
                 self.slots[i].rect.center = (
                     self.slot_sprites.sprites()[i].rect.center
                 )
-
                 return self.slots[i]
         
         return None
@@ -160,7 +159,7 @@ class Inventory(Decal):
         
         return None
 
+
     def select(self, item:Item):
-        self.player.button1_action = item.select()
-        # TODO NEXT implement the controller and figure out how to select items
+        pass
 
