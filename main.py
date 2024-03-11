@@ -38,3 +38,4 @@ if __name__ == "__main__":
 # TODO make scene transitions a la LTTP (polish)
 # TODO make a global zoom that scales the game to the size of the monitor
 # TODO implement Emma's character
+# TODO implement scaling the entire game using 640 x 360 as a starting point.

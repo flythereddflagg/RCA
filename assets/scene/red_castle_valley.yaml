@@ -5,7 +5,7 @@ DRAW_LAYERS:
   - foreground
   - hud
 # amount to scale everything
-INIT_ZOOM: 2
+INIT_ZOOM: 1
 # pixels before camera moves instead of player
 CAMERASLACK: 100
 SPRITE_GROUPS:
