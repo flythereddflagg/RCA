@@ -12,6 +12,7 @@ from .scene import Scene
 from .tools import load_yaml
 
 BLACK = (0, 0, 0)
+ASPECT_RATIO = 16 / 9
 
 
 class GameState(DictObj):
@@ -28,6 +29,8 @@ class GameState(DictObj):
         self.scene = None
         self.INV_KEY_BIND = {v: k for k, v in self.KEY_BIND.items()}
         self.controllers = []
+        self.SCREENWIDTH = int(int(self.RESOLUTION[:-1]) * ASPECT_RATIO)
+        self.SCREENHEIGHT = int(self.RESOLUTION[:-1])
         
         # detect and load controllers
         for i in range(0, pg.joystick.get_count()):

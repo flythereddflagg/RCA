@@ -5,8 +5,8 @@ FPS: 90 # game is unstable at FPS > about 100
 SHOW_EVENTS: false # print events in terminal
 FPS_COUNTER: true # print FPS on game screen
 # initial screen size
-SCREENWIDTH: 580
-SCREENHEIGHT: 360
+RESOLUTION: 360p
+SCALE: 1
 
 # key bindings for keyboard input
 KEY_BIND:
