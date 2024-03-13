@@ -22,7 +22,8 @@ KEY_BIND:
   BUTTON_2: x
   BUTTON_3: z # for inventory
 
-
+CTLR_BUTTON: A,B,X,Y,-,home,+,LS,RS,LB,RB,dUP,dDOWN,dLEFT,dRIGHT,PrtScn
+AXES: LSX,LSY,RSX,RSY,LT,RT
 
 INITAL_SCENE: ./assets/scene/red_castle_valley.yaml
 PLAYER: ./assets/actor/player.yaml

@@ -52,10 +52,20 @@ class ControllerTest():
         if self.SHOW_EVENTS and game_input: print(game_input)
         if 'FORCE_QUIT' in game_input: self.running = False
         
-        # PLAYER1 = 0
-        # print(self.controllers[PLAYER1].get_axis(0), # left right on left stick
-        #     self.controllers[PLAYER1].get_axis(1)
-        # ) # up down on left stick
+        PLAYER1 = 0
+        axes = (
+            self.controllers[PLAYER1].get_axis(i) 
+            for i in range(self.controllers[PLAYER1].get_numaxes())
+        )
+        button_states = [
+            self.controllers[PLAYER1].get_button(i) 
+            for i in range(self.controllers[PLAYER1].get_numbuttons())
+        ]
+        print("\033[F \r", end="")
+        for ax in axes:
+            print(f"{ax:5.2f} ", end="")
+        print()
+        print(button_states, end="")
 
         return game_input
 
