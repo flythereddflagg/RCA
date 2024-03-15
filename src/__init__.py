@@ -107,11 +107,19 @@ class GameState(DictObj):
                 if bind in self.controller_buttons and
                 button_states[self.controller_buttons[bind]]
             ]
+            axes_input = []
+            for key, bind in self.CTLR_BIND.items():
+                ax, sign = bind[:-1], bind[-1]
+                ax_value = round(axes[self.controller_axes[ax]], 2)
+                if ax in self.controller_axes:
+                    int(sign + '1')
+                    # CONTINUE HERE
+
             axes_input = [ # add in joystick input
-                key, bind for key, bind in self.CTLR_BIND.items()
-                if bind[:3] in self.controller_axes and
-                abs(axes[self.controller_axes[bind[:3]]]) > 0.01
+                axes[self.controller_axes[bind[:3]]] for key, bind in self.CTLR_BIND.items()
+                if bind[:3] in self.controller_axes
             ]
+            if axes_input: print(axes_input)
             game_input += [
 
             ]
