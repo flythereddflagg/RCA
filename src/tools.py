@@ -49,3 +49,7 @@ def get_center_screen():
         centerx = screen_w // 2
         centery = screen_h // 2
         return (centerx, centery)
+
+def is_negative(val:float|int):
+    if val < 0: return True
+    return False

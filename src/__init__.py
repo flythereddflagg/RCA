@@ -10,7 +10,7 @@ import collections
 
 from .dict_obj import DictObj
 from .scene import Scene
-from .tools import load_yaml
+from .tools import load_yaml, is_negative
 
 BLACK = (0, 0, 0)
 ASPECT_RATIO = 16 / 9
@@ -110,19 +110,21 @@ class GameState(DictObj):
             axes_input = []
             for key, bind in self.CTLR_BIND.items():
                 ax, sign = bind[:-1], bind[-1]
-                ax_value = round(axes[self.controller_axes[ax]], 2)
                 if ax in self.controller_axes:
-                    int(sign + '1')
+                    one = int(sign + '1')
+                    ax_value = round(axes[self.controller_axes[ax]], 1)
+                    print(ax_value, end=",")
+                    if (
+                        ax_value and 
+                        not(is_negative(one) != is_negative(ax_value))
+                    ):
+                        # if they are the same sign
+                        axes_input.append(key)
+                    # print(key, ax_value, one)
                     # CONTINUE HERE
 
-            axes_input = [ # add in joystick input
-                axes[self.controller_axes[bind[:3]]] for key, bind in self.CTLR_BIND.items()
-                if bind[:3] in self.controller_axes
-            ]
             if axes_input: print(axes_input)
-            game_input += [
-
-            ]
+            game_input += axes_input
 
         if self.SHOW_EVENTS and game_input: print(game_input)
         if 'FORCE_QUIT' in game_input: return ['QUIT']
