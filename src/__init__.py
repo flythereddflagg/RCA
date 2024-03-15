@@ -6,6 +6,7 @@ the game running.
 """
 
 import pygame as pg
+import collections
 
 from .dict_obj import DictObj
 from .scene import Scene
@@ -27,10 +28,18 @@ class GameState(DictObj):
         self.running = False
         self.paused = False
         self.scene = None
-        self.INV_KEY_BIND = {v: k for k, v in self.KEY_BIND.items()}
+        # self.INV_KEY_BIND = {v: k for k, v in self.KEY_BIND.items()}
         self.controllers = []
         self.SCREENWIDTH = int(int(self.RESOLUTION[:-1]) * ASPECT_RATIO)
         self.SCREENHEIGHT = int(self.RESOLUTION[:-1])
+        self.controller_buttons = {
+            name: index 
+            for index, name in enumerate(self.CTLR_BUTTON.split(','))
+        }
+        self.controller_axes = {
+            name: index 
+            for index, name in enumerate(self.CTLR_AXES.split(','))
+        }
         
         # detect and load controllers
         for i in range(0, pg.joystick.get_count()):
@@ -83,6 +92,30 @@ class GameState(DictObj):
             key for key, bind in self.KEY_BIND.items()
             if pressed_keys[pg.key.key_code(bind)]
         ]
+        if self.controllers:
+            PLAYER1 = 0
+            axes = [
+                self.controllers[PLAYER1].get_axis(i) 
+                for i in range(self.controllers[PLAYER1].get_numaxes())
+            ]
+            button_states = [
+                self.controllers[PLAYER1].get_button(i) 
+                for i in range(self.controllers[PLAYER1].get_numbuttons())
+            ]
+            game_input += [ # add in button input
+                key for key, bind in self.CTLR_BIND.items()
+                if bind in self.controller_buttons and
+                button_states[self.controller_buttons[bind]]
+            ]
+            axes_input = [ # add in joystick input
+                key, bind for key, bind in self.CTLR_BIND.items()
+                if bind[:3] in self.controller_axes and
+                abs(axes[self.controller_axes[bind[:3]]]) > 0.01
+            ]
+            game_input += [
+
+            ]
+
         if self.SHOW_EVENTS and game_input: print(game_input)
         if 'FORCE_QUIT' in game_input: return ['QUIT']
         

@@ -66,7 +66,8 @@ class ControllerTest():
             print(f"{ax:5.2f} ", end="")
         print()
         print(button_states, end="")
-
+        # AXES: LSX(left- right+) LSY(down+ up-) RSX(left- right+) RSY(down+ up-) LT(-1/0up +1down) RT(-1/0up +1down)
+        # BUTTONS: A B X Y - home + LS RS LB RB dUP dDOWN dLEFT dRIGHT PrtScn None None None None
         return game_input
 
 
