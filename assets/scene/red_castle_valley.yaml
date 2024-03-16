@@ -15,11 +15,11 @@ SPRITE_GROUPS:
   # - player_children # child sprite objects of player
 
 hud:
-  - id: hearts
-    type: Decal
-    image: ./assets/block/hud_element.png
-    start: 0,0
-    mask:
+  # - id: hearts
+  #   type: Decal
+  #   image: ./assets/block/hud_element.png
+  #   start: 0,0
+  #   mask:
 
 background:
   - id: BACKGROUND
@@ -62,14 +62,14 @@ foreground:
     scene_path: ./assets/scene/forest.yaml
     exit_dir: RIGHT
 
-  - id: mountain trail exit
-    type: Edge
-    image: ./assets/block/block.png
-    mask: image
-    start: 1230,1038
-    scale: 2.5
-    scene_path: ./assets/scene/scene.yaml
-    exit_dir: UP
+  # - id: mountain trail exit
+  #   type: Edge
+  #   image: ./assets/block/block.png
+  #   mask: image
+  #   start: 1230,1038
+  #   scale: 2.5
+  #   scene_path: ./assets/scene/placeholder.yaml
+  #   exit_dir: UP
 
   - id: cactus
     type: Cactus
