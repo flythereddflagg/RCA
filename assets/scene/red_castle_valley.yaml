@@ -12,7 +12,7 @@ SPRITE_GROUPS:
   - solid     # solid entities
   - player    # user-controlled sprites           
   - foe       # enemies
-  - player_children # child sprite objects of player
+  # - player_children # child sprite objects of player
 
 hud:
   - id: hearts

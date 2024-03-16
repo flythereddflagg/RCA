@@ -12,12 +12,7 @@ class Camera:
         self.cur_zoom = 1
         # TODO extract mobile groups to data files so it can be set there
         # TODO LOW set in game zoom
-        
-    
-    def scale(self, factor):
-        self.mobile_groups.append('hud')
-        self.zoom(factor)
-        self.mobile_groups.remove('hud')
+
     
     def update(self):
         self.follow_player()
