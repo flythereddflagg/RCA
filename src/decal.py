@@ -54,6 +54,7 @@ class Decal(pg.sprite.Sprite):
         self.animation = None
         self.inventory = None
         self.scale = 1
+        self.set_scale(self.scene.game.SCALE)
         if "scale" in self.options.keys():
             self.set_scale(self.options["scale"])
         if 'start' in options.keys():
@@ -61,9 +62,8 @@ class Decal(pg.sprite.Sprite):
             self.start = [int(d) for d in options['start'].split(',')]
             self.rect.topleft = (
                 pg.math.Vector2(background.rect.topleft) + 
-                pg.math.Vector2(self.start)
-            )
-        
+                pg.math.Vector2(self.start)* self.scene.game.SCALE
+            ) 
 
     def set_scale(self, factor):
         # TODO make this so it can scale by a absolute value AND a factor

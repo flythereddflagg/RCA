@@ -69,6 +69,7 @@ class Scene():
         elif isinstance(player, Decal):
             self.player = player
             self.player.set_scale(0) # reset player scale
+            self.player.set_scale(self.game.SCALE)
             self.player.scene = self
             self.layers['foreground'].add(self.player)
             self.groups['player'].add(player)
@@ -77,7 +78,7 @@ class Scene():
         else:
             self.player = None
         
-        self.camera.scale(self.game.SCALE)
+        # self.camera.scale(self.game.SCALE)
         self.camera.zoom(self.data.INIT_ZOOM)
         
     def update(self):
