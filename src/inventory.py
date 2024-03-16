@@ -16,7 +16,7 @@ class Inventory(Decal):
             "scene": player.scene,
             "image": "./assets/actor/inventory_screen/backpack.png",
             "mask": None,
-            "scale": 2
+            "scale": 1
         })
         self.left_item:Item = None
         self.right_item:Item = None
@@ -54,7 +54,7 @@ class Inventory(Decal):
                 "scene": player.scene,
                 "image": "./assets/actor/inventory_screen/hand.png",
                 "mask": None,
-                "scale": 2
+                "scale": 1
             })
             for _ in range(2)
         )

@@ -76,7 +76,8 @@ class Scene():
             self.camera.player = self.player 
         else:
             self.player = None
-            
+        
+        self.camera.scale(self.game.SCALE)
         self.camera.zoom(self.data.INIT_ZOOM)
         
     def update(self):
