@@ -10,7 +10,8 @@ import collections
 
 from .dict_obj import DictObj
 from .scene import Scene
-from .tools import load_yaml, is_negative
+from .tools import load_yaml
+from .input import Input
 
 BLACK = (0, 0, 0)
 ASPECT_RATIO = 16 / 9
@@ -28,30 +29,12 @@ class GameState(DictObj):
         self.running = False
         self.paused = False
         self.scene = None
-        # self.INV_KEY_BIND = {v: k for k, v in self.KEY_BIND.items()}
-        self.controllers = []
         self.SCREENWIDTH = (
             int(int(self.RESOLUTION[:-1]) * ASPECT_RATIO) *
             self.SCALE
         )
         self.SCREENHEIGHT = int(self.RESOLUTION[:-1]) * self.SCALE
-        self.controller_buttons = {
-            name: index 
-            for index, name in enumerate(self.CTLR_BUTTON.split(','))
-        }
-        self.controller_axes = {
-            name: index 
-            for index, name in enumerate(self.CTLR_AXES.split(','))
-        }
-        
-        # detect and load controllers
-        for i in range(0, pg.joystick.get_count()):
-            self.controllers.append(pg.joystick.Joystick(i))
-            self.controllers[-1].init()
-            controllers  = self.controllers
-            print (f"Detected controller: {controllers[-1].get_name()}")
-            print(f"{controllers[-1].get_numbuttons()} buttons detected")
-            print(f"{controllers[-1].get_numhats()} joysticks detected")
+        self.input = Input(self)
 
         self.screen = pg.display.set_mode(
             [self.SCREENWIDTH, self.SCREENHEIGHT], pg.RESIZABLE
@@ -70,7 +53,7 @@ class GameState(DictObj):
         self.running = True
 
         while self.running:
-            game_input = self.get_input()
+            game_input = self.input.get()
             self.logic(game_input)
             self.draw_frame()
             self.dt = (
@@ -79,60 +62,6 @@ class GameState(DictObj):
                 self.clock.tick(self.FPS)
             )
 
-
-    def get_input(self):
-        game_input = []
-
-        events = pg.event.get()
-        if self.SHOW_EVENTS:
-            for event in events:
-                print(event.type, event)
-        if pg.QUIT in [event.type for event in events]: return ["QUIT"]    
-
-        # TODO make the input more sophisticated
-        pressed_keys = pg.key.get_pressed()
-        game_input = [
-            key for key, bind in self.KEY_BIND.items()
-            if pressed_keys[pg.key.key_code(bind)]
-        ]
-        if self.controllers:
-            PLAYER1 = 0
-            axes = [
-                self.controllers[PLAYER1].get_axis(i) 
-                for i in range(self.controllers[PLAYER1].get_numaxes())
-            ]
-            button_states = [
-                self.controllers[PLAYER1].get_button(i) 
-                for i in range(self.controllers[PLAYER1].get_numbuttons())
-            ]
-            game_input += [ # add in button input
-                key for key, bind in self.CTLR_BIND.items()
-                if bind in self.controller_buttons and
-                button_states[self.controller_buttons[bind]]
-            ]
-            axes_input = []
-            for key, bind in self.CTLR_BIND.items():
-                ax, sign = bind[:-1], bind[-1]
-                if ax in self.controller_axes:
-                    one = int(sign + '1')
-                    ax_value = round(axes[self.controller_axes[ax]], 1)
-                    print(ax_value, end=",")
-                    if (
-                        ax_value and 
-                        not(is_negative(one) != is_negative(ax_value))
-                    ):
-                        # if they are the same sign
-                        axes_input.append(key)
-                    # print(key, ax_value, one)
-                    # CONTINUE HERE
-
-            if axes_input: print(axes_input)
-            game_input += axes_input
-
-        if self.SHOW_EVENTS and game_input: print(game_input)
-        if 'FORCE_QUIT' in game_input: return ['QUIT']
-        
-        return game_input
 
 
     def logic(self, game_input):

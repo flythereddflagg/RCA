@@ -16,7 +16,6 @@ class Player(Decal):
         self.speed = 300
         self.todo_list = []
         self.signals = []
-        self.keys_held = {key:False for key in self.scene.game.KEY_BIND.keys()}
         self.damage_direction = pg.math.Vector2(0,1)
         self.move = Movement(self, **self.options)
         self.animation = Animation(self, **self.options)
@@ -28,16 +27,18 @@ class Player(Decal):
 
 
     def apply_todos(self):
-        todo_list_bak = self.todo_list.copy()
-        self.todo_list = [
-            todo for todo in self.todo_list
-            if not self.keys_held[todo]
-        ]
+        input_held = self.scene.game.input.input_held
+        # todo_list_bak = self.todo_list.copy()
+        # self.todo_list = [
+        #     todo for todo in self.todo_list
+        #     if not self.keys_held[todo]
+        # ]
+        # revert to "idle" animation if no input is given
         if not self.todo_list and not self.animation.active:
             self.animation.current = self.animation.data[DEFAULT_ANIMATION]
 
         for action in self.todo_list:
-            self.keys_held[action] = True
+            input_held[action] = True
             # TODO make a complete action list and implement
             if self.animation.active: continue
             if action in Compass.strings:
@@ -64,12 +65,6 @@ class Player(Decal):
 
         # reset the todo_list
         self.todo_list = []
-        self.keys_held = {key:False for key in self.scene.game.KEY_BIND.keys()}
-        for direction in Compass.strings:
-            if direction in todo_list_bak:
-                todo_list_bak.remove(direction)
-        for todo in todo_list_bak:
-            self.keys_held[todo] = True
 
 
     def animate(self):

@@ -11,7 +11,7 @@ SCALE: 2
 # key bindings for keyboard input
 KEY_BIND:
   REFRESH: u
-  FORCE_QUIT: backspace
+  QUIT: backspace
   START: return
   SELECT: p
   UP: up
@@ -21,24 +21,28 @@ KEY_BIND:
   BUTTON_1: c
   BUTTON_2: x
   BUTTON_3: z # for inventory
+  BUTTON_4: s
 
+# Controller bindings
 CTLR_BIND:
   REFRESH: 'PrtScn'
-  FORCE_QUIT: home
+  QUIT: home
   START: '+'
   SELECT: '-'
   UP: LSY-
   DOWN: LSY+
   LEFT: LSX-
   RIGHT: LSX+
-  BUTTON_1: 'Y'
+  BUTTON_1: Y
   BUTTON_2: X
-  BUTTON_3: A # for inventory
+  BUTTON_3: A 
+  BUTTON_4: B
   R_UP: RSY-
   R_DOWN: RSY+
   R_LEFT: RSX-
   R_RIGHT: RSX+
 
+# pygame's controller config list
 CTLR_BUTTON: A,B,X,Y,-,home,+,LS,RS,LB,RB,dUP,dDOWN,dLEFT,dRIGHT,PrtScn
 CTLR_AXES: LSX,LSY,RSX,RSY,LT,RT
 

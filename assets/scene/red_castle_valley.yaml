@@ -18,7 +18,7 @@ hud:
   # - id: hearts
   #   type: Decal
   #   image: ./assets/block/hud_element.png
-  #   start: 0,0
+  #   start: [0,0
   #   mask:
 
 background:
@@ -34,7 +34,7 @@ foreground:
     type: Decal
     image: ./assets/block/rock.png
     mask: image
-    start: 1230,950
+    start: [1230,950]
     groups: 
      - solid
 
@@ -42,13 +42,13 @@ foreground:
     type: Ossifrage
     yaml: ./assets/actor/ossifrage.yaml
     mask: image
-    start: 700,900
+    start: [700,900]
 
   - id: bridge_exit
     type: Edge
     image: ./assets/block/block.png
     mask: image
-    start: 845,-80
+    start: [845,-80]
     scale: 2.5
     scene_path: ./assets/scene/mansion_yard.yaml
     exit_dir: DOWN
@@ -57,7 +57,7 @@ foreground:
     type: Edge
     image: ./assets/block/block.png
     mask: image
-    start: 135,650
+    start: [135,650]
     scale: 2.5
     scene_path: ./assets/scene/forest.yaml
     exit_dir: RIGHT
@@ -66,7 +66,7 @@ foreground:
   #   type: Edge
   #   image: ./assets/block/block.png
   #   mask: image
-  #   start: 1230,1038
+  #   start: [1230,1038]
   #   scale: 2.5
   #   scene_path: ./assets/scene/placeholder.yaml
   #   exit_dir: UP
@@ -75,21 +75,21 @@ foreground:
     type: Cactus
     image: ./assets/block/cactus.png
     mask: image
-    start: 600,600
+    start: [600,600]
     scale: 1
 
   - id: backpack
     type: Backpack
     image: ./assets/block/backpack.png
     mask: image
-    start: 600,700
+    start: [600,700]
     scale: 1
   
   - id: sword
     type: Item
     image: ./assets/actor/item/sword_icon.png
     mask: image
-    start: 600,800
+    start: [600,800]
     scale: 1
     action: sword
 
@@ -97,6 +97,6 @@ foreground:
     type: Item
     image: ./assets/actor/item/hammer_icon.png
     mask: image
-    start: 600,900
+    start: [600,900]
     scale: 1
     action: hammer

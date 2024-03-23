@@ -59,11 +59,12 @@ class Decal(pg.sprite.Sprite):
             self.set_scale(self.options["scale"])
         if 'start' in options.keys():
             background = self.scene.layers['background'].sprites()[0]
-            self.start = [int(d) for d in options['start'].split(',')]
+            self.start = options['start']
             self.rect.topleft = (
                 pg.math.Vector2(background.rect.topleft) + 
                 pg.math.Vector2(self.start)* self.scene.game.SCALE
             ) 
+        # TODO check that this is not breaking zoom
 
     def set_scale(self, factor):
         # TODO make this so it can scale by a absolute value AND a factor

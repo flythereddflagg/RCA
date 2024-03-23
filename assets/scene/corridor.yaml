@@ -16,7 +16,7 @@ hud:
   # - id: <unique ID 1>
   #   type: Decal
   #   image: path to
-  #   start: 0,0
+  #   start: [0,0]
   #   mask:
 
 background:
@@ -32,7 +32,7 @@ foreground:
     type: Edge
     image: ./assets/block/block.png
     mask: image
-    start: 90,180
+    start: [90,180]
     scale: 1
     scene_path: ./assets/scene/boss_room.yaml
     exit_dir: RIGHT
@@ -40,7 +40,7 @@ foreground:
     type: Edge
     image: ./assets/block/block.png
     mask: image
-    start: 1140,159
+    start: [1140,159]
     scale: 1
     scene_path: ./assets/scene/mansion_yard.yaml
     exit_dir: LEFT

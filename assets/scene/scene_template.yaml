@@ -16,7 +16,7 @@ hud:
   - id: <unique ID 1>
     type: Decal
     image: path to
-    start: 0,0
+    start: [0,0]
     mask:
 
 background:
@@ -31,13 +31,13 @@ foreground:
   - id: <unique ID 2>
     type: Decal <or subclass>
     yaml: <path to yaml data>
-    start: 700,900 # where on the background do you want to start?
+    start: [700,900] # where on the background do you want to start?
 
   - id: <unique ID 3>
     type: Edge
     image: <image path>
     mask: image
-    start: 845,-80 # where on the background do you want to start?
+    start: [845,-80] # where on the background do you want to start?
     scale: 2.5 # x factor to scale the image.
     scene_path: <new scene path>
     exit_dir: <direction of exit into this scene>

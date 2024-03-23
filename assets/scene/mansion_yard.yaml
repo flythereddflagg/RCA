@@ -16,7 +16,7 @@ hud:
   - id: hearts
     type: Decal
     image: ./assets/block/hud_element.png
-    start: 0,0
+    start: [0,0
     mask:
 
 background:
@@ -32,7 +32,7 @@ foreground:
     type: Edge
     image: ./assets/block/block.png
     mask: image
-    start: 845,1969
+    start: [845,1969
     scale: 2.5
     scene_path: ./assets/scene/red_castle_valley.yaml
     exit_dir: UP
@@ -40,7 +40,7 @@ foreground:
   #   type: Edge
   #   image: ./assets/block/block.png
   #   mask: image
-  #   start: 1410,1343
+  #   start: [1410,1343
   #   scale: 2.5
   #   scene_path: ./assets/scene/placeholder.yaml
   #   exit_dir: UP
@@ -48,7 +48,7 @@ foreground:
     type: Edge
     image: ./assets/block/block.png
     mask: image
-    start: 688,146
+    start: [688,146]
     scale: 2.5
     scene_path: ./assets/scene/alleyway.yaml
     exit_dir: RIGHT
@@ -56,7 +56,7 @@ foreground:
     type: Edge
     image: ./assets/block/block.png
     mask: image
-    start: 1058,222
+    start: [1058,222]
     scale: 1
     scene_path: ./assets/scene/corridor.yaml
     exit_dir: RIGHT
@@ -64,7 +64,7 @@ foreground:
     type: Edge
     image: ./assets/block/block.png
     mask: image
-    start: 89,712
+    start: [89,712
     scale: 1
     scene_path: ./assets/scene/boss_room.yaml
     exit_dir: RIGHT

@@ -74,11 +74,12 @@ class Inventory(Decal):
         # update reference to scene if necessary
         if self.player.scene is not self.scene: 
             self.scene = self.player.scene
-        if self.player.keys_held["BUTTON_3"] and not self.active:
+        input_held = self.player.scene.game.input.input_held
+        if input_held["BUTTON_3"] and not self.active:
             self.active = True
             self.toggle()
         
-        if not self.player.keys_held["BUTTON_3"] and self.active:
+        if not input_held["BUTTON_3"] and self.active:
             self.active = False
             self.toggle()
         
