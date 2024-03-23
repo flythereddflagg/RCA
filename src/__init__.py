@@ -29,12 +29,14 @@ class GameState(DictObj):
         self.running = False
         self.paused = False
         self.scene = None
+        self.input = Input(self)
+
         self.SCREENWIDTH = (
             int(int(self.RESOLUTION[:-1]) * ASPECT_RATIO) *
             self.SCALE
         )
         self.SCREENHEIGHT = int(self.RESOLUTION[:-1]) * self.SCALE
-        self.input = Input(self)
+        
 
         self.screen = pg.display.set_mode(
             [self.SCREENWIDTH, self.SCREENHEIGHT], pg.RESIZABLE
@@ -45,9 +47,11 @@ class GameState(DictObj):
         if self.FPS_COUNTER:
             self.fps_counter = pg.font.SysFont("Sans", 22)
 
+
     def load_scene(self, *args, **kwargs):
         self.scene = Scene(*args, **kwargs)
         return self.scene
+
 
     def run(self):
         self.running = True
@@ -61,7 +65,6 @@ class GameState(DictObj):
                 if self.FPS < -1 else 
                 self.clock.tick(self.FPS)
             )
-
 
 
     def logic(self, game_input):

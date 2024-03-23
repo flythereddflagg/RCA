@@ -90,7 +90,7 @@ class Input():
                 ax_value = round(axes[self.controller_axes[ax]], 1)
                 # ax_value is not 0 and one and ax_value are the same sign
                 if (ax_value * one) > 0:
-                    axes_input.append(key)
+                    axes_input.append((key, ax_value))
 
         if axes_input: print(axes_input)
 

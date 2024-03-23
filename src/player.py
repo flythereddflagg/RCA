@@ -38,6 +38,8 @@ class Player(Decal):
             self.animation.current = self.animation.data[DEFAULT_ANIMATION]
 
         for action in self.todo_list:
+            if isinstance(action, tuple):
+                action, value = action
             input_held[action] = True
             # TODO make a complete action list and implement
             if self.animation.active: continue
@@ -61,7 +63,7 @@ class Player(Decal):
             #     pass
 
             else:
-                print(action + "! (no response)")
+                print(str(action) + "! (no response)")
 
         # reset the todo_list
         self.todo_list = []
