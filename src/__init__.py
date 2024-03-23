@@ -163,3 +163,4 @@ class GameState(DictObj):
             self.screen.blit(fps_sprite, (10,10))
         
         pg.display.flip()
+

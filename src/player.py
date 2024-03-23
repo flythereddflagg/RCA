@@ -56,8 +56,8 @@ class Player(Decal):
                     self.inventory.right_item.select()
                 ]
 
-            elif action == "BUTTON_3": # inventory
-                pass
+            # elif action == "BUTTON_3": # inventory
+            #     pass
 
             else:
                 print(action + "! (no response)")
