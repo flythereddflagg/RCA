@@ -77,7 +77,7 @@ class Input():
             self.controllers[player].get_button(i) 
             for i in range(self.controllers[player].get_numbuttons())
         ]
-        button_input = [ # add in button input
+        button_input = [
             key for key, bind in self.CTLR_BIND.items()
             if bind in self.controller_buttons and
             button_states[self.controller_buttons[bind]]
