@@ -35,7 +35,7 @@ class Inventory(Decal):
                 "id": f"inventory_slot({i})",
                 "scene": player.scene,
                 "image": "./assets/actor/inventory_screen/slot.png",
-                "mask": None,
+                "mask": 'image',
                 "scale": 1
             })
             new_slot.rect.center = (
@@ -43,6 +43,7 @@ class Inventory(Decal):
                 (pg.math.Vector2(Compass.unit_vector(Compass.UP)) * 
                     self.image.get_height()
                 # ).rotate(i / N_SLOTS * 360)
+                # TODO adaptively place slots based on the number you have.
                 ).rotate(
                     2 * 360 / N_SLOTS * i + 360 / N_SLOTS * (i//(N_SLOTS//2))
                 )
@@ -68,6 +69,15 @@ class Inventory(Decal):
         self.right_hand.rect.center = self.rect.center + pg.math.Vector2(
             self.rect.center[0]//2, 0
         )
+        self.marker = Decal(**{
+            "id": "inventory_marker",
+            "scene": player.scene,
+            "image": "./assets/actor/inventory_screen/marker.png",
+            "mask": 'image',
+            "scale": 1
+        })
+        self.marker.rect.center = self.rect.center
+        # TODO make marker select an inventory slot
 
 
     def update(self):
@@ -92,7 +102,7 @@ class Inventory(Decal):
         )
         inventory_sprites = [
             self, self.left_hand, self.right_hand, 
-            self.left_item, self.right_item
+            self.left_item, self.right_item, self.marker
         ]
         for sprite in inventory_sprites:
             if sprite is None: continue
@@ -161,6 +171,14 @@ class Inventory(Decal):
         return None
 
 
-    def select(self, item:Item):
-        pass
+    def select(self, item:Item, hand:str) -> Item:
+        # TODO add switching mechanism between hand and inventory
+        if hand.lower()[0] == 'r':
+            self.right_item = Item
+            return self.right_item
+        if hand.lower()[0] == 'l':
+            self.left_item = Item
+            return self.left_item
+        return None
+        
 

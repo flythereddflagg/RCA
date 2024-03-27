@@ -22,6 +22,11 @@ KEY_BIND:
   BUTTON_2: x
   BUTTON_3: z # for inventory
   BUTTON_4: s
+  R_UP: w
+  R_DOWN: s
+  R_LEFT: a
+  R_RIGHT: d
+
 
 # Controller bindings
 CTLR_BIND:
