@@ -37,9 +37,12 @@ class Player(Decal):
         if not self.todo_list and not self.animation.active:
             self.animation.current = self.animation.data[DEFAULT_ANIMATION]
 
+        vector = pg.math.Vector2([0,0])
         for action in self.todo_list:
             if isinstance(action, tuple):
                 action, value = action
+            else:
+                action, value = action, 0.0
             input_held[action] = True
             # TODO make a complete action list and implement
             if self.animation.active: continue
@@ -59,12 +62,26 @@ class Player(Decal):
                     self.inventory.right_item.select()
                 ]
 
-            # elif action == "BUTTON_3": # inventory
-            #     pass
+            # elif input_held["BUTTON_3"] and not self.inventory.active:
+                
+        
+            elif action in ["R_UP","R_DOWN","R_LEFT","R_RIGHT"]:
+                if not self.inventory.active:
+                    self.inventory.active = True
+                    self.inventory.toggle()
+                vector += (
+                    Compass.vector(action[2:]) * 
+                    self.inventory.image.get_height()
+                )
 
             else:
                 print(str(action) + "! (no response)")
-
+            
+            if vector.magnitude():
+                self.inventory.marker.rect.center = (
+                    self.inventory.rect.center + 
+                    vector
+                )
         # reset the todo_list
         self.todo_list = []
 

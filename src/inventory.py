@@ -84,15 +84,15 @@ class Inventory(Decal):
         # update reference to scene if necessary
         if self.player.scene is not self.scene: 
             self.scene = self.player.scene
+
         input_held = self.player.scene.game.input.input_held
-        if input_held["BUTTON_3"] and not self.active:
-            self.active = True
-            self.toggle()
+        if not any([input_held[key] for key in ["R_UP","R_DOWN","R_LEFT","R_RIGHT"]]) and self.active:
+                self.active = False
+                self.toggle()
         
-        if not input_held["BUTTON_3"] and self.active:
-            self.active = False
-            self.toggle()
-        
+        if not any([input_held[key] for key in ["R_UP","R_DOWN","R_LEFT","R_RIGHT"]]):
+            self.marker.rect.center = self.rect.center
+
         
     def toggle(self):
         toggle_state = (
