@@ -69,9 +69,12 @@ class Player(Decal):
                 if not self.inventory.active:
                     self.inventory.active = True
                     self.inventory.toggle()
+                multiplier = abs(value) if value else 1.0
+                    
                 vector += (
                     Compass.vector(action[2:]) * 
-                    self.inventory.image.get_height()
+                    self.inventory.image.get_height() * 
+                    multiplier
                 )
 
             else:
