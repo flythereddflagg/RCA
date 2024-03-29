@@ -35,19 +35,9 @@ class Inventory(Decal):
                 "id": f"inventory_slot({i})",
                 "scene": player.scene,
                 "image": "./assets/actor/inventory_screen/slot.png",
-                "mask": 'image',
+                "mask": None,
                 "scale": 1
             })
-            new_slot.rect.center = (
-                pg.math.Vector2(self.rect.center) + 
-                (pg.math.Vector2(Compass.unit_vector(Compass.UP)) * 
-                    self.image.get_height()
-                # ).rotate(i / N_SLOTS * 360)
-                # TODO adaptively place slots based on the number you have.
-                ).rotate(
-                    2 * 360 / N_SLOTS * i + 360 / N_SLOTS * (i//(N_SLOTS//2))
-                )
-            )
             self.slot_sprites.add(new_slot)
         
         self.left_hand, self.right_hand = (Decal(**{
@@ -73,7 +63,7 @@ class Inventory(Decal):
             "id": "inventory_marker",
             "scene": player.scene,
             "image": "./assets/actor/inventory_screen/marker.png",
-            "mask": 'image',
+            "mask": None,
             "scale": 1
         })
         self.marker.rect.center = self.rect.center
@@ -102,17 +92,29 @@ class Inventory(Decal):
         )
         inventory_sprites = [
             self, self.left_hand, self.right_hand, 
-            self.left_item, self.right_item, self.marker
+            self.left_item, self.right_item
         ]
         for sprite in inventory_sprites:
             if sprite is None: continue
             toggle_state(sprite)
 
-        for i, slot in enumerate(self.slots):
-            if slot is None: continue
-            toggle_state(self.slot_sprites.sprites()[i])
-            if slot.id == 'empty': continue
-            toggle_state(slot)
+        n_slots = len([slot for slot in self.slots if slot])
+        for i, item in enumerate(self.slots):
+            if item is None: continue
+            slot_sprite = self.slot_sprites.sprites()[i]
+            toggle_state(slot_sprite)
+            slot_sprite.rect.center = (
+                pg.math.Vector2(self.rect.center) + 
+                (pg.math.Vector2(Compass.unit_vector(Compass.UP)) * 
+                    self.image.get_height()
+                ).rotate(i / n_slots * 360)
+            )
+            if item.id == 'empty': continue
+            toggle_state(item)
+            item.rect.center = slot_sprite.rect.center
+        
+        toggle_state(self.marker)
+
             
 
     def change_money(self, amount:int):
