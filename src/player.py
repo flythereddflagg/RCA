@@ -52,11 +52,17 @@ class Player(Decal):
                 self.animation.current = self.animation.data['walk']
                 
             elif action == "BUTTON_1":
+                if self.inventory.active:
+                    self.inventory.select('LEFT')
+                    continue
                 if self.inventory.left_item is None: continue
                 self.animation.current = self.animation.data[
                     self.inventory.left_item.select()
                 ]
             elif action == "BUTTON_2":
+                if self.inventory.active:
+                    self.inventory.select('RIGHT')
+                    continue
                 if self.inventory.right_item is None: continue
                 self.animation.current = self.animation.data[
                     self.inventory.right_item.select()

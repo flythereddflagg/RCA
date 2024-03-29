@@ -172,14 +172,27 @@ class Inventory(Decal):
         
         return None
 
+    def get_selected_item_slot(self):
+        indices = self.marker.rect.collidelistall(
+            self.slot_sprites.sprites()
+        )
+        if not indices: return None
+        return indices[0]
 
-    def select(self, item:Item, hand:str) -> Item:
-        # TODO add switching mechanism between hand and inventory
+
+
+    def select(self, hand:str) -> Item:
+        i_select = self.get_selected_item_slot()
+        if i_select is None: return None
+        selected_item:Item = self.slots[i_select]
+        if selected_item is None: return None
         if hand.lower()[0] == 'r':
-            self.right_item = Item
+            self.slots[i_select] = self.right_item
+            self.right_item = selected_item
             return self.right_item
         if hand.lower()[0] == 'l':
-            self.left_item = Item
+            self.slots[i_select] = self.left_item
+            self.left_item = selected_item
             return self.left_item
         return None
         
