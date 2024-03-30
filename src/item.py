@@ -5,10 +5,6 @@ EMPTY = 'empty'
 
 class Item(Decal):
     def __init__(self, **options):
-        self.id = options['id']
-        if self.id == EMPTY:
-            self.sprite = None
-            return
         super().__init__(**options)
         self.action = options["action"]
     

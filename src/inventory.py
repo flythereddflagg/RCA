@@ -137,7 +137,7 @@ class Inventory(Decal):
     def add_slot(self):
         for i, slot in enumerate(self.slots):
             if slot is None:
-                self.slots[i] = Item(id='empty')
+                self.slots[i] = self.empty_item()
                 return self.slots[i]
         
         return None
@@ -167,7 +167,7 @@ class Inventory(Decal):
     def remove_item(self, id_:str):
         for i, slot in enumerate(self.slots):
             if slot.id == id_:
-                self.slots[i] = Item('empty')
+                self.slots[i] = self.empty_item()
                 return self.slots[i]
         
         return None
@@ -178,6 +178,15 @@ class Inventory(Decal):
         )
         if not indices: return None
         return indices[0]
+
+    def empty_item(self):
+        return Item(**{
+            'id' : 'empty',
+            "image" : "./assets/block/null.png",
+            "scene" : self.player.scene,
+            'mask' : None,
+            'action': None
+        })
 
 
 
