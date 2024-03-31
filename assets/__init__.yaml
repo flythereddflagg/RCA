@@ -6,7 +6,7 @@ SHOW_EVENTS: false # print events in terminal
 FPS_COUNTER: true # print FPS on game screen
 # initial screen size
 RESOLUTION: 360p
-SCALE: 1
+SCALE: 2
 
 # key bindings for keyboard input
 KEY_BIND:

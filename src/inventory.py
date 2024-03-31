@@ -18,8 +18,7 @@ class Inventory(Decal):
             "mask": None,
             "scale": 1
         })
-        self.left_item:Item = None
-        self.right_item:Item = None
+
         self.slots:list[Item] = []
         self.money:int = money # gold coins
         self.hp:int = hp
@@ -27,6 +26,8 @@ class Inventory(Decal):
         self.max_money = max_money
         self.active = False
         self.player = player
+        self.left_item:Item = self.empty_item()
+        self.right_item:Item = self.empty_item()
         self.rect.center = get_center_screen()
 
         self.slot_sprites = pg.sprite.Group()
@@ -81,17 +82,9 @@ class Inventory(Decal):
             if self.active else 
             self.scene.layers['hud'].remove
         )
-        inventory_sprites = [
-            self, self.left_hand, self.right_hand, 
-            self.left_item, self.right_item
-        ]
-        for sprite in inventory_sprites:
-            if sprite is None: continue
-            toggle_state(sprite)
 
         n_slots = len([slot for slot in self.slots if slot])
         for i, item in enumerate(self.slots):
-            if item is None: continue
             slot_sprite = self.slot_sprites.sprites()[i]
             toggle_state(slot_sprite)
             slot_sprite.rect.center = (
@@ -103,8 +96,14 @@ class Inventory(Decal):
             if item.id == 'empty': continue
             toggle_state(item)
             item.rect.center = slot_sprite.rect.center
-        
-        toggle_state(self.marker)
+
+        inventory_sprites = [
+            self, self.left_hand, self.right_hand, 
+            self.left_item, self.right_item, self.marker
+        ]
+        for sprite in inventory_sprites:
+            toggle_state(sprite)
+
 
             
 
@@ -141,16 +140,16 @@ class Inventory(Decal):
 
 
     def add_item(self, item:Item):
-        if self.left_item is None:
+        if self.left_item.id == 'empty':
             self.left_item = item
             self.left_item.rect.center = self.left_hand.rect.center
             return item
-        if self.right_item is None:
+        if self.right_item.id == 'empty':
             self.right_item = item
             self.right_item.rect.center = self.right_hand.rect.center
             return item
         for i, slot in enumerate(self.slots):
-            if slot is not None and slot.id == 'empty':
+            if  slot.id == 'empty':
                 print(f"adding item {item}")
                 self.slots[i] = item
                 self.slots[i].rect.center = (
