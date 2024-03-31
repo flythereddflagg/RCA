@@ -77,15 +77,19 @@ class Inventory(Decal):
 
         
     def toggle(self):
+        
         toggle_state = (
             self.scene.layers['hud'].add 
             if self.active else 
             self.scene.layers['hud'].remove
         )
+        # ORDER MATTERS first we do the backpack and hands
+        for sprite in [self, self.left_hand, self.right_hand]:
+            toggle_state(sprite)
 
+        # then we do the slots
         n_slots = len([slot for slot in self.slots if slot])
-        for i, item in enumerate(self.slots):
-            slot_sprite = self.slot_sprites.sprites()[i]
+        for i, slot_sprite in enumerate(self.slot_sprites.sprites()):
             toggle_state(slot_sprite)
             slot_sprite.rect.center = (
                 pg.math.Vector2(self.rect.center) + 
@@ -93,19 +97,15 @@ class Inventory(Decal):
                     self.image.get_height()
                 ).rotate(i / n_slots * 360)
             )
-            if item.id == 'empty': continue
+        # then the sprites over the slots
+        for slot_sprite, item in zip(self.slot_sprites.sprites(), self.slots):
             toggle_state(item)
             item.rect.center = slot_sprite.rect.center
 
-        inventory_sprites = [
-            self, self.left_hand, self.right_hand, 
-            self.left_item, self.right_item, self.marker
-        ]
-        for sprite in inventory_sprites:
+        # finally the hand items and the marker goes LAST
+        for sprite in [self.left_item, self.right_item, self.marker]:
             toggle_state(sprite)
 
-
-            
 
     def change_money(self, amount:int):
         new_amount = self.money + amount
@@ -186,9 +186,7 @@ class Inventory(Decal):
         })
 
 
-
     def select(self, hand:str) -> Item:
-        # TODO NEXT there seems to be some issue with the swapping of items
         i_select = self.get_selected_item_slot()
         if i_select is None: return None
         selected_item:Item = self.slots[i_select]
