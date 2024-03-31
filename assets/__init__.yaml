@@ -14,10 +14,10 @@ KEY_BIND:
   QUIT: backspace
   START: return
   SELECT: p
-  UP: w
-  DOWN: s
-  LEFT: a
-  RIGHT: d
+  UP: up
+  DOWN: down
+  LEFT: left
+  RIGHT: right
   BUTTON_1: n
   BUTTON_2: m
   BUTTON_3: ','
