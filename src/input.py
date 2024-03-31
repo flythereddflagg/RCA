@@ -93,7 +93,7 @@ class Input():
                 if (ax_value * one) > 0:
                     axes_input.append((key, ax_value))
 
-        if axes_input: print(axes_input)
+        if self.SHOW_EVENTS and axes_input: print(axes_input)
 
         return button_input + axes_input
 
