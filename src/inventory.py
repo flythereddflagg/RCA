@@ -189,6 +189,7 @@ class Inventory(Decal):
 
 
     def select(self, hand:str) -> Item:
+        # TODO NEXT there seems to be some issue with the swapping of items
         i_select = self.get_selected_item_slot()
         if i_select is None: return None
         selected_item:Item = self.slots[i_select]

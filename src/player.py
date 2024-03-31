@@ -52,9 +52,7 @@ class Player(Decal):
                 
             elif action == "BUTTON_1":
                 if self.inventory.active:
-                    print("button 1 held", input_held[action])
                     if input_held[action]: continue
-                    print("swapping!")
                     self.inventory.select('LEFT')
                     continue
                 if self.inventory.left_item is None: continue
