@@ -1,12 +1,12 @@
 # Screen Constants 
 # Frame rate ( in Frames / second)
-FPS: 90 # game is unstable at FPS > about 100
+FPS: 30 # game is unstable at FPS > about 100
 # FPS: 0 # do not limit FPS
 SHOW_EVENTS: true # print events in terminal
 FPS_COUNTER: true # print FPS on game screen
 # initial screen size
 RESOLUTION: 360p
-SCALE: 2
+SCALE: 1
 
 # key bindings for keyboard input
 KEY_BIND:
@@ -14,18 +14,18 @@ KEY_BIND:
   QUIT: backspace
   START: return
   SELECT: p
-  UP: up
-  DOWN: down
-  LEFT: left
-  RIGHT: right
-  BUTTON_1: c
-  BUTTON_2: x
-  BUTTON_3: z # for inventory
-  BUTTON_4: s
-  R_UP: w
-  R_DOWN: s
-  R_LEFT: a
-  R_RIGHT: d
+  UP: w
+  DOWN: s
+  LEFT: a
+  RIGHT: d
+  BUTTON_1: n
+  BUTTON_2: m
+  BUTTON_3: ','
+  BUTTON_4: '.'
+  R_UP: i
+  R_DOWN: k
+  R_LEFT: j
+  R_RIGHT: l
 
 
 # Controller bindings

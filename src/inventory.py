@@ -20,7 +20,7 @@ class Inventory(Decal):
         })
         self.left_item:Item = None
         self.right_item:Item = None
-        self.slots:list[Item] = [None for _ in range(N_SLOTS)]
+        self.slots:list[Item] = []
         self.money:int = money # gold coins
         self.hp:int = hp
         self.HP_MAX:int = hp_max
@@ -30,16 +30,7 @@ class Inventory(Decal):
         self.rect.center = get_center_screen()
 
         self.slot_sprites = pg.sprite.Group()
-        for i in range(N_SLOTS):
-            new_slot = Decal(**{
-                "id": f"inventory_slot({i})",
-                "scene": player.scene,
-                "image": "./assets/actor/inventory_screen/slot.png",
-                "mask": None,
-                "scale": 1
-            })
-            self.slot_sprites.add(new_slot)
-        
+
         self.left_hand, self.right_hand = (Decal(**{
                 "id": "inventory_screen",
                 "scene": player.scene,
@@ -135,12 +126,18 @@ class Inventory(Decal):
 
 
     def add_slot(self):
-        for i, slot in enumerate(self.slots):
-            if slot is None:
-                self.slots[i] = self.empty_item()
-                return self.slots[i]
-        
-        return None
+        if len(self.slots) > N_SLOTS: return None
+        self.slots.append(None)
+        self.slots[-1] = self.empty_item()
+        new_slot = Decal(**{
+            "id": f"inventory_slot({len(self.slots)-1})",
+            "scene": self.player.scene,
+            "image": "./assets/actor/inventory_screen/slot.png",
+            "mask": None,
+            "scale": 1
+        })
+        self.slot_sprites.add(new_slot)
+        return self.slots[-1]
 
 
     def add_item(self, item:Item):
@@ -179,6 +176,7 @@ class Inventory(Decal):
         if not indices: return None
         return indices[0]
 
+
     def empty_item(self):
         return Item(**{
             'id' : 'empty',
@@ -198,10 +196,18 @@ class Inventory(Decal):
         if hand.lower()[0] == 'r':
             self.slots[i_select] = self.right_item
             self.right_item = selected_item
+            self.right_item.rect.center = self.right_hand.rect.center
+            self.slots[i_select].rect.center = (
+                self.slot_sprites.sprites()[i_select].rect.center
+            )
             return self.right_item
         if hand.lower()[0] == 'l':
             self.slots[i_select] = self.left_item
             self.left_item = selected_item
+            self.left_item.rect.center = self.left_hand.rect.center
+            self.slots[i_select].rect.center = (
+                self.slot_sprites.sprites()[i_select].rect.center
+            )
             return self.left_item
         return None
         

@@ -43,7 +43,6 @@ class Player(Decal):
                 action, value = action
             else:
                 action, value = action, 0.0
-            input_held[action] = True
             # TODO make a complete action list and implement
             if self.animation.active: continue
             if action in Compass.strings:
@@ -53,6 +52,9 @@ class Player(Decal):
                 
             elif action == "BUTTON_1":
                 if self.inventory.active:
+                    print("button 1 held", input_held[action])
+                    if input_held[action]: continue
+                    print("swapping!")
                     self.inventory.select('LEFT')
                     continue
                 if self.inventory.left_item is None: continue
@@ -61,6 +63,7 @@ class Player(Decal):
                 ]
             elif action == "BUTTON_2":
                 if self.inventory.active:
+                    if input_held[action]: continue
                     self.inventory.select('RIGHT')
                     continue
                 if self.inventory.right_item is None: continue

@@ -54,12 +54,13 @@ class Input():
         # set to erase duplicate inputs
         all_input = list(set(ctlr_input + keyboard_input + event_input))
 
-        if self.SHOW_EVENTS and all_input: print(all_input)
+        if self.SHOW_EVENTS and all_input: 
+            print("input:", all_input, end=';')
+            print("held:", [key for key, held in self.input_held.items() if held])
         if 'QUIT' in all_input: return ['QUIT']
-        
-        self.update_held(all_input)
 
         return all_input
+
 
     def update_held(self, all_input):
         self.input_held = {key:False for key in self.input_held.keys()}

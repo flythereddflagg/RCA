@@ -59,6 +59,7 @@ class GameState(DictObj):
         while self.running:
             game_input = self.input.get()
             self.logic(game_input)
+            self.input.update_held(game_input)
             self.draw_frame()
             self.dt = (
                 self.clock.tick() 
