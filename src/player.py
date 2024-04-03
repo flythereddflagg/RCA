@@ -93,7 +93,7 @@ class Player(Decal):
 
     def apply_todos(self):
         if self.animation.active: 
-            # reset the todo_list
+            # reject all current todos
             self.todo_list = [] 
             return
         self.input_held = self.scene.game.input.held
