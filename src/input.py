@@ -13,7 +13,7 @@ class Input():
         self.CTLR_BUTTON = self.game.CTLR_BUTTON
         self.CTLR_AXES = self.game.CTLR_AXES
         self.SHOW_EVENTS = self.game.SHOW_EVENTS
-        self.input_held = {
+        self.held = {
             **{key:False for key in self.KEY_BIND.keys()},
             **{key:False for key in self.CTLR_BIND.keys()}
         }
@@ -56,17 +56,20 @@ class Input():
 
         if self.SHOW_EVENTS and all_input: 
             print("input:", all_input, end=';')
-            print("held:", [key for key, held in self.input_held.items() if held])
+            print("held:", [key for key, held in self.held.items() if held])
         if 'QUIT' in all_input: return ['QUIT']
 
         return all_input
 
 
     def update_held(self, all_input):
-        self.input_held = {key:False for key in self.input_held.keys()}
-
+        self.held = {key:False for key in self.held.keys()}
+        # breakpoint()
         for held_action in all_input:
-            self.input_held[held_action] = True
+            if isinstance(held_action, tuple):
+                held_action, _ = held_action
+            assert held_action in self.held, f"Invalid action: '{held_action}'"
+            self.held[held_action] = True
 
 
     def ctlr_input(self, player):

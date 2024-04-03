@@ -6,8 +6,13 @@ from .movement import Movement
 from .animation import Animation
 from .inventory import Inventory
 from .tools import list_collided
+from .item import EMPTY
 
 DEFAULT_ANIMATION = 'stand'
+LEFT_HAND_BUTTON = "BUTTON_1"
+RIGHT_HAND_BUTTON = "BUTTON_2"
+RIGHT_STICK_AX = ["R_"+direction for direction in Compass.strings]
+
 
 class Player(Decal):
     def __init__(self, **options):
@@ -20,78 +25,90 @@ class Player(Decal):
         self.move = Movement(self, **self.options)
         self.animation = Animation(self, **self.options)
         self.inventory = Inventory(self, money=0, hp=100, hp_max=100)
+        self.input_held = None
 
 
     def apply(self, game_input):
         self.todo_list.extend(game_input)
 
-
-    def apply_todos(self):
-        input_held = self.scene.game.input.input_held
-        # todo_list_bak = self.todo_list.copy()
-        # self.todo_list = [
-        #     todo for todo in self.todo_list
-        #     if not self.keys_held[todo]
-        # ]
-        # revert to "idle" animation if no input is given
-        if not self.todo_list and not self.animation.active:
-            self.animation.current = self.animation.data[DEFAULT_ANIMATION]
-
-        vector = pg.math.Vector2([0,0])
+    def get_actions_values(self):
+        actions, values = [], []
         for action in self.todo_list:
             if isinstance(action, tuple):
                 action, value = action
-            else:
+            elif isinstance(action, str):
                 action, value = action, 0.0
-            # TODO make a complete action list and implement
-            if self.animation.active: continue
-            if action in Compass.strings:
-                # ^ means a direction button is being pressed                
-                self.move(action, speed=self.speed * self.scale)
-                self.animation.current = self.animation.data['walk']
-                
-            elif action == "BUTTON_1":
-                if self.inventory.active:
-                    if input_held[action]: continue
-                    self.inventory.select('LEFT')
-                    continue
-                if self.inventory.left_item is None: continue
-                self.animation.current = self.animation.data[
-                    self.inventory.left_item.select()
-                ]
-            elif action == "BUTTON_2":
-                if self.inventory.active:
-                    if input_held[action]: continue
-                    self.inventory.select('RIGHT')
-                    continue
-                if self.inventory.right_item is None: continue
-                self.animation.current = self.animation.data[
-                    self.inventory.right_item.select()
-                ]
-
-            # elif input_held["BUTTON_3"] and not self.inventory.active:
-                
-        
-            elif action in ["R_UP","R_DOWN","R_LEFT","R_RIGHT"]:
-                if not self.inventory.active:
-                    self.inventory.active = True
-                    self.inventory.toggle()
-                multiplier = abs(value) if value else 1.0
-                    
-                vector += (
-                    Compass.vector(action[2:]) * 
-                    self.inventory.image.get_height() * 
-                    multiplier
-                )
-
             else:
-                print(str(action) + "! (no response)")
+                raise ValueError(f"Invalid input: {action}")
+
+            actions.append(action)
+            values.append(value)
+        return actions, values
+
+
+
+
+    def apply_left_stick(self, actions, values):
+        # move in a direction
+        for direction in Compass.strings:
+            if not (direction in actions): continue
+            self.move(direction, speed=self.speed * self.scale)
+            self.animation.current = self.animation.data['walk']
+
+
+    def apply_right_stick(self, actions, values):
+        # activate inventory
+        vector = pg.math.Vector2([0,0])
+        for direction in RIGHT_STICK_AX:
+            if not (direction in actions): continue
+            value = values[actions.index(direction)]
+            if not self.inventory.active: self.inventory.toggle()
+            multiplier = abs(value) if value else 1.0
+            vector += (
+                Compass.vector(direction[2:]) * 
+                self.inventory.image.get_height() * 
+                multiplier
+            )
+
             
-            if vector.magnitude():
-                self.inventory.marker.rect.center = (
-                    self.inventory.rect.center + 
-                    vector
-                )
+        if vector.magnitude():
+            self.inventory.marker.rect.center = (
+                self.inventory.rect.center + 
+                vector
+            )
+
+
+    def apply_buttons(self, actions, values):
+        if LEFT_HAND_BUTTON in actions:
+            if self.inventory.active and not self.input_held[LEFT_HAND_BUTTON]:
+                self.inventory.select("LEFT")
+            elif self.inventory.left_item.id != EMPTY:
+                animation_id = self.inventory.left_item.action
+                self.animation.current = self.animation.data[animation_id]
+        
+        if RIGHT_HAND_BUTTON in actions:
+            if self.inventory.active and not self.input_held[RIGHT_HAND_BUTTON]:
+                self.inventory.select("RIGHT")
+            elif self.inventory.right_item.id != EMPTY:
+                animation_id = self.inventory.right_item.action
+                self.animation.current = self.animation.data[animation_id]
+
+
+    def apply_todos(self):
+        if self.animation.active: return
+        self.input_held = self.scene.game.input.held
+
+        # revert to "idle" animation if no input is given
+        if not self.todo_list and not self.animation.active:
+            self.animation.current = self.animation.data[DEFAULT_ANIMATION]
+            return
+
+        actions, values = self.get_actions_values()
+
+        self.apply_left_stick(actions, values)
+        self.apply_right_stick(actions, values)
+        self.apply_buttons(actions, values)
+
         # reset the todo_list
         self.todo_list = []
 
