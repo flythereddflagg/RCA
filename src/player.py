@@ -46,8 +46,6 @@ class Player(Decal):
         return actions, values
 
 
-
-
     def apply_left_stick(self, actions, values):
         # move in a direction
         for direction in Compass.strings:
@@ -69,8 +67,6 @@ class Player(Decal):
                 self.inventory.image.get_height() * 
                 multiplier
             )
-
-            
         if vector.magnitude():
             self.inventory.marker.rect.center = (
                 self.inventory.rect.center + 
@@ -79,6 +75,7 @@ class Player(Decal):
 
 
     def apply_buttons(self, actions, values):
+        # TODO NEXT make it so that non-repeated actions are not repeated with a button held down.
         if LEFT_HAND_BUTTON in actions:
             if self.inventory.active and not self.input_held[LEFT_HAND_BUTTON]:
                 self.inventory.select("LEFT")
@@ -95,7 +92,10 @@ class Player(Decal):
 
 
     def apply_todos(self):
-        if self.animation.active: return
+        if self.animation.active: 
+            # reset the todo_list
+            self.todo_list = [] 
+            return
         self.input_held = self.scene.game.input.held
 
         # revert to "idle" animation if no input is given
@@ -110,7 +110,7 @@ class Player(Decal):
         self.apply_buttons(actions, values)
 
         # reset the todo_list
-        self.todo_list = []
+        self.todo_list = [] 
 
 
     def animate(self):
