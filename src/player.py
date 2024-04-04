@@ -67,11 +67,11 @@ class Player(Decal):
                 self.inventory.image.get_height() * 
                 multiplier
             )
-        if vector.magnitude():
-            self.inventory.marker.rect.center = (
-                self.inventory.rect.center + 
-                vector
-            )
+
+        self.inventory.marker.rect.center = (
+            self.inventory.rect.center + 
+            vector
+        )
 
 
     def apply_buttons(self, actions, values):
