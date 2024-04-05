@@ -76,15 +76,20 @@ class Player(Decal):
 
     def apply_buttons(self, actions, values):
         # TODO NEXT make it so that non-repeated actions are not repeated with a button held down.
-        if LEFT_HAND_BUTTON in actions:
-            if self.inventory.active and not self.input_held[LEFT_HAND_BUTTON]:
+        if (LEFT_HAND_BUTTON in actions and 
+            not self.input_held[LEFT_HAND_BUTTON]
+        ):
+            if self.inventory.active:
                 self.inventory.select("LEFT")
             elif self.inventory.left_item.id != EMPTY:
+                print("starting", LEFT_HAND_BUTTON)
                 animation_id = self.inventory.left_item.action
                 self.animation.current = self.animation.data[animation_id]
         
-        if RIGHT_HAND_BUTTON in actions:
-            if self.inventory.active and not self.input_held[RIGHT_HAND_BUTTON]:
+        if (RIGHT_HAND_BUTTON in actions and 
+            not self.input_held[RIGHT_HAND_BUTTON]
+        ):
+            if self.inventory.active:
                 self.inventory.select("RIGHT")
             elif self.inventory.right_item.id != EMPTY:
                 animation_id = self.inventory.right_item.action

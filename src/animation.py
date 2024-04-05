@@ -112,10 +112,7 @@ class Animation():
         
         
         if self.sprite.image is None: # animation is done
-            self.active = False
-            last_animate = self.previous
-            self.previous = self.current['id']
-            self.current = self.data[last_animate]
+            self.active = False # this stops the animation
             self.set_frame()
 
 
