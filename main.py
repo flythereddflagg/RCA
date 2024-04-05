@@ -29,13 +29,10 @@ if __name__ == "__main__":
 # TODO make at least three enemies (not including the dragon)
 # TODO make meaningful TESTS
 # TODO make a pause and save screen or whatever
-# TODO make an inventory system
 # TODO flesh out HUD
 # TODO make a startup screen
 # TODO make a load screen
-# TODO make controllers work
 # TODO implement the RCA W1 story
 # TODO make scene transitions a la LTTP (polish)
 # TODO make a global zoom that scales the game to the size of the monitor
 # TODO implement Emma's character
-# TODO implement scaling the entire game using 640 x 360 as a starting point.

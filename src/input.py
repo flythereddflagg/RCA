@@ -4,6 +4,8 @@ file: src/input.py
 import pygame as pg
 from .compass import Compass
 
+DEAD_ZONE = 0.5
+
 class Input():
 
     def __init__(self, game):
@@ -92,6 +94,7 @@ class Input():
             if ax in self.controller_axes:
                 one = int(sign + '1')
                 ax_value = round(axes[self.controller_axes[ax]], 1)
+                ax_value = ax_value if abs(ax_value) > DEAD_ZONE else 0.0
                 # ax_value is not 0 and one and ax_value are the same sign
                 if (ax_value * one) > 0:
                     axes_input.append((key, ax_value))

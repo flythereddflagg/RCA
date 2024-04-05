@@ -17,7 +17,7 @@ RIGHT_STICK_AX = ["R_"+direction for direction in Compass.strings]
 class Player(Decal):
     def __init__(self, **options):
         super().__init__(**options)
-        # TODO? LOW implement acceleration and momentum
+        # TODO MAYBE? implement acceleration and momentum
         self.speed = 300
         self.todo_list = []
         self.signals = []
@@ -81,7 +81,6 @@ class Player(Decal):
 
 
     def apply_buttons(self, actions, values):
-        # TODO NEXT make it so that non-repeated actions are not repeated with a button held down.
         if (LEFT_HAND_BUTTON in actions and 
             not self.input_held[LEFT_HAND_BUTTON]
         ):
