@@ -2,7 +2,7 @@ import pygame as pg
 
 from .item import Item
 from .decal import Decal
-from .tools import get_center_screen
+from .tools import get_center_screen, list_collided
 from .compass import Compass
 
 N_SLOTS = 6
@@ -59,7 +59,6 @@ class Inventory(Decal):
             "scale": 1
         })
         self.marker.rect.center = self.rect.center
-        # TODO make marker select an inventory slot
 
 
     def update(self):
@@ -72,6 +71,11 @@ class Inventory(Decal):
         if not any([input_held[key] for key in ["R_UP","R_DOWN","R_LEFT","R_RIGHT"]]):
             if self.active: self.toggle()
             self.marker.rect.center = self.rect.center
+        
+        slot_index = self.get_selected_item_slot()
+        if slot_index is not None:
+            slot_rect = self.slot_sprites.sprites()[slot_index].rect
+            self.marker.rect.center = slot_rect.center
 
         
     def toggle(self):

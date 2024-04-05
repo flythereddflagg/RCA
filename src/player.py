@@ -48,10 +48,16 @@ class Player(Decal):
 
     def apply_left_stick(self, actions, values):
         # move in a direction
+        dirs = 0
         for direction in Compass.strings:
             if not (direction in actions): continue
+            dirs +=1
             self.move(direction, speed=self.speed * self.scale)
             self.animation.current = self.animation.data['walk']
+        
+        if not dirs:
+            self.animation.current = self.animation.data['stand']
+
 
 
     def apply_right_stick(self, actions, values):

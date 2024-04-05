@@ -89,6 +89,7 @@ class Animation():
         # update animation if changed
         if self.current['id'] != self.previous:
             set_frame = True
+            self.last_animation = self.previous
             self.previous = self.current['id']
             self.frames = self.current["frames"][self.sprite.move.direction]
             self.active = not self.current["repeat"]
@@ -113,6 +114,7 @@ class Animation():
         
         if self.sprite.image is None: # animation is done
             self.active = False # this stops the animation
+            self.current = self.data[self.last_animation] # reset to last
             self.set_frame()
 
 
