@@ -20,11 +20,11 @@ animations:
       - 1 # 0 means a static image
 
   - id: stand
-    image: "./assets/actor/player/character_stand.png"
+    image: "./assets/actor/player/larry_emote.png"
     repeat: True
     key_frame_size: 32,32
     key_frame_times:
-      - 1
+      - 500
 
   - id: walk
     image: "./assets/actor/player/character_walk.png"
