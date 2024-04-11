@@ -30,12 +30,14 @@ class GameState(DictObj):
         self.paused = False
         self.scene = None
         self.input = Input(self)
+        w, h = self.ASPECT_RATIO
+        float_aspect_ratio = w/h
 
         self.SCREENWIDTH = (
-            int(int(self.RESOLUTION[:-1]) * ASPECT_RATIO) *
+            int(self.RESOLUTION * float_aspect_ratio) *
             self.SCALE
         )
-        self.SCREENHEIGHT = int(self.RESOLUTION[:-1]) * self.SCALE
+        self.SCREENHEIGHT = self.RESOLUTION * self.SCALE
         
 
         self.screen = pg.display.set_mode(

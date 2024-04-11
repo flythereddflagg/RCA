@@ -15,28 +15,28 @@ animations:
   - id: "null"
     image: "./assets/block/null.png"
     repeat: True
-    key_frame_size: 32,32
+    key_frame_size: [32,32]
     key_frame_times:
       - 1 # 0 means a static image
 
   - id: stand
     image: "./assets/actor/player/larry_emote.png"
     repeat: True
-    key_frame_size: 32,32
+    key_frame_size: [32,32]
     key_frame_times:
       - 500
 
   - id: walk
     image: "./assets/actor/player/character_walk.png"
     repeat: True
-    key_frame_size: 32,32
+    key_frame_size: [32,32]
     key_frame_times:
       - 40
     
   - id: sword
     repeat: False
     image: "./assets/actor/player/sword.png"
-    key_frame_size: 56,56
+    key_frame_size: [56,56]
     key_frame_times:
       - 50
     mask_path: "./assets/actor/player/sword_hit_mask.png"
@@ -44,14 +44,14 @@ animations:
   - id: damage
     repeat: False
     image: "./assets/actor/player/damage.png"
-    key_frame_size: 32,32
+    key_frame_size: [32,32]
     key_frame_times:
       - 75
 
   - id: hammer
     repeat: False
     image: "./assets/actor/player/hammer.png"
-    key_frame_size: 32,32
+    key_frame_size: [32,32]
     key_frame_times:
       - 40
       - 100

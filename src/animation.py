@@ -37,9 +37,7 @@ class Animation():
 
     def load_animations(self):
         for animation in self.data['animations']:
-            key_frame_size = tuple([
-                int(x) for x in animation['key_frame_size'].split(',')
-            ])
+            key_frame_size = animation['key_frame_size']
             animation['frames'] = self.parse_animation(
                 animation['image'], key_frame_size, self.sprite.scale
             )
