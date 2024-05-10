@@ -8,7 +8,7 @@
 **Scope** W1 must have the following:
 
 - Basic story and story beats from the first game
-- Items: [ sword, shovel, pickle, gate key, statue key]
+- Items: [ ✓sword, ✓shovel, pickle, gate key, statue key]
 - Item mechanics completely fleshed out
 - Larry AND Holly are playable with these items but both play differently and have different exits at the end (e.g. Larry has less knockback from bludgeoning but is more susceptible to piercing while Holly is the opposite.) (exits are the Original exit to the village and the exit to the mountain or something TBD)
 - Enemies: [ wolf, ossifrage, goblin (club and arrows), and Rouken the dragon]
