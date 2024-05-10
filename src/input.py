@@ -43,7 +43,7 @@ class Input():
 
     def get(self):
 
-        # INFO this only allows for one player currently
+        # INFO: this only allows for one player currently
         keyboard_input = self.keyboard_input()
         ctlr_input = []
         event_input = self.event_input()

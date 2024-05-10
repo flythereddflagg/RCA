@@ -14,7 +14,6 @@ from .tools import load_yaml
 from .input import Input
 
 BLACK = (0, 0, 0)
-ASPECT_RATIO = 16 / 9
 
 
 class GameState(DictObj):
@@ -31,7 +30,7 @@ class GameState(DictObj):
         self.scene = None
         self.input = Input(self)
         w, h = self.ASPECT_RATIO
-        float_aspect_ratio = w/h
+        float_aspect_ratio = w / h
 
         self.SCREENWIDTH = (
             int(self.RESOLUTION * float_aspect_ratio) *

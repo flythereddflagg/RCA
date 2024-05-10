@@ -1,0 +1,57 @@
+
+# this yaml file should have the settings specific to the
+# character but not any one scene
+
+# this is the default asset path
+id: PLAYER
+type: Player
+start: [900,600] 
+image: "./assets/actor/larry/character.png"
+mask: image
+groups:
+  - player
+
+animations:
+  - id: "null"
+    image: "./assets/block/null.png"
+    repeat: True
+    key_frame_size: [32,32]
+    key_frame_times:
+      - 1 # 0 means a static image
+
+  - id: stand
+    image: "./assets/actor/larry/larry_emote.png"
+    repeat: True
+    key_frame_size: [32,32]
+    key_frame_times:
+      - 500
+
+  - id: walk
+    image: "./assets/actor/larry/character_walk.png"
+    repeat: True
+    key_frame_size: [32,32]
+    key_frame_times:
+      - 40
+    
+  - id: sword
+    repeat: False
+    image: "./assets/actor/larry/sword.png"
+    key_frame_size: [56,56]
+    key_frame_times:
+      - 50
+    mask_path: "./assets/actor/larry/sword_hit_mask.png"
+
+  - id: damage
+    repeat: False
+    image: "./assets/actor/larry/damage.png"
+    key_frame_size: [32,32]
+    key_frame_times:
+      - 75
+
+  - id: hammer
+    repeat: False
+    image: "./assets/actor/larry/hammer.png"
+    key_frame_size: [32,32]
+    key_frame_times:
+      - 40
+      - 100

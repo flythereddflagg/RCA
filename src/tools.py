@@ -1,13 +1,21 @@
 
+import json
+
 import yaml
 import pygame as pg
 
 from .dict_obj import DictObj
 
 def load_yaml(yaml_path):
-        with open(yaml_path) as f:
-            yaml_data = yaml.load(f.read(), Loader=yaml.Loader)
-        return DictObj(**yaml_data)
+    with open(yaml_path) as f:
+        yaml_data = yaml.load(f.read(), Loader=yaml.Loader)
+    return DictObj(**yaml_data)
+
+
+def load_json(json_path):
+    with open(json_path) as f:
+        json_data = json.load(f)
+    return DictObj(**json_data)
 
 
 def mask_collision(self, other):
