@@ -23,7 +23,7 @@ class Player(Decal):
         self.signals = []
         self.damage_direction = pg.math.Vector2(0,1)
         self.move = Movement(self, **self.options)
-        self.animation = Animation(self, **self.options)
+        # self.animation = Animation(self, **self.options)
         self.inventory = Inventory(self, money=0, hp=100, hp_max=100)
         self.input_held = None
 
@@ -55,8 +55,8 @@ class Player(Decal):
             self.move(direction, speed=self.speed * self.scale)
             self.animation.current = self.animation.data['walk']
         
-        if not dirs:
-            self.animation.current = self.animation.data['stand']
+        # if not dirs:
+        #     self.animation.current = self.animation.data['stand']
 
 
 
@@ -102,16 +102,16 @@ class Player(Decal):
 
 
     def apply_todos(self):
-        if self.animation.active: 
-            # reject all current todos
-            self.todo_list = [] 
-            return
+        # if self.animation.active: 
+        #     # reject all current todos
+        #     self.todo_list = [] 
+        #     return
         self.input_held = self.scene.game.input.held
 
         # revert to "idle" animation if no input is given
-        if not self.todo_list and not self.animation.active:
-            self.animation.current = self.animation.data[DEFAULT_ANIMATION]
-            return
+        # if not self.todo_list and not self.animation.active:
+        #     self.animation.current = self.animation.data[DEFAULT_ANIMATION]
+        #     return
 
         actions, values = self.get_actions_values()
 
@@ -131,10 +131,10 @@ class Player(Decal):
 
     def update(self):
         self.apply_todos()
-        self.check_collision()
-        self.check_signals()
-        self.animate()
-        self.inventory.update()
+        # self.check_collision()
+        # self.check_signals()
+        # self.animate()
+        # self.inventory.update()
         
         if self.inventory.hp <= 0:
             self.scene.player = None

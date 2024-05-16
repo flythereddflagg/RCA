@@ -7,7 +7,7 @@ class Animation():
     """
     A system for setting the parent sprite object's image.
     """
-    def __init__(self, sprite:pg.sprite.Sprite, ):
+    def __init__(self, sprite:pg.sprite.Sprite, **opts):
         self.sprite = sprite
         self.current = None
         self.previous = None

@@ -4,6 +4,7 @@
 
 id: PLAYER
 type: Player
+image: "./assets/block/null.png"
 mask: image
 groups:
   - player

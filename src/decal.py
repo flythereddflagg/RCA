@@ -9,67 +9,49 @@ from .tools import load_yaml
 
 
 class Decal(pg.sprite.Sprite):
-    """
-    Simple Sprite that accepts basic input.
-    Backgrounds and other non-interacting sprites
-    should use this class. Has an absolute initial reference.
-    Moves with the camera.
-    """
-    requirements = [
-        "id",
-        "scene",
-        "image",
-        "mask"
-    ]
-    def __init__(self, **options):
-        if 'yaml' in options.keys():
-            options = {
-                **options, **load_yaml(options['yaml'])
-            }
-        assert all([key in options for key in self.requirements]), \
-            f"class {options['id']} must be instatiated with all "\
-            f"of:\n {self.requirements}\ngot: {list(options.keys())}"
+    def __init__(self, scene, image_path, 
+        scale=1, mask_path=None, animation=None **kwargs
+    ):
         super().__init__()
-        self.id = options['id']
-        self.scene = options["scene"]
-        self.add(self.scene.all_sprites)
-        self.image = pg.image.load(options["image"]).convert_alpha()
+        # NOTE we may need to keep track of these
+        self.image_path = image_path
+        self.mask_path = mask_path
+        self.init_scale = scale
+        
+
+        self.image = pg.image.load(image_path).convert_alpha()
         self.rect = self.image.get_rect()
-        self.mask = None
-        mask_path = (
-            options[options['mask']] 
-            if options['mask'] in options.keys() else 
-            options['mask']
+        
+        self.mask = self.get_mask(mask_path)
+        self.animation = None if not animation else Animation(animation)
+        self.scene = scene
+        self.scale = 1.0
+
+        self.original = {
+            'image': self.image,
+            'mask' : self.mask,
+            'size' : self.rect.size
+        }
+        self.options = kwargs
+        self.scale_by(scale)
+
+
+    def get_mask(self, mask_path=None):
+        if not mask_path:
+            if 'mask' in vars(self).keys(): return self.mask
+            return None
+
+        tmp_image = (
+            self.image 
+            if mask_path == 'image' else 
+            pg.image.load(mask_path).convert_alpha()
         )
-        if mask_path is not None:
-            self.mask = pg.mask.from_surface(
-                pg.image.load(mask_path).convert_alpha()
-            )
-        self.original_mask = self.mask if self.mask else None
-        self.original_image = self.image
-        self.original_size = self.rect.size
-        self.options = options
+        return pg.mask.from_surface(tmp_image)
 
-        # process any optional params
-        self.animation = None
-        self.inventory = None
-        self.scale = 1
-        self.set_scale(self.scene.game.SCALE)
-        if "scale" in self.options.keys():
-            self.set_scale(self.options["scale"])
-        if 'start' in options.keys():
-            background = self.scene.layers['background'].sprites()[0]
-            self.start = options['start']
-            self.rect.topleft = (
-                pg.math.Vector2(background.rect.topleft) + 
-                pg.math.Vector2(self.start)* self.scene.game.SCALE
-            ) 
-        # TODO check that this is not breaking zoom
 
-    def set_scale(self, factor):
-        # TODO make this so it can scale by a absolute value AND a factor
+    def scale_by(self, factor):
         self.scale *= factor
-        if self.scale < 1: self.scale = 1
+        if self.scale == 0: self.scale = 1 # 0 resets scale
         pos = self.rect.center
         new_size = [dim * self.scale for dim in self.original_size]
         self.image = pg.transform.scale(self.original_image, new_size)
@@ -80,16 +62,7 @@ class Decal(pg.sprite.Sprite):
             self.mask = self.original_mask.scale(new_size)
         if self.animation: self.animation.load_animations()
 
-    
-    def __repr__(self):
-        string = super().__repr__()
-        string += f"\n{type(self)}"
-        for key, item in vars(self).items():
-            if type(item) in [dict, DictObj]: 
-                string += f"\n{str(key):10.10}: {{...}}"
-                continue
-            string += f"\n{str(key):10.10}: {str(item):30.30}"
-        return string
 
-    def signal(self, *args, **kwargs):
-        pass
+    def scale_abs(self, scale):
+        self.scale_by(0)
+        self.scale_by(scale)

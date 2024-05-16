@@ -1,4 +1,4 @@
-
+import importlib
 import json
 
 import yaml
@@ -57,4 +57,12 @@ def get_center_screen():
         centerx = screen_w // 2
         centery = screen_h // 2
         return (centerx, centery)
+
+
+def class_from_str(class_name):
+    module_name = "." + class_name.lower()
+    module = importlib.import_module(module_name, package='src')
+    # get the class, will raise AttributeError if class cannot be found
+    class_ref = getattr(module, class_name)
+    return class_ref
 

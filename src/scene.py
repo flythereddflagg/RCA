@@ -1,27 +1,7 @@
 import pygame as pg
 
-from .tools import load_yaml
-
-from .dict_obj import DictObj
+from .tools import load_yaml, class_from_str
 from .camera import Camera
-from .decal import Decal
-from .player import Player
-from .ossifrage import Ossifrage
-from .edge import Edge
-from .backpack import Backpack
-from .cactus import Cactus
-from .item import Item
-
-SPRITE_MAP = DictObj(**{
-    "Decal" : Decal,
-    'Player': Player,
-    'Ossifrage': Ossifrage,
-    'Edge': Edge,
-    'Backpack': Backpack,
-    'Cactus': Cactus,
-    'Item': Item,
-})
-
 
 
 class Scene():
@@ -49,7 +29,8 @@ class Scene():
                 continue
             for sprite_dict in self.data[name]:
                 sprite_dict['scene'] = self
-                sprite_instance = SPRITE_MAP[sprite_dict['type']](**sprite_dict)
+                class_str = sprite_dict['type']
+                sprite_instance = class_from_str(class_str)(**sprite_dict)
                 layer.add(sprite_instance)
                 if "groups" in sprite_instance.options.keys():
                     for group in sprite_instance.options['groups']:
@@ -60,7 +41,7 @@ class Scene():
         if isinstance(player, str):
             player_data = load_yaml(player)
             player_data['scene'] = self
-            self.player = SPRITE_MAP[player_data['type']](**player_data)
+            self.player = class_from_str(player_data['type'])(**player_data)
             if "groups" in self.player.options.keys():
                     for group in self.player.options['groups']:
                         self.groups[group].add(self.player)
