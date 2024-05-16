@@ -17,7 +17,6 @@ class Decal(pg.sprite.Sprite):
         self.image_path = image_path
         self.mask_path = mask_path
         self.init_scale = scale
-        
 
         self.image = pg.image.load(image_path).convert_alpha()
         self.rect = self.image.get_rect()
