@@ -61,14 +61,15 @@ class Scene():
         
         self.camera.zoom(self.data.INIT_ZOOM)
         
-    def update(self):
         
+    def update(self):        
         # update all sprites
         for group_name in self.data.DRAW_LAYERS:
             self.layers[group_name].update()
         
         # finally, update the camera
         if self.camera: self.camera.update()
+
 
     def kill(self):
         """deconstructs the scene"""
