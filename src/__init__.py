@@ -28,6 +28,7 @@ class GameState(DictObj):
         self.running = False
         self.paused = False
         self.scene = None
+        self.player = None
         self.input = Input(self)
         w, h = self.ASPECT_RATIO
         float_aspect_ratio = w / h
@@ -77,8 +78,8 @@ class GameState(DictObj):
             return
 
         # apply all the input
-        if self.scene.player:
-            self.scene.player.apply(game_input)
+        if self.player:
+            self.player.apply(game_input)
 
         # update everything in the scene
         if self.scene and not self.paused: 

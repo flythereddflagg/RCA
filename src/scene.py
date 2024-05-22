@@ -21,4 +21,9 @@ class Scene():
             group_name: pg.sprite.Group() 
             for group_name in self.data.DRAW_LAYERS
         }
-        
+        for key, item in self.data.items():
+            print(f"{key:20} : {item}")
+
+
+    def update(self):
+        pass
