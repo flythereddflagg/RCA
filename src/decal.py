@@ -8,6 +8,7 @@ import pygame as pg
 
 from .dict_obj import DictObj
 from .tools import load_yaml
+from .animation import Animation
 
 
 @dataclass
@@ -18,12 +19,21 @@ class Original:
 
 
 class Decal(pg.sprite.Sprite):
-    def __init__(self, image, scale=1, mask_path=None, **kwargs):
+    def __init__(
+                self, 
+                image:str, 
+                scale:float=1, 
+                mask_path:str=None, 
+                parent:object=None,
+                animation:Animation=None,
+                **kwargs
+    ):
         super().__init__()
-        # NOTE we may need to keep track of these
         self.image_path = image
         self.mask_path = mask_path
         self.init_scale = scale
+        self.parent = parent
+        self.animation = animation
 
         self.image = pg.image.load(self.image_path).convert_alpha()
         self.rect = self.image.get_rect()
@@ -37,8 +47,7 @@ class Decal(pg.sprite.Sprite):
 
     def get_mask(self, mask_path=None):
         if not mask_path:
-            if 'mask' in vars(self).keys(): return self.mask
-            return None
+            return vars(self).get('mask')
 
         tmp_image = (
             self.image 
@@ -65,3 +74,7 @@ class Decal(pg.sprite.Sprite):
     def scale_abs(self, scale):
         self.scale_by(0)
         self.scale_by(scale)
+
+
+    def update(self):
+        if self.parent: self.parent.update()

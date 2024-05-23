@@ -29,82 +29,82 @@ background:
     groups: 
      - solid
 
-# foreground:
-#   - id: big ol rock
-#     type: Decal
-#     image: ./assets/block/rock.png
-#     mask: image
-#     start: [1230,950]
-#     groups: 
-#      - solid
+foreground:
+  - id: big ol rock
+    type: Decal
+    image: ./assets/block/rock.png
+    mask: image
+    start: [1230,950]
+    groups: 
+     - solid
 
-  # - id: holly
-  #   type: Decal
-  #   image: ./assets/actor/holly/holly_hard_line.png
-  #   mask: image
-  #   start: [800,750]
-  #   groups: 
-  #    - solid
+  - id: holly
+    type: Decal
+    image: ./assets/actor/holly/holly_hard_line.png
+    mask: image
+    start: [800,750]
+    groups: 
+     - solid
 
-  # - id: ossifrage 1
-  #   type: Ossifrage
-  #   yaml: ./assets/actor/ossifrage.yaml
-  #   mask: image
-  #   start: [700,900]
+  - id: ossifrage 1
+    type: Ossifrage
+    yaml: ./assets/actor/ossifrage.yaml
+    mask: image
+    start: [700,900]
 
-  # - id: bridge_exit
-  #   type: Edge
-  #   image: ./assets/block/block.png
-  #   mask: image
-  #   start: [845,-80]
-  #   scale: 2.5
-  #   scene_path: ./assets/scene/mansion_yard.yaml
-  #   exit_dir: DOWN
+  - id: bridge_exit
+    type: Edge
+    image: ./assets/block/block.png
+    mask: image
+    start: [845,-80]
+    scale: 2.5
+    scene_path: ./assets/scene/mansion_yard.yaml
+    exit_dir: DOWN
 
-  # - id: forest_red_castle_valley_connection
-  #   type: Edge
-  #   image: ./assets/block/block.png
-  #   mask: image
-  #   start: [135,650]
-  #   scale: 2.5
-  #   scene_path: ./assets/scene/forest.yaml
-  #   exit_dir: RIGHT
+  - id: forest_red_castle_valley_connection
+    type: Edge
+    image: ./assets/block/block.png
+    mask: image
+    start: [135,650]
+    scale: 2.5
+    scene_path: ./assets/scene/forest.yaml
+    exit_dir: RIGHT
 
-  # - id: mountain trail exit
-  #   type: Edge
-  #   image: ./assets/block/block.png
-  #   mask: image
-  #   start: [1230,1038]
-  #   scale: 2.5
-  #   scene_path: ./assets/scene/placeholder.yaml
-  #   exit_dir: UP
+  - id: mountain trail exit
+    type: Edge
+    image: ./assets/block/block.png
+    mask: image
+    start: [1230,1038]
+    scale: 2.5
+    scene_path: ./assets/scene/placeholder.yaml
+    exit_dir: UP
 
-  # - id: cactus
-  #   type: Cactus
-  #   image: ./assets/block/cactus.png
-  #   mask: image
-  #   start: [600,600]
-  #   scale: 1
+  - id: cactus
+    type: Cactus
+    image: ./assets/block/cactus.png
+    mask: image
+    start: [600,600]
+    scale: 1
 
-  # - id: backpack
-  #   type: Backpack
-  #   image: ./assets/block/backpack.png
-  #   mask: image
-  #   start: [600,700]
-  #   scale: 1
+  - id: backpack
+    type: Backpack
+    image: ./assets/block/backpack.png
+    mask: image
+    start: [600,700]
+    scale: 1
   
-  # - id: sword
-  #   type: Item
-  #   image: ./assets/actor/item/sword_icon.png
-  #   mask: image
-  #   start: [600,800]
-  #   scale: 1
-  #   action: sword
+  - id: sword
+    type: Item
+    image: ./assets/actor/item/sword_icon.png
+    mask: image
+    start: [600,800]
+    scale: 1
+    action: sword
 
-  # - id: hammer
-  #   type: Item
-  #   image: ./assets/actor/item/hammer_icon.png
-  #   mask: image
-  #   start: [600,900]
-  #   scale: 1
-  #   action: hammer
+  - id: hammer
+    type: Item
+    image: ./assets/actor/item/hammer_icon.png
+    mask: image
+    start: [600,900]
+    scale: 1
+    action: hammer
