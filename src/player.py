@@ -14,18 +14,20 @@ RIGHT_HAND_BUTTON = "BUTTON_2"
 RIGHT_STICK_AX = ["R_"+direction for direction in Compass.strings]
 
 
-class Player(Decal):
+class Player():
     def __init__(self, **options):
-        super().__init__(**options)
         # TODO MAYBE? implement acceleration and momentum
+        self.options = options
         self.speed = 300
         self.todo_list = []
         self.signals = []
+        self.sprite = Decal(parent=self, **options)
         self.damage_direction = pg.math.Vector2(0,1)
-        self.move = Movement(self, **self.options)
+        self.move = Movement(self.sprite, **self.options)
         # self.animation = Animation(self, **self.options)
         self.inventory = Inventory(self, money=0, hp=100, hp_max=100)
         self.input_held = None
+
 
 
     def apply(self, game_input):
@@ -52,12 +54,11 @@ class Player(Decal):
         for direction in Compass.strings:
             if not (direction in actions): continue
             dirs +=1
-            self.move(direction, speed=self.speed * self.scale)
+            self.move(direction, speed=self.speed * self.sprite.scale)
             self.animation.current = self.animation.data['walk']
         
         # if not dirs:
         #     self.animation.current = self.animation.data['stand']
-
 
 
     def apply_right_stick(self, actions, values):
@@ -75,7 +76,7 @@ class Player(Decal):
             )
 
         self.inventory.marker.rect.center = (
-            self.inventory.rect.center + 
+            self.inventory.sprite.rect.center + 
             vector
         )
 
@@ -106,7 +107,7 @@ class Player(Decal):
         #     # reject all current todos
         #     self.todo_list = [] 
         #     return
-        self.input_held = self.scene.game.input.held
+        self.input_held = self.sprite.scene.game.input.held
 
         # revert to "idle" animation if no input is given
         # if not self.todo_list and not self.animation.active:

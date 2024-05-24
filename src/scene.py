@@ -86,7 +86,7 @@ class Scene():
             start = player_data.get('start')
             if start:
                 sprite_instance.rect.center = start
-            self.layers['foreground'].add(player)
+            self.layers['foreground'].add(player.sprite)
             self.camera.player = player
         elif isinstance(player_init, object):
             player = player_init

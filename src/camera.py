@@ -33,7 +33,7 @@ class Camera:
     def follow_player(self):
         if not self.player: return
         center = pg.math.Vector2(*get_center_screen())
-        player_pos = pg.math.Vector2(self.player.rect.center)
+        player_pos = pg.math.Vector2(self.player.sprite.rect.center)
         movex, movey = player_pos - center
         
         movex, movey = self.add_camera_slack(

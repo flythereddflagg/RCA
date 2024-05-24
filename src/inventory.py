@@ -7,13 +7,14 @@ from .compass import Compass
 
 N_SLOTS = 6
 
-class Inventory(Decal):
+class Inventory():
     def __init__(
         self, player, money:int=0, hp:int=0, hp_max:int=0, max_money=999
     ):
-        super().__init__(**{
+        self.sprite = Decal(**{
+            'parent': self,
             "id": "inventory_screen",
-            "scene": player.scene,
+            "scene": player.sprite.scene,
             "image": "./assets/actor/inventory_screen/backpack.png",
             "mask": None,
             "scale": 1
@@ -28,13 +29,13 @@ class Inventory(Decal):
         self.player = player
         self.left_item:Item = self.empty_item()
         self.right_item:Item = self.empty_item()
-        self.rect.center = get_center_screen()
+        self.sprite.rect.center = get_center_screen()
 
         self.slot_sprites = pg.sprite.Group()
 
         self.left_hand, self.right_hand = (Decal(**{
                 "id": "inventory_screen",
-                "scene": player.scene,
+                "scene": player.sprite.scene,
                 "image": "./assets/actor/inventory_screen/hand.png",
                 "mask": None,
                 "scale": 1
@@ -45,20 +46,20 @@ class Inventory(Decal):
             self.right_hand.image, True, False
         ) # get the right hand where you want it
 
-        self.left_hand.rect.center = self.rect.center + pg.math.Vector2(
-            -self.rect.center[0]//2, 0
+        self.left_hand.rect.center = self.sprite.rect.center + pg.math.Vector2(
+            -self.sprite.rect.center[0]//2, 0
         )
-        self.right_hand.rect.center = self.rect.center + pg.math.Vector2(
-            self.rect.center[0]//2, 0
+        self.right_hand.rect.center = self.sprite.rect.center + pg.math.Vector2(
+            self.sprite.rect.center[0]//2, 0
         )
         self.marker = Decal(**{
             "id": "inventory_marker",
-            "scene": player.scene,
+            "scene": player.sprite.scene,
             "image": "./assets/actor/inventory_screen/marker.png",
             "mask": None,
             "scale": 1
         })
-        self.marker.rect.center = self.rect.center
+        self.marker.rect.center = self.sprite.rect.center
 
 
     def update(self):
@@ -68,9 +69,11 @@ class Inventory(Decal):
 
         input_held = self.player.scene.game.input.held
         
-        if not any([input_held[key] for key in ["R_UP","R_DOWN","R_LEFT","R_RIGHT"]]):
+        if not any(
+            [input_held[key] for key in ["R_UP","R_DOWN","R_LEFT","R_RIGHT"]]
+        ):
             if self.active: self.toggle()
-            self.marker.rect.center = self.rect.center
+            self.marker.rect.center = self.sprite.rect.center
         
         slot_index = self.get_selected_item_slot()
         if slot_index is not None:
@@ -94,7 +97,7 @@ class Inventory(Decal):
         for i, slot_sprite in enumerate(self.slot_sprites.sprites()):
             toggle_state(slot_sprite)
             slot_sprite.rect.center = (
-                pg.math.Vector2(self.rect.center) + 
+                pg.math.Vector2(self.sprite.rect.center) + 
                 (pg.math.Vector2(Compass.unit_vector(Compass.UP)) * 
                     self.image.get_height()
                 ).rotate(i / n_slots * 360)
@@ -182,7 +185,7 @@ class Inventory(Decal):
         return Item(**{
             'id' : 'empty',
             "image" : "./assets/block/null.png",
-            "scene" : self.player.scene,
+            "scene" : self.player.sprite.scene,
             'mask' : None,
             'action': None
         })
