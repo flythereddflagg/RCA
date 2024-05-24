@@ -28,6 +28,8 @@ class Scene():
 
             for entity_init in layer_data:
                 entity_init['scene'] = self
+                yaml = entity_init.get("yaml")
+                if yaml: entity_init = {**entity_init, **load_yaml(yaml)}
                 class_str = entity_init['type']
                 entity = class_from_str(class_str)(**entity_init)
                 sprite_instance = (
@@ -50,6 +52,53 @@ class Scene():
         
         self.camera = Camera(self)
 
+        self.game.player = self.load_player(player)
 
-    def update(self):
-        pass
+
+    def update(self):        
+        # update all sprites
+        for group_name in self.data.DRAW_LAYERS:
+            self.layers[group_name].update()
+        
+        # finally, update the camera
+        if self.camera: self.camera.update()
+
+
+    def load_player(self, player_init) -> object:
+        if not player_init: return None
+
+        if isinstance(player_init, str) and player_init.endswith(".yaml"):
+            player_data = load_yaml(player_init)
+            player_data['scene'] = self
+            player = (
+                class_from_str(player_data['type'])(**player_data)
+            )
+            sprite_instance = (
+                player 
+                if isinstance(player, pg.sprite.Sprite) else 
+                player.sprite
+            )
+            groups = player_data.get('groups')
+            if groups:
+                for group in groups:
+                    self.groups[group].add(sprite_instance)
+            
+            start = player_data.get('start')
+            if start:
+                sprite_instance.rect.center = start
+            self.layers['foreground'].add(player)
+            self.camera.player = player
+        elif isinstance(player_init, object):
+            player = player_init
+            player.set_scale(0) # reset player scale
+            player.set_scale(self.game.SCALE)
+            player.scene = self
+            self.layers['foreground'].add(player)
+            self.groups['player'].add(player)
+            player.animation.previous = ''
+            self.camera.player = player
+        else:
+            raise TypeError(
+                f"Player {player_init} is of Type {type(player)}! Should be str or object"
+            )
+        return player

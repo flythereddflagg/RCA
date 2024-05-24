@@ -23,21 +23,25 @@ class Decal(pg.sprite.Sprite):
                 self, 
                 image:str, 
                 scale:float=1, 
-                mask_path:str=None, 
+                mask:str=None, 
                 parent:object=None,
                 animation:Animation=None,
+                scene=None,
                 **kwargs
     ):
         super().__init__()
+        id_ = kwargs.get('id')
+        self.id = id_ if id_ else str(id(self))
         self.image_path = image
-        self.mask_path = mask_path
+        self.mask_path = mask
         self.init_scale = scale
         self.parent = parent
         self.animation = animation
+        self.scene = scene
 
         self.image = pg.image.load(self.image_path).convert_alpha()
         self.rect = self.image.get_rect()
-        self.mask = self.get_mask(mask_path)
+        self.mask = self.get_mask(mask)
         self.scale = 1.0
 
         self.original = Original(self.image, self.mask, self.rect.size)
@@ -46,7 +50,7 @@ class Decal(pg.sprite.Sprite):
 
 
     def get_mask(self, mask_path=None):
-        if not mask_path:
+        if mask_path is None:
             return vars(self).get('mask')
 
         tmp_image = (

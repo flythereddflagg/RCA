@@ -46,11 +46,11 @@ foreground:
     groups: 
      - solid
 
-  - id: ossifrage 1
-    type: Ossifrage
-    yaml: ./assets/actor/ossifrage.yaml
-    mask: image
-    start: [700,900]
+  # - id: ossifrage 1
+  #   type: Ossifrage
+  #   yaml: ./assets/actor/ossifrage.yaml
+  #   mask: image
+  #   start: [700,900]
 
   - id: bridge_exit
     type: Edge
