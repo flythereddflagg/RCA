@@ -55,7 +55,7 @@ class Player():
             if not (direction in actions): continue
             dirs +=1
             self.move(direction, speed=self.speed * self.sprite.scale)
-            self.animation.current = self.animation.data['walk']
+            # self.animation.current = self.animation.data['walk'] # FIXME
         
         # if not dirs:
         #     self.animation.current = self.animation.data['stand']

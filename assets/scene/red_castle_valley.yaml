@@ -38,13 +38,13 @@ foreground:
     groups: 
      - solid
 
-  - id: holly
-    type: Decal
-    image: ./assets/actor/holly/holly_hard_line.png
-    mask: image
-    start: [800,750]
-    groups: 
-     - solid
+  # - id: holly
+  #   type: Decal
+  #   image: ./assets/actor/holly/holly_hard_line.png
+  #   mask: image
+  #   start: [800,750]
+  #   groups: 
+  #    - solid
 
   # - id: ossifrage 1
   #   type: Ossifrage

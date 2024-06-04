@@ -4,7 +4,7 @@
 
 id: PLAYER
 type: Player
-image: "./assets/block/null.png"
+image: "./assets/actor/larry/larry_base.png"
 mask: image
 groups:
   - player
