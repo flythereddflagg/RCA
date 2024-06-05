@@ -21,29 +21,31 @@ class Scene():
             group_name: pg.sprite.Group() 
             for group_name in self.data.DRAW_LAYERS
         }
+        self.layers['hud'] = pg.sprite.Group() # hud is a given
         
         for name, layer in self.layers.items():
             layer_data = self.data.get(name)
             if not layer_data: continue
 
-            for entity_init in layer_data:
-                entity_init['scene'] = self
-                yaml = entity_init.get("yaml")
-                if yaml: entity_init = {**entity_init, **load_yaml(yaml)}
-                class_str = entity_init['type']
-                entity = class_from_str(class_str)(**entity_init)
+            for node_init in layer_data:
+                node_init['scene'] = self
+                yaml = node_init.get("yaml")
+                if yaml: node_init = {**node_init, **load_yaml(yaml)}
+                class_str = node_init['type']
+                node = class_from_str(class_str)(**node_init)
                 sprite_instance = (
-                    entity 
-                    if isinstance(entity, pg.sprite.Sprite) else 
-                    entity.sprite
+                    node 
+                    if isinstance(node, pg.sprite.Sprite) else 
+                    node.sprite
                 )
+                self.all_sprites.add(sprite_instance)
                 layer.add(sprite_instance)
-                groups = entity_init.get('groups')
+                groups = node_init.get('groups')
                 if groups:
                     for group in groups:
                         self.groups[group].add(sprite_instance)
                 
-                start = entity_init.get('start')
+                start = node_init.get('start')
                 if start:
                     sprite_instance.rect.center = start
                 

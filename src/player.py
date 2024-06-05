@@ -25,7 +25,7 @@ class Player():
         self.damage_direction = pg.math.Vector2(0,1)
         self.move = Movement(self.sprite, **self.options)
         # self.animation = Animation(self, **self.options)
-        self.inventory = Inventory(self, money=0, hp=100, hp_max=100)
+        # self.inventory = Inventory(self, money=0, hp=100, hp_max=100)
         self.input_held = None
 
 
