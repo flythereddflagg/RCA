@@ -7,6 +7,7 @@ from .animation import Animation
 from .inventory import Inventory
 from .tools import list_collided
 from .item import EMPTY
+from .node import Node
 
 DEFAULT_ANIMATION = 'stand'
 LEFT_HAND_BUTTON = "BUTTON_1"
@@ -14,9 +15,10 @@ RIGHT_HAND_BUTTON = "BUTTON_2"
 RIGHT_STICK_AX = ["R_"+direction for direction in Compass.strings]
 
 
-class Player():
+class Player(Node):
     def __init__(self, **options):
         # TODO MAYBE? implement acceleration and momentum
+        super().__init__(**options)
         self.options = options
         self.speed = 300
         self.todo_list = []

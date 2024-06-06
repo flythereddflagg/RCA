@@ -21,12 +21,12 @@ class Original:
 class Decal(pg.sprite.Sprite):
     def __init__(
                 self, 
-                image:str, 
+                scene,
+                image:str,
                 scale:float=1, 
                 mask:str=None, 
                 parent:object=None,
                 animation:Animation=None,
-                scene=None,
                 **kwargs
     ):
         super().__init__()
