@@ -45,6 +45,7 @@ class GameState(DictObj):
         )
         self.clock = pg.time.Clock()
         self.scene = Scene(self, self.INITAL_SCENE, self.PLAYER)
+        self.player.sprite.rect.center = self.PLAYER_START_POSITION
         
         if self.FPS_COUNTER:
             self.fps_counter = pg.font.SysFont("Sans", 22)
