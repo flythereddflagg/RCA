@@ -9,6 +9,7 @@ import pygame as pg
 from .dict_obj import DictObj
 from .tools import load_yaml
 from .animation import Animation
+from .node import Node
 
 
 @dataclass
@@ -25,7 +26,7 @@ class Decal(pg.sprite.Sprite):
                 image:str,
                 scale:float=1, 
                 mask:str=None, 
-                parent:object=None,
+                parent:Node=None,
                 animation:Animation=None,
                 **kwargs
     ):
