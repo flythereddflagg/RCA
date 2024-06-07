@@ -34,4 +34,4 @@ class Edge(Decal):
         player.rect.x += dx*(player.rect.w/2 + block.rect.w/2)
         player.rect.y += dy*(player.rect.h/2 + block.rect.h/2)
         new_scene.camera.center_player()
-        old_scene.kill() 
+        old_scene.deconstruct() 

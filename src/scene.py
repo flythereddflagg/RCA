@@ -23,6 +23,12 @@ class Scene():
         }
         self.layers['hud'] = pg.sprite.Group() # hud is a given
         
+        self.load_scene()
+        self.game.player = self.load_player(player)
+        self.camera = Camera(self)
+        self.camera.zoom_by(self.game.SCALE * self.data.get('INIT_ZOOM'))
+
+    def load_scene(self):
         for name, layer in self.layers.items():
             layer_data = self.data.get(name)
             if not layer_data: continue
@@ -48,13 +54,8 @@ class Scene():
                 start = node_init.get('start')
                 if start:
                     sprite_instance.rect.center = start
-                
-                # TODO add yaml loading for more complex stuff!
 
         
-        self.camera = Camera(self)
-
-        self.game.player = self.load_player(player)
 
 
     def update(self):        
@@ -89,18 +90,18 @@ class Scene():
             if start:
                 sprite_instance.rect.center = start
             self.layers['foreground'].add(player.sprite)
-            self.camera.player = player
+
         elif isinstance(player_init, object):
             player = player_init
-            player.set_scale(0) # reset player scale
-            player.set_scale(self.game.SCALE)
             player.scene = self
             self.layers['foreground'].add(player)
             self.groups['player'].add(player)
             player.animation.previous = ''
-            self.camera.player = player
         else:
             raise TypeError(
                 f"Player {player_init} is of Type {type(player)}! Should be str or object"
             )
         return player
+
+    def deconstruct(self):
+        del self
