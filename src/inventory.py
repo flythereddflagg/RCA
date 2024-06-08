@@ -7,6 +7,7 @@ from .compass import Compass
 from .node import Node
 
 N_SLOTS = 6
+INV_SCALE = 1
 
 class Inventory(Node):
     def __init__(
@@ -19,7 +20,7 @@ class Inventory(Node):
             "scene": player.scene,
             "image": "./assets/actor/inventory_screen/backpack.png",
             "mask": None,
-            "scale": 1
+            "scale": INV_SCALE * self.scene.game.SCALE
         })
 
         self.slots:list[Item] = []
@@ -40,7 +41,7 @@ class Inventory(Node):
                 "scene": player.scene,
                 "image": "./assets/actor/inventory_screen/hand.png",
                 "mask": None,
-                "scale": 1
+                "scale": INV_SCALE * self.scene.game.SCALE
             })
             for _ in range(2)
         )
@@ -59,7 +60,7 @@ class Inventory(Node):
             "scene": player.scene,
             "image": "./assets/actor/inventory_screen/marker.png",
             "mask": None,
-            "scale": 1
+            "scale": INV_SCALE * self.scene.game.SCALE
         })
         self.marker.rect.center = self.sprite.rect.center
 
@@ -140,7 +141,7 @@ class Inventory(Node):
             "scene": self.player.scene,
             "image": "./assets/actor/inventory_screen/slot.png",
             "mask": None,
-            "scale": 1
+            "scale": INV_SCALE * self.scene.game.SCALE
         })
         self.slot_sprites.add(new_slot)
         return self.slots[-1]
