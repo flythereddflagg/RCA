@@ -4,17 +4,19 @@ from .item import Item
 from .decal import Decal
 from .tools import get_center_screen, list_collided
 from .compass import Compass
+from .node import Node
 
 N_SLOTS = 6
 
-class Inventory():
+class Inventory(Node):
     def __init__(
         self, player, money:int=0, hp:int=0, hp_max:int=0, max_money=999
     ):
+        super().__init__(player.scene)
         self.sprite = Decal(**{
             'parent': self,
             "id": "inventory_screen",
-            "scene": player.sprite.scene,
+            "scene": player.scene,
             "image": "./assets/actor/inventory_screen/backpack.png",
             "mask": None,
             "scale": 1
@@ -35,7 +37,7 @@ class Inventory():
 
         self.left_hand, self.right_hand = (Decal(**{
                 "id": "inventory_screen",
-                "scene": player.sprite.scene,
+                "scene": player.scene,
                 "image": "./assets/actor/inventory_screen/hand.png",
                 "mask": None,
                 "scale": 1
@@ -54,7 +56,7 @@ class Inventory():
         )
         self.marker = Decal(**{
             "id": "inventory_marker",
-            "scene": player.sprite.scene,
+            "scene": player.scene,
             "image": "./assets/actor/inventory_screen/marker.png",
             "mask": None,
             "scale": 1
@@ -89,7 +91,7 @@ class Inventory():
             self.scene.layers['hud'].remove
         )
         # ORDER MATTERS first we do the backpack and hands
-        for sprite in [self, self.left_hand, self.right_hand]:
+        for sprite in [self.sprite, self.left_hand, self.right_hand]:
             toggle_state(sprite)
 
         # then we do the slots
@@ -99,7 +101,7 @@ class Inventory():
             slot_sprite.rect.center = (
                 pg.math.Vector2(self.sprite.rect.center) + 
                 (pg.math.Vector2(Compass.unit_vector(Compass.UP)) * 
-                    self.image.get_height()
+                    self.sprite.image.get_height()
                 ).rotate(i / n_slots * 360)
             )
         # then the sprites over the slots
@@ -185,7 +187,7 @@ class Inventory():
         return Item(**{
             'id' : 'empty',
             "image" : "./assets/block/null.png",
-            "scene" : self.player.sprite.scene,
+            "scene" : self.player.scene,
             'mask' : None,
             'action': None
         })

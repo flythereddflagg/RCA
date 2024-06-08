@@ -9,7 +9,7 @@ from .tools import list_collided
 from .item import EMPTY
 from .node import Node
 
-DEFAULT_ANIMATION = 'stand'
+DEFAULT_STATE = 'stand'
 LEFT_HAND_BUTTON = "BUTTON_1"
 RIGHT_HAND_BUTTON = "BUTTON_2"
 RIGHT_STICK_AX = ["R_"+direction for direction in Compass.strings]
@@ -17,7 +17,6 @@ RIGHT_STICK_AX = ["R_"+direction for direction in Compass.strings]
 
 class Player(Node):
     def __init__(self, **options):
-        # TODO MAYBE? implement acceleration and momentum
         super().__init__(**options)
         self.options = options
         self.speed = 300
@@ -26,10 +25,14 @@ class Player(Node):
         self.sprite = Decal(parent=self, **options)
         self.damage_direction = pg.math.Vector2(0,1)
         self.move = Movement(self.sprite, **self.options)
+        self.animation = None
         # self.animation = Animation(self, **self.options)
         self.inventory = Inventory(self, money=0, hp=100, hp_max=100)
         self.input_held = None
+        self.state = DEFAULT_STATE
 
+    def signal(self, signal_):
+        self.signals.append(signal_)
 
 
     def apply(self, game_input):
@@ -57,10 +60,10 @@ class Player(Node):
             if not (direction in actions): continue
             dirs +=1
             self.move(direction, speed=self.speed * self.sprite.scale)
-            # self.animation.current = self.animation.data['walk'] # FIXME
+            self.state = 'walk'
         
-        # if not dirs:
-        #     self.animation.current = self.animation.data['stand']
+        if not dirs:
+            self.state = 'stand'
 
 
     def apply_right_stick(self, actions, values):
@@ -73,7 +76,7 @@ class Player(Node):
             multiplier = abs(value) if value else 1.0
             vector += (
                 Compass.vector(direction[2:]) * 
-                self.inventory.image.get_height() * 
+                self.inventory.sprite.image.get_height() * 
                 multiplier
             )
 
@@ -92,7 +95,7 @@ class Player(Node):
             elif self.inventory.left_item.id != EMPTY:
                 print("starting", LEFT_HAND_BUTTON)
                 animation_id = self.inventory.left_item.action
-                self.animation.current = self.animation.data[animation_id]
+                self.state = animation_id
         
         if (RIGHT_HAND_BUTTON in actions and 
             not self.input_held[RIGHT_HAND_BUTTON]
@@ -101,20 +104,23 @@ class Player(Node):
                 self.inventory.select("RIGHT")
             elif self.inventory.right_item.id != EMPTY:
                 animation_id = self.inventory.right_item.action
-                self.animation.current = self.animation.data[animation_id]
+                self.state = animation_id
 
 
     def apply_todos(self):
-        # if self.animation.active: 
-        #     # reject all current todos
-        #     self.todo_list = [] 
-        #     return
+        if self.animation and self.animation.active: 
+            # reject all current todos
+            self.todo_list = [] 
+            return
         self.input_held = self.sprite.scene.game.input.held
 
         # revert to "idle" animation if no input is given
-        # if not self.todo_list and not self.animation.active:
-        #     self.animation.current = self.animation.data[DEFAULT_ANIMATION]
-        #     return
+        if (
+            not self.todo_list and 
+            (not self.animation or not self.animation.active)
+        ):
+            self.state = DEFAULT_STATE
+            return
 
         actions, values = self.get_actions_values()
 
@@ -126,22 +132,24 @@ class Player(Node):
         self.todo_list = [] 
 
 
-    def animate(self):
-        self.animation.update()
-        if self.animation.current['id'] == 'damage' and self.animation.active:
+    def apply_physics(self):
+        if self.state == 'damage':
                 self.move(self.damage_direction, speed=3*self.speed)
+        # TODO refine how damage works including Iframes, knockback and stuff like that.
+
 
 
     def update(self):
         self.apply_todos()
         # self.check_collision()
-        # self.check_signals()
-        # self.animate()
-        # self.inventory.update()
+        self.check_signals()
+        # self.animation.update()
+        self.apply_physics()
+        self.inventory.update()
         
         if self.inventory.hp <= 0:
-            self.scene.player = None
-            self.kill()
+            self.scene.game.player = None
+            self.sprite.kill()
 
 
     def add_todo(self, action):
@@ -158,20 +166,20 @@ class Player(Node):
             if "damage" in signal[0]:
                 self.inventory.change_health(-signal[1])
                 self.damage_direction = signal[2]
-                self.animation.current = self.animation.data['damage']
+                self.state = 'damage'
 
         self.signals = [] # reset signals
 
 
     def check_collision(self):
-        if self.animation.current['id'] == 'damage' and self.animation.active:
+        if self.animation and self.state == 'damage' and self.animation.active:
             return
         if self.animation.alt_sprite.mask:
             for sprite in list_collided(
                 self.animation.alt_sprite, self.scene.groups['foe']
             ):
                 if (sprite.animation and\
-                    sprite.animation.current['id'] == 'damage' and\
+                    sprite.state == 'damage' and\
                     sprite.animation.active
                 ): continue
                 damage_direction = (
