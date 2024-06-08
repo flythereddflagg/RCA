@@ -83,3 +83,6 @@ class Decal(pg.sprite.Sprite):
 
     def update(self):
         if self.parent: self.parent.update()
+
+    def signal(self, *args, **kwargs):
+        if self.parent: self.parent.signal(*args, **kwargs)
