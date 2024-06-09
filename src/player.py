@@ -13,6 +13,8 @@ DEFAULT_STATE = 'stand'
 LEFT_HAND_BUTTON = "BUTTON_1"
 RIGHT_HAND_BUTTON = "BUTTON_2"
 RIGHT_STICK_AX = ["R_"+direction for direction in Compass.strings]
+LEFT_STICK_AX = ["L_"+direction for direction in Compass.strings]
+# TODO implement the left stick with the above line
 
 
 class Player(Node):

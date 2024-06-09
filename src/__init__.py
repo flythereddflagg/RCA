@@ -44,15 +44,16 @@ class GameState(DictObj):
             [self.SCREENWIDTH, self.SCREENHEIGHT], pg.RESIZABLE
         )
         self.clock = pg.time.Clock()
-        self.scene = Scene(
-            game=self, yaml_path=self.INITAL_SCENE, 
-            player=self.PLAYER, groups=self.SPRITE_GROUPS
-        )
+
+        self.load_scene(yaml_path=self.INITAL_SCENE, player=self.PLAYER)
         self.player.sprite.rect.center = self.PLAYER_START_POSITION
         
         if self.FPS_COUNTER:
             self.fps_counter = pg.font.SysFont("Sans", 22)
 
+    def load_scene(self, **kwargs) -> Scene:
+        self.scene = Scene(game=self,  groups=self.SPRITE_GROUPS, **kwargs)
+        return self.scene
 
     def run(self):
         self.running = True

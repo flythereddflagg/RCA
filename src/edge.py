@@ -22,16 +22,16 @@ class Edge(Decal):
     def exec_trigger(self):
         old_scene = self.scene
         game = self.scene.game
-        player = self.scene.player     
+        player = self.scene.game.player     
         new_scene = game.load_scene(
-            game, self.options['scene_path'], player
+            yaml_path=self.options['scene_path'], player=player
         )
 
         sprites = new_scene.layers['foreground'].sprites()
         block = list(filter(lambda x: x.id == self.id, sprites))[0]
-        player.rect.center = block.rect.center
+        player.sprite.rect.center = block.rect.center
         dx, dy = Compass.unit_vector(block.options['exit_dir'])
-        player.rect.x += dx*(player.rect.w/2 + block.rect.w/2)
-        player.rect.y += dy*(player.rect.h/2 + block.rect.h/2)
+        player.sprite.rect.x += dx*(player.sprite.rect.w/2 + block.rect.w/2)
+        player.sprite.rect.y += dy*(player.sprite.rect.h/2 + block.rect.h/2)
         new_scene.camera.center_player()
         old_scene.deconstruct() 

@@ -2,6 +2,7 @@ import pygame as pg
 
 from .tools import load_yaml, class_from_str
 from .camera import Camera
+from .node import Node
 
 
 class Scene():  
@@ -89,12 +90,13 @@ class Scene():
                 sprite_instance.rect.center = start
             self.layers['foreground'].add(player.sprite)
 
-        elif isinstance(player_init, object):
+        elif isinstance(player_init, Node):
             player = player_init
+            player.sprite.scale_by(0) # FIXME should this work?
             player.scene = self
-            self.layers['foreground'].add(player)
-            self.groups['player'].add(player)
-            player.animation.previous = ''
+            self.layers['foreground'].add(player.sprite)
+            self.groups['player'].add(player.sprite)
+            if player.animation: player.animation.previous = ''
         else:
             raise TypeError(
                 f"Player {player_init} is of Type {type(player)}! Should be str or object"
