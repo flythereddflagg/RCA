@@ -7,17 +7,6 @@ DRAW_LAYERS:
 INIT_ZOOM: 1
 # pixels before camera moves instead of player
 CAMERASLACK: 100
-SPRITE_GROUPS:
-  - solid     # solid entities
-  - player    # user-controlled sprites           
-  - foe       # enemies
-
-hud:
-  - id: hearts
-    type: Decal
-    image: ./assets/block/hud_element.png
-    mask:
-    start: [0,0]
 
 background:
   - id: dungeon_tile

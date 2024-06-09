@@ -6,18 +6,6 @@ DRAW_LAYERS: # layers will be drawn in this order
   - background
   - foreground
   - hud
-SPRITE_GROUPS:
-  - solid        # solid entities
-  - player       # sprites you can control             
-  - foe          # enemies
-
-# sprites in each drawing layer
-hud:
-  - id: <unique ID 1>
-    type: Decal
-    image: path to
-    start: [0,0]
-    mask:
 
 background:
   - id: <unique ID 2>

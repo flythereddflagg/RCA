@@ -5,7 +5,7 @@ from .camera import Camera
 
 
 class Scene():  
-    def __init__(self, game, yaml_path, player=None):
+    def __init__(self, game, yaml_path, groups, player=None):
         """
         All this must do load the data from a YAML file
         and load each sprite into a group
@@ -15,7 +15,7 @@ class Scene():
         self.all_sprites = pg.sprite.Group()
         self.groups = {
             group_name: pg.sprite.Group() 
-            for group_name in self.data.SPRITE_GROUPS
+            for group_name in groups
         }
         self.layers = {
             group_name: pg.sprite.Group() 
@@ -54,8 +54,6 @@ class Scene():
                 start = node_init.get('start')
                 if start:
                     sprite_instance.rect.center = start
-
-        
 
 
     def update(self):        

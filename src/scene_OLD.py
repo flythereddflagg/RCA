@@ -16,7 +16,7 @@ class Scene():
         self.all_sprites = pg.sprite.Group()
         self.groups = {
             group_name: pg.sprite.Group() 
-            for group_name in self.data.SPRITE_GROUPS
+            for group_name in self.data.
         }
         self.layers = {
             group_name: pg.sprite.Group() 

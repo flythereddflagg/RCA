@@ -93,7 +93,6 @@ class Player(Node):
             if self.inventory.active:
                 self.inventory.select("LEFT")
             elif self.inventory.left_item.id != EMPTY:
-                print("starting", LEFT_HAND_BUTTON)
                 animation_id = self.inventory.left_item.action
                 self.state = animation_id
         
@@ -172,8 +171,7 @@ class Player(Node):
 
 
     def check_collision(self):
-        if self.animation and self.state == 'damage' and self.animation.active:
-            return
+        if self.state == 'damage': return
         if self.animation.alt_sprite.mask:
             for sprite in list_collided(
                 self.animation.alt_sprite, self.scene.groups['foe']

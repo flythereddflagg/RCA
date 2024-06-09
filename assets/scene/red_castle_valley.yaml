@@ -8,18 +8,6 @@ DRAW_LAYERS:
 INIT_ZOOM: 1
 # pixels before camera moves instead of player
 CAMERASLACK: 100
-SPRITE_GROUPS:
-  - solid     # solid entities
-  - player    # user-controlled sprites           
-  - foe       # enemies
-  # - player_children # child sprite objects of player
-
-hud:
-  # - id: hearts
-  #   type: Decal
-  #   image: ./assets/block/hud_element.png
-  #   start: [0,0]
-  #   mask:
 
 background:
   - id: BACKGROUND

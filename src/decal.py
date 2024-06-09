@@ -32,7 +32,7 @@ class Decal(pg.sprite.Sprite):
     ):
         super().__init__()
         id_ = kwargs.get('id')
-        self.id = id_ if id_ else str(id(self))
+        self.id = id_ if id_ else str(type(self)) + str(id(self)) 
         self.image_path = image
         self.mask_path = mask
         self.init_scale = scale

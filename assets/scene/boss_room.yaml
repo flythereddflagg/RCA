@@ -6,10 +6,7 @@ DRAW_LAYERS: # layers will be drawn in this order
   - background
   - foreground
   - hud
-SPRITE_GROUPS:
-  - solid        # solid entities
-  - player       # sprites you can control             
-  - foe          # enemies
+
 
 # sprites in each drawing layer
 hud:
