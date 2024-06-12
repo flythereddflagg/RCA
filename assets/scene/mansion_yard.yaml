@@ -20,7 +20,7 @@ foreground:
     type: Edge
     image: ./assets/block/block.png
     mask: image
-    start: [845,1969]
+    start: [860,1969]
     scale: 2.5
     scene_path: ./assets/scene/red_castle_valley.yaml
     exit_dir: UP

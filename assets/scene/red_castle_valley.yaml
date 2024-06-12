@@ -3,7 +3,6 @@ id: red castle valley
 DRAW_LAYERS:
   - background
   - foreground
-  - hud
 # amount to scale everything
 INIT_ZOOM: 1
 # pixels before camera moves instead of player

@@ -48,7 +48,7 @@ class GameState(DictObj):
         self.load_scene(yaml_path=self.INITAL_SCENE, player=self.PLAYER)
         self.player.sprite.rect.center = self.PLAYER_START_POSITION
         
-        if self.FPS_COUNTER:
+        if self.FPS_COUNTER or self.DEBUG:
             self.fps_counter = pg.font.SysFont("Sans", 22)
 
     def load_scene(self, **kwargs) -> Scene:
@@ -92,10 +92,18 @@ class GameState(DictObj):
         for group_name in self.scene.data.DRAW_LAYERS:
             self.scene.layers[group_name].draw(self.screen)
 
-        if self.FPS_COUNTER:
+        if self.FPS_COUNTER or self.DEBUG:
             fps = str(int(self.clock.get_fps()))
             fps_sprite = self.fps_counter.render(fps, True, (255,255,255))
             self.screen.blit(fps_sprite, (10,10))
+        
+        if self.DEBUG:
+            for group_name in self.scene.data.DRAW_LAYERS:
+                sprites = self.scene.layers[group_name].sprites()
+                for sprite in sprites:
+                    pg.draw.rect(
+                        self.screen, (255,255,255), sprite.rect, width=2
+                    )
         
         pg.display.flip()
 

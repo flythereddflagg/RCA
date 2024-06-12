@@ -14,7 +14,7 @@ class Camera(Node):
     
     def update(self):
         self.follow_player()
-        self.stop_at_border()
+        if not self.scene.game.DEBUG: self.stop_at_border()
 
 
     def pan(self, movex, movey):
