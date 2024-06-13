@@ -99,10 +99,18 @@ class Scene():
             if player.animation: player.animation.previous = ''
         else:
             raise TypeError(
-                f"Player {player_init} is of Type {type(player)}! Should be str or object"
+                f"Player {player_init} is of Type {type(player)}! Should be str or Node"
             )
+
         player.sprite.add(self.all_sprites)
         return player
 
     def deconstruct(self):
-        del self
+        pass
+        # for key, layer in self.layers.items():
+        #     if key == 'hud': continue
+        #     for sprite in layer.sprites():
+        #         if sprite is self.game.player: continue
+        #         sprite.kill()
+        #         del sprite
+        # self.camera = None

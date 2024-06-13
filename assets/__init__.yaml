@@ -1,5 +1,5 @@
 # Screen Constants 
-DEBUG: true
+DEBUG: True
 # Frame rate ( in Frames / second)
 FPS: 30 # game is unstable at FPS > about 100
 # FPS: 0 # do not limit FPS
