@@ -101,6 +101,7 @@ class Scene():
             raise TypeError(
                 f"Player {player_init} is of Type {type(player)}! Should be str or object"
             )
+        player.sprite.add(self.all_sprites)
         return player
 
     def deconstruct(self):
