@@ -28,7 +28,6 @@ class GameState(DictObj):
         self.running = False
         self.paused = False
         self.scene = None
-        self.player = None
         self.input = Input(self)
         w, h = self.ASPECT_RATIO
         float_aspect_ratio = w / h
@@ -45,8 +44,15 @@ class GameState(DictObj):
         )
         self.clock = pg.time.Clock()
 
-        self.load_scene(yaml_path=self.INITAL_SCENE, player=self.PLAYER)
+        
+
+        self.load_scene(yaml_path=self.INITAL_SCENE, player=None)
+        self.player = self.scene.node_from_dict(load_yaml(self.PLAYER))
+        self.scene.place_node(self.player, self.scene.layers['foreground'])
         self.player.sprite.rect.center = self.PLAYER_START_POSITION
+        if self.DEBUG:
+            for sprite in self.scene.all_sprites.sprites():
+                sprite.pos = pg.font.SysFont("Sans", 10)
         
         if self.FPS_COUNTER or self.DEBUG:
             self.fps_counter = pg.font.SysFont("Sans", 22)

@@ -13,6 +13,7 @@ class Camera(Node):
 
     
     def update(self):
+        if not self.scene.game.player: return
         self.follow_player()
         if not self.scene.game.DEBUG: self.stop_at_border()
 
@@ -29,10 +30,9 @@ class Camera(Node):
 
 
     def follow_player(self):
-        if not self.scene.game.player: return
-        player = self.scene.game.player
+        player = self.scene.game.player.sprite
         center = pg.math.Vector2(*get_center_screen())
-        player_pos = pg.math.Vector2(player.sprite.rect.center)
+        player_pos = pg.math.Vector2(player.rect.center)
         movex, movey = player_pos - center
         
         movex, movey = self.add_camera_slack(
