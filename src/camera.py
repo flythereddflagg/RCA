@@ -13,6 +13,9 @@ class Camera(Node):
 
     
     def update(self):
+        for sprite in self.scene.all_sprites.sprites():
+            if sprite.scale != self.cur_zoom * sprite.init_scale:
+                sprite.scale_abs(self.cur_zoom * sprite.init_scale)
         if not self.scene.game.player: return
         self.follow_player()
         if not self.scene.game.DEBUG: self.stop_at_border()

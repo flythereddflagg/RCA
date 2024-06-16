@@ -6,8 +6,11 @@ id: PLAYER
 type: Player
 image: "./assets/actor/larry/larry_base.png"
 mask: image
+groups:
+  - player
 
 path_prefix: "./assets/actor/larry/"
+
 
 animations:
   "null":

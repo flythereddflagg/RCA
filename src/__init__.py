@@ -28,6 +28,7 @@ class GameState(DictObj):
         self.running = False
         self.paused = False
         self.scene = None
+        self.player = None
         self.input = Input(self)
         w, h = self.ASPECT_RATIO
         float_aspect_ratio = w / h
@@ -44,25 +45,28 @@ class GameState(DictObj):
         )
         self.clock = pg.time.Clock()
 
-        
 
-        self.load_scene(yaml_path=self.INITAL_SCENE, player=None)
+        self.load_scene(yaml_path=self.INITAL_SCENE)
         self.player = self.scene.node_from_dict(load_yaml(self.PLAYER))
-        self.scene.place_node(self.player, self.scene.layers['foreground'])
+        self.scene.place_node(
+            self.player, self.scene.layers['foreground'],
+            groups=self.player.options.get("groups")  
+        )
         self.player.sprite.rect.center = self.PLAYER_START_POSITION
-        if self.DEBUG:
-            for sprite in self.scene.all_sprites.sprites():
-                sprite.pos = pg.font.SysFont("Sans", 10)
         
         if self.FPS_COUNTER or self.DEBUG:
             self.fps_counter = pg.font.SysFont("Sans", 22)
         
 
-    def load_scene(self, **kwargs) -> Scene:
-        self.scene = Scene(game=self,  groups=self.SPRITE_GROUPS, **kwargs)
-        if self.DEBUG:
-            for sprite in self.scene.all_sprites.sprites():
-                sprite.pos = pg.font.SysFont("Sans", 10)
+    def load_scene(self, player=None, **kwargs) -> Scene:
+        self.player = player
+        self.scene = Scene(
+            game=self,  groups=self.SPRITE_GROUPS, **kwargs
+        )
+        if player:
+            self.scene.place_node(self.player, self.scene.layers['foreground'],
+                groups=self.player.options.get("groups")  
+            )
         return self.scene
 
     def run(self):
@@ -108,27 +112,33 @@ class GameState(DictObj):
             self.screen.blit(fps_sprite, (10,10))
         
         if self.DEBUG:
-            background = self.scene.layers['background'].sprites()[0]
-            for group_name in self.scene.data.DRAW_LAYERS:
-                sprites = self.scene.layers[group_name].sprites()
-                for sprite in sprites:
-                    pg.draw.rect(
-                        self.screen, (255,255,255), sprite.rect, width=2
-                    )
-                    pos1, pos2 = (
-                        str(sprite.rect.topleft), str(
-                            pg.math.Vector2(sprite.rect.topleft) - 
-                            pg.math.Vector2(background.rect.topleft)
-                        ),
-                    )
-                    pos_sprite = sprite.pos.render(
-                        f"{pos1} ; {pos2}", 
-                        True, (255,255,255)
-                    )
-                    self.screen.blit(
-                        pos_sprite, 
-                        pg.math.Vector2(sprite.rect.topleft) - (0, 15)
-                    )
+            self.render_debug()
         
         pg.display.flip()
 
+
+
+    def render_debug(self):
+        background = self.scene.layers['background'].sprites()[0]
+        for group_name in self.scene.data.DRAW_LAYERS:
+            sprites = self.scene.layers[group_name].sprites()
+            for sprite in sprites:
+                if not vars(sprite).get('pos'):
+                    sprite.pos = pg.font.SysFont("Sans", 10)
+                pg.draw.rect(
+                    self.screen, (255,255,255), sprite.rect, width=2
+                )
+                pos1, pos2 = (
+                    str(sprite.rect.topleft), str(
+                        pg.math.Vector2(sprite.rect.topleft) - 
+                        pg.math.Vector2(background.rect.topleft)
+                    ),
+                )
+                pos_sprite = sprite.pos.render(
+                    f"{pos1} ; {pos2}", 
+                    True, (255,255,255)
+                )
+                self.screen.blit(
+                    pos_sprite, 
+                    pg.math.Vector2(sprite.rect.topleft) - (0, 15)
+                )

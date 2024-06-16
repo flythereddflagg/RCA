@@ -6,7 +6,7 @@ from .node import Node
 
 
 class Scene():  
-    def __init__(self, game, yaml_path, groups, player:Node=None):
+    def __init__(self, game, yaml_path, groups):
         """
         All this must do load the data from a YAML file
         and load each sprite into a group
@@ -24,13 +24,13 @@ class Scene():
         }
         self.layers['hud'] = pg.sprite.Group() # hud is a given
         
-        self.load_scene()
-        self.game.player
+        self.load()
         self.camera = Camera(self)
         self.camera.zoom_by(self.game.SCALE * self.data.get('INIT_ZOOM'))
+        # make it so non-sprite nodes get loaded as well in self.load
 
 
-    def node_from_dict(self, node_init:dict)-> Node:
+    def node_from_dict(self, node_init:dict):
         node_init['scene'] = self
         yaml = node_init.get("yaml")
         if yaml: node_init = {**node_init, **load_yaml(yaml)}
@@ -40,6 +40,8 @@ class Scene():
 
 
     def place_node(self, node:Node, layer, groups=None, start=None):
+        if node.scene is not self:
+            node.scene = self
         sprite_instance = (
             node 
             if isinstance(node, pg.sprite.Sprite) else 
@@ -118,10 +120,7 @@ class Scene():
 
     def deconstruct(self):
         pass
-        # for key, layer in self.layers.items():
-        #     if key == 'hud': continue
-        #     for sprite in layer.sprites():
-        #         if sprite is self.game.player: continue
-        #         sprite.kill()
-        #         del sprite
-        # self.camera = None
+        # for sprite in self.all_sprites.sprites():
+        #     if sprite is self.game.player.sprite: continue
+        #     sprite.kill()
+        

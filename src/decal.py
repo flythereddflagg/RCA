@@ -44,13 +44,14 @@ class Decal(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.mask = self.get_mask(mask)
         self.scale = 1.0
+        self.init_scale = scale
 
         self.original = Original(self.image, self.mask, self.rect.size)
         self.options = kwargs
         self.scale_by(scale)
 
 
-    def get_mask(self, mask_path=None):
+    def get_mask(self, mask_path=None) -> pg.mask.Mask:
         if mask_path is None:
             return vars(self).get('mask')
 
