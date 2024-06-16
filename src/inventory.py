@@ -20,7 +20,7 @@ class Inventory(Node):
             "scene": player.scene,
             "image": "./assets/actor/inventory_screen/backpack.png",
             "mask": None,
-            "scale": INV_SCALE * self.scene.game.SCALE
+            "scale": INV_SCALE
         })
 
         self.slots:list[Item] = []
@@ -41,7 +41,7 @@ class Inventory(Node):
                 "scene": player.scene,
                 "image": "./assets/actor/inventory_screen/hand.png",
                 "mask": None,
-                "scale": INV_SCALE * self.scene.game.SCALE
+                "scale": INV_SCALE
             })
             for _ in range(2)
         )
@@ -60,7 +60,7 @@ class Inventory(Node):
             "scene": player.scene,
             "image": "./assets/actor/inventory_screen/marker.png",
             "mask": None,
-            "scale": INV_SCALE * self.scene.game.SCALE
+            "scale": INV_SCALE
         })
         self.marker.rect.center = self.sprite.rect.center
 

@@ -29,7 +29,7 @@ class Scene():
         self.camera.zoom_by(self.game.SCALE * self.data.get('INIT_ZOOM'))
         # make it so non-sprite nodes get loaded as well in self.load
 
-
+    @staticmethod
     def node_from_dict(self, node_init:dict):
         node_init['scene'] = self
         yaml = node_init.get("yaml")
@@ -47,6 +47,8 @@ class Scene():
             if isinstance(node, pg.sprite.Sprite) else 
             node.sprite
         )
+        if sprite_instance.scene is not self:
+            sprite_instance.scene = self
         self.all_sprites.add(sprite_instance)
         layer.add(sprite_instance)
 
@@ -63,7 +65,7 @@ class Scene():
             if not layer_data: continue
 
             for node_init in layer_data:
-                node = self.node_from_dict(node_init)
+                node = Scene.node_from_dict(self, node_init)
                 self.place_node(
                     node, layer, 
                     node_init.get('groups'), node_init.get('start')
@@ -78,45 +80,6 @@ class Scene():
         # finally, update the camera
         if self.camera: self.camera.update()
 
-
-    def load_player(self, player_init) -> Node:
-        if not player_init: return None
-
-        if isinstance(player_init, str) and player_init.endswith(".yaml"):
-            player_data = load_yaml(player_init)
-            player_data['scene'] = self
-            player = (
-                class_from_str(player_data['type'])(**player_data)
-            )
-            sprite_instance = (
-                player 
-                if isinstance(player, pg.sprite.Sprite) else 
-                player.sprite
-            )
-            # groups = player_data.get('groups')
-            # if groups:
-            #     for group in groups:
-            #         self.groups[group].add(sprite_instance)
-            
-            start = player_data.get('start')
-            if start:
-                sprite_instance.rect.center = start
-            self.layers['foreground'].add(player.sprite)
-            self.groups['player'].add(player.sprite)
-
-        # elif isinstance(player_init, Node):
-        #     player = player_init
-        #     player.sprite.scale_by(0) # FIXME should this work?
-        #     player.scene = self
-        #     self.layers['foreground'].add(player.sprite)
-        #     self.groups['player'].add(player.sprite)
-        else:
-            raise TypeError(
-                f"Player {player_init} is of Type {type(player_init)}! Should be str or Node"
-            )
-
-        player.sprite.add(self.all_sprites)
-        return player
 
     def deconstruct(self):
         pass

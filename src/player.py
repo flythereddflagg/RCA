@@ -18,8 +18,9 @@ LEFT_STICK_AX = ["L_"+direction for direction in Compass.strings]
 
 
 class Player(Node):
-    def __init__(self, **options):
+    def __init__(self, game, **options):
         super().__init__(**options)
+        self.game = game
         self.options = options
         self.speed = 300
         self.todo_list = []
@@ -113,7 +114,7 @@ class Player(Node):
             # reject all current todos
             self.todo_list = [] 
             return
-        self.input_held = self.sprite.scene.game.input.held
+        self.input_held = self.game.input.held
 
         # revert to "idle" animation if no input is given
         if (

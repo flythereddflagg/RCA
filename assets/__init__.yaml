@@ -53,9 +53,9 @@ CTLR_BIND:
 CTLR_BUTTON: A,B,X,Y,-,home,+,LS,RS,LB,RB,dUP,dDOWN,dLEFT,dRIGHT,PrtScn
 CTLR_AXES: LSX,LSY,RSX,RSY,LT,RT
 
-INITAL_SCENE: ./assets/scene/forest.yaml
+# INITAL_SCENE: ./assets/scene/forest.yaml
 # INITAL_SCENE: ./assets/scene/mansion_yard.yaml
-# INITAL_SCENE: ./assets/scene/red_castle_valley.yaml
+INITAL_SCENE: ./assets/scene/red_castle_valley.yaml
 PLAYER: ./assets/actor/player.yaml
 PLAYER_START_POSITION: [900,600] 
 # INITAL_SCENE: ./assets/scene/blank_scene.yaml

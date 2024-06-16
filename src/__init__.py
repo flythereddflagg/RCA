@@ -45,9 +45,13 @@ class GameState(DictObj):
         )
         self.clock = pg.time.Clock()
 
-
-        self.load_scene(yaml_path=self.INITAL_SCENE)
-        self.player = self.scene.node_from_dict(load_yaml(self.PLAYER))
+        player_data = load_yaml(self.PLAYER)
+        player_data['game'] = self
+        self.load_scene(
+            yaml_path=self.INITAL_SCENE, 
+            player=Scene.node_from_dict(None, player_data)
+        )
+        
         self.scene.place_node(
             self.player, self.scene.layers['foreground'],
             groups=self.player.options.get("groups")  
