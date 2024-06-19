@@ -67,6 +67,15 @@ class Inventory(Node):
 
 
     def update(self):
+        if self.scene is not self.player.scene:
+            self.scene = self.player.scene
+            for sprite in [
+                self.sprite, self.left_hand, self.right_hand,
+                self.left_item, self.right_item, self.marker
+            ]:
+                sprite.add(self.scene.all_sprites)
+            for sprite in self.slot_sprites:
+                sprite.add(self.scene.all_sprites)
         input_held = self.player.scene.game.input.held
         
         if not any(
@@ -82,14 +91,12 @@ class Inventory(Node):
 
         
     def toggle(self):
-        print("toggling:", end=' ')
         self.active = False if self.active else True
         toggle_state = (
             self.player.scene.layers['hud'].add 
             if self.active else 
             self.player.scene.layers['hud'].remove
         )
-        print(toggle_state, self.player.scene.layers['hud'])
         # ORDER MATTERS first we do the backpack and hands
         for sprite in [self.sprite, self.left_hand, self.right_hand]:
             toggle_state(sprite)
@@ -144,6 +151,7 @@ class Inventory(Node):
             "scale": INV_SCALE
         })
         self.slot_sprites.add(new_slot)
+        new_slot.add(self.scene.all_sprites)
         return self.slots[-1]
 
 
