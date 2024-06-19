@@ -52,10 +52,6 @@ class GameState(DictObj):
             player=Scene.node_from_dict(None, player_data)
         )
         
-        self.scene.place_node(
-            self.player, self.scene.layers['foreground'],
-            groups=self.player.options.get("groups")  
-        )
         self.player.sprite.rect.center = self.PLAYER_START_POSITION
         
         if self.FPS_COUNTER or self.DEBUG:
@@ -107,7 +103,7 @@ class GameState(DictObj):
     def draw_frame(self):
 
         self.screen.fill(BLACK)
-        for group_name in self.scene.data.DRAW_LAYERS:
+        for group_name in self.scene.draw_layers:
             self.scene.layers[group_name].draw(self.screen)
 
         if self.FPS_COUNTER or self.DEBUG:

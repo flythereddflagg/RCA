@@ -15,9 +15,9 @@ class Inventory(Node):
     ):
         super().__init__(player.scene)
         self.sprite = Decal(**{
-            'parent': self,
+            "parent": self,
             "id": "inventory_screen",
-            "scene": player.scene,
+            "scene": None,
             "image": "./assets/actor/inventory_screen/backpack.png",
             "mask": None,
             "scale": INV_SCALE
@@ -38,7 +38,7 @@ class Inventory(Node):
 
         self.left_hand, self.right_hand = (Decal(**{
                 "id": "inventory_screen",
-                "scene": player.scene,
+                "scene": None,
                 "image": "./assets/actor/inventory_screen/hand.png",
                 "mask": None,
                 "scale": INV_SCALE
@@ -56,8 +56,9 @@ class Inventory(Node):
             self.sprite.rect.center[0]//2, 0
         )
         self.marker = Decal(**{
+            "parent": self,
             "id": "inventory_marker",
-            "scene": player.scene,
+            "scene": None,
             "image": "./assets/actor/inventory_screen/marker.png",
             "mask": None,
             "scale": INV_SCALE
@@ -66,10 +67,6 @@ class Inventory(Node):
 
 
     def update(self):
-        # update reference to scene if necessary
-        if self.player.scene is not self.scene: 
-            self.scene = self.player.scene
-
         input_held = self.player.scene.game.input.held
         
         if not any(
@@ -85,12 +82,14 @@ class Inventory(Node):
 
         
     def toggle(self):
+        print("toggling:", end=' ')
         self.active = False if self.active else True
         toggle_state = (
-            self.scene.layers['hud'].add 
+            self.player.scene.layers['hud'].add 
             if self.active else 
-            self.scene.layers['hud'].remove
+            self.player.scene.layers['hud'].remove
         )
+        print(toggle_state, self.player.scene.layers['hud'])
         # ORDER MATTERS first we do the backpack and hands
         for sprite in [self.sprite, self.left_hand, self.right_hand]:
             toggle_state(sprite)
@@ -137,11 +136,12 @@ class Inventory(Node):
         self.slots.append(None)
         self.slots[-1] = self.empty_item()
         new_slot = Decal(**{
+            "parent": self,
             "id": f"inventory_slot({len(self.slots)-1})",
-            "scene": self.player.scene,
+            "scene": None,
             "image": "./assets/actor/inventory_screen/slot.png",
             "mask": None,
-            "scale": INV_SCALE * self.scene.game.SCALE
+            "scale": INV_SCALE
         })
         self.slot_sprites.add(new_slot)
         return self.slots[-1]
@@ -186,9 +186,10 @@ class Inventory(Node):
 
     def empty_item(self):
         return Item(**{
+            'parent': self,
             'id' : 'empty',
             "image" : "./assets/block/null.png",
-            "scene" : self.player.scene,
+            "scene" : None,
             'mask' : None,
             'action': None
         })

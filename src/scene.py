@@ -18,11 +18,12 @@ class Scene():
             group_name: pg.sprite.Group() 
             for group_name in groups
         }
+        self.draw_layers = self.data.DRAW_LAYERS.copy()
+        self.draw_layers.append('hud') # hud is a given
         self.layers = {
             group_name: pg.sprite.Group() 
-            for group_name in self.data.DRAW_LAYERS
+            for group_name in self.draw_layers
         }
-        self.layers['hud'] = pg.sprite.Group() # hud is a given
         
         self.load()
         self.camera = Camera(self)
@@ -74,7 +75,7 @@ class Scene():
 
     def update(self):        
         # update all sprites
-        for group_name in self.data.DRAW_LAYERS:
+        for group_name in self.draw_layers:
             self.layers[group_name].update()
         
         # finally, update the camera
