@@ -56,7 +56,7 @@ class Scene():
             for group in groups:
                 self.groups[group].add(sprite_instance)
         if start:
-            sprite_instance.rect.center = start
+            sprite_instance.rect.topleft = start
 
 
     def load(self):
