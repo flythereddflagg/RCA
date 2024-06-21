@@ -13,22 +13,17 @@ path_prefix: "./assets/actor/larry/"
 
 
 animations:
-  "null":
-    image: "./assets/block/null.png"
-    repeat: True
-  stand:
-    image: "larry_emote.png"
-    repeat: True
-  walk:
-    image: "character_walk.png"
-    repeat: True
+  # stand:
+  #   data: "larry_emote.png"
+  #   repeat: True
+  # walk:
+  #   image: "character_walk.png"
+  #   repeat: True
   sword:
-    repeat: False
-    image: "sword.png"
-    mask_path: "sword_hit_mask.png"
-  damage:
-    repeat: False
-    image: "damage.png"
-  shovel:
-    repeat: False
-    image: "hammer.png"
+    datafile: larry_sword_swing.json
+  # damage:
+  #   repeat: False
+  #   image: "damage.png"
+  # shovel:
+  #   repeat: False
+  #   image: "hammer.png"
