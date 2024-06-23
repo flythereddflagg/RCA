@@ -32,11 +32,14 @@ class Animation():
 
     """
     def __init__(
-        self, sprite:pg.sprite.Sprite, animations:dict, path_prefix='./'
+        self, parent, animations:dict, path_prefix='./'
     ):
-        self.sprite = sprite
+        self.parent = parent
         self.previous = None
+        self.last_direction = None
+        self.last_frame_time = 0
         self.active = False
+        self.frame_counter = iter()
         self.path_prefix = path_prefix
         self.animations = {}
         self.load_animations(animations)
@@ -65,14 +68,23 @@ class Animation():
 
 
     def update(self) -> None:
-        pass
+        # FIXME is currently in non-working state
+        state = self.parent.state
+        current = self.animations[state]
+        set_frame = False
+        # update animation if changed
+        if state != self.previous:
+            set_frame = True
 
 
-    def set_action(self, action:str) -> None:
-        """Sets the current animation action and direction"""
-        pass
+        # update direction if it has changed
+        if self.sprite.move.direction != self.last_direction:
+            set_frame = True
+            self.last_direction = self.sprite.move.direction
+            self.frames = self.current["frames"][self.sprite.move.direction]
+        
+        if set_frame: self.set_frame()
+        cur_time = pg.time.get_ticks()
+        if cur_time - self.last_frame_time > - 0:
+            self.set_image()
 
-
-    def cancel(self) -> None:
-        """Force cancels the animation back to the previous one"""
-        pass
