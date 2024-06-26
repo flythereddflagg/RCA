@@ -37,7 +37,7 @@ class Animation():
         self.parent = parent
         self.previous = None
         self.last_direction = None
-        self.last_frame_time = 0
+        self.previous_tick_time = 0
         self.active = False
         self.frame_counter = iter()
         self.path_prefix = path_prefix
@@ -71,20 +71,23 @@ class Animation():
         # FIXME is currently in non-working state
         state = self.parent.state
         current = self.animations[state]
-        set_frame = False
+        set_reel = False
         # update animation if changed
         if state != self.previous:
-            set_frame = True
-
+            set_reel = True
+            self.previous = state
+            self.active = not current.repeat
 
         # update direction if it has changed
-        if self.sprite.move.direction != self.last_direction:
-            set_frame = True
-            self.last_direction = self.sprite.move.direction
-            self.frames = self.current["frames"][self.sprite.move.direction]
+        if self.parent.move.direction != self.last_direction:
+            set_reel = True
+            self.last_direction = self.parent.move.direction
         
-        if set_frame: self.set_frame()
+        if set_reel: self.set_reel()
+
         cur_time = pg.time.get_ticks()
-        if cur_time - self.last_frame_time > - 0:
-            self.set_image()
+        frame_time = current.frames[...].duration # FIXME this line will break
+        while cur_time - self.previous_tick_time > frame_time:
+            
+            self.set_image(next(self.frame_counter, None))
 
