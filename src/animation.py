@@ -40,6 +40,7 @@ class Animation():
         self.previous_tick_time = 0
         self.active = False
         self.frame_counter = iter()
+        self.frame_index = 0
         self.path_prefix = path_prefix
         self.animations = {}
         self.load_animations(animations)
@@ -86,8 +87,23 @@ class Animation():
         if set_reel: self.set_reel()
 
         cur_time = pg.time.get_ticks()
-        frame_time = current.frames[...].duration # FIXME this line will break
+        frame_time = current.frames[self.frame_index].duration 
         while cur_time - self.previous_tick_time > frame_time:
-            
-            self.set_image(next(self.frame_counter, None))
+            self.previous_tick_time += frame_time
+            self.frame_index = next(self.frame_counter, None)
+            self.set_image()
+            frame_time = current.frames[self.frame_index].duration
+
+
+    def set_reel(self):
+        """Set the generator "self.frame_counter" that 
+        will produce the indices in the reel to run
+        from direction and state data"""
+        pass
+
+    def set_image(self):
+        """
+        set the image from the current state and direction and frame index
+        """
+        pass
 
