@@ -1,9 +1,11 @@
 from dataclasses import dataclass
+import itertools
 import pprint
 
 import pygame as pg
 
 from .tools import load_json
+from .compass import Compass
 
 JSON = '.json'
 @dataclass
@@ -34,12 +36,12 @@ class Animation():
     def __init__(
         self, parent, animations:dict, path_prefix='./'
     ):
-        self.parent = parent
-        self.previous = None
-        self.last_direction = None
+        self.parent = parent # parent must have a 'state' attribute
+        self.previous:str = None
+        self.last_direction:int = None
         self.previous_tick_time = 0
         self.active = False
-        self.frame_counter = iter()
+        self.frame_counter = iter([])
         self.frame_index = 0
         self.path_prefix = path_prefix
         self.animations = {}
@@ -70,8 +72,8 @@ class Animation():
 
     def update(self) -> None:
         # FIXME is currently in non-working state
-        state = self.parent.state
-        current = self.animations[state]
+        state:str = self.parent.state
+        current:Reel = self.animations[state]
         set_reel = False
         # update animation if changed
         if state != self.previous:
@@ -95,15 +97,40 @@ class Animation():
             frame_time = current.frames[self.frame_index].duration
 
 
-    def set_reel(self):
+    def set_reel(self) -> None:
         """Set the generator "self.frame_counter" that 
         will produce the indices in the reel to run
         from direction and state data"""
-        pass
+        state:str = self.parent.state
+        direction:int = self.parent.move.direction
+        current:Reel = self.animations[state]
+        frame_tags:list[dict] = current.meta['frameTags']
+        tag = {}
+        for d_tag in range(len(frame_tags)):
+            if Compass.index(frame_tags[d_tag]['name'].upper()) == direction:
+                tag = d_tag
+                break
+
+        else: raise Exception("I done goofed on this.")
+
+        meta_dict = frame_tags[tag]
+        counter = range(meta_dict['from'], meta_dict['to'] + 1)
+        self.frame_counter = (
+            itertools.cycle(counter) 
+            if current.repeat
+            else iter(counter)
+        )
+        self.frame_index = next(self.frame_counter, None)
+        self.set_image()
 
     def set_image(self):
         """
         set the image from the current state and direction and frame index
         """
-        pass
+        current:Reel = self.animations[self.parent.state]
+        cur_pos = self.parent.sprite.rect.center
+        self.parent.sprite.image = current.frames[self.frame_index].image
+        self.parent.sprite.rect = self.parent.sprite.image.get_rect()
+        self.parent.sprite.rect.center = cur_pos
+        self.parent.sprite.mask = self.parent.sprite.get_mask('image')
 

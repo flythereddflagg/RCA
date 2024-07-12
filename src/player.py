@@ -29,7 +29,7 @@ class Player(Node):
         self.damage_direction = pg.math.Vector2(0,1)
         self.move = Movement(self.sprite, **self.options)
         # self.animation = None
-        self.animation = Animation(self.sprite, self.options['animations'], self.options["path_prefix"])
+        self.animation = Animation(self, self.options['animations'], self.options["path_prefix"])
         self.inventory = Inventory(self, money=0, hp=100, hp_max=100)
         self.input_held = None
         self.state = DEFAULT_STATE

@@ -13,14 +13,15 @@ path_prefix: "./assets/actor/larry/"
 
 
 animations:
-  # stand:
-  #   data: "larry_emote.png"
-  #   repeat: True
-  # walk:
-  #   image: "character_walk.png"
-  #   repeat: True
+  stand:
+    datafile: "larry_emote.json"
+    repeat: True
+  walk:
+    datafile: "larry_walk.json"
+    repeat: True
   sword:
     datafile: larry_sword_swing.json
+    repeat: False
   # damage:
   #   repeat: False
   #   image: "damage.png"
