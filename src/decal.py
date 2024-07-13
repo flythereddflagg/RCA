@@ -33,6 +33,7 @@ class Decal(pg.sprite.Sprite):
         super().__init__()
         id_ = kwargs.get('id')
         self.id = id_ if id_ else str(type(self)) + str(id(self)) 
+        self.options = kwargs
         self.image_path = image
         self.mask_path = mask
         self.init_scale = scale
@@ -40,15 +41,12 @@ class Decal(pg.sprite.Sprite):
         self.animation = animation
         self.scene = scene
 
-        self.image = pg.image.load(self.image_path).convert_alpha()
-        self.rect = self.image.get_rect()
-        self.mask = self.get_mask(mask)
-        self.scale = 1.0
         self.init_scale = scale
-
-        self.original = Original(self.image, self.mask, self.rect.size)
-        self.options = kwargs
-        self.scale_by(scale)
+        self.image = None
+        self.rect = None
+        self.mask = None
+        self.scale = 1.0
+        self.set_image(pg.image.load(self.image_path).convert_alpha(), mask)
 
 
     def get_mask(self, mask_path=None) -> pg.mask.Mask:
@@ -87,3 +85,13 @@ class Decal(pg.sprite.Sprite):
 
     def signal(self, *args, **kwargs):
         if self.parent: self.parent.signal(*args, **kwargs)
+    
+    def set_image(self, image:pg.surface.Surface, mask:str=None) -> None:
+        cur_pos = self.rect.center if self.rect else (0,0)
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.mask = self.get_mask(mask)
+
+        self.original = Original(self.image, self.mask, self.rect.size)
+        self.scale_by(self.init_scale)
+        self.rect.center = cur_pos

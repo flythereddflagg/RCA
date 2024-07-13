@@ -129,8 +129,9 @@ class Animation():
         """
         current:Reel = self.animations[self.parent.state]
         cur_pos = self.parent.sprite.rect.center
-        self.parent.sprite.image = current.frames[self.frame_index].image
-        self.parent.sprite.rect = self.parent.sprite.image.get_rect()
-        self.parent.sprite.rect.center = cur_pos
-        self.parent.sprite.mask = self.parent.sprite.get_mask('image')
+        self.parent.sprite.set_image(current.frames[self.frame_index].image)
+
+        
+        # self.parent.sprite.mask = self.parent.sprite.get_mask('image')
+        # TODO MAYBE need to update mask here?
 
