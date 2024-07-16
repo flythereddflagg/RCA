@@ -8,6 +8,7 @@ from .tools import load_json
 from .compass import Compass
 
 JSON = '.json'
+
 @dataclass
 class Frame:
     name:str
@@ -27,6 +28,7 @@ class Reel:
     frames:list[Frame]
     meta:dict
     repeat:bool=True
+
 
 class Animation():
     """
@@ -93,7 +95,7 @@ class Animation():
         while cur_time - self.previous_tick_time > frame_time:
             self.previous_tick_time += frame_time
             self.frame_index = next(self.frame_counter, None)
-            self.set_image()
+            self.set_frame()
             frame_time = current.frames[self.frame_index].duration
 
 
@@ -121,14 +123,14 @@ class Animation():
             else iter(counter)
         )
         self.frame_index = next(self.frame_counter, None)
-        self.set_image()
+        self.set_frame()
 
-    def set_image(self):
+
+    def set_frame(self) -> None:
         """
         set the image from the current state and direction and frame index
         """
         current:Reel = self.animations[self.parent.state]
-        cur_pos = self.parent.sprite.rect.center
         self.parent.sprite.set_image(current.frames[self.frame_index].image)
 
         
