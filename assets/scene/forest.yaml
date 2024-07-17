@@ -20,7 +20,7 @@ foreground:
   - id: forest_red_castle_valley_connection
     type: Edge
     image: ./assets/block/block.png
-    mask: image
+    mask: ./assets/block/block.png
     start: [325,575]
     scale: 2.5
     scene_path: ./assets/scene/red_castle_valley.yaml

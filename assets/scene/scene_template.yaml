@@ -24,7 +24,7 @@ foreground:
   - id: <unique ID 3>
     type: Edge
     image: <image path>
-    mask: image
+    mask: <image path>
     start: [845,-80] # where on the background do you want to start?
     scale: 2.5 # x factor to scale the image.
     scene_path: <new scene path>

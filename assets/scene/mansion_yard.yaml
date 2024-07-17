@@ -19,7 +19,7 @@ foreground:
   - id: bridge_exit
     type: Edge
     image: ./assets/block/block.png
-    mask: image
+    mask: ./assets/block/block.png
     start: [860,1969]
     scale: 2.5
     scene_path: ./assets/scene/red_castle_valley.yaml
@@ -27,7 +27,7 @@ foreground:
   # - id: forest_exit
   #   type: Edge
   #   image: ./assets/block/block.png
-  #   mask: image
+  #   mask: ./assets/block/block.png
   #   start: [1410,1343]
   #   scale: 2.5
   #   scene_path: ./assets/scene/placeholder.yaml
@@ -35,7 +35,7 @@ foreground:
   - id: alley_exit
     type: Edge
     image: ./assets/block/block.png
-    mask: image
+    mask: ./assets/block/block.png
     start: [688,146]
     scale: 2.5
     scene_path: ./assets/scene/alleyway.yaml
@@ -43,7 +43,7 @@ foreground:
   - id: statue_exit 
     type: Edge
     image: ./assets/block/block.png
-    mask: image
+    mask: ./assets/block/block.png
     start: [1058,222]
     scale: 1
     scene_path: ./assets/scene/corridor.yaml
@@ -51,7 +51,7 @@ foreground:
   - id: grate exit 
     type: Edge
     image: ./assets/block/block.png
-    mask: image
+    mask: ./assets/block/block.png
     start: [89,712]
     scale: 1
     scene_path: ./assets/scene/boss_room.yaml

@@ -20,7 +20,7 @@ foreground:
   - id: big ol rock
     type: Decal
     image: ./assets/block/rock.png
-    mask: image
+    mask: ./assets/block/rock.png
     start: [1230,950]
     groups: 
      - solid
@@ -28,7 +28,7 @@ foreground:
   - id: holly
     type: Decal
     image: ./assets/actor/holly/holly_hard_line.png
-    mask: image
+    mask: ./assets/actor/holly/holly_hard_line.png
     start: [800,750]
     groups: 
      - solid
@@ -36,13 +36,13 @@ foreground:
   # - id: ossifrage 1
   #   type: Ossifrage
   #   yaml: ./assets/actor/ossifrage.yaml
-  #   mask: image
+  #   mask: ./assets/actor/ossifrage.yaml
   #   start: [700,900]
 
   - id: bridge_exit
     type: Edge
     image: ./assets/block/block.png
-    mask: image
+    mask: ./assets/block/block.png
     start: [845,-80]
     scale: 2.5
     scene_path: ./assets/scene/mansion_yard.yaml
@@ -51,7 +51,7 @@ foreground:
   - id: forest_red_castle_valley_connection
     type: Edge
     image: ./assets/block/block.png
-    mask: image
+    mask: ./assets/block/block.png
     start: [135,650]
     scale: 2.5
     scene_path: ./assets/scene/forest.yaml
@@ -60,7 +60,7 @@ foreground:
   - id: mountain trail exit
     type: Edge
     image: ./assets/block/block.png
-    mask: image
+    mask: ./assets/block/block.png
     start: [1230,1038]
     scale: 2.5
     scene_path: ./assets/scene/placeholder.yaml
@@ -69,21 +69,21 @@ foreground:
   - id: cactus
     type: Cactus
     image: ./assets/block/cactus.png
-    mask: image
+    mask: ./assets/block/cactus.png
     start: [600,600]
     scale: 1
 
   - id: backpack
     type: Backpack
     image: ./assets/block/backpack.png
-    mask: image
+    mask: ./assets/block/backpack.png
     start: [600,700]
     scale: 1
   
   - id: sword
     type: Item
     image: ./assets/actor/item/sword_icon.png
-    mask: image
+    mask: ./assets/actor/item/sword_icon.png
     start: [600,800]
     scale: 1
     action: sword
@@ -91,7 +91,7 @@ foreground:
   - id: hammer
     type: Item
     image: ./assets/actor/item/hammer_icon.png
-    mask: image
+    mask: ./assets/actor/item/hammer_icon.png
     start: [600,900]
     scale: 1
     action: hammer

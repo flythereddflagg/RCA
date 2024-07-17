@@ -37,13 +37,13 @@ class Inventory(Node):
         self.slot_sprites = pg.sprite.Group()
 
         self.left_hand, self.right_hand = (Decal(**{
-                "id": "inventory_screen",
+                "id": f"inventory_hand_{i}",
                 "scene": None,
                 "image": "./assets/actor/inventory_screen/hand.png",
                 "mask": None,
                 "scale": INV_SCALE
             })
-            for _ in range(2)
+            for i in range(2)
         )
         self.right_hand.image = pg.transform.flip(
             self.right_hand.image, True, False

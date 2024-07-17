@@ -21,7 +21,7 @@ foreground:
   - id: doorway exit 
     type: Edge
     image: ./assets/block/block.png
-    mask: image
+    mask: ./assets/block/block.png
     start: [90,180]
     scale: 1
     scene_path: ./assets/scene/boss_room.yaml
@@ -29,7 +29,7 @@ foreground:
   - id: statue_exit 
     type: Edge
     image: ./assets/block/block.png
-    mask: image
+    mask: ./assets/block/block.png
     start: [1140,159]
     scale: 1
     scene_path: ./assets/scene/mansion_yard.yaml
