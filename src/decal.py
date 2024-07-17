@@ -87,11 +87,12 @@ class Decal(pg.sprite.Sprite):
         if self.parent: self.parent.signal(*args, **kwargs)
     
     def set_image(self, image:pg.surface.Surface, mask:str=None) -> None:
-        cur_pos = self.rect.center if self.rect else (0,0)
+        cur_pos = self.rect.center if self.rect else None
         self.image = image
         self.rect = self.image.get_rect()
         self.mask = self.get_mask(mask)
 
         self.original = Original(self.image, self.mask, self.rect.size)
         self.scale_by(self.init_scale)
-        self.rect.center = cur_pos
+        
+        if cur_pos: self.rect.center = cur_pos
