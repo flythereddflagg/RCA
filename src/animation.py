@@ -27,7 +27,7 @@ class Reel:
     datafile:str
     frames:list[Frame]
     meta:dict
-    repeat:bool=True
+    repeat:bool
 
 
 class Animation():
@@ -40,6 +40,7 @@ class Animation():
     ):
         self.parent = parent # parent must have a 'state' attribute
         self.previous:str = None
+        self.last_state:str = None
         self.last_direction:int = None
         self.previous_tick_time = 0
         self.active = False
@@ -57,7 +58,7 @@ class Animation():
             if not datafile.endswith(JSON): continue
             json_data = load_json(self.path_prefix + datafile)
             self.animations[state] = Reel(
-                state, datafile, list(), json_data['meta']
+                state, datafile, list(), json_data['meta'], data['repeat']
             )
             master_image = pg.image.load(
                 self.path_prefix + self.animations[state].meta['image']
@@ -73,30 +74,41 @@ class Animation():
 
 
     def update(self) -> None:
-        # FIXME is currently in non-working state
         state:str = self.parent.state
+        direction:int = self.parent.move.direction
         current:Reel = self.animations[state]
         set_reel = False
+        if self.active:
+            # do not allow changes to state nor direction
+            state = self.previous
+            direction = self.last_direction
+
         # update animation if changed
         if state != self.previous:
             set_reel = True
+            self.last_state = self.previous
             self.previous = state
             self.active = not current.repeat
 
         # update direction if it has changed
-        if self.parent.move.direction != self.last_direction:
+        if direction != self.last_direction:
             set_reel = True
-            self.last_direction = self.parent.move.direction
+            self.last_direction = direction
         
         if set_reel: self.set_reel()
 
+        # FIXME something is wrong with how I am doing timing here.
         cur_time = pg.time.get_ticks()
         frame_time = current.frames[self.frame_index].duration 
         while cur_time - self.previous_tick_time > frame_time:
             self.previous_tick_time += frame_time
             self.frame_index = next(self.frame_counter, None)
-            self.set_frame()
+            if self.frame_index is None: 
+                self.previous_tick_time = cur_time
+                break
             frame_time = current.frames[self.frame_index].duration
+        
+        self.set_frame()
 
 
     def set_reel(self) -> None:
@@ -130,10 +142,14 @@ class Animation():
         """
         set the image from the current state and direction and frame index
         """
+        print(self.parent.state, self.active)
+        if self.frame_index is None:
+            # then the animation is over
+            self.active = False
+            self.parent.state = self.last_state
+            self.set_reel()
+            return
         current:Reel = self.animations[self.parent.state]
         self.parent.sprite.set_image(current.frames[self.frame_index].image)
 
-        
-        # self.parent.sprite.mask = self.parent.sprite.get_mask('image')
-        # TODO MAYBE need to update mask here?
 

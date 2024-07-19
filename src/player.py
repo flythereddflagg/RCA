@@ -99,7 +99,7 @@ class Player(Node):
                 animation_id = self.inventory.left_item.action
                 self.state = animation_id
         
-        if (RIGHT_HAND_BUTTON in actions and 
+        if (RIGHT_HAND_BUTTON in actions and # BUG this is working weird with the sword swing.
             not self.input_held[RIGHT_HAND_BUTTON]
         ):
             if self.inventory.active:
