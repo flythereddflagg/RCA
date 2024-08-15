@@ -78,10 +78,6 @@ class Animation():
         direction:int = self.parent.move.direction
         current:Reel = self.animations[state]
         set_reel = False
-        if self.active:
-            # do not allow changes to state nor direction
-            state = self.previous
-            direction = self.last_direction
 
         # update animation if changed
         if state != self.previous:
@@ -103,12 +99,15 @@ class Animation():
         while cur_time - self.previous_tick_time > frame_time:
             self.previous_tick_time += frame_time
             self.frame_index = next(self.frame_counter, None)
-            if self.frame_index is None: 
+            if self.frame_index is None: # then the animation is over 
                 self.previous_tick_time = cur_time
+                self.active = False
+                self.parent.state = self.last_state
+                self.set_reel()
                 break
             frame_time = current.frames[self.frame_index].duration
         
-        self.set_frame()
+            self.set_frame()
 
 
     def set_reel(self) -> None:
@@ -142,14 +141,8 @@ class Animation():
         """
         set the image from the current state and direction and frame index
         """
-        print(self.parent.state, self.active)
-        if self.frame_index is None:
-            # then the animation is over
-            self.active = False
-            self.parent.state = self.last_state
-            self.set_reel()
-            return
-        current:Reel = self.animations[self.parent.state]
-        self.parent.sprite.set_image(current.frames[self.frame_index].image)
+        self.parent.sprite.set_image(
+            self.animations[self.parent.state].frames[self.frame_index].image
+        )
 
 

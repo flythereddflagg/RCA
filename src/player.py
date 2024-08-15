@@ -28,7 +28,6 @@ class Player(Node):
         self.sprite = Decal(parent=self, **options)
         self.damage_direction = pg.math.Vector2(0,1)
         self.move = Movement(self.sprite, **self.options)
-        # self.animation = None
         self.animation = Animation(self, self.options['animations'], self.options["path_prefix"])
         self.inventory = Inventory(self, money=0, hp=100, hp_max=100)
         self.input_held = None
@@ -65,8 +64,7 @@ class Player(Node):
             self.move(direction, speed=self.speed * self.sprite.scale)
             self.state = 'walk'
         
-        if not dirs:
-            self.state = 'stand'
+
 
 
     def apply_right_stick(self, actions, values):
