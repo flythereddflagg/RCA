@@ -41,11 +41,12 @@ class Animation():
         self.parent = parent # parent must have a 'state' attribute
         self.previous:str = None
         self.last_state:str = None
-        self.last_direction:int = None
-        self.previous_tick_time = 0
-        self.active = False
-        self.frame_counter = iter([])
-        self.frame_index = 0
+        self.last_direction:int = self.parent.move.direction
+        self.last_set_frame_time = 0 # time since the last frame was set
+        self.active = False # is an animation active?
+        self.frame_counter = iter([]) # generator counter for the frame index
+        self.frame_index = 0 # index of the current frame
+        self.frame_time = 1 # duration of the current frame
         self.path_prefix = path_prefix
         self.animations = {}
         self.load_animations(animations)
@@ -93,21 +94,19 @@ class Animation():
         
         if set_reel: self.set_reel()
 
-        # FIXME something is wrong with how I am doing timing here.
-        cur_time = pg.time.get_ticks()
-        frame_time = current.frames[self.frame_index].duration 
-        while cur_time - self.previous_tick_time > frame_time:
-            self.previous_tick_time += frame_time
-            self.frame_index = next(self.frame_counter, None)
-            if self.frame_index is None: # then the animation is over 
-                self.previous_tick_time = cur_time
-                self.active = False
-                self.parent.state = self.last_state
-                self.set_reel()
-                break
-            frame_time = current.frames[self.frame_index].duration
+        # if not enough time has passed just return
+        if pg.time.get_ticks() - self.last_set_frame_time < self.frame_time:
+            return
         
-            self.set_frame()
+        # otherwise, update the frame
+        self.frame_index = next(self.frame_counter, None)
+        if self.frame_index is None:
+            self.active = False
+            self.parent.state = self.last_state
+            self.set_reel()
+            return
+
+        self.set_frame()
 
 
     def set_reel(self) -> None:
@@ -141,8 +140,12 @@ class Animation():
         """
         set the image from the current state and direction and frame index
         """
-        self.parent.sprite.set_image(
-            self.animations[self.parent.state].frames[self.frame_index].image
+        current:Frame = (
+            self.animations[self.parent.state].frames[self.frame_index]
         )
+        self.parent.sprite.set_image(current.image)
+        self.frame_time = current.duration
+        self.last_set_frame_time = pg.time.get_ticks()
+ 
 
 

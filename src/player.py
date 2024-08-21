@@ -55,7 +55,7 @@ class Player(Node):
         return actions, values
 
 
-    def apply_left_stick(self, actions, values):
+    def apply_direction(self, actions, values):
         # move in a direction
         dirs = 0
         for direction in Compass.strings:
@@ -124,7 +124,7 @@ class Player(Node):
 
         actions, values = self.get_actions_values()
 
-        self.apply_left_stick(actions, values)
+        self.apply_direction(actions, values)
         self.apply_right_stick(actions, values)
         self.apply_buttons(actions, values)
 

@@ -139,7 +139,7 @@ class Inventory(Node):
 
 
     def add_slot(self):
-        if len(self.slots) > N_SLOTS: return None
+        if len(self.slots) >= N_SLOTS: return None
         self.slots.append(None)
         self.slots[-1] = self.empty_item()
         new_slot = Decal(**{
