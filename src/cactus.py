@@ -13,13 +13,14 @@ class Cactus(Decal):
 
     def check_collision(self):
         for player in list_collided(self, self.scene.groups['player']):
+            if player.parent: player = player.parent
             if (player.animation and\
-                player.animation.current['id'] == 'damage' and\
+                player.state == 'damage' and\
                 player.animation.active
             ): continue
 
             damage_direction = (
-                pg.math.Vector2(player.rect.center) -
+                pg.math.Vector2(player.sprite.rect.center) -
                 pg.math.Vector2(self.rect.center)
             ).normalize()
             player.signal([

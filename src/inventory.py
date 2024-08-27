@@ -4,19 +4,23 @@ from .item import Item
 from .decal import Decal
 from .tools import get_center_screen, list_collided
 from .compass import Compass
+from .node import Node
 
 N_SLOTS = 6
+INV_SCALE = 1
 
-class Inventory(Decal):
+class Inventory(Node):
     def __init__(
         self, player, money:int=0, hp:int=0, hp_max:int=0, max_money=999
     ):
-        super().__init__(**{
+        super().__init__(player.scene)
+        self.sprite = Decal(**{
+            "parent": self,
             "id": "inventory_screen",
-            "scene": player.scene,
+            "scene": None,
             "image": "./assets/actor/inventory_screen/backpack.png",
             "mask": None,
-            "scale": 1
+            "scale": INV_SCALE
         })
 
         self.slots:list[Item] = []
@@ -28,49 +32,57 @@ class Inventory(Decal):
         self.player = player
         self.left_item:Item = self.empty_item()
         self.right_item:Item = self.empty_item()
-        self.rect.center = get_center_screen()
+        self.sprite.rect.center = get_center_screen()
 
         self.slot_sprites = pg.sprite.Group()
 
         self.left_hand, self.right_hand = (Decal(**{
-                "id": "inventory_screen",
-                "scene": player.scene,
+                "id": f"inventory_hand_{i}",
+                "scene": None,
                 "image": "./assets/actor/inventory_screen/hand.png",
                 "mask": None,
-                "scale": 1
+                "scale": INV_SCALE
             })
-            for _ in range(2)
+            for i in range(2)
         )
         self.right_hand.image = pg.transform.flip(
             self.right_hand.image, True, False
         ) # get the right hand where you want it
 
-        self.left_hand.rect.center = self.rect.center + pg.math.Vector2(
-            -self.rect.center[0]//2, 0
+        self.left_hand.rect.center = self.sprite.rect.center + pg.math.Vector2(
+            -self.sprite.rect.center[0]//2, 0
         )
-        self.right_hand.rect.center = self.rect.center + pg.math.Vector2(
-            self.rect.center[0]//2, 0
+        self.right_hand.rect.center = self.sprite.rect.center + pg.math.Vector2(
+            self.sprite.rect.center[0]//2, 0
         )
         self.marker = Decal(**{
+            "parent": self,
             "id": "inventory_marker",
-            "scene": player.scene,
+            "scene": None,
             "image": "./assets/actor/inventory_screen/marker.png",
             "mask": None,
-            "scale": 1
+            "scale": INV_SCALE
         })
-        self.marker.rect.center = self.rect.center
+        self.marker.rect.center = self.sprite.rect.center
 
 
     def update(self):
-        # update reference to scene if necessary
-        if self.player.scene is not self.scene: 
+        if self.scene is not self.player.scene:
             self.scene = self.player.scene
-
+            for sprite in [
+                self.sprite, self.left_hand, self.right_hand,
+                self.left_item, self.right_item, self.marker
+            ]:
+                sprite.add(self.scene.all_sprites)
+            for sprite in self.slot_sprites:
+                sprite.add(self.scene.all_sprites)
         input_held = self.player.scene.game.input.held
         
-        if not any([input_held[key] for key in ["R_UP","R_DOWN","R_LEFT","R_RIGHT"]]):
+        if not any(
+            [input_held[key] for key in ["R_UP","R_DOWN","R_LEFT","R_RIGHT"]]
+        ):
             if self.active: self.toggle()
-            self.marker.rect.center = self.rect.center
+            self.marker.rect.center = self.sprite.rect.center
         
         slot_index = self.get_selected_item_slot()
         if slot_index is not None:
@@ -81,12 +93,12 @@ class Inventory(Decal):
     def toggle(self):
         self.active = False if self.active else True
         toggle_state = (
-            self.scene.layers['hud'].add 
+            self.player.scene.layers['hud'].add 
             if self.active else 
-            self.scene.layers['hud'].remove
+            self.player.scene.layers['hud'].remove
         )
         # ORDER MATTERS first we do the backpack and hands
-        for sprite in [self, self.left_hand, self.right_hand]:
+        for sprite in [self.sprite, self.left_hand, self.right_hand]:
             toggle_state(sprite)
 
         # then we do the slots
@@ -94,9 +106,9 @@ class Inventory(Decal):
         for i, slot_sprite in enumerate(self.slot_sprites.sprites()):
             toggle_state(slot_sprite)
             slot_sprite.rect.center = (
-                pg.math.Vector2(self.rect.center) + 
+                pg.math.Vector2(self.sprite.rect.center) + 
                 (pg.math.Vector2(Compass.unit_vector(Compass.UP)) * 
-                    self.image.get_height()
+                    self.sprite.image.get_height()
                 ).rotate(i / n_slots * 360)
             )
         # then the sprites over the slots
@@ -127,17 +139,19 @@ class Inventory(Decal):
 
 
     def add_slot(self):
-        if len(self.slots) > N_SLOTS: return None
+        if len(self.slots) >= N_SLOTS: return None
         self.slots.append(None)
         self.slots[-1] = self.empty_item()
         new_slot = Decal(**{
+            "parent": self,
             "id": f"inventory_slot({len(self.slots)-1})",
-            "scene": self.player.scene,
+            "scene": None,
             "image": "./assets/actor/inventory_screen/slot.png",
             "mask": None,
-            "scale": 1
+            "scale": INV_SCALE
         })
         self.slot_sprites.add(new_slot)
+        new_slot.add(self.scene.all_sprites)
         return self.slots[-1]
 
 
@@ -180,9 +194,10 @@ class Inventory(Decal):
 
     def empty_item(self):
         return Item(**{
+            'parent': self,
             'id' : 'empty',
             "image" : "./assets/block/null.png",
-            "scene" : self.player.scene,
+            "scene" : None,
             'mask' : None,
             'action': None
         })

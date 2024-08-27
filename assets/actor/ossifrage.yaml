@@ -2,7 +2,7 @@
 
 # this is the default asset path
 image: "./assets/actor/ossifrage/bird_character_base.png"
-mask: image
+mask: "./assets/actor/ossifrage/bird_character_base.png"
 groups:
   - foe
 animations:

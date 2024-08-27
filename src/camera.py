@@ -1,22 +1,24 @@
 import pygame as pg
 
 from .tools import get_center_screen
+from .node import Node
 
 
-class Camera:
-    def __init__(self, game):
-        self.scene = game
-        self.player = None
+class Camera(Node):
+    def __init__(self, scene):
+        super().__init__(scene)
         self.mobile_groups = list(self.scene.layers.keys())
         self.mobile_groups.remove('hud')
         self.cur_zoom = 1
-        # TODO extract mobile groups to data files so it can be set there
-        # TODO LOW set in game zoom
 
     
     def update(self):
+        for sprite in self.scene.all_sprites.sprites():
+            if sprite.scale != self.cur_zoom * sprite.init_scale:
+                sprite.scale_abs(self.cur_zoom * sprite.init_scale)
+        if not self.scene.game.player: return
         self.follow_player()
-        self.stop_at_border()
+        if not self.scene.game.DEBUG: self.stop_at_border()
 
 
     def pan(self, movex, movey):
@@ -31,9 +33,9 @@ class Camera:
 
 
     def follow_player(self):
-        if not self.player: return
+        player = self.scene.game.player.sprite
         center = pg.math.Vector2(*get_center_screen())
-        player_pos = pg.math.Vector2(self.player.rect.center)
+        player_pos = pg.math.Vector2(player.rect.center)
         movex, movey = player_pos - center
         
         movex, movey = self.add_camera_slack(
@@ -88,15 +90,17 @@ class Camera:
         self.scene.data.CAMERASLACK = tmp_storage
 
 
-    def zoom(self, factor):
+    def zoom_by(self, factor):
+        if factor is None: return
         self.cur_zoom *= factor
+        if self.cur_zoom == 0: self.cur_zoom = 1 # 0 resets scale
         background = self.scene.layers['background'].sprites()[0]
         screen_data = pg.display.Info()
         centerx = screen_data.current_w // 2
         centery = screen_data.current_h // 2
         bg_w, bg_h = background.rect.size
         bg_x, bg_y = background.rect.topleft
-        background.set_scale(factor)
+        background.scale_by(factor)
         bg_w_new, bg_h_new = background.rect.size
         bg_x_new = centerx - bg_w_new * (centerx - bg_x) / bg_w
         bg_y_new = centery - bg_h_new * (centery - bg_y) / bg_h
@@ -106,8 +110,12 @@ class Camera:
             if group == 'background': continue
             for sprite in self.scene.layers[group]:
                 x, y = sprite.rect.center
-                sprite.set_scale(factor)
+                sprite.scale_by(factor)
                 sprite.rect.center = (
                     bg_x_new + bg_w_new * (x - bg_x) / bg_w, 
                     bg_y_new + bg_h_new * (y - bg_y) / bg_h
                 )   
+
+    def zoom_abs(self, scale):
+        self.zoom_by(0)
+        self.zoom_by(scale)

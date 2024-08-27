@@ -6,19 +6,9 @@ DRAW_LAYERS: # layers will be drawn in this order
   - background
   - foreground
   - hud
-SPRITE_GROUPS:
-  - solid        # solid entities
-  - player       # sprites you can control             
-  - foe          # enemies
+
 
 # sprites in each drawing layer
-hud:
-  # - id: <unique ID 1>
-  #   type: Decal
-  #   image: path to
-  #   start: [0,0]
-  #   mask:
-
 background:
   - id: corridor map
     type: Decal
@@ -31,7 +21,7 @@ foreground:
   - id: doorway exit 
     type: Edge
     image: ./assets/block/block.png
-    mask: image
+    mask: ./assets/block/block.png
     start: [90,180]
     scale: 1
     scene_path: ./assets/scene/boss_room.yaml
@@ -39,7 +29,7 @@ foreground:
   - id: statue_exit 
     type: Edge
     image: ./assets/block/block.png
-    mask: image
+    mask: ./assets/block/block.png
     start: [1140,159]
     scale: 1
     scene_path: ./assets/scene/mansion_yard.yaml

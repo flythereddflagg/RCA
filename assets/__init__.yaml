@@ -1,9 +1,11 @@
-# Screen Constants 
+# Screen Constants
 # Frame rate ( in Frames / second)
-FPS: 30 # game is unstable at FPS > about 100
+FPS: 90 # game is unstable at FPS > about 100
 # FPS: 0 # do not limit FPS
+DEBUG: True # show debug info on screen?
 SHOW_EVENTS: false # print events in terminal
 FPS_COUNTER: false # print FPS on game screen
+
 # initial screen size
 RESOLUTION: 360
 ASPECT_RATIO: [16,9]
@@ -52,7 +54,14 @@ CTLR_BIND:
 CTLR_BUTTON: A,B,X,Y,-,home,+,LS,RS,LB,RB,dUP,dDOWN,dLEFT,dRIGHT,PrtScn
 CTLR_AXES: LSX,LSY,RSX,RSY,LT,RT
 
+# INITAL_SCENE: ./assets/scene/forest.yaml
+# INITAL_SCENE: ./assets/scene/mansion_yard.yaml
 INITAL_SCENE: ./assets/scene/red_castle_valley.yaml
 PLAYER: ./assets/actor/player.yaml
 PLAYER_START_POSITION: [900,600] 
 # INITAL_SCENE: ./assets/scene/blank_scene.yaml
+
+SPRITE_GROUPS:
+  - solid     # solid entities
+  - player    # user-controlled sprites           
+  - foe       # enemies

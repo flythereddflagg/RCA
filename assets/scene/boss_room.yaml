@@ -6,10 +6,7 @@ DRAW_LAYERS: # layers will be drawn in this order
   - background
   - foreground
   - hud
-SPRITE_GROUPS:
-  - solid        # solid entities
-  - player       # sprites you can control             
-  - foe          # enemies
+
 
 # sprites in each drawing layer
 hud:
@@ -31,7 +28,7 @@ foreground:
   - id: grate exit
     type: Edge
     image: ./assets/block/block.png
-    mask: image
+    mask: ./assets/block/block.png
     start: [117,117]
     scale: 1
     scene_path: ./assets/scene/mansion_yard.yaml
@@ -39,7 +36,7 @@ foreground:
   - id: doorway exit 
     type: Edge
     image: ./assets/block/block.png
-    mask: image
+    mask: ./assets/block/block.png
     start: [1132,1033]
     scale: 1
     scene_path: ./assets/scene/corridor.yaml

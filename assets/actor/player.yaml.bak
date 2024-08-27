@@ -7,7 +7,7 @@ id: PLAYER
 type: Player
 start: [900,600] 
 image: "./assets/actor/larry/character.png"
-mask: image
+mask: "./assets/actor/larry/character.png"
 groups:
   - player
 

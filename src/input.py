@@ -5,6 +5,7 @@ import pygame as pg
 from .compass import Compass
 
 DEAD_ZONE = 0.5
+# TODO add an input buffer to allow inputs to hang around so timing is looser
 
 class Input():
 

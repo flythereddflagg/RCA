@@ -17,6 +17,7 @@ class Item(Decal):
     def check_collision(self):
         if self.id == EMPTY: return
         for player in list_collided(self, self.scene.groups['player']):
+            if player.parent: player = player.parent
             if player.inventory:
                 new_slot = player.inventory.add_item(self)
                 if new_slot is None: return # no more slots can be added

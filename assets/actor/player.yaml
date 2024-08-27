@@ -4,30 +4,27 @@
 
 id: PLAYER
 type: Player
-image: "./assets/block/null.png"
-mask: image
+image: "./assets/actor/larry/larry_base.png"
+mask: "./assets/actor/larry/larry_base.png"
 groups:
   - player
 
 path_prefix: "./assets/actor/larry/"
 
+
 animations:
-  "null":
-    image: "./assets/block/null.png"
-    repeat: True
   stand:
-    image: "larry_emote.png"
+    datafile: "larry_emote.json"
     repeat: True
   walk:
-    image: "character_walk.png"
+    datafile: "larry_walk.json"
     repeat: True
   sword:
+    datafile: larry_sword_swing.json
     repeat: False
-    image: "sword.png"
-    mask_path: "sword_hit_mask.png"
-  damage:
-    repeat: False
-    image: "damage.png"
-  shovel:
-    repeat: False
-    image: "hammer.png"
+  # damage:
+  #   repeat: False
+  #   image: "damage.png"
+  # shovel:
+  #   repeat: False
+  #   image: "hammer.png"

@@ -6,6 +6,7 @@ import pygame as pg
 
 from .dict_obj import DictObj
 
+
 def load_yaml(yaml_path):
     with open(yaml_path) as f:
         yaml_data = yaml.load(f.read(), Loader=yaml.Loader)
@@ -34,7 +35,7 @@ def mask_collision(self, other):
     return False
 
 
-def list_collided(self, other):
+def list_collided(self, other) -> list:
     """
     Tests that everyone has a valid mask before
     using returning the collided others.
@@ -51,6 +52,7 @@ def list_collided(self, other):
     if collided_others is None: return []
     
     return collided_others
+
 
 def get_center_screen():
         screen_w, screen_h = pg.display.get_surface().get_size()

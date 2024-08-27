@@ -6,18 +6,6 @@ DRAW_LAYERS: # layers will be drawn in this order
   - background
   - foreground
   - hud
-SPRITE_GROUPS:
-  - solid        # solid entities
-  - player       # sprites you can control             
-  - foe          # enemies
-
-# sprites in each drawing layer
-hud:
-  - id: hearts
-    type: Decal
-    image: ./assets/block/hud_element.png
-    start: [0,0]
-    mask:
 
 background:
   - id: mansion yard map
@@ -31,15 +19,15 @@ foreground:
   - id: bridge_exit
     type: Edge
     image: ./assets/block/block.png
-    mask: image
-    start: [845,1969]
+    mask: ./assets/block/block.png
+    start: [860,1969]
     scale: 2.5
     scene_path: ./assets/scene/red_castle_valley.yaml
     exit_dir: UP
   # - id: forest_exit
   #   type: Edge
   #   image: ./assets/block/block.png
-  #   mask: image
+  #   mask: ./assets/block/block.png
   #   start: [1410,1343]
   #   scale: 2.5
   #   scene_path: ./assets/scene/placeholder.yaml
@@ -47,7 +35,7 @@ foreground:
   - id: alley_exit
     type: Edge
     image: ./assets/block/block.png
-    mask: image
+    mask: ./assets/block/block.png
     start: [688,146]
     scale: 2.5
     scene_path: ./assets/scene/alleyway.yaml
@@ -55,7 +43,7 @@ foreground:
   - id: statue_exit 
     type: Edge
     image: ./assets/block/block.png
-    mask: image
+    mask: ./assets/block/block.png
     start: [1058,222]
     scale: 1
     scene_path: ./assets/scene/corridor.yaml
@@ -63,7 +51,7 @@ foreground:
   - id: grate exit 
     type: Edge
     image: ./assets/block/block.png
-    mask: image
+    mask: ./assets/block/block.png
     start: [89,712]
     scale: 1
     scene_path: ./assets/scene/boss_room.yaml

@@ -14,6 +14,7 @@ class Backpack(Decal):
 
     def check_collision(self):
         for player in list_collided(self, self.scene.groups['player']):
+            if player.parent: player = player.parent
             if player.inventory:
                 new_slot = player.inventory.add_slot()
                 if new_slot is None: return # no more slots can be added
