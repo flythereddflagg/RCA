@@ -24,6 +24,8 @@ if __name__ == "__main__":
 # make sure you are building out a good framework as you go!!!!
 
 # GENERAL TO-DO LIST
+# TODO convert from YAML to TOML?
+# TODO remap controller from XBOX standard?
 # TODO rewrite UML for updated data structure SCHEME
 # TODO make meaningful TESTS
 # TODO make a pause and save screen or whatever
