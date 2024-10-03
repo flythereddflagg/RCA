@@ -1,0 +1,23 @@
+#--------
+# converted from: assets/actor/player.yaml
+id = "PLAYER"
+type = "Player"
+image = "./assets/actor/larry/larry_base.png"
+mask = "./assets/actor/larry/larry_base.png"
+groups = ['player']
+path_prefix = "./assets/actor/larry/"
+
+[animations]
+[animations.stand]
+datafile = "larry_emote.json"
+repeat = true
+
+[animations.walk]
+datafile = "larry_walk.json"
+repeat = true
+
+[animations.sword]
+datafile = "larry_sword_swing.json"
+repeat = false
+
+

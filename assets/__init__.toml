@@ -1,0 +1,53 @@
+#--------
+# converted from: assets/__init__.yaml
+FPS = 90
+DEBUG = true
+SHOW_EVENTS = false
+FPS_COUNTER = false
+RESOLUTION = 360
+ASPECT_RATIO = [16, 9]
+SCALE = 2
+CTLR_BUTTON = "A,B,X,Y,-,home,+,LS,RS,LB,RB,dUP,dDOWN,dLEFT,dRIGHT,PrtScn"
+CTLR_AXES = "LSX,LSY,RSX,RSY,LT,RT"
+INITAL_SCENE = "./assets/scene/red_castle_valley.yaml"
+PLAYER = "./assets/actor/player.yaml"
+PLAYER_START_POSITION = [900, 600]
+SPRITE_GROUPS = ['solid', 'player', 'foe']
+
+[KEY_BIND]
+REFRESH = "u"
+QUIT = "backspace"
+START = "return"
+SELECT = "p"
+UP = "up"
+DOWN = "down"
+LEFT = "left"
+RIGHT = "right"
+BUTTON_1 = "n"
+BUTTON_2 = "m"
+BUTTON_3 = ","
+BUTTON_4 = "."
+R_UP = "i"
+R_DOWN = "k"
+R_LEFT = "j"
+R_RIGHT = "l"
+
+
+[CTLR_BIND]
+REFRESH = "PrtScn"
+QUIT = "home"
+START = "+"
+SELECT = "-"
+UP = "LSY-"
+DOWN = "LSY+"
+LEFT = "LSX-"
+RIGHT = "LSX+"
+BUTTON_1 = "LT+"
+BUTTON_2 = "RT+"
+BUTTON_3 = "A"
+BUTTON_4 = "B"
+R_UP = "RSY-"
+R_DOWN = "RSY+"
+R_LEFT = "RSX-"
+R_RIGHT = "RSX+"
+

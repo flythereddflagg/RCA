@@ -1,0 +1,35 @@
+#--------
+# converted from: assets/scene/corridor.yaml
+id = "<scene name>"
+INIT_ZOOM = 1
+CAMERASLACK = 100
+DRAW_LAYERS = ['background', 'foreground', 'hud']
+
+[[background]]
+id = "corridor map"
+type = "Decal"
+image = "./assets/scene/corridor/map.png"
+mask = "./assets/scene/corridor/foreground.png"
+groups = ['solid']
+
+
+[[foreground]]
+id = "doorway exit"
+type = "Edge"
+image = "./assets/block/block.png"
+mask = "./assets/block/block.png"
+start = [90, 180]
+scale = 1
+scene_path = "./assets/scene/boss_room.yaml"
+exit_dir = "RIGHT"
+
+[[foreground]]
+id = "statue_exit"
+type = "Edge"
+image = "./assets/block/block.png"
+mask = "./assets/block/block.png"
+start = [1140, 159]
+scale = 1
+scene_path = "./assets/scene/mansion_yard.yaml"
+exit_dir = "LEFT"
+
