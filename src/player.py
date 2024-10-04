@@ -63,8 +63,6 @@ class Player(Node):
             dirs +=1
             self.move(direction, speed=self.speed * self.sprite.scale)
             self.state = 'walk'
-        
-
 
 
     def apply_right_stick(self, actions, values):
