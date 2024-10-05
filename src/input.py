@@ -8,7 +8,6 @@ from .compass import Compass
 
 DEAD_ZONE = 0.5
 BUFFER_TIME = 250 # ms
-# TODO add an input buffer to allow inputs to hang around so timing is looser
 
 
 class Input():
@@ -21,6 +20,7 @@ class Input():
         self.CTLR_AXES = self.game.CTLR_AXES
         self.SHOW_EVENTS = self.game.SHOW_EVENTS
         self.buffer:dict = {}
+        self.last_update_time = 0
         self.held = {
             **{key:False for key in self.KEY_BIND.keys()},
             **{key:False for key in self.CTLR_BIND.keys()}
@@ -47,20 +47,15 @@ class Input():
         print(f"\t- 1 keyboard + {len(self.controllers)} controllers")
 
 
-    def get(self):
-    # def update(self): # TODO update the logic of this to update
 
-    # CONTINUE UPDATING HERE!
+    def update(self):
 
         # INFO: this only allows for one player currently
         keyboard_input = self.keyboard_input()
-        ctlr_input = []
         event_input = self.event_input()
         # mouse_input = [] # no mouse input for RCA
-  
-        if self.controllers: 
-            player = 0 # player index 0
-            ctlr_input = self.ctlr_input(player)
+        player = 0 # player index 0
+        ctlr_input = self.ctlr_input(player)
 
         # set to erase duplicate inputs
         all_input = list(set(ctlr_input + keyboard_input + event_input))
@@ -68,12 +63,24 @@ class Input():
         if self.SHOW_EVENTS and all_input: 
             print("input:", all_input, end=';')
             print("held:", [key for key, held in self.held.items() if held])
-        if 'QUIT' in all_input: return ['QUIT']
 
+        # update input buffer
+        cur_time = pg.time.get_ticks()
+        delta_time = cur_time - self.last_update_time
+        self.buffer = {
+            action: time_left - delta_time 
+            for action, time_left in self.buffer.items()
+        }
         self.buffer.update({action: BUFFER_TIME for action in all_input})
-        # Subtract and delete as necessary
-
-        return all_input
+        self.buffer = {
+            action: time_left - delta_time 
+            for action, time_left in self.buffer.items()
+            if time_left > 0
+        }
+        
+    
+    def get(self):
+        return [action for action in self.buffer.keys()]
 
 
     def update_held(self, all_input):
@@ -87,6 +94,7 @@ class Input():
 
 
     def ctlr_input(self, player):
+        if not self.controllers: return []
         axes = [
             self.controllers[player].get_axis(i) 
             for i in range(self.controllers[player].get_numaxes())

@@ -73,6 +73,7 @@ class GameState(DictObj):
         self.running = True
 
         while self.running:
+            self.input.update()
             game_input = self.input.get()
             self.logic(game_input)
             self.input.update_held(game_input)
