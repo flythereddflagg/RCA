@@ -16,9 +16,9 @@ class Movement():
         self.dist_buffer = 0
 
     def __call__(
-        self, direction:int|str|tuple|pg.math.Vector2, 
+        self, direction:int|str|tuple|pg.math.Vector2,
         distance:int=0, speed:int|float=0,
-        reject_foreground:bool=True
+        reject_foreground:bool=True, change_direction=True
     ) -> None:
         """
         move the character in a direction with
@@ -29,7 +29,7 @@ class Movement():
         @param speed may be int or float
         """
         
-        self.direction = Compass.index(direction)
+        if change_direction: self.direction = Compass.index(direction)
         if speed:
             fps = self.sprite.scene.game.clock.get_fps()
             if not fps: return

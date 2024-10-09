@@ -28,7 +28,9 @@ class Player(Node):
         self.sprite = Decal(parent=self, **options)
         self.damage_direction = pg.math.Vector2(0,1)
         self.move = Movement(self.sprite, **self.options)
-        self.animation = Animation(self, self.options['animations'], self.options["path_prefix"])
+        self.animation = Animation(
+            self, self.options['animations'], self.options["path_prefix"]
+        )
         self.inventory = Inventory(self, money=0, hp=100, hp_max=100)
         self.input_held = None
         self.state = DEFAULT_STATE
@@ -132,8 +134,14 @@ class Player(Node):
 
     def apply_physics(self):
         if self.state == 'damage':
-                self.move(self.damage_direction, speed=3*self.speed)
+            self.move(
+                self.damage_direction, 
+                speed=3*self.speed, 
+                change_direction=False
+            )
         # TODO refine how damage works including Iframes, knockback and stuff like that.
+        # split damage into knockback and other various states that need to be applied
+        
 
 
 

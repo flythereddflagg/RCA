@@ -22,9 +22,9 @@ animations:
   sword:
     datafile: larry_sword_swing.json
     repeat: False
-  # damage:
-  #   repeat: False
-  #   image: "damage.png"
+  damage:
+    repeat: False
+    datafile: larry_damage.json
   # shovel:
   #   repeat: False
   #   image: "hammer.png"
