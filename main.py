@@ -34,6 +34,7 @@ if __name__ == "__main__":
 # TODO make a load screen
 # TODO make scene transitions a la LTTP (polish)
 # TODO make a global zoom that scales the game to the size of the monitor
+# TODO make the game dynamically adjust zoom based on window size
 
 # TODO: Basic story and story beats from the first game
 # TODO: Items: [ ✓sword, ✓shovel, pickle, gate key, statue key]
