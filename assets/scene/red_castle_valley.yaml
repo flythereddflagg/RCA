@@ -88,10 +88,10 @@ foreground:
     scale: 1
     action: sword
 
-  - id: hammer
+  - id: shovel
     type: Item
-    image: ./assets/actor/item/hammer_icon.png
-    mask: ./assets/actor/item/hammer_icon.png
+    image: ./assets/actor/item/shovel2.png
+    mask: ./assets/actor/item/shovel2.png
     start: [600,900]
     scale: 1
-    action: hammer
+    action: shovel

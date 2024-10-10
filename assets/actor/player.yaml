@@ -25,6 +25,6 @@ animations:
   damage:
     repeat: False
     datafile: larry_damage.json
-  # shovel:
-  #   repeat: False
-  #   image: "hammer.png"
+  shovel:
+    repeat: False
+    datafile: larry_shovel.json
