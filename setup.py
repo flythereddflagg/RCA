@@ -21,7 +21,7 @@ executables = [
 
 setup_options = {
     "name"           : 'RCA',
-    "version"        : '0.1.x',
+    "version"        : '0.1.3',
     "description"    : game_description,
     "options"        : {'build_exe': build_options},
     "executables"    : executables

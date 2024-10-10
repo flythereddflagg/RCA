@@ -3,7 +3,9 @@ INIT_ZOOM: 1 # amount to scale everything
 CAMERASLACK: 100 # pixels from center screen before the camera moves
 
 DRAW_LAYERS: # layers will be drawn in this order
+  - behind
   - background
+  # - behind
   - foreground
   - hud
 
@@ -16,6 +18,15 @@ background:
      - solid
 
 foreground:
+  - id: shovel
+    type: Item
+    image: ./assets/actor/item/shovel2.png
+    mask: ./assets/actor/item/shovel2.png
+    start: [200,1400]
+    scale: 1
+    action: shovel
+
+behind:
   - id: bridge_exit
     type: Edge
     image: ./assets/block/block.png
@@ -52,7 +63,7 @@ foreground:
     type: Edge
     image: ./assets/block/block.png
     mask: ./assets/block/block.png
-    start: [89,712]
+    start: [55,712]
     scale: 1
     scene_path: ./assets/scene/boss_room.yaml
     exit_dir: RIGHT

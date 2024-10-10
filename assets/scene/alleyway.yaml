@@ -3,6 +3,7 @@ INIT_ZOOM: 1 # amount to scale everything
 CAMERASLACK: 100 # pixels from center screen before the camera moves
 
 DRAW_LAYERS: # layers will be drawn in this order
+  - behind
   - background
   - foreground
   - hud
@@ -23,7 +24,7 @@ background:
     groups: 
      - solid # a group to be in for certain effects
 
-foreground:
+behind:
   - id: alley_exit
     type: Edge
     image: ./assets/block/block.png

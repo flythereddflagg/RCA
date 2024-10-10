@@ -1,5 +1,6 @@
 id: forest
 DRAW_LAYERS:
+  - behind
   - background
   - foreground
   - hud
@@ -17,6 +18,15 @@ background:
      - solid
 
 foreground:
+  - id: sword
+    type: Item
+    image: ./assets/actor/item/sword_icon.png
+    mask: ./assets/actor/item/sword_icon.png
+    start: [600,200]
+    scale: 1
+    action: sword
+
+behind:
   - id: forest_red_castle_valley_connection
     type: Edge
     image: ./assets/block/block.png

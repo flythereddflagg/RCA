@@ -27,7 +27,9 @@ class Edge(Decal):
             yaml_path=self.options['scene_path'], player=player
         )
 
-        sprites = new_scene.layers['foreground'].sprites()
+        sprites = new_scene.layers['behind'].sprites()
+        # TODO ^ this line needs to be reconsidered. 
+        # All sprites should be searched
         block = list(filter(lambda x: x.id == self.id, sprites))[0]
         player.sprite.rect.center = block.rect.center
         dx, dy = Compass.unit_vector(block.options['exit_dir'])

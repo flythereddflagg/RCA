@@ -44,3 +44,4 @@ if __name__ == "__main__":
 # TODO: Boss fight must have cheese in the form of the chandelier
 # TODO: Basic parallax in the background or major foreground
 # TODO: A good amount of polish so that the game is "complete"
+# TODO: setup an autobuild system
