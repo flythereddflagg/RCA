@@ -26,6 +26,7 @@ class Edge(Decal):
         new_scene = game.load_scene(
             yaml_path=self.options['scene_path'], player=player
         )
+        old_scene.deconstruct() 
 
         sprites = new_scene.layers['behind'].sprites()
         # TODO ^ this line needs to be reconsidered. 
@@ -36,4 +37,4 @@ class Edge(Decal):
         player.sprite.rect.x += dx*(player.sprite.rect.w/2 + block.rect.w/2)
         player.sprite.rect.y += dy*(player.sprite.rect.h/2 + block.rect.h/2)
         new_scene.camera.center_player()
-        old_scene.deconstruct() 
+        

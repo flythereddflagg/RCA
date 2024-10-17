@@ -6,6 +6,36 @@ import pygame as pg
 
 from .dict_obj import DictObj
 
+def filter_serializable(structure:dict|list):
+    
+    if isinstance(structure, dict):
+        generator = structure.items()
+        is_dict = True
+        output = {}
+    elif isinstance(structure, list):
+        generator = enumerate(structure)
+        is_dict = False
+        output = []
+    else:
+        return None
+    
+    for key, item in generator:
+        if isinstance(item, (str, int, float, bool)) or item is None:
+            pass
+        elif isinstance(item, (dict, list)):
+            # recurse
+            item = filter_serializable(item)
+        else:
+            item = None
+
+        if is_dict:
+            output[key] = item
+        else:
+            output.append(item)
+        
+    return output
+
+
 
 def load_yaml(yaml_path):
     with open(yaml_path) as f:

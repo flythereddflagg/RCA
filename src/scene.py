@@ -1,6 +1,8 @@
+import json
+
 import pygame as pg
 
-from .tools import load_yaml, class_from_str
+from .tools import load_yaml, class_from_str, filter_serializable
 from .camera import Camera
 from .node import Node
 
@@ -83,7 +85,13 @@ class Scene():
 
 
     def deconstruct(self):
-        pass
+        scene_dict = vars(self).copy()
+        del scene_dict['game']
+        print(type(scene_dict))
+        scene_dict = filter_serializable(scene_dict)
+
+        print(scene_dict)
+        # TODO make a save scene and load scene. Will this work?
         # for sprite in self.all_sprites.sprites():
         #     if sprite is self.game.player.sprite: continue
         #     sprite.kill()
