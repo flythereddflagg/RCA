@@ -45,7 +45,7 @@ class Input():
             print(f"{controllers[-1].get_numhats()} joysticks detected")
         print(f"{len(self.controllers) + 1} input devices detected")
         print(f"\t- 1 keyboard + {len(self.controllers)} controllers")
-
+        # FIXME fix controller support!
 
 
     def update(self):
