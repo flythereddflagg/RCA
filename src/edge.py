@@ -22,11 +22,12 @@ class Edge(Decal):
     def exec_trigger(self):
         old_scene = self.scene
         game = self.scene.game
-        player = self.scene.game.player     
+        player = self.scene.game.player
+        old_scene.deconstruct() 
+        # print("loading", self.options['scene_path'])
         new_scene = game.load_scene(
             yaml_path=self.options['scene_path'], player=player
         )
-        old_scene.deconstruct() 
 
         sprites = new_scene.layers['behind'].sprites()
         # TODO ^ this line needs to be reconsidered. 

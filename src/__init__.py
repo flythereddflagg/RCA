@@ -31,6 +31,7 @@ class GameState(DictObj):
         self.player = None
         self.input = Input(self)
         # TODO make a scene manager that loads a bunch of scenes here and then loads them into the game and remembers them.
+        self.saved_scenes = {}
         w, h = self.ASPECT_RATIO
         float_aspect_ratio = w / h
 

@@ -14,6 +14,7 @@ class Scene():
         and load each sprite into a group
         """
         self.game = game
+        self.id = yaml_path
         self.data = load_yaml(yaml_path)
         self.all_sprites = pg.sprite.Group()
         self.groups = {
@@ -63,12 +64,25 @@ class Scene():
 
 
     def load(self):
+        ### adjust scene based on game state
+        adjust_scene = self.id in self.game.saved_scenes
+        ###
         for name, layer in self.layers.items():
             layer_data = self.data.get(name)
             if not layer_data: continue
 
             for node_init in layer_data:
+                node_id = node_init['id']
+                if (
+                    adjust_scene and 
+                    node_id not in self.game.saved_scenes[self.id][name].keys()
+                ): continue
                 node = Scene.node_from_dict(self, node_init)
+                start = (
+                    self.game.saved_scenes[self.id][name][node.id] 
+                    if adjust_scene else 
+                    node_init.get('start')
+                )
                 self.place_node(
                     node, layer, 
                     node_init.get('groups'), node_init.get('start')
@@ -85,12 +99,16 @@ class Scene():
 
 
     def deconstruct(self):
-        scene_dict = vars(self).copy()
-        del scene_dict['game']
-        print(type(scene_dict))
-        scene_dict = filter_serializable(scene_dict)
+        # save the scene as is
+        scene_dict = {}
+        for layer, group in self.layers.items():
+            scene_dict[layer] = {
+                sprite.id:list(sprite.rect.center) 
+                for sprite in group.sprites()
+            }
 
-        print(scene_dict)
+        self.game.saved_scenes[self.id] = scene_dict
+
         # TODO make a save scene and load scene. Will this work?
         # for sprite in self.all_sprites.sprites():
         #     if sprite is self.game.player.sprite: continue
