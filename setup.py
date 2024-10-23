@@ -6,7 +6,7 @@ game_description = """Red Castle Avenger - The Game"""
 # Dependencies are automatically detected, but it might need
 # fine tuning.
 build_options = {
-    'packages'      : [], 
+    'packages'      : ['src'], 
     'excludes'      : ['cx_freeze'],
     'include_files' : [
         ("assets", "assets")
