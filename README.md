@@ -3,6 +3,11 @@
 
 **Email: redddogjr@gmail.com**
 
+**To build:**
+- python distribution installed
+- `conda install pyyaml pygame cx_freeze` **OR** `pip install pyyaml pygame cx_freeze`
+- `python setup.py build`
+
 ## World 1: In the shadow of the mountain
 
 **Scope** W1 must have the following:
