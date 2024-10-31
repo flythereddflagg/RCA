@@ -34,6 +34,14 @@ foreground:
   #   groups: 
   #    - solid
 
+  - id: sword
+    type: Item
+    image: ./assets/actor/item/sword_icon.png
+    mask: ./assets/actor/item/sword_icon.png
+    start: [800,200]
+    scale: 1
+    action: sword
+
   - id: ossifrage 1
     type: Ossifrage
     yaml: ./assets/actor/ossifrage.yaml
