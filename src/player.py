@@ -179,9 +179,9 @@ class Player(Node):
 
     def check_collision(self):
         if self.state == 'damage': return
-        if self.animation.alt_sprite.mask:
+        if self.state == "sword":
             for sprite in list_collided(
-                self.animation.alt_sprite, self.scene.groups['foe']
+                self.sprite, self.scene.groups['foe']
             ):
                 if (sprite.animation and\
                     sprite.state == 'damage' and\

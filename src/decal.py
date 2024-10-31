@@ -64,7 +64,6 @@ class Decal(pg.sprite.Sprite):
         self.rect.center = pos
         if self.mask:
             self.mask = self.original.mask.scale(new_size)
-        if self.animation: self.animation.load_animations()
 
 
     def scale_abs(self, scale):

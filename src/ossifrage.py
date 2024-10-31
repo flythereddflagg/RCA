@@ -15,8 +15,11 @@ ACTION_TIME_RANGE = [200, 1000]
 class Ossifrage(Decal):
     def __init__(self, **options):
         super().__init__(**options)
+        self.sprite = self
         self.move = Movement(self, **self.options)
-        self.animation = Animation(self, **self.options)
+        self.animation = Animation(
+            self, self.options['animations'], self.options["path_prefix"]
+        )
         self.action_time = 0
         self.last_action_time = 0
         self.action = None
@@ -24,10 +27,11 @@ class Ossifrage(Decal):
         self.signals = []
         self.hp = 50
         self.damage_direction = pg.math.Vector2(0,1)
+        self.state = "stand"
 
     def animate(self):
         self.animation.update()
-        if self.animation.current['id'] == 'damage' and self.animation.active:
+        if self.state == 'damage' and self.animation.active:
             self.move(self.damage_direction, speed=3*self.speed)
 
     def choose_action(self):
@@ -57,7 +61,7 @@ class Ossifrage(Decal):
             if "damage" in signal[0]:
                 self.hp -= signal[1]
                 self.damage_direction = signal[2]
-                self.animation.current = self.animation.data['damage']
+                self.state = 'damage'
 
         self.signals = [] # reset signals
 
@@ -71,10 +75,10 @@ class Ossifrage(Decal):
             # ^ means a direction button is being pressed
             self.move(action, speed=self.speed)
             self.direction = Compass.index(action)
-            self.animation.current = self.animation.data['walk']
+            self.state = 'walk'
             
         elif action == "STOP":
-            self.animation.current = self.animation.data["stand"]
+            self.state = "stand"
 
         else:
             print(self, action + "! (no response)")
@@ -82,7 +86,7 @@ class Ossifrage(Decal):
 
 
     def check_collision(self):
-        if self.animation.current['id'] == 'damage' and self.animation.active:
+        if self.state == 'damage' and self.animation.active:
             return
 
         for player in list_collided(self, self.scene.groups['player']):
