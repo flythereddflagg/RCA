@@ -2,9 +2,11 @@
 # Frame rate ( in Frames / second)
 FPS: 90 # game is unstable at FPS > about 100
 # FPS: 0 # do not limit FPS
-DEBUG: false # show debug info on screen?
+DEBUG: true # show debug info on screen?
 SHOW_EVENTS: false # print events in terminal
 FPS_COUNTER: false # print FPS on game screen
+SHOW_MASK: true # shows hit masks of every entity when debug is true
+SHOW_BG_MASK: true # if debug AND show mask then show bg mask too
 
 # initial screen size
 RESOLUTION: 360

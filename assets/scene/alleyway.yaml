@@ -9,13 +9,6 @@ DRAW_LAYERS: # layers will be drawn in this order
   - hud
 
 # sprites in each drawing layer
-hud:
-  - id: hearts
-    type: Decal
-    image: ./assets/block/hud_element.png
-    start: [0,0]
-    mask:
-
 background:
   - id: alleyway map
     type: Decal

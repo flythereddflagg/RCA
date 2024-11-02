@@ -145,3 +145,13 @@ class GameState(DictObj):
                     pos_sprite, 
                     pg.math.Vector2(sprite.rect.topleft) - (0, 15)
                 )
+                if self.SHOW_MASK and sprite.mask:
+                    if (
+                        not self.SHOW_BG_MASK and 
+                        sprite in self.scene.layers['background']
+                    ): continue
+                    self.screen.blit(
+                        sprite.mask.to_surface(),
+                        sprite.rect.topleft
+                    )
+                    
