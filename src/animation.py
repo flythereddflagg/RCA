@@ -143,7 +143,7 @@ class Animation():
         current:Frame = (
             self.animations[self.parent.state].frames[self.frame_index]
         )
-        self.parent.sprite.set_image(current.image)
+        self.parent.sprite.set_image(current.image, mask=pg.mask.from_surface(current.image))
         self.frame_time = current.duration
         self.last_set_frame_time = pg.time.get_ticks()
  
