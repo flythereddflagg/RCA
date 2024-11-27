@@ -80,7 +80,8 @@ class Input():
         
     
     def get(self):
-        return [action for action in self.buffer.keys()]
+        # return [action for action in self.buffer.keys()]
+        return list(self.buffer.keys())
 
 
     def update_held(self, all_input):
@@ -99,10 +100,15 @@ class Input():
             self.controllers[player].get_axis(i) 
             for i in range(self.controllers[player].get_numaxes())
         ]
+        print(self.controllers[player].get_numbuttons(), self.controllers[player].get_numaxes())
         button_states = [
             self.controllers[player].get_button(i) 
             for i in range(self.controllers[player].get_numbuttons())
         ]
+        print(
+            button_states, len(button_states), 
+            self.controller_buttons, len(self.controller_buttons)
+        )
         button_input = [
             key for key, bind in self.CTLR_BIND.items()
             if bind in self.controller_buttons and
@@ -145,3 +151,13 @@ class Input():
         if pg.QUIT in [event.type for event in events]: return ["QUIT"]
 
         return event_inputs
+
+if __name__ == "__main__":
+    from tools import load_yaml
+
+    pg.init()
+    game = load_yaml("./assets/__init__.yaml")
+    input_obj = Input(game)
+    while "QUIT" not in input_obj.get():
+        print(input_obj.get())
+    pg.quit()
