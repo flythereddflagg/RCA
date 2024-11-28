@@ -35,6 +35,8 @@ class Input():
         }
         
         # detect and load controllers
+        # TODO controller support must be better streamlined. Work on cleaning
+        # this up once we have the main game under control
         self.controllers = []
         for i in range(0, pg.joystick.get_count()):
             self.controllers.append(pg.joystick.Joystick(i))
@@ -45,7 +47,6 @@ class Input():
             print(f"{controllers[-1].get_numaxes()} axes detected")
         print(f"{len(self.controllers) + 1} input devices detected")
         print(f"\t- 1 keyboard + {len(self.controllers)} controllers")
-        # FIXME fix controller support!
         self.controller_state = (
             None 
             if not self.controllers 
@@ -61,7 +62,8 @@ class Input():
         keyboard_input = self.keyboard_input()
         event_input = self.event_input()
         # mouse_input = [] # no mouse input for RCA
-        player = 0 # player index 0
+        # player = 0 # player index 0
+        player = -1
         ctlr_input = self.ctlr_input(player)
 
         # set to erase duplicate inputs

@@ -17,7 +17,8 @@ if __name__ == "__main__":
         if test_controller:
             print(f"\r{str(input_obj.controller_state):100}", end="")
         elif input_gotten:
-            print(input_gotten)
+            print(f"\r{str(input_gotten):100}", end="")
+
     pg.quit()
     print()
-# Y,B,A,X,L,R,ZL,ZR,-,+,LS,RS,Home,PrtScn,LSX,LSY,RSX,RSY
+

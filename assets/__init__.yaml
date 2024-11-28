@@ -3,7 +3,7 @@
 FPS: 90 # game is unstable at FPS > about 100
 # FPS: 0 # do not limit FPS
 DEBUG: true # show debug info on screen?
-SHOW_EVENTS: false # print events in terminal
+SHOW_EVENTS: true # print events in terminal
 FPS_COUNTER: true # print FPS on game screen
 SHOW_MASK: true # shows hit masks of every entity when debug is true
 SHOW_BG_MASK: false # if debug AND show mask then show bg mask too
@@ -36,15 +36,15 @@ KEY_BIND:
 # Controller bindings
 CTLR_BIND:
   REFRESH: 'PrtScn'
-  QUIT: home
+  QUIT: '-'
   START: '+'
-  SELECT: '-'
+  SELECT: home
   UP: LSY-
   DOWN: LSY+
   LEFT: LSX-
   RIGHT: LSX+
-  BUTTON_1: LT+
-  BUTTON_2: RT+
+  BUTTON_1: LT
+  BUTTON_2: RT
   BUTTON_3: A 
   BUTTON_4: B
   R_UP: RSY-
@@ -53,8 +53,12 @@ CTLR_BIND:
   R_RIGHT: RSX+
 
 # pygame's controller config list
-CTLR_BUTTON: A,B,X,Y,-,home,+,LS,RS,LB,RB,dUP,dDOWN,dLEFT,dRIGHT,PrtScn
-CTLR_AXES: LSX,LSY,RSX,RSY,LT,RT
+# CTLR_BUTTON: A,B,X,Y,-,home,+,LS,RS,LB,RB,dUP,dDOWN,dLEFT,dRIGHT,PrtScn
+# Y,B,A,X,L,R,ZL,ZR,-,+,LS,RS,Home,PrtScn,LSX,LSY,RSX,RSY
+CTLR_BUTTON: Y,B,A,X,LB,RB,LT,RT,-,+,LS,RS,home,PrtScn
+# CTLR_AXES: LSX,LSY,RSX,RSY,LT,RT
+CTLR_AXES: LSX,LSY,RSX,RSY
+PLAYER_CTRL: 0
 
 # INITAL_SCENE: ./assets/scene/forest.yaml
 # INITAL_SCENE: ./assets/scene/mansion_yard.yaml

@@ -26,15 +26,15 @@ KEY_BIND:
 # Controller bindings
 CTLR_BIND:
   REFRESH: 'PrtScn'
-  QUIT: home
+  QUIT: '-'
   START: '+'
-  SELECT: '-'
+  SELECT: home
   UP: LSY-
   DOWN: LSY+
   LEFT: LSX-
   RIGHT: LSX+
-  BUTTON_1: LT+
-  BUTTON_2: RT+
+  BUTTON_1: LT
+  BUTTON_2: RT
   BUTTON_3: A 
   BUTTON_4: B
   R_UP: RSY-
@@ -43,6 +43,7 @@ CTLR_BIND:
   R_RIGHT: RSX+
 
 # pygame's controller config list
-CTLR_BUTTON: A,B,X,Y,-,home,+,LS,RS,LB,RB,dUP,dDOWN,dLEFT
+# CTLR_BUTTON: A,B,X,Y,-,home,+,LS,RS,LB,RB,dUP,dDOWN,dLEFT
+CTLR_BUTTON: Y,B,A,X,LB,RB,LT,RT,-,+,LS,RS,home,PrtScn
 CTLR_AXES: LSX,LSY,RSX,RSY
 
