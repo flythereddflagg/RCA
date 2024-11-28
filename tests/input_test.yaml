@@ -1,0 +1,48 @@
+####
+#### COPIED FROM ./assets/__init__.yaml
+####
+
+SHOW_EVENTS: false # print events in terminal
+
+# key bindings for keyboard input
+KEY_BIND:
+  REFRESH: u
+  QUIT: backspace
+  START: return
+  SELECT: p
+  UP: up
+  DOWN: down
+  LEFT: left
+  RIGHT: right
+  BUTTON_1: n
+  BUTTON_2: m
+  BUTTON_3: ','
+  BUTTON_4: '.'
+  R_UP: i
+  R_DOWN: k
+  R_LEFT: j
+  R_RIGHT: l
+
+# Controller bindings
+CTLR_BIND:
+  REFRESH: 'PrtScn'
+  QUIT: home
+  START: '+'
+  SELECT: '-'
+  UP: LSY-
+  DOWN: LSY+
+  LEFT: LSX-
+  RIGHT: LSX+
+  BUTTON_1: LT+
+  BUTTON_2: RT+
+  BUTTON_3: A 
+  BUTTON_4: B
+  R_UP: RSY-
+  R_DOWN: RSY+
+  R_LEFT: RSX-
+  R_RIGHT: RSX+
+
+# pygame's controller config list
+CTLR_BUTTON: A,B,X,Y,-,home,+,LS,RS,LB,RB,dUP,dDOWN,dLEFT
+CTLR_AXES: LSX,LSY,RSX,RSY
+

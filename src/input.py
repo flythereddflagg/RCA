@@ -42,10 +42,17 @@ class Input():
             controllers  = self.controllers
             print (f"Detected controller: {controllers[-1].get_name()}")
             print(f"{controllers[-1].get_numbuttons()} buttons detected")
-            print(f"{controllers[-1].get_numhats()} joysticks detected")
+            print(f"{controllers[-1].get_numaxes()} axes detected")
         print(f"{len(self.controllers) + 1} input devices detected")
         print(f"\t- 1 keyboard + {len(self.controllers)} controllers")
         # FIXME fix controller support!
+        self.controller_state = (
+            None 
+            if not self.controllers 
+            else 
+            [0 for i in range(self.controllers[0].get_numbuttons())] + 
+            [0 for i in range(self.controllers[0].get_numaxes())]
+        )
 
 
     def update(self):
@@ -100,15 +107,13 @@ class Input():
             self.controllers[player].get_axis(i) 
             for i in range(self.controllers[player].get_numaxes())
         ]
-        print(self.controllers[player].get_numbuttons(), self.controllers[player].get_numaxes())
+        
         button_states = [
             self.controllers[player].get_button(i) 
             for i in range(self.controllers[player].get_numbuttons())
         ]
-        print(
-            button_states, len(button_states), 
-            self.controller_buttons, len(self.controller_buttons)
-        )
+        
+        self.controller_state = button_states + [round(val, 3) for val in axes]
         button_input = [
             key for key, bind in self.CTLR_BIND.items()
             if bind in self.controller_buttons and
@@ -126,6 +131,7 @@ class Input():
                     axes_input.append((key, ax_value))
 
         if self.SHOW_EVENTS and axes_input: print(axes_input)
+        
 
         return button_input + axes_input
 
@@ -152,12 +158,3 @@ class Input():
 
         return event_inputs
 
-if __name__ == "__main__":
-    from tools import load_yaml
-
-    pg.init()
-    game = load_yaml("./assets/__init__.yaml")
-    input_obj = Input(game)
-    while "QUIT" not in input_obj.get():
-        print(input_obj.get())
-    pg.quit()
