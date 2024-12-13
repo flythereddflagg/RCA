@@ -35,15 +35,15 @@ class GameState(DictObj):
         w, h = self.ASPECT_RATIO
         float_aspect_ratio = w / h
 
+        self.SCALE = 1 # BUG currently self.SCALE does NOTHING!
+
         self.SCREENWIDTH = (
             int(self.RESOLUTION * float_aspect_ratio) *
             self.SCALE
-        )
-        self.SCREENHEIGHT = self.RESOLUTION * self.SCALE
-        
+        )        
 
         self.screen = pg.display.set_mode(
-            [self.SCREENWIDTH, self.SCREENHEIGHT], pg.RESIZABLE
+            [self.SCREENWIDTH, self.RESOLUTION], pg.RESIZABLE
         )
         self.clock = pg.time.Clock()
 
@@ -121,6 +121,7 @@ class GameState(DictObj):
             fps = str(int(self.clock.get_fps()))
             fps_sprite = self.fps_counter.render(fps, True, (255,255,255))
             self.screen.blit(fps_sprite, (10,10))
+            
         background = self.scene.layers['background'].sprites()[0]
         for group_name in self.scene.data.DRAW_LAYERS:
             sprites = self.scene.layers[group_name].sprites()
