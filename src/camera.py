@@ -91,31 +91,30 @@ class Camera(Node):
 
 
     def zoom_by(self, factor):
-        pass
-        # if factor is None: return
-        # self.cur_zoom *= factor
-        # if self.cur_zoom == 0: self.cur_zoom = 1 # 0 resets scale
-        # background = self.scene.layers['background'].sprites()[0]
-        # screen_data = pg.display.Info()
-        # centerx = screen_data.current_w // 2
-        # centery = screen_data.current_h // 2
-        # bg_w, bg_h = background.rect.size
-        # bg_x, bg_y = background.rect.topleft
-        # background.scale_by(factor)
-        # bg_w_new, bg_h_new = background.rect.size
-        # bg_x_new = centerx - bg_w_new * (centerx - bg_x) / bg_w
-        # bg_y_new = centery - bg_h_new * (centery - bg_y) / bg_h
-        # background.rect.topleft = (bg_x_new, bg_y_new)
+        if factor is None: return
+        self.cur_zoom *= factor
+        if self.cur_zoom == 0: self.cur_zoom = 1 # 0 resets scale
+        background = self.scene.layers['background'].sprites()[0]
+        screen_data = pg.display.Info()
+        centerx = screen_data.current_w // 2
+        centery = screen_data.current_h // 2
+        bg_w, bg_h = background.rect.size
+        bg_x, bg_y = background.rect.topleft
+        background.scale_by(factor)
+        bg_w_new, bg_h_new = background.rect.size
+        bg_x_new = centerx - bg_w_new * (centerx - bg_x) / bg_w
+        bg_y_new = centery - bg_h_new * (centery - bg_y) / bg_h
+        background.rect.topleft = (bg_x_new, bg_y_new)
 
-        # for group in self.mobile_groups:
-        #     if group == 'background': continue
-        #     for sprite in self.scene.layers[group]:
-        #         x, y = sprite.rect.center
-        #         sprite.scale_by(factor)
-        #         sprite.rect.center = (
-        #             bg_x_new + bg_w_new * (x - bg_x) / bg_w, 
-        #             bg_y_new + bg_h_new * (y - bg_y) / bg_h
-        #         )   
+        for group in self.mobile_groups:
+            if group == 'background': continue
+            for sprite in self.scene.layers[group]:
+                x, y = sprite.rect.center
+                sprite.scale_by(factor)
+                sprite.rect.center = (
+                    bg_x_new + bg_w_new * (x - bg_x) / bg_w, 
+                    bg_y_new + bg_h_new * (y - bg_y) / bg_h
+                )   
 
     def zoom_abs(self, scale):
         self.zoom_by(0)

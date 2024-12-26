@@ -35,15 +35,14 @@ class GameState(DictObj):
         w, h = self.ASPECT_RATIO
         float_aspect_ratio = w / h
 
-        self.SCALE = 1 # BUG currently self.SCALE does NOTHING!
-
-        self.SCREENWIDTH = (
+        self.SCREENWIDTH, self.SCREENHEIGHT = (
             int(self.RESOLUTION * float_aspect_ratio) *
-            self.SCALE
+            self.SCALE,
+            self.RESOLUTION * self.SCALE
         )        
 
         self.screen = pg.display.set_mode(
-            [self.SCREENWIDTH, self.RESOLUTION], pg.RESIZABLE
+            [self.SCREENWIDTH, self.SCREENHEIGHT], pg.RESIZABLE
         )
         self.clock = pg.time.Clock()
 
