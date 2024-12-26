@@ -150,7 +150,7 @@ class GameState(DictObj):
                         sprite in self.scene.layers['background']
                     ): continue
                     self.screen.blit(
-                        sprite.mask.to_surface(),
+                        sprite.mask.to_surface(unsetcolor = (0,0,0,0)),
                         sprite.rect.topleft
                     )
                     

@@ -59,7 +59,6 @@ class Decal(pg.sprite.Sprite):
         pos = self.rect.center
         new_size = [dim * self.scale for dim in self.original.size]
         self.image = pg.transform.scale(self.original.image, new_size)
-        # TODO see if we can change the scaling method for smoother scaling
         self.rect = self.image.get_rect()
         self.rect.center = pos
         if self.mask:
