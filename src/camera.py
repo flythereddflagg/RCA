@@ -11,7 +11,6 @@ class Camera(Node):
         self.mobile_groups.remove('hud')
         self.cur_zoom = 1
 
-    # TODO rethink how we draw/scale everything and how the camera works. Can we just act on the whole screen at once instead of trying to move every sprite individually?
     def update(self):
         for sprite in self.scene.all_sprites.sprites():
             if sprite.scale != self.cur_zoom * sprite.init_scale:
