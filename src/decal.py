@@ -62,6 +62,7 @@ class Decal(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = pos
         if self.mask:
+            new_size = [dim * self.scale for dim in self.original.mask.get_size()]
             self.mask = self.original.mask.scale(new_size)
 
 
@@ -81,7 +82,7 @@ class Decal(pg.sprite.Sprite):
     ) -> None:
         cur_pos = self.rect.center if self.rect else None
         self.image = image
-        if mask: self.mask = mask
+        self.mask = mask if mask else self.original.mask
         self.rect = self.image.get_rect()
         self.original = Original(self.image, self.mask, self.rect.size)
         self.scale_by(self.init_scale)
