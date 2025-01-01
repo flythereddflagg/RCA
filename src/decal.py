@@ -82,8 +82,25 @@ class Decal(pg.sprite.Sprite):
     ) -> None:
         cur_pos = self.rect.center if self.rect else None
         self.image = image
-        self.mask = mask if mask else self.original.mask
         self.rect = self.image.get_rect()
+        
+        if not mask:
+            # this recenters the mask on a different-sized image 
+            # when a mask is not supplied
+
+            offset = (
+                pg.math.Vector2(self.rect.center) - 
+                pg.math.Vector2(self.original.mask.get_rect().center)
+            )
+            mask_surf = pg.Surface(self.rect.size,flags=pg.SRCALPHA)
+            mask_surf.fill((0,0,0,0))
+            self.original.mask.to_surface(
+                surface=mask_surf, unsetcolor=None, dest=offset
+            )
+            self.mask = pg.mask.from_surface(mask_surf)
+        else:
+            self.mask = mask
+
         self.original = Original(self.image, self.mask, self.rect.size)
         self.scale_by(self.init_scale)
         
