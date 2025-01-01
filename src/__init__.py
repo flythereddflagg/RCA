@@ -131,10 +131,10 @@ class GameState(DictObj):
                     self.screen, (255,255,255), sprite.rect, width=2
                 )
                 pos1, pos2 = (
-                    str(sprite.rect.topleft), str(
+                    str(pg.math.Vector2(sprite.rect.topleft)//self.SCALE), str((
                         pg.math.Vector2(sprite.rect.topleft) - 
                         pg.math.Vector2(background.rect.topleft)
-                    ),
+                    )//self.SCALE)
                 )
                 pos_sprite = sprite.pos.render(
                     f"{pos1} ; {pos2}", 

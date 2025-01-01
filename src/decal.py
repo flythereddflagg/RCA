@@ -93,7 +93,7 @@ class Decal(pg.sprite.Sprite):
                 pg.math.Vector2(self.original.mask.get_rect().center)
             )
             mask_surf = pg.Surface(self.rect.size,flags=pg.SRCALPHA)
-            mask_surf.fill((0,0,0,0))
+            mask_surf.fill((0,0,0,0)) # blank the surface
             self.original.mask.to_surface(
                 surface=mask_surf, unsetcolor=None, dest=offset
             )

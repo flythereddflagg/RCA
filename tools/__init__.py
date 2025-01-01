@@ -2,5 +2,3 @@
 # this includes demos and other testing and development code.
 
 # TODO LOW make a tool that allows you to build a scene.
-# TODO LOW make a camera object that can keep everything 
-# in a relative postion to make a real zoom effect.
