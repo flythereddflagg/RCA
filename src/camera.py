@@ -3,6 +3,7 @@ import pygame as pg
 from .tools import get_center_screen
 from .node import Node
 
+# TODO make adaptive camera the follows the player and gives them better FOV in the direction they are facing.
 
 class Camera(Node):
     def __init__(self, scene):

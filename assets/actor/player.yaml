@@ -21,6 +21,7 @@ animations:
     repeat: True
   sword:
     datafile: larry_sword_swing.json
+    hitmask: larry_sword_swing_mask.json
     repeat: False
   damage:
     repeat: False

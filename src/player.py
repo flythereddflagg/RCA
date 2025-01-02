@@ -8,6 +8,7 @@ from .inventory import Inventory
 from .tools import list_collided
 from .item import EMPTY
 from .node import Node
+from .hit_mask import HitMask
 
 DEFAULT_STATE = 'stand'
 LEFT_HAND_BUTTON = "BUTTON_1"
@@ -26,6 +27,7 @@ class Player(Node):
         self.todo_list = []
         self.signals = []
         self.sprite = Decal(parent=self, **options)
+        self.mask_node = HitMask(parent=self)
         self.damage_direction = pg.math.Vector2(0,1)
         self.move = Movement(self.sprite, **self.options)
         self.animation = Animation(
@@ -150,6 +152,7 @@ class Player(Node):
         # self.check_collision()
         self.check_signals()
         self.animation.update()
+        self.mask_node.update()
         self.apply_physics()
         self.inventory.update()
         

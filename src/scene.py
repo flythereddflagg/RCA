@@ -76,7 +76,8 @@ class Scene():
                 if (
                     adjust_scene and 
                     node_id not in self.game.saved_scenes[self.id][name].keys()
-                ): continue
+                ): 
+                    continue
                 node = Scene.node_from_dict(self, node_init)
                 start = (
                     self.game.saved_scenes[self.id][name][node.id] 
