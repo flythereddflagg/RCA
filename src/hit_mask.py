@@ -1,8 +1,6 @@
 import pygame as pg
 
 from .node import Node
-from .decal import Decal
-from .animation import Animation
 
 class HitMask(Node):
     def __init__(self, parent, **options):

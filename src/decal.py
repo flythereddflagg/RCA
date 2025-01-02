@@ -8,7 +8,6 @@ import pygame as pg
 
 from .dict_obj import DictObj
 from .tools import load_yaml
-from .animation import Animation
 from .node import Node
 
 
@@ -27,7 +26,6 @@ class Decal(pg.sprite.Sprite):
                 scale:float=1, 
                 mask:str=None, 
                 parent:Node=None,
-                animation:Animation=None,
                 **kwargs
     ):
         super().__init__()
@@ -38,9 +36,7 @@ class Decal(pg.sprite.Sprite):
         self.mask_path = mask if mask else self.image_path
         self.init_scale = scale
         self.parent = parent
-        self.animation = animation
         self.scene = scene
-
         self.init_scale = scale
         self.image = None
         self.rect = None
