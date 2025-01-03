@@ -27,10 +27,13 @@ class Player(Node):
         self.todo_list = []
         self.signals = []
         self.sprite = Decal(parent=self, **options)
-        self.mask_node = HitMask(parent=self)
+        
         self.damage_direction = pg.math.Vector2(0,1)
         self.move = Movement(self.sprite, **self.options)
         self.animation = Animation(
+            self, self.options['animations'], self.options["path_prefix"]
+        )
+        self.mask_node = HitMask(
             self, self.options['animations'], self.options["path_prefix"]
         )
         self.inventory = Inventory(self, money=0, hp=100, hp_max=100)

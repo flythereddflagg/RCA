@@ -1,27 +1,18 @@
 import pygame as pg
 
-from .node import Node
+from .animation import Animation
 
-class HitMask(Node):
-    def __init__(self, parent, **options):
-        super().__init__(options)
-        self.parent = parent
+class HitMask(Animation):
+    def __init__(self, parent, animations:dict, path_prefix='./'):
+        super().__init__(parent, animations, path_prefix)
         self.sprite = pg.sprite.Sprite()
         self.sprite.image = pg.surface.Surface((32, 32), flags=pg.SRCALPHA)
         self.sprite.rect = self.sprite.image.get_rect()
         self.sprite.mask = None
-        self.mask = pg.mask.from_surface(pg.image.load("./assets/actor/larry/frame_mask.png").convert_alpha())
-        self.mask = self.mask.scale(
-            pg.math.Vector2(self.mask.get_size())*self.parent.game.SCALE
-        )
 
     def update(self):
-        if self.parent.state == 'sword':
-            self.sprite.mask = self.mask
-        else:
-            self.sprite.mask = None
+        super().update()
         
-        # TODO improve upon this temporary solution to the hit mask problem
         foreground = self.parent.game.scene.layers['foreground']
         if self.sprite not in foreground:
             foreground.add(self.sprite)
@@ -30,3 +21,15 @@ class HitMask(Node):
             # self.parent.sprite.rect.topleft + pg.math.Vector2(32,32)
             self.parent.sprite.rect.topleft
         )
+
+
+    def set_frame(self) -> None: # override parent
+        current:Frame = (
+            self.animations[self.parent.state].frames[self.frame_index]
+        )
+        new_mask = pg.mask.from_surface(current.image)
+        self.sprite.mask = new_mask.scale(
+            pg.math.Vector2(new_mask.get_size())*self.parent.game.SCALE
+        )
+        self.frame_time = current.duration
+        self.last_set_frame_time = pg.time.get_ticks()
