@@ -55,7 +55,7 @@ class Animation():
     def load_animations(self, animations) -> None:
         self.animations = {}
         for state, data in animations.items():
-            datafile = data['datafile']
+            datafile = data['datafile'] # TODO make 'datafile' mutable to 'hitbox' and then make it so we can have a blank animation? (See the changes in hit_mask.py)
             if not datafile.endswith(JSON): continue
             json_data = load_json(self.path_prefix + datafile)
             self.animations[state] = Reel(
