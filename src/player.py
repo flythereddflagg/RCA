@@ -185,7 +185,6 @@ class Player(Node):
 
     def check_collision(self):
         if self.state == "sword":
-            print(self.scene.groups['foe'].sprites())
             for sprite in list_collided(
                 self.hitmask.sprite, self.scene.groups['foe']
             ):
