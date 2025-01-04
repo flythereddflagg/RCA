@@ -9,7 +9,7 @@ import pygame as pg
 from .dict_obj import DictObj
 from .tools import load_yaml
 from .node import Node
-
+from .animation import Animation
 
 @dataclass
 class Original:
@@ -26,12 +26,13 @@ class Decal(pg.sprite.Sprite):
                 scale:float=1, 
                 mask:str=None, 
                 parent:Node=None,
-                **kwargs
+                animation:Animation=None,
+                **options
     ):
         super().__init__()
-        id_ = kwargs.get('id')
+        id_ = options.get('id')
         self.id = id_ if id_ else str(type(self)) + str(id(self)) 
-        self.options = kwargs
+        self.options = options
         self.image_path = image
         self.mask_path = mask if mask else self.image_path
         self.init_scale = scale
@@ -41,6 +42,7 @@ class Decal(pg.sprite.Sprite):
         self.image = None
         self.rect = None
         self.mask = None
+        self.animation = None
         self.scale = 1.0
         self.set_image(
             pg.image.load(self.image_path).convert_alpha(), 
@@ -70,8 +72,8 @@ class Decal(pg.sprite.Sprite):
     def update(self):
         if self.parent: self.parent.update()
 
-    def signal(self, *args, **kwargs):
-        if self.parent: self.parent.signal(*args, **kwargs)
+    def signal(self, *args, **options):
+        if self.parent: self.parent.signal(*args, **options)
     
     def set_image(
         self, image:pg.surface.Surface, mask:pg.mask.Mask=None

@@ -59,10 +59,10 @@ class GameState(DictObj):
             self.fps_counter = pg.font.SysFont("Sans", 22)
         
 
-    def load_scene(self, player=None, **kwargs) -> Scene:
+    def load_scene(self, player=None, **options) -> Scene:
         self.player = player
         self.scene = Scene(
-            game=self,  groups=self.SPRITE_GROUPS, **kwargs
+            game=self,  groups=self.SPRITE_GROUPS, **options
         )
         if player:
             self.scene.place_node(self.player, self.scene.layers['foreground'],
@@ -150,7 +150,7 @@ class GameState(DictObj):
                         sprite in self.scene.layers['background']
                     ): continue
                     self.screen.blit(
-                        sprite.mask.to_surface(unsetcolor = (0,0,0,0)),
+                        sprite.mask.to_surface(setcolor = (0,0,255,255), unsetcolor = None),
                         sprite.rect.topleft
                     )
                     

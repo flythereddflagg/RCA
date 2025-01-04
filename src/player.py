@@ -33,7 +33,7 @@ class Player(Node):
         self.animation = Animation(
             self, self.options['animations'], self.options["path_prefix"]
         )
-        self.mask_node = HitMask(
+        self.hitmask = HitMask(
             self, self.options['animations'], self.options["path_prefix"]
         )
         self.inventory = Inventory(self, money=0, hp=100, hp_max=100)
@@ -152,10 +152,10 @@ class Player(Node):
 
     def update(self):
         self.apply_todos()
-        # self.check_collision()
         self.check_signals()
         self.animation.update()
-        self.mask_node.update()
+        self.hitmask.update()
+        self.check_collision()
         self.apply_physics()
         self.inventory.update()
         
@@ -184,18 +184,15 @@ class Player(Node):
 
 
     def check_collision(self):
-        if self.state == 'damage': return
         if self.state == "sword":
+            print(self.scene.groups['foe'].sprites())
             for sprite in list_collided(
-                self.sprite, self.scene.groups['foe']
+                self.hitmask.sprite, self.scene.groups['foe']
             ):
-                if (sprite.animation and\
-                    sprite.state == 'damage' and\
-                    sprite.animation.active
-                ): continue
+                if sprite.state == 'damage': continue
                 damage_direction = (
                     pg.math.Vector2(sprite.rect.center) -
-                    pg.math.Vector2(self.rect.center)
+                    pg.math.Vector2(self.sprite.rect.center)
                 ).normalize()
                 sprite.signal([
                     "damage", 10, damage_direction

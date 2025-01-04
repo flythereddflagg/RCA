@@ -29,8 +29,8 @@ class Ossifrage(Decal):
         self.damage_direction = pg.math.Vector2(0,1)
         self.state = "stand"
 
-    def animate(self):
-        self.animation.update()
+    def apply_physics(self):
+        
         if self.state == 'damage' and self.animation.active:
             self.move(self.damage_direction, speed=3*self.speed)
 
@@ -47,8 +47,8 @@ class Ossifrage(Decal):
         
         self.apply_action(self.action)
         self.check_signals()
-
-        self.animate()
+        self.animation.update()
+        self.apply_physics()
         
 
         if self.hp <= 0: 

@@ -86,7 +86,7 @@ class Scene():
                 )
                 self.place_node(
                     node, layer, 
-                    node_init.get('groups'), node_init.get('start')
+                    node.options.get("groups"), start
                 )
 
 

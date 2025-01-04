@@ -5,7 +5,7 @@ FPS: 90 # game is unstable at FPS > about 100
 DEBUG: true # show debug info on screen?
 SHOW_EVENTS: true # print events in terminal
 FPS_COUNTER: true # print FPS on game screen
-SHOW_MASK: true # shows hit masks of every entity when debug is true
+SHOW_MASK: false # shows hit masks of every entity when debug is true
 SHOW_BG_MASK: false # if debug AND show mask then show bg mask too
 
 # initial screen size
