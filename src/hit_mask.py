@@ -4,7 +4,10 @@ from .animation import Animation
 
 class HitMask(Animation):
     def __init__(self, parent, animations:dict, path_prefix='./'):
-        super().__init__(parent, animations, path_prefix)
+        mask_animations = animations.copy()
+        for key, entry in mask_animations.items():
+            entry['datafile'] = entry["hitmask"] if "hitmask" in entry else entry['datafile']
+        super().__init__(parent, mask_animations, path_prefix)
         self.sprite = pg.sprite.Sprite()
         self.sprite.image = pg.surface.Surface((32, 32), flags=pg.SRCALPHA)
         self.sprite.rect = self.sprite.image.get_rect()
@@ -17,10 +20,7 @@ class HitMask(Animation):
         if self.sprite not in foreground:
             foreground.add(self.sprite)
 
-        self.sprite.rect.topleft = (
-            # self.parent.sprite.rect.topleft + pg.math.Vector2(32,32)
-            self.parent.sprite.rect.topleft
-        )
+        self.sprite.rect.topleft = self.parent.sprite.rect.topleft
 
 
     def set_frame(self) -> None: # override parent
