@@ -45,7 +45,7 @@ foreground:
   - id: ossifrage 1
     type: Ossifrage
     yaml: ./assets/actor/ossifrage.yaml
-    start: [700,900]
+    start: [1000,900]
 
   - id: cactus
     type: Cactus
@@ -64,14 +64,14 @@ foreground:
 
 
 behind:
-  # - id: bridge_exit
-  #   type: Edge
-  #   image: ./assets/block/block.png
-  #   mask: ./assets/block/block.png
-  #   start: [845,-80]
-  #   scale: 2.5
-  #   scene_path: ./assets/scene/mansion_yard.yaml
-  #   exit_dir: DOWN
+  - id: bridge_exit
+    type: Edge
+    image: ./assets/block/block.png
+    mask: ./assets/block/block.png
+    start: [845,-80]
+    scale: 2.5
+    scene_path: ./assets/scene/mansion_yard.yaml
+    exit_dir: DOWN
 
   - id: forest_red_castle_valley_connection
     type: Edge
