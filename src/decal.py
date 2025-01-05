@@ -22,7 +22,7 @@ class Decal(pg.sprite.Sprite):
     def __init__(
                 self, 
                 scene,
-                image:str,
+                image:str=None,
                 scale:float=1, 
                 mask:str=None, 
                 parent:Node=None,
@@ -43,11 +43,19 @@ class Decal(pg.sprite.Sprite):
         self.rect = None
         self.mask = None
         self.animation = None
+        self.original = Original(None, None, None)
         self.scale = 1.0
-        self.set_image(
-            pg.image.load(self.image_path).convert_alpha(), 
-            pg.mask.from_surface(pg.image.load(self.mask_path).convert_alpha())
+        image = (
+            pg.image.load(self.image_path).convert_alpha() 
+            if self.image_path else None
         )
+        mask = (
+            pg.mask.from_surface(pg.image.load(self.mask_path).convert_alpha())
+            if self.mask_path
+            else None
+        )
+        
+        self.set_image(image, mask)
 
 
 
@@ -76,16 +84,21 @@ class Decal(pg.sprite.Sprite):
         if self.parent: self.parent.signal(*args, **options)
     
     def set_image(
-        self, image:pg.surface.Surface, mask:pg.mask.Mask=None
+        self, image:pg.surface.Surface=None, mask:pg.mask.Mask=None
     ) -> None:
         cur_pos = self.rect.center if self.rect else None
-        self.image = image
+        self.image = (
+            image 
+            if image else 
+            pg.surface.Surface((32, 32), flags=pg.SRCALPHA)
+        )
         self.rect = self.image.get_rect()
         
         if not mask:
             # this recenters the mask on a different-sized image 
             # when a mask is not supplied
-
+            if self.original.mask is None:
+                self.original.mask = pg.mask.Mask(size=(32, 32), fill=False)
             offset = (
                 pg.math.Vector2(self.rect.center) - 
                 pg.math.Vector2(self.original.mask.get_rect().center)

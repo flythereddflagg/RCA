@@ -60,11 +60,11 @@ class Scene():
             for group in groups:
                 self.groups[group].add(sprite_instance)
         if start:
-            sprite_instance.rect.topleft = start
+            sprite_instance.rect.topleft = pg.math.Vector2(start)
 
 
     def load(self):
-        ### adjust scene based on game state
+        ### adjust scene based on game state (remembers how scenes were)
         adjust_scene = self.id in self.game.saved_scenes
         ###
         for name, layer in self.layers.items():
@@ -79,15 +79,26 @@ class Scene():
                 ): 
                     continue
                 node = Scene.node_from_dict(self, node_init)
-                start = (
-                    self.game.saved_scenes[self.id][name][node.id] 
-                    if adjust_scene else 
-                    node_init.get('start')
-                )
+                # TODO code here for new starting place for dropped items (further down the road?)
                 self.place_node(
                     node, layer, 
-                    node.options.get("groups"), start
+                    node.options.get("groups"), node_init.get('start')
                 )
+
+    def refresh(self):
+        self.camera.zoom_by(0)
+        current_player_position = (
+            pg.math.Vector2(self.game.player.sprite.rect.topleft) - 
+            pg.math.Vector2(self.layers['background'].sprites()[0].rect.topleft)
+        )
+        print(current_player_position)
+        self.game.load_scene(
+            yaml_path=self.id, 
+            player=self.game.player
+        )
+        
+        self.game.player.sprite.rect.topleft = current_player_position
+        self.camera.zoom_by(self.game.SCALE * self.data.get('INIT_ZOOM'))
 
 
     def update(self):        

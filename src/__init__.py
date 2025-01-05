@@ -93,6 +93,15 @@ class GameState(DictObj):
             self.running = False
             return
 
+        # key to refresh scene
+        if (
+            "REFRESH" in game_input and 
+            not self.input.held["REFRESH"] and 
+            self.DEBUG and 
+            self.scene
+        ):
+            self.scene.refresh()
+
         # apply all the input
         if self.player:
             self.player.apply(game_input)
@@ -131,7 +140,8 @@ class GameState(DictObj):
                     self.screen, (255,255,255), sprite.rect, width=2
                 )
                 pos1, pos2 = (
-                    str(pg.math.Vector2(sprite.rect.topleft)//self.SCALE), str((
+                    str(pg.math.Vector2(sprite.rect.topleft)//self.SCALE), 
+                    str((
                         pg.math.Vector2(sprite.rect.topleft) - 
                         pg.math.Vector2(background.rect.topleft)
                     )//self.SCALE)

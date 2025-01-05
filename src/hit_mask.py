@@ -1,6 +1,7 @@
 import pygame as pg
 
 from .animation import Animation
+from .decal import Decal
 
 class HitMask(Animation):
     def __init__(self, parent, animations:dict, path_prefix='./'):
@@ -9,11 +10,7 @@ class HitMask(Animation):
             entry['datafile'] = entry["hitmask"] if "hitmask" in entry else entry['datafile']
         super().__init__(parent, mask_animations, path_prefix)
         
-        self.sprite = pg.sprite.Sprite()
-        self.sprite.image = pg.surface.Surface((32, 32), flags=pg.SRCALPHA)
-        self.sprite.rect = self.sprite.image.get_rect()
-        self.sprite.mask = None
-        self.sprite.id = str(type(self.sprite)) + str(id(self.sprite)) 
+        self.sprite = Decal(self.parent.scene)
 
     def update(self):
         super().update()
