@@ -38,7 +38,7 @@ behind:
     type: Edge
     image: ./assets/block/block.png
     mask: ./assets/block/block.png
-    start: [1132,1033]
-    scale: 1
+    start: [1132,1030]
+    scale: 2
     scene_path: ./assets/scene/corridor.yaml
     exit_dir: LEFT

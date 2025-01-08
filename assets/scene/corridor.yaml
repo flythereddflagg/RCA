@@ -23,8 +23,8 @@ behind:
     type: Edge
     image: ./assets/block/block.png
     mask: ./assets/block/block.png
-    start: [90,180]
-    scale: 1
+    start: [60,160]
+    scale: 2
     scene_path: ./assets/scene/boss_room.yaml
     exit_dir: RIGHT
   - id: statue_exit 

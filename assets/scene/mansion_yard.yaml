@@ -47,7 +47,7 @@ behind:
     type: Edge
     image: ./assets/block/block.png
     mask: ./assets/block/block.png
-    start: [688,146]
+    start: [688,180]
     scale: 2.5
     scene_path: ./assets/scene/alleyway.yaml
     exit_dir: RIGHT
