@@ -1,0 +1,22 @@
+
+
+# this is the default asset path
+type: Ossifrage
+image: "./assets/actor/ossifrage/bird_character_base.png"
+mask: "./assets/actor/dragon/hitmask.png"
+groups:
+  - foe
+
+path_prefix: "./assets/actor/dragon/"
+
+
+animations:
+  stand:
+    datafile: "internet_dragon.json"
+    repeat: True
+  walk:
+    datafile: "internet_dragon.json"
+    repeat: True
+  damage:
+    datafile: "internet_dragon.json"
+    repeat: false

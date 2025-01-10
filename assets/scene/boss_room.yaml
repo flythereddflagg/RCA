@@ -25,6 +25,12 @@ background:
     groups: 
      - solid # a group to be in for certain effects
 
+foreground:
+  - id: Rouken
+    type: Dragon
+    yaml: ./assets/actor/dragon.yaml
+    start: [300,300]
+
 behind:
   - id: grate exit
     type: Edge
