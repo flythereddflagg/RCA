@@ -25,6 +25,14 @@ foreground:
     start: [600,200]
     scale: 1
     action: sword
+  - id: le_gate
+    type: Decal
+    image: ./assets/block/gate.png
+    mask: ./assets/block/gate.png
+    start: [212,273]
+    scale: 1
+    groups: 
+     - solid
 
 behind:
   - id: forest_red_castle_valley_connection
