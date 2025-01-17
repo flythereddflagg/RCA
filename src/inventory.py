@@ -225,5 +225,7 @@ class Inventory(Node):
             )
             return self.left_item
         return None
-        
 
+
+    def possesed(self, id_:str) -> bool:
+        pass
