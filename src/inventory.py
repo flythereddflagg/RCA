@@ -140,8 +140,7 @@ class Inventory(Node):
 
     def add_slot(self):
         if len(self.slots) >= N_SLOTS: return None
-        self.slots.append(None)
-        self.slots[-1] = self.empty_item()
+        self.slots.append(self.empty_item())
         new_slot = Decal(**{
             "parent": self,
             "id": f"inventory_slot({len(self.slots)-1})",
@@ -176,11 +175,18 @@ class Inventory(Node):
         return None
 
 
-    def remove_item(self, id_:str):
+    def remove_item(self, id_:str) -> Item|None:
+        """returns an empty item if it removed successfully None otherwise"""
         for i, slot in enumerate(self.slots):
             if slot.id == id_:
                 self.slots[i] = self.empty_item()
                 return self.slots[i]
+        if self.left_item.id == id_:
+            self.left_item = self.empty_item()
+            return self.left_item
+        if self.right_item.id == id_:
+            self.right_item = self.empty_item()
+            return self.right_item
         
         return None
 
@@ -228,4 +234,7 @@ class Inventory(Node):
 
 
     def possesed(self, id_:str) -> bool:
-        pass
+        for item in [self.left_item, self.right_item] + self.slots:
+            if item and item.id == id_:
+                return True
+        return False

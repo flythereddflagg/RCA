@@ -13,6 +13,10 @@ class Gate(Decal):
         ).length_squared()
         if (
             dist_sqr//self.scene.game.SCALE**2 < collide_dist and
-            
+            player.inventory.possesed("gate key")
         ):
+            assert (
+                player.inventory.remove_item("gate key"), 
+                "gate key was possesed but did not get removed properly"
+            )
             self.kill()
