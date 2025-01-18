@@ -100,7 +100,8 @@ class Player(Node):
                 self.inventory.select("LEFT")
             elif self.inventory.left_item.id != EMPTY:
                 animation_id = self.inventory.left_item.action
-                self.state = animation_id
+                if animation_id:
+                    self.state = animation_id
         
         if (RIGHT_HAND_BUTTON in actions and 
             not self.input_held[RIGHT_HAND_BUTTON]
@@ -109,7 +110,8 @@ class Player(Node):
                 self.inventory.select("RIGHT")
             elif self.inventory.right_item.id != EMPTY:
                 animation_id = self.inventory.right_item.action
-                self.state = animation_id
+                if animation_id:
+                    self.state = animation_id
 
 
     def apply_todos(self):
