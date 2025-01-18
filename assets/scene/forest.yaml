@@ -33,13 +33,6 @@ foreground:
     scale: 1
     groups: 
      - solid
-  - id: gate key
-    type: Item
-    image: ./assets/block/gold_key.png
-    mask: ./assets/block/gold_key.png
-    start: [600,350]
-    scale: 1
-    action: null
 
 behind:
   - id: forest_red_castle_valley_connection

@@ -60,12 +60,12 @@ CTLR_BUTTON: Y,B,A,X,LB,RB,LT,RT,-,+,LS,RS,home,PrtScn
 CTLR_AXES: LSX,LSY,RSX,RSY
 PLAYER_CTRL: 0
 
-INITAL_SCENE: ./assets/scene/forest.yaml
-# INITAL_SCENE: ./assets/scene/mansion_yard.yaml
+# INITAL_SCENE: ./assets/scene/forest.yaml
+INITAL_SCENE: ./assets/scene/red_castle_valley.yaml
 # INITAL_SCENE: ./assets/scene/boss_room.yaml
 PLAYER: ./assets/actor/player.yaml
-PLAYER_START_POSITION: [200, 200] 
-# PLAYER_START_POSITION: [338,1448] 
+# PLAYER_START_POSITION: [200, 200] 
+PLAYER_START_POSITION: [338,900] 
 # INITAL_SCENE: ./assets/scene/blank_scene.yaml
 
 SPRITE_GROUPS:

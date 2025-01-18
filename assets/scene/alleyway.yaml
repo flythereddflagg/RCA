@@ -17,6 +17,16 @@ background:
     groups: 
      - solid # a group to be in for certain effects
 
+foreground:
+  - id: gate key
+    type: Item
+    image: ./assets/block/gold_key.png
+    mask: ./assets/block/gold_key.png
+    start: [180,180]
+    scale: 1
+    action: null
+
+
 behind:
   - id: alley_exit
     type: Edge
