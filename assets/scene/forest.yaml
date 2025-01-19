@@ -27,6 +27,7 @@ foreground:
     action: sword
   - id: le_gate
     type: Gate
+    key_id: gate key
     image: ./assets/block/gate.png
     mask: ./assets/block/gate.png
     start: [212,273]

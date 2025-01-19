@@ -55,10 +55,19 @@ behind:
     type: Edge
     image: ./assets/block/block.png
     mask: ./assets/block/block.png
-    start: [1058,222]
+    start: [1063,230]
     scale: 1
     scene_path: ./assets/scene/corridor.yaml
     exit_dir: RIGHT
+  - id: statue block
+    type: Gate
+    key_id: statue key
+    image: ./assets/block/block.png
+    mask: ./assets/block/block.png
+    start: [1056,230]
+    scale: 1.5
+    groups: 
+     - solid
   - id: grate exit 
     type: Edge
     image: ./assets/block/block.png

@@ -60,6 +60,13 @@ foreground:
     mask: ./assets/block/backpack.png
     start: [600,700]
     scale: 1
+  - id: statue key
+    type: Item
+    image: ./assets/block/silver_key.png
+    mask: ./assets/block/silver_key.png
+    start: [1250,932]
+    scale: 1
+    action: null
 
 
 
