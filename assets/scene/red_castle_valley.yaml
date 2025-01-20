@@ -34,13 +34,13 @@ foreground:
   #   groups: 
   #    - solid
 
-  # - id: sword
+  # - id: shovel
   #   type: Item
-  #   image: ./assets/actor/item/sword_icon.png
-  #   mask: ./assets/actor/item/sword_icon.png
+  #   image: ./assets/actor/item/shovel.png
+  #   mask: ./assets/actor/item/shovel.png
   #   start: [800,200]
   #   scale: 1
-  #   action: sword
+  #   action: shovel
 
   - id: ossifrage 1
     type: Ossifrage
@@ -61,14 +61,19 @@ foreground:
     start: [600,700]
     scale: 1
 
-  - id: statue key
-    type: Item
-    image: ./assets/block/silver_key.png
-    mask: ./assets/block/silver_key.png
+  - id: soft_dirt
+    type: SoftDirt
+    image: ./assets/block/soft_dirt.png
+    mask: ./assets/block/soft_dirt_mask.png
     start: [1250,932]
     scale: 1
-    action: null
-
+    treasure:   
+      - id: statue key
+        type: Item
+        image: ./assets/block/silver_key.png
+        mask: ./assets/block/silver_key.png
+        scale: 1
+        action: null
 
 
 behind:

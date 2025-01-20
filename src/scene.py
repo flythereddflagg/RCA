@@ -43,7 +43,9 @@ class Scene():
         return node
 
 
-    def place_node(self, node:Node, layer, groups=None, start=None):
+    def place_node(
+        self, node:Node, layer:pg.sprite.Group, groups=None, start=None
+    ):
         if node.scene is not self:
             node.scene = self
         sprite_instance = (

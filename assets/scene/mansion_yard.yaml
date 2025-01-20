@@ -20,8 +20,8 @@ background:
 foreground:
   - id: shovel
     type: Item
-    image: ./assets/actor/item/shovel2.png
-    mask: ./assets/actor/item/shovel2.png
+    image: ./assets/actor/item/shovel.png
+    mask: ./assets/actor/item/shovel.png
     start: [200,1400]
     scale: 1
     action: shovel

@@ -70,6 +70,7 @@ class GameState(DictObj):
             )
         return self.scene
 
+
     def run(self):
         self.running = True
 
