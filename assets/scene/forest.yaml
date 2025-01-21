@@ -34,6 +34,12 @@ foreground:
     scale: 1
     groups: 
      - solid
+  - id: jar of pickles
+    type: Item
+    image: ./assets/block/jar_of_pickles.png
+    mask: ./assets/block/jar_of_pickles.png
+    start: [154,488]
+    action: null
 
 behind:
   - id: forest_red_castle_valley_connection

@@ -26,13 +26,14 @@ foreground:
     groups: 
      - solid
 
-  # - id: holly
-  #   type: Decal
-  #   image: ./assets/actor/holly/holly_hard_line.png
-  #   mask: ./assets/actor/holly/holly_hard_line.png
-  #   start: [800,750]
-  #   groups: 
-  #    - solid
+  - id: guard
+    type: Decal
+    image: ./assets/actor/other/guard_npc.png
+    mask: ./assets/block/block.png
+    start: [848,222]
+    scale: 2
+    groups: 
+     - solid
 
   # - id: shovel
   #   type: Item
