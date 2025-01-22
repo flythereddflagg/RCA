@@ -27,11 +27,21 @@ foreground:
      - solid
 
   - id: guard
-    type: Decal
+    type: Gate
+    key_id: jar of pickles
     image: ./assets/actor/other/guard_npc.png
     mask: ./assets/block/block.png
     start: [848,222]
-    scale: 2
+    scale: 1
+    groups: 
+     - solid
+
+  - id: wall
+    type: Decal
+    image: ./assets/block/gate.png
+    mask: ./assets/block/gate.png
+    start: [880,190]
+    scale: 0.75
     groups: 
      - solid
 
@@ -66,7 +76,7 @@ foreground:
     type: SoftDirt
     image: ./assets/block/soft_dirt.png
     mask: ./assets/block/soft_dirt_mask.png
-    start: [1250,932]
+    start: [1220,932]
     scale: 1
     treasure:   
       - id: statue key
