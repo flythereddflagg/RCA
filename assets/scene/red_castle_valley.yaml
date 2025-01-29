@@ -10,12 +10,17 @@ INIT_ZOOM: 1
 CAMERASLACK: 100
 
 background:
+  # - id: BACKGROUND
+  #   type: Decal
+  #   image: ./assets/scene/red_castle_valley/background.png
+  #   mask: ./assets/scene/red_castle_valley/foreground.png
+  #   groups: 
+  #    - solid
+
   - id: BACKGROUND
     type: Decal
-    image: ./assets/scene/red_castle_valley/background.png
-    mask: ./assets/scene/red_castle_valley/foreground.png
-    groups: 
-     - solid
+    image: ./assets/scene/red_castle_valley/new_map.png
+    mask: null
 
 foreground:
   - id: big ol rock
