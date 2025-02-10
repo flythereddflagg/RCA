@@ -19,17 +19,17 @@ background:
 
   - id: BACKGROUND
     type: Decal
-    image: ./assets/scene/red_castle_valley/new_map.png
-    mask: null
+    image: ./assets/scene/red_castle_valley/background.png
+    mask: ./assets/scene/red_castle_valley/foreground.png
 
 foreground:
-  - id: big ol rock
-    type: Decal
-    image: ./assets/block/rock.png
-    mask: ./assets/block/rock.png
-    start: [1230,950]
-    groups: 
-     - solid
+  # - id: big ol rock
+  #   type: Decal
+  #   image: ./assets/block/rock.png
+  #   mask: ./assets/block/rock.png
+  #   start: [1230,950]
+  #   groups: 
+  #    - solid
 
   - id: guard
     type: Gate
