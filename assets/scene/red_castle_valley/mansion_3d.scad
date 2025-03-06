@@ -1,14 +1,16 @@
 $fn = 100;
-
+golden = (1+sqrt(5))/2;
 depth = 30;
-length = depth * (1+sqrt(5))/2;
+length = depth * golden;
 height = 20;
+inset_depth = 0.5;
+detail_out = 0.2;
 
-inner_ratio = 1-2/(1+sqrt(5));
+inner_ratio = 1-1/golden;
 arch_dist = length/2*(1-inner_ratio-1/30);
 arch_height = height/2-height/10;
 side_len = length/2 - length*inner_ratio/2;
-inset_depth = 0.5;
+
 
 arch_width = depth/9;
 column_w = side_len  - arch_dist;
@@ -56,27 +58,109 @@ module arches(){
             arch_prism(depth/2+1, arch_width, arch_height+1);
     }
 }
+module window_indents(){
+    window_h = arch_height/2*(1-1/golden);
+    window_width = arch_width/golden;
+    for (i=[0:2]){
+        for (j=[0,1]){
+            translate([0,0,j*height/2]){
+                translate([
+                    remaining_len*(i/3+1/6) - window_width/2,
+                    -1,
+                    window_h
+                ])
+                     cube([
+                        window_width,
+                        inset_depth+1,
+                        arch_height/(golden)
+                    ]);
+            }
+        }
+    }
+}
+module big_arches(){
+    big_arch_width = arch_width * 1.5;
+    
+    translate([side_len+big_arch_width+column_w,depth/2 - 1,-1])
+        rotate([0,0,90])
+        arch_prism(depth/2-1, big_arch_width, arch_height+1);
+    translate([length/2 + big_arch_width/2 ,depth/2 - 1,-1])
+        rotate([0,0,90])
+        arch_prism(depth/2-1, big_arch_width, arch_height+1);
+    translate([side_len,depth/2 +column_w,-1])
+        arch_prism(depth/2-1, big_arch_width, arch_height+1);
+    translate([0,0,height/2]){
+        translate([side_len+big_arch_width+column_w,depth/2 - 1,0])
+            rotate([0,0,90])
+            arch_prism(depth/2-1, big_arch_width, arch_height);
+        translate([length/2 + big_arch_width/2 ,depth/2 - 1,0])
+            rotate([0,0,90])
+            arch_prism(depth/2-1, big_arch_width, arch_height);
+        translate([side_len,depth/2 +column_w,0])
+            arch_prism(depth/2-1, big_arch_width, arch_height);
+    }
+}
+module side_windows(){        
+    translate([0,column_w/2,0]){
+        for (i=[0:2]){
+            translate([inset_depth-1,i*remaining_len,0])
+                rotate([0,0,90])
+                window_indents();
+        }
+    }
+}
+module edge(){
+    translate([-detail_out,-detail_out,height/2])
+            cube([side_len+2*detail_out,1,detail_out]);
+    translate([side_len+detail_out,-detail_out,height/2])
+            rotate([0,0,90])
+            cube([side_len+2*detail_out,1,detail_out]);
+    translate([side_len-detail_out,depth/2-detail_out,height/2])
+            cube([side_len+2*detail_out,1,detail_out]);
 
+}
+module fence(){
+    fence_h = 2;
+    for (i=[0:2]){
+        translate([column_w*(2+i),column_w/3,0])
+            cylinder(h=2, d=column_w*2/3);
+    }
+    translate([column_w,0,fence_h])
+            cube([arch_width,column_w*2/3,detail_out]);
+}
+module fences(){
+    translate([side_len - column_w*2-arch_width,0,height/2])
+        fence();
+    for (i=[0:2]){
+        translate([side_len,i*(arch_width+column_w),height/2])
+            rotate([0,0,90])
+            fence();
+    }
+}
+module triangular_prism(b, h, l){
+
+    resize([l,b,h])
+    translate([1,0.433015,1/4])
+    rotate([0,-90,0])
+    cylinder(d=1, h=1,$fn=3);
+}
 module main(){
 
     difference(){
         shell();
         arches();
- 
-        translate([remaining_len/4-arch_width/2,-1,arch_height/6])
-        cube([arch_width,inset_depth+1,arch_height*2/3]);
-        translate([remaining_len*3/4-arch_width/2,-1,arch_height/6])
-        cube([arch_width,inset_depth+1,arch_height*2/3]);
-        
-        translate([remaining_len/4-arch_width/2,-1,arch_height/8+height/2])
-        cube([arch_width,inset_depth+1,arch_height*3/4]);
-        translate([remaining_len*3/4-arch_width/2,-1,arch_height/8+height/2])
-        cube([arch_width,inset_depth+1,arch_height*3/4]);
+        window_indents();
+        big_arches();
+        side_windows();
     }
-
+    edge();
+    fences();
+    translate([side_len+2*detail_out,-2*detail_out,height])
+        rotate([0,0,90])
+        triangular_prism(side_len+4*detail_out, height/2/golden, depth+4*detail_out);
 }
 main();
-
+echo(28/64);
 
 
 
