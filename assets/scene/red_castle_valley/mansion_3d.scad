@@ -6,6 +6,9 @@ height = 20;
 inset_depth = 0.5;
 detail_out = 0.2;
 
+
+
+
 inner_ratio = 1-1/golden;
 arch_dist = length/2*(1-inner_ratio-1/30);
 arch_height = height/2-height/10;
@@ -15,6 +18,11 @@ side_len = length/2 - length*inner_ratio/2;
 arch_width = depth/9;
 column_w = side_len  - arch_dist;
 remaining_len = side_len - column_w - arch_width;
+
+overhang = 1;
+roof_height = height/2/golden;
+roof_width = side_len+2*overhang;
+roof_len = depth+2*overhang;
 
 module arch_prism(l, w, h){
     rotate([0,90,0])
@@ -110,6 +118,9 @@ module side_windows(){
     }
 }
 module edge(){
+    translate([1-detail_out,-detail_out,height/2])
+            rotate([0,0,90])
+            cube([depth+2*detail_out,1,detail_out]);
     translate([-detail_out,-detail_out,height/2])
             cube([side_len+2*detail_out,1,detail_out]);
     translate([side_len+detail_out,-detail_out,height/2])
@@ -144,23 +155,84 @@ module triangular_prism(b, h, l){
     rotate([0,-90,0])
     cylinder(d=1, h=1,$fn=3);
 }
-module main(){
-
+module roof_shape(roof_width, roof_height, roof_len){
+    roof_angle = atan(roof_height/(roof_width/2));
     difference(){
-        shell();
-        arches();
-        window_indents();
-        big_arches();
-        side_windows();
+        triangular_prism(roof_width, roof_height, roof_len);
+        rotate([0,-roof_angle,0])
+            triangular_prism(roof_width, roof_height, roof_len);
+        translate([roof_len,roof_width,0])
+        rotate([0,-roof_angle,180])
+            triangular_prism(roof_width, roof_height, roof_len);
     }
-    edge();
-    fences();
-    translate([side_len+2*detail_out,-2*detail_out,height])
+}
+module roof(){
+    union(){
+    translate([side_len+overhang,-overhang,height])
         rotate([0,0,90])
-        triangular_prism(side_len+4*detail_out, height/2/golden, depth+4*detail_out);
+        roof_shape(roof_width, roof_height, roof_len);
+    translate([-overhang,depth-roof_width+overhang,height])
+
+        roof_shape(roof_width, roof_height, length);
+    }
+}
+module floor3(){
+    window_w = arch_width/2;
+    window_h = arch_height/2;
+    window_bottom = height/4;
+    gap = 2*column_w;
+    floor_start = side_len/2;
+    floor_pushback = depth*5/8;
+    middle_window = length/2 - window_w/2 - floor_start;
+    roof3_w = depth/3;
+    translate([floor_start,floor_pushback,height])
+        difference(){
+            cube([length/2,roof3_w,height/2]);
+            translate([middle_window,-1,window_bottom])
+                cube([window_w,detail_out+1,window_h]);
+            for (i=[0:2]){
+                translate([i*(middle_window - gap)/3+gap,-1,window_bottom])
+                    cube([window_w,detail_out+1,window_h]);
+            }
+        }
+    translate([floor_start-overhang,floor_pushback-overhang,height*1.5])
+        roof_shape(roof3_w+2*overhang, roof_height, length);
+}
+module west_half(){
+    difference(){
+    union(){
+        difference(){
+            shell();
+            arches();
+            window_indents();
+            big_arches();
+            side_windows();
+        }
+        edge();
+        fences();
+        roof();
+        floor3();
+    }
+    translate([length/2,-5,-5])
+            cube([length+10,depth+10,height*5]);
+   
+}
+}
+
+module main(){
+    translate([length/2,0,0])
+    union(){
+    translate([-length/2,0,0])
+        west_half();
+    mirror([1,0,0])
+    translate([-length/2,0,0])
+        west_half();
+    }
+
+
 }
 main();
-echo(28/64);
+
 
 
 
