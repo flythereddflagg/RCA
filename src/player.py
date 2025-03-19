@@ -23,7 +23,7 @@ class Player(Node):
         super().__init__(**options)
         self.game = game
         self.options = options
-        self.speed = 300
+        self.speed = 200
         self.todo_list = []
         self.signals = []
         self.sprite = Decal(parent=self, **options)

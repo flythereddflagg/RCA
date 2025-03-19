@@ -4,8 +4,8 @@
 
 id: PLAYER
 type: Player
-image: "./assets/actor/larry/larry_base.png"
-mask: null
+image: ./assets/actor/larry/larry_base.png
+mask: ./assets/actor/larry/larry_base_mask.png
 groups:
   - player
 

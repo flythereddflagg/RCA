@@ -4,6 +4,7 @@ DRAW_LAYERS:
   - behind
   - background
   - foreground
+  - overlay
 # amount to scale everything
 INIT_ZOOM: 1
 # pixels before camera moves instead of player
@@ -19,8 +20,15 @@ background:
 
   - id: BACKGROUND
     type: Decal
-    image: ./assets/scene/red_castle_valley/background.png
-    mask: ./assets/scene/red_castle_valley/foreground.png
+    image: ./assets/scene/red_castle_valley/red_castle_valley_bg.png
+    mask: assets/scene/red_castle_valley/red_castle_valley_mask.png
+    groups:
+      - solid
+
+overlay:
+  - id: foreground
+    type: Decal
+    image: ./assets/scene/red_castle_valley/red_castle_valley_overlay.png
 
 foreground:
   # - id: big ol rock
@@ -36,19 +44,19 @@ foreground:
     key_id: jar of pickles
     image: ./assets/actor/other/guard_npc.png
     mask: ./assets/block/block.png
-    start: [848,222]
+    start: [888,91]
     scale: 1
     groups: 
      - solid
 
-  - id: wall
-    type: Decal
-    image: ./assets/block/gate.png
-    mask: ./assets/block/gate.png
-    start: [880,190]
-    scale: 0.75
-    groups: 
-     - solid
+  # - id: wall
+  #   type: Decal
+  #   image: ./assets/block/gate.png
+  #   mask: ./assets/block/gate.png
+  #   start: [880,190]
+  #   scale: 0.75
+  #   groups: 
+  #    - solid
 
   # - id: shovel
   #   type: Item
@@ -61,27 +69,27 @@ foreground:
   - id: ossifrage 1
     type: Ossifrage
     yaml: ./assets/actor/ossifrage.yaml
-    start: [1000,900]
+    start: [835,506]
 
   - id: cactus
     type: Cactus
     image: ./assets/block/cactus.png
     mask: ./assets/block/cactus.png
-    start: [600,600]
+    start: [956,337]
     scale: 1
 
   - id: backpack
     type: Backpack
     image: ./assets/block/backpack.png
     mask: ./assets/block/backpack.png
-    start: [600,700]
+    start: [358,531]
     scale: 1
 
   - id: soft_dirt
     type: SoftDirt
     image: ./assets/block/soft_dirt.png
     mask: ./assets/block/soft_dirt_mask.png
-    start: [1220,932]
+    start: [221,624]
     scale: 1
     treasure:   
       - id: statue key
@@ -97,8 +105,8 @@ behind:
     type: Edge
     image: ./assets/block/block.png
     mask: ./assets/block/block.png
-    start: [845,-80]
-    scale: 2.5
+    start: [870,-48]
+    scale: 2
     scene_path: ./assets/scene/mansion_yard.yaml
     exit_dir: DOWN
 
@@ -106,8 +114,8 @@ behind:
     type: Edge
     image: ./assets/block/block.png
     mask: ./assets/block/block.png
-    start: [135,650]
-    scale: 2.5
+    start: [200,300]
+    scale: 1
     scene_path: ./assets/scene/forest.yaml
     exit_dir: RIGHT
 
