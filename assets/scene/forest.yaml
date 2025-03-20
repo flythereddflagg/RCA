@@ -3,7 +3,8 @@ DRAW_LAYERS:
   - behind
   - background
   - foreground
-  - hud
+  - overlay
+
 # amount to scale everything
 INIT_ZOOM: 1
 # pixels before camera moves instead of player
@@ -12,25 +13,33 @@ CAMERASLACK: 100
 background:
   - id: dungeon_tile
     type: Decal
-    image: ./assets/scene/forest/map.png
-    mask: ./assets/scene/forest/foreground.png
+    image: ./assets/scene/forest/west_forest_bg.png
+    mask: ./assets/scene/forest/west_forest_mask.png
     groups: 
      - solid
+
+overlay:
+  - id: foreground
+    type: Decal
+    image: ./assets/scene/forest/west_forest_overlay.png
+  - id: foreground2
+    type: Decal
+    image: ./assets/scene/forest/cave_overlay.png
 
 foreground:
   - id: sword
     type: Item
     image: ./assets/actor/item/sword_icon.png
     mask: ./assets/actor/item/sword_icon.png
-    start: [600,200]
+    start: [114,393]
     scale: 1
     action: sword
   - id: le_gate
     type: Gate
     key_id: gate key
-    image: ./assets/block/gate.png
-    mask: ./assets/block/gate.png
-    start: [212,273]
+    image: ./assets/scene/forest/gate.png
+    mask: ./assets/scene/forest/gate_mask.png
+    start: [78,540]
     scale: 1
     groups: 
      - solid
@@ -38,7 +47,7 @@ foreground:
     type: Item
     image: ./assets/block/jar_of_pickles.png
     mask: ./assets/block/jar_of_pickles.png
-    start: [154,488]
+    start: [51,580]
     action: null
 
 behind:
@@ -46,7 +55,7 @@ behind:
     type: Edge
     image: ./assets/block/block.png
     mask: ./assets/block/block.png
-    start: [325,575]
-    scale: 2.5
+    start: [409,234]
+    scale: 1
     scene_path: ./assets/scene/red_castle_valley.yaml
     exit_dir: LEFT
