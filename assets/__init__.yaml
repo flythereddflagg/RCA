@@ -60,8 +60,8 @@ CTLR_BUTTON: Y,B,A,X,LB,RB,LT,RT,-,+,LS,RS,home,PrtScn
 CTLR_AXES: LSX,LSY,RSX,RSY
 PLAYER_CTRL: 0
 
-INITAL_SCENE: ./assets/scene/forest.yaml
-PLAYER_START_POSITION: [200,200]
+INITAL_SCENE: ./assets/scene/mansion_yard.yaml
+PLAYER_START_POSITION: [825,584]
 # INITAL_SCENE: ./assets/scene/red_castle_valley.yaml
 # INITAL_SCENE: ./assets/scene/boss_room.yaml
 PLAYER: ./assets/actor/player.yaml

@@ -7,15 +7,21 @@ DRAW_LAYERS: # layers will be drawn in this order
   - background
   # - behind
   - foreground
+  - overlay
   - hud
 
 background:
   - id: mansion yard map
     type: Decal
-    image: ./assets/scene/mansion_yard/background.png
-    mask: ./assets/scene/mansion_yard/foreground.png
+    image: ./assets/scene/mansion_yard/mansion_yard_bg.png
+    mask: ./assets/scene/mansion_yard/mansion_yard_mask.png
     groups: 
      - solid
+
+overlay:
+  - id: mansion yard map
+    type: Decal
+    image: ./assets/scene/mansion_yard/mansion_yard_overlay.png
 
 foreground:
   - id: shovel
@@ -25,6 +31,14 @@ foreground:
     start: [200,1400]
     scale: 1
     action: shovel
+  - id: statue block
+    type: Gate
+    key_id: statue key
+    image: ./assets/block/block.png
+    mask: ./assets/block/block.png
+    start: [768,263]
+    groups: 
+     - solid
 
 behind:
   - id: bridge_exit
@@ -47,32 +61,23 @@ behind:
     type: Edge
     image: ./assets/block/block.png
     mask: ./assets/block/block.png
-    start: [688,180]
-    scale: 2.5
+    start: [663,175]
+    scale: 1
     scene_path: ./assets/scene/alleyway.yaml
     exit_dir: RIGHT
   - id: statue_exit 
     type: Edge
     image: ./assets/block/block.png
     mask: ./assets/block/block.png
-    start: [1063,230]
+    start: [849,213]
     scale: 1
     scene_path: ./assets/scene/corridor.yaml
     exit_dir: RIGHT
-  - id: statue block
-    type: Gate
-    key_id: statue key
-    image: ./assets/block/block.png
-    mask: ./assets/block/block.png
-    start: [1056,230]
-    scale: 1.5
-    groups: 
-     - solid
   - id: grate exit 
     type: Edge
     image: ./assets/block/block.png
     mask: ./assets/block/block.png
-    start: [55,712]
+    start: [232,313]
     scale: 1
     scene_path: ./assets/scene/boss_room.yaml
     exit_dir: RIGHT
