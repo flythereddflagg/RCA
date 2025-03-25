@@ -6,30 +6,35 @@ DRAW_LAYERS: # layers will be drawn in this order
   - behind
   - background
   - foreground
+  - overlay
   - hud
 
 # sprites in each drawing layer
 background:
   - id: alleyway map
     type: Decal
-    image: ./assets/scene/alleyway/map.png
-    mask: ./assets/scene/alleyway/foreground.png
+    image: ./assets/scene/alleyway/alley_way.png
+    mask: ./assets/scene/alleyway/alley_way_mask.png
     groups: 
      - solid # a group to be in for certain effects
+overlay:
+  - id: alleyway shadows
+    type: Decal
+    image: ./assets/scene/alleyway/alley_way_overlay.png
 
 foreground:
   - id: rubble dirt
     type: SoftDirt
     image: ./assets/block/soft_dirt.png
     mask: ./assets/block/soft_dirt_mask.png
-    start: [180,180]
+    start: [92,76]
     scale: 1
     treasure:   
       - id: gate key
         type: Item
         image: ./assets/block/gold_key.png
         mask: ./assets/block/gold_key.png
-        start: [180,180]
+        start: [177,92]
         scale: 1
         action: null
 
@@ -39,7 +44,7 @@ behind:
     type: Edge
     image: ./assets/block/block.png
     mask: ./assets/block/block.png
-    start: [1138,167]
-    scale: 2.5
+    start: [581,80]
+    scale: 1
     scene_path: ./assets/scene/mansion_yard.yaml
     exit_dir: LEFT
