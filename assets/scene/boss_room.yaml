@@ -6,22 +6,22 @@ DRAW_LAYERS: # layers will be drawn in this order
   - behind
   - background
   - foreground
+  - overlay
   - hud
 
 
 # sprites in each drawing layer
-hud:
-  # - id: <unique ID 1>
-  #   type: Decal
-  #   image: path to
-  #   start: [0,0]
-  #   mask:
+overlay:
+  - id: boss room overlay
+    type: Decal
+    image: ./assets/scene/boss_room/boss_room_overlay.png
+
 
 background:
   - id: boss room
     type: Decal
-    image: ./assets/scene/boss_room/map.png
-    mask: ./assets/scene/boss_room/foreground.png
+    image: ./assets/scene/boss_room/boss_room.png
+    mask: ./assets/scene/boss_room/boss_room_mask.png
     groups: 
      - solid # a group to be in for certain effects
 
@@ -29,22 +29,22 @@ foreground:
   - id: Rouken
     type: Dragon
     yaml: ./assets/actor/dragon.yaml
-    start: [300,300]
+    start: [84,55]
 
 behind:
   - id: grate exit
     type: Edge
     image: ./assets/block/block.png
     mask: ./assets/block/block.png
-    start: [117,117]
+    start: [32,32]
     scale: 1
     scene_path: ./assets/scene/mansion_yard.yaml
     exit_dir: DOWN
   - id: doorway exit 
     type: Edge
-    image: ./assets/block/block.png
+    image: ./assets/block/null.png
     mask: ./assets/block/block.png
-    start: [1132,1030]
-    scale: 2
+    start: [630,164]
+    scale: 1
     scene_path: ./assets/scene/corridor.yaml
     exit_dir: LEFT

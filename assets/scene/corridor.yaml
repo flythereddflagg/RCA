@@ -6,6 +6,7 @@ DRAW_LAYERS: # layers will be drawn in this order
   - behind
   - background
   - foreground
+  - overlay
   - hud
 
 
@@ -13,25 +14,31 @@ DRAW_LAYERS: # layers will be drawn in this order
 background:
   - id: corridor map
     type: Decal
-    image: ./assets/scene/corridor/map.png
-    mask: ./assets/scene/corridor/foreground.png
+    image: ./assets/scene/corridor/corridor.png
+    mask: ./assets/scene/corridor/corridor_mask.png
     groups: 
-     - solid # a group to be in for certain effects
+     - solid
+
+overlay:
+  - id: corridor map
+    type: Decal
+    image: ./assets/scene/corridor/corridor_overlay.png
+
 
 behind:
   - id: doorway exit 
     type: Edge
-    image: ./assets/block/block.png
+    image: ./assets/block/null.png
     mask: ./assets/block/block.png
-    start: [60,160]
-    scale: 2
+    start: [-25,80]
+    scale: 1
     scene_path: ./assets/scene/boss_room.yaml
     exit_dir: RIGHT
   - id: statue_exit 
     type: Edge
-    image: ./assets/block/block.png
+    image: ./assets/block/null.png
     mask: ./assets/block/block.png
-    start: [1140,159]
+    start: [625,82]
     scale: 1
     scene_path: ./assets/scene/mansion_yard.yaml
     exit_dir: LEFT

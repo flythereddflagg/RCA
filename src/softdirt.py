@@ -11,7 +11,7 @@ class SoftDirt(Decal):
 
     def __init__(self, treasure=None, **kwargs):
         super().__init__(**kwargs)
-        self.treasure = treasure
+        self.treasure = treasure # list of treasures given by the dirt
 
     def update(self):
         for sprite in list_collided(self, self.scene.groups["player"]):
@@ -27,10 +27,11 @@ class SoftDirt(Decal):
         layer = [layer for key, layer in self.scene.layers.items() if self in layer][0]
         for item in self.treasure:
             start_vector = (
-                pg.math.Vector2([random.random(), random.random()]) * 
-                throw_dist + 
-                # throw it up and to the left 32 pixels
-                pg.math.Vector2([-throw_dist,-throw_dist]) 
+                pg.math.Vector2(item["start"])
+                # pg.math.Vector2([random.random(), random.random()]) * 
+                # throw_dist + 
+                # # throw it up and to the left 32 pixels
+                # pg.math.Vector2([-throw_dist,-throw_dist]) 
             ) + sprite.rect.topleft
             node = self.scene.node_from_dict(self.scene, item)
             groups = self.options.get("groups")

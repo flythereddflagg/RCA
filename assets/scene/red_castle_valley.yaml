@@ -40,15 +40,15 @@ foreground:
     groups: 
      - solid
 
-  - id: guard
-    type: Gate
-    key_id: jar of pickles
-    image: ./assets/actor/other/guard_npc.png
-    mask: ./assets/block/block.png
-    start: [888,91]
-    scale: 1
-    groups: 
-     - solid
+  # - id: guard
+  #   type: Gate
+  #   key_id: jar of pickles
+  #   image: ./assets/actor/other/guard_npc.png
+  #   mask: ./assets/block/block.png
+  #   start: [888,91]
+  #   scale: 1
+  #   groups: 
+  #    - solid
 
   # - id: wall
   #   type: Decal
