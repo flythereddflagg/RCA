@@ -52,12 +52,12 @@ class Dragon(Decal):
         
 
         if self.hp <= 0:
-            print("\n\n\n\n\n\n\n\n\n\n\KILLLED DRAGON")
-            sprite = [sprite for self.scene.all_sprites.sprites() if sprite.id == "grate exit"][0]
+            sprite = [sprite for sprite in self.scene.all_sprites.sprites() if sprite.id == "grate exit"][0]
             sprite.set_image(pg.image.load("./assets/block/block.png").convert_alpha())
-            sprite.topleft = get_center_screen()
+            sprite.rect.topleft = get_center_screen()
+            sprite.kill()
+            self.scene.layers["foreground"].add(sprite)
             self.kill()
-            print("\n\n\n\n\n\n\n\n")
 
 
     def check_signals(self):

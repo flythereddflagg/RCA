@@ -2,7 +2,7 @@
 # Frame rate ( in Frames / second)
 FPS: 90 # game is unstable at FPS > about 100
 # FPS: 0 # do not limit FPS
-DEBUG: true # show debug info on screen?
+DEBUG: false # show debug info on screen?
 SHOW_EVENTS: false # print events in terminal
 FPS_COUNTER: true # print FPS on game screen
 SHOW_MASK: false # shows hit masks of every entity when debug is true
@@ -62,14 +62,14 @@ PLAYER_CTRL: 0
 
 # INITAL_SCENE: ./assets/scene/mansion_yard.yaml
 # PLAYER_START_POSITION: [825,584]
-PLAYER_START_POSITION: [300,200]
+# PLAYER_START_POSITION: [300,200]
 # INITAL_SCENE: ./assets/scene/red_castle_valley.yaml
-INITAL_SCENE: ./assets/scene/boss_room.yaml
+# INITAL_SCENE: ./assets/scene/boss_room.yaml
 # INITAL_SCENE: ./assets/scene/boss_room.yaml
 PLAYER: ./assets/actor/player.yaml
 
-# PLAYER_START_POSITION: [338,900] 
-# INITAL_SCENE: ./assets/scene/blank_scene.yaml
+PLAYER_START_POSITION: [338,900] 
+INITAL_SCENE: ./assets/scene/blank_scene.yaml
 
 SPRITE_GROUPS:
   - solid     # solid entities

@@ -80,6 +80,7 @@ class Scene():
                     node_id not in self.game.saved_scenes[self.id][name].keys()
                 ): 
                     continue
+                    
                 node = Scene.node_from_dict(self, node_init)
                 # TODO code here for new starting place for dropped items (further down the road?)
                 self.place_node(
