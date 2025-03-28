@@ -6,7 +6,7 @@ from .decal import Decal
 from .compass import Compass
 from .movement import Movement
 from .animation import Animation
-from .tools import list_collided
+from .tools import list_collided, get_center_screen
 
 
 MOVEMENTS = Compass.strings + ['STOP', 'STOP', "STOP"]
@@ -25,7 +25,7 @@ class Dragon(Decal):
         self.action = None
         self.speed = 200 # pixels per second
         self.signals = []
-        self.hp = 50
+        self.hp = 10
         self.damage_direction = pg.math.Vector2(0,1)
         self.state = "stand"
 
@@ -51,12 +51,17 @@ class Dragon(Decal):
         self.apply_physics()
         
 
-        if self.hp <= 0: 
+        if self.hp <= 0:
+            print("\n\n\n\n\n\n\n\n\n\n\KILLLED DRAGON")
+            sprite = [sprite for self.scene.all_sprites.sprites() if sprite.id == "grate exit"][0]
+            sprite.set_image(pg.image.load("./assets/block/block.png").convert_alpha())
+            sprite.topleft = get_center_screen()
             self.kill()
+            print("\n\n\n\n\n\n\n\n")
 
 
     def check_signals(self):
-        if self.signals: print(f"[{self.id}] got signals:\n{self.signals}")
+        if self.signals: print(f"[{self.id}] got signals:\n{self.signals}\nhp = {self.hp}")
         for signal in self.signals:
             if "damage" in signal[0]:
                 self.hp -= signal[1]

@@ -10,6 +10,7 @@ from .item import EMPTY
 from .node import Node
 from .hit_mask import HitMask
 
+DEFAULT_SPEED = 300
 DEFAULT_STATE = 'stand'
 LEFT_HAND_BUTTON = "BUTTON_1"
 RIGHT_HAND_BUTTON = "BUTTON_2"
@@ -23,7 +24,7 @@ class Player(Node):
         super().__init__(**options)
         self.game = game
         self.options = options
-        self.speed = 200
+        self.speed = DEFAULT_SPEED
         self.todo_list = []
         self.signals = []
         self.sprite = Decal(parent=self, **options)

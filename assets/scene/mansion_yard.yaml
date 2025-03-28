@@ -22,14 +22,14 @@ overlay:
   - id: mansion yard map
     type: Decal
     image: ./assets/scene/mansion_yard/mansion_yard_overlay.png
-  # - id: statue block
-  #   type: Gate
-  #   key_id: statue key
-  #   image: ./assets/scene/mansion_yard/statue.png
-  #   mask: ./assets/scene/mansion_yard/statue_mask.png
-  #   start: [742,125]
-  #   groups: 
-  #    - solid
+  - id: statue block
+    type: Gate
+    key_id: statue key
+    image: ./assets/scene/mansion_yard/statue.png
+    mask: ./assets/scene/mansion_yard/statue_mask.png
+    start: [742,125]
+    groups: 
+     - solid
 
 foreground:
   - id: shovel

@@ -31,11 +31,10 @@ foreground:
     scale: 1
     treasure:   
       - id: gate key
-      # - id: statue key
         type: Item
         image: ./assets/block/gold_key.png
         mask: ./assets/block/gold_key.png
-        start: [177,92]
+        start: [64,0]
         scale: 1
         action: null
 

@@ -40,15 +40,15 @@ foreground:
     groups: 
      - solid
 
-  # - id: guard
-  #   type: Gate
-  #   key_id: jar of pickles
-  #   image: ./assets/actor/other/guard_npc.png
-  #   mask: ./assets/block/block.png
-  #   start: [888,91]
-  #   scale: 1
-  #   groups: 
-  #    - solid
+  - id: guard
+    type: Gate
+    key_id: jar of pickles
+    image: ./assets/actor/other/guard_npc.png
+    mask: ./assets/block/block.png
+    start: [888,91]
+    scale: 1
+    groups: 
+     - solid
 
   # - id: wall
   #   type: Decal
@@ -98,8 +98,8 @@ foreground:
         image: ./assets/block/silver_key.png
         mask: ./assets/block/silver_key.png
         scale: 1
+        start: [64,0]
         action: null
-
 
 behind:
   - id: bridge_exit

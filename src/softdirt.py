@@ -32,7 +32,7 @@ class SoftDirt(Decal):
                 # throw_dist + 
                 # # throw it up and to the left 32 pixels
                 # pg.math.Vector2([-throw_dist,-throw_dist]) 
-            ) + sprite.rect.topleft
+            ) + self.rect.topleft
             node = self.scene.node_from_dict(self.scene, item)
             groups = self.options.get("groups")
             self.scene.place_node(
