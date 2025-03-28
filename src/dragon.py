@@ -25,7 +25,7 @@ class Dragon(Decal):
         self.action = None
         self.speed = 200 # pixels per second
         self.signals = []
-        self.hp = 10
+        self.hp = 50
         self.damage_direction = pg.math.Vector2(0,1)
         self.state = "stand"
 
@@ -57,6 +57,7 @@ class Dragon(Decal):
             sprite.rect.topleft = get_center_screen()
             sprite.kill()
             self.scene.layers["foreground"].add(sprite)
+            self.scene.all_sprites.add(sprite)
             self.kill()
 
 

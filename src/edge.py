@@ -29,7 +29,7 @@ class Edge(Decal):
             yaml_path=self.options['scene_path'], player=player
         )
 
-        sprites = new_scene.layers['behind'].sprites()
+        sprites = new_scene.all_sprites.sprites()
         # TODO ^ this line needs to be reconsidered. 
         # All sprites should be searched
         block = list(filter(lambda x: x.id == self.id, sprites))[0]

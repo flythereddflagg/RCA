@@ -25,7 +25,7 @@ class Ossifrage(Decal):
         self.action = None
         self.speed = 200 # pixels per second
         self.signals = []
-        self.hp = 50
+        self.hp = 20
         self.damage_direction = pg.math.Vector2(0,1)
         self.state = "stand"
 

@@ -10,7 +10,7 @@ from .item import EMPTY
 from .node import Node
 from .hit_mask import HitMask
 
-DEFAULT_SPEED = 300
+DEFAULT_SPEED = 200
 DEFAULT_STATE = 'stand'
 LEFT_HAND_BUTTON = "BUTTON_1"
 RIGHT_HAND_BUTTON = "BUTTON_2"
