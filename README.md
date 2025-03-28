@@ -10,7 +10,7 @@
 
 ## World 1: In the shadow of the mountain
 
-**Scope** W1 must have the following:
+**Scope** W1 must have the following: 
 
 - ✓ Basic story and story beats from the first game
 - ✓ Items: [ ✓sword, ✓shovel, ✓pickle, ✓gate key, ✓statue key]
