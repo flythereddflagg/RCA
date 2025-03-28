@@ -30,8 +30,6 @@ class Edge(Decal):
         )
 
         sprites = new_scene.all_sprites.sprites()
-        # TODO ^ this line needs to be reconsidered. 
-        # All sprites should be searched
         block = list(filter(lambda x: x.id == self.id, sprites))[0]
         player.sprite.rect.center = block.rect.center
         dx, dy = Compass.unit_vector(block.options['exit_dir'])
