@@ -4,7 +4,7 @@
 **Email: redddogjr@gmail.com**
 
 **To build:**
-- python distribution installed
+- python distribution installed (Python >= 3.10)
 - `conda install pyyaml pygame cx_freeze` **OR** `pip install pyyaml pygame cx_freeze`
 - `python setup.py build`
 
