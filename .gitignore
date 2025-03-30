@@ -1,3 +1,10 @@
 # IGNORE THE FOLLOWING FILE TYPES
 **.pyc
 **__pycache__
+**.vscode
+**.mscbackup
+**.bkp
+# IGNORE THE FOLLOWING FOLDERS
+build/
+dist/
+.pytest_cache/

@@ -1,0 +1,61 @@
+id: forest
+DRAW_LAYERS:
+  - behind
+  - background
+  - foreground
+  - overlay
+
+# amount to scale everything
+INIT_ZOOM: 1
+# pixels before camera moves instead of player
+CAMERASLACK: 100
+
+background:
+  - id: dungeon_tile
+    type: Decal
+    image: ./assets/scene/forest/west_forest_bg.png
+    mask: ./assets/scene/forest/west_forest_mask.png
+    groups: 
+     - solid
+
+overlay:
+  - id: foreground
+    type: Decal
+    image: ./assets/scene/forest/west_forest_overlay.png
+  - id: foreground2
+    type: Decal
+    image: ./assets/scene/forest/cave_overlay.png
+
+foreground:
+  - id: sword
+    type: Item
+    image: ./assets/actor/item/sword_icon.png
+    mask: ./assets/actor/item/sword_icon.png
+    start: [114,393]
+    scale: 1
+    action: sword
+  - id: le_gate
+    type: Gate
+    key_id: gate key
+    image: ./assets/scene/forest/gate.png
+    mask: ./assets/scene/forest/gate_mask.png
+    start: [78,540]
+    scale: 1
+    groups: 
+     - solid
+  - id: jar of pickles
+    type: Item
+    image: ./assets/block/jar_of_pickles.png
+    mask: ./assets/block/jar_of_pickles.png
+    start: [51,580]
+    action: null
+
+behind:
+  - id: forest_red_castle_valley_connection
+    type: Edge
+    image: ./assets/block/block.png
+    mask: ./assets/block/block.png
+    start: [409,234]
+    scale: 1
+    scene_path: ./assets/scene/red_castle_valley.yaml
+    exit_dir: LEFT

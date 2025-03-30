@@ -1,0 +1,349 @@
+{ "frames": {
+   "larry_shovel 0.aseprite": {
+    "frame": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 1.aseprite": {
+    "frame": { "x": 84, "y": 0, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 2.aseprite": {
+    "frame": { "x": 168, "y": 0, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 3.aseprite": {
+    "frame": { "x": 252, "y": 0, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 4.aseprite": {
+    "frame": { "x": 336, "y": 0, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 5.aseprite": {
+    "frame": { "x": 420, "y": 0, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 6.aseprite": {
+    "frame": { "x": 504, "y": 0, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 7.aseprite": {
+    "frame": { "x": 588, "y": 0, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 8.aseprite": {
+    "frame": { "x": 672, "y": 0, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 9.aseprite": {
+    "frame": { "x": 756, "y": 0, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 10.aseprite": {
+    "frame": { "x": 0, "y": 84, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 11.aseprite": {
+    "frame": { "x": 84, "y": 84, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 12.aseprite": {
+    "frame": { "x": 168, "y": 84, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 13.aseprite": {
+    "frame": { "x": 252, "y": 84, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 14.aseprite": {
+    "frame": { "x": 336, "y": 84, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 15.aseprite": {
+    "frame": { "x": 420, "y": 84, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 16.aseprite": {
+    "frame": { "x": 504, "y": 84, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 17.aseprite": {
+    "frame": { "x": 588, "y": 84, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 18.aseprite": {
+    "frame": { "x": 672, "y": 84, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 19.aseprite": {
+    "frame": { "x": 756, "y": 84, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 20.aseprite": {
+    "frame": { "x": 0, "y": 168, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 21.aseprite": {
+    "frame": { "x": 84, "y": 168, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 22.aseprite": {
+    "frame": { "x": 168, "y": 168, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 23.aseprite": {
+    "frame": { "x": 252, "y": 168, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 24.aseprite": {
+    "frame": { "x": 336, "y": 168, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 25.aseprite": {
+    "frame": { "x": 420, "y": 168, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 26.aseprite": {
+    "frame": { "x": 504, "y": 168, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 27.aseprite": {
+    "frame": { "x": 588, "y": 168, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 28.aseprite": {
+    "frame": { "x": 672, "y": 168, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 29.aseprite": {
+    "frame": { "x": 756, "y": 168, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 30.aseprite": {
+    "frame": { "x": 0, "y": 252, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 31.aseprite": {
+    "frame": { "x": 84, "y": 252, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 32.aseprite": {
+    "frame": { "x": 168, "y": 252, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 33.aseprite": {
+    "frame": { "x": 252, "y": 252, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 34.aseprite": {
+    "frame": { "x": 336, "y": 252, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 35.aseprite": {
+    "frame": { "x": 420, "y": 252, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 36.aseprite": {
+    "frame": { "x": 504, "y": 252, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 37.aseprite": {
+    "frame": { "x": 588, "y": 252, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 38.aseprite": {
+    "frame": { "x": 672, "y": 252, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   },
+   "larry_shovel 39.aseprite": {
+    "frame": { "x": 756, "y": 252, "w": 84, "h": 84 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 84, "h": 84 },
+    "sourceSize": { "w": 84, "h": 84 },
+    "duration": 55
+   }
+ },
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.3.9.2-x64",
+  "image": "larry_shovel.png",
+  "format": "I8",
+  "size": { "w": 840, "h": 336 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "Up", "from": 0, "to": 9, "direction": "forward", "color": "#000000ff" },
+   { "name": "Right", "from": 10, "to": 19, "direction": "forward", "color": "#000000ff" },
+   { "name": "Down", "from": 20, "to": 29, "direction": "forward", "color": "#000000ff" },
+   { "name": "Left", "from": 30, "to": 39, "direction": "forward", "color": "#000000ff" }
+  ],
+  "layers": [
+   { "name": "feet", "opacity": 255, "blendMode": "normal" },
+   { "name": "far body", "opacity": 255, "blendMode": "normal" },
+   { "name": "swoosh", "opacity": 255, "blendMode": "normal" },
+   { "name": "far arm", "opacity": 255, "blendMode": "normal" },
+   { "name": "close body", "opacity": 255, "blendMode": "normal" },
+   { "name": "head", "opacity": 255, "blendMode": "normal" },
+   { "name": "shovel", "opacity": 255, "blendMode": "normal" },
+   { "name": "close arm", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

@@ -1,0 +1,130 @@
+# Set up all sprite groups
+id: red castle valley
+DRAW_LAYERS:
+  - behind
+  - background
+  - foreground
+  - overlay
+# amount to scale everything
+INIT_ZOOM: 1
+# pixels before camera moves instead of player
+CAMERASLACK: 100
+
+background:
+  # - id: BACKGROUND
+  #   type: Decal
+  #   image: ./assets/scene/red_castle_valley/background.png
+  #   mask: ./assets/scene/red_castle_valley/foreground.png
+  #   groups: 
+  #    - solid
+
+  - id: BACKGROUND
+    type: Decal
+    image: ./assets/scene/red_castle_valley/red_castle_valley_bg.png
+    mask: assets/scene/red_castle_valley/red_castle_valley_mask.png
+    groups:
+      - solid
+
+overlay:
+  - id: foreground
+    type: Decal
+    image: ./assets/scene/red_castle_valley/red_castle_valley_overlay.png
+
+foreground:
+  - id: big ol rock
+    type: Decal
+    image: ./assets/block/big_ol_rock.png
+    mask: ./assets/block/big_ol_rock.png
+    start: [745,765]
+    scale: 2
+    groups: 
+     - solid
+
+  - id: guard
+    type: Gate
+    key_id: jar of pickles
+    image: ./assets/actor/other/guard_npc.png
+    mask: ./assets/block/block.png
+    start: [888,91]
+    scale: 1
+    groups: 
+     - solid
+
+  # - id: wall
+  #   type: Decal
+  #   image: ./assets/block/gate.png
+  #   mask: ./assets/block/gate.png
+  #   start: [880,190]
+  #   scale: 0.75
+  #   groups: 
+  #    - solid
+
+  # - id: shovel
+  #   type: Item
+  #   image: ./assets/actor/item/shovel.png
+  #   mask: ./assets/actor/item/shovel.png
+  #   start: [800,200]
+  #   scale: 1
+  #   action: shovel
+
+  - id: ossifrage 1
+    type: Ossifrage
+    yaml: ./assets/actor/ossifrage.yaml
+    start: [835,506]
+
+  - id: cactus
+    type: Cactus
+    image: ./assets/block/cactus.png
+    mask: ./assets/block/cactus.png
+    start: [956,337]
+    scale: 1
+
+  - id: backpack
+    type: Backpack
+    image: ./assets/block/backpack.png
+    mask: ./assets/block/backpack.png
+    start: [358,531]
+    scale: 1
+
+  - id: soft_dirt
+    type: SoftDirt
+    image: ./assets/block/soft_dirt.png
+    mask: ./assets/block/soft_dirt_mask.png
+    start: [221,624]
+    scale: 1
+    treasure:   
+      - id: statue key
+        type: Item
+        image: ./assets/block/silver_key.png
+        mask: ./assets/block/silver_key.png
+        scale: 1
+        start: [64,0]
+        action: null
+
+behind:
+  - id: bridge_exit
+    type: Edge
+    image: ./assets/block/block.png
+    mask: ./assets/block/block.png
+    start: [870,-48]
+    scale: 2
+    scene_path: ./assets/scene/mansion_yard.yaml
+    exit_dir: DOWN
+
+  - id: forest_red_castle_valley_connection
+    type: Edge
+    image: ./assets/block/block.png
+    mask: ./assets/block/block.png
+    start: [200,300]
+    scale: 1
+    scene_path: ./assets/scene/forest.yaml
+    exit_dir: RIGHT
+
+  - id: mountain trail exit
+    type: Edge
+    image: ./assets/block/block.png
+    mask: ./assets/block/block.png
+    start: [1230,1038]
+    scale: 2.5
+    scene_path: ./assets/scene/placeholder.yaml
+    exit_dir: UP

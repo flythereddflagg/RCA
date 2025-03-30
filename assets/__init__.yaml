@@ -1,0 +1,78 @@
+# Screen Constants
+# Frame rate ( in Frames / second)
+FPS: 90 # game is unstable at FPS > about 100
+# FPS: 0 # do not limit FPS
+DEBUG: false # show debug info on screen?
+SHOW_EVENTS: false # print events in terminal
+FPS_COUNTER: true # print FPS on game screen
+SHOW_MASK: false # shows hit masks of every entity when debug is true
+SHOW_BG_MASK: false # if debug AND show mask then show bg mask too
+
+# initial screen size
+RESOLUTION: 360
+ASPECT_RATIO: [16,9]
+SCALE: 2
+
+# key bindings for keyboard input
+KEY_BIND:
+  REFRESH: u
+  QUIT: backspace
+  START: return
+  SELECT: p
+  UP: up
+  DOWN: down
+  LEFT: left
+  RIGHT: right
+  BUTTON_1: n
+  BUTTON_2: m
+  BUTTON_3: ','
+  BUTTON_4: '.'
+  R_UP: i
+  R_DOWN: k
+  R_LEFT: j
+  R_RIGHT: l
+
+
+# Controller bindings
+CTLR_BIND:
+  REFRESH: 'PrtScn'
+  QUIT: '-'
+  START: '+'
+  SELECT: home
+  UP: LSY-
+  DOWN: LSY+
+  LEFT: LSX-
+  RIGHT: LSX+
+  BUTTON_1: LT
+  BUTTON_2: RT
+  BUTTON_3: A 
+  BUTTON_4: B
+  R_UP: RSY-
+  R_DOWN: RSY+
+  R_LEFT: RSX-
+  R_RIGHT: RSX+
+
+# pygame's controller config list
+# CTLR_BUTTON: A,B,X,Y,-,home,+,LS,RS,LB,RB,dUP,dDOWN,dLEFT,dRIGHT,PrtScn
+# Y,B,A,X,L,R,ZL,ZR,-,+,LS,RS,Home,PrtScn,LSX,LSY,RSX,RSY
+CTLR_BUTTON: Y,B,A,X,LB,RB,LT,RT,-,+,LS,RS,home,PrtScn
+# CTLR_AXES: LSX,LSY,RSX,RSY,LT,RT
+CTLR_AXES: LSX,LSY,RSX,RSY
+PLAYER_CTRL: 0
+
+# INITAL_SCENE: ./assets/scene/mansion_yard.yaml
+# PLAYER_START_POSITION: [825,584]
+# INITAL_SCENE: ./assets/scene/boss_room.yaml
+# PLAYER_START_POSITION: [300,200]
+INITAL_SCENE: ./assets/scene/red_castle_valley.yaml
+PLAYER_START_POSITION: [338,900] 
+
+PLAYER: ./assets/actor/player.yaml
+
+
+# INITAL_SCENE: ./assets/scene/blank_scene.yaml
+
+SPRITE_GROUPS:
+  - solid     # solid entities
+  - player    # user-controlled sprites           
+  - foe       # enemies

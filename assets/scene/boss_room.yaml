@@ -1,0 +1,57 @@
+id: <scene name>
+INIT_ZOOM: 1 # amount to scale everything
+CAMERASLACK: 100 # pixels from center screen before the camera moves
+
+DRAW_LAYERS: # layers will be drawn in this order
+  - behind
+  - background
+  - foreground
+  - overlay
+  - hud
+
+
+# sprites in each drawing layer
+overlay:
+  - id: boss room overlay
+    type: Decal
+    image: ./assets/scene/boss_room/boss_room_overlay.png
+
+
+background:
+  - id: boss room
+    type: Decal
+    image: ./assets/scene/boss_room/boss_room.png
+    mask: ./assets/scene/boss_room/boss_room_mask.png
+    groups: 
+     - solid # a group to be in for certain effects
+
+foreground:
+  - id: Rouken
+    type: Dragon
+    yaml: ./assets/actor/dragon.yaml
+    start: [84,55]
+  - id: sword
+    type: Item
+    image: ./assets/actor/item/sword_icon.png
+    mask: ./assets/actor/item/sword_icon.png
+    start: [500,100]
+    scale: 1
+    action: sword
+
+behind:
+  - id: grate exit
+    type: EdgeEnd
+    image: ./assets/block/null.png
+    mask: ./assets/block/block.png
+    start: [-32,-32]
+    scale: 1
+    scene_path: ./assets/scene/mansion_yard.yaml
+    exit_dir: DOWN
+  - id: doorway exit 
+    type: Edge
+    image: ./assets/block/null.png
+    mask: ./assets/block/block.png
+    start: [630,164]
+    scale: 1
+    scene_path: ./assets/scene/corridor.yaml
+    exit_dir: LEFT

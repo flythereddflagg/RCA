@@ -1,0 +1,22 @@
+
+
+# this is the default asset path
+type: Ossifrage
+image: "./assets/actor/ossifrage/bird_character_base.png"
+mask: "./assets/actor/ossifrage/bird_character_base.png"
+groups:
+  - foe
+
+path_prefix: "./assets/actor/ossifrage/"
+
+
+animations:
+  stand:
+    datafile: "ossifrage_stand.json"
+    repeat: True
+  walk:
+    datafile: "ossifrage_walk.json"
+    repeat: True
+  damage:
+    repeat: False
+    datafile: ossifrage_damage.json
