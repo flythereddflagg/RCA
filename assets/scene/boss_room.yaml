@@ -30,17 +30,17 @@ foreground:
     type: Dragon
     yaml: ./assets/actor/dragon.yaml
     start: [84,55]
-  # - id: sword
-  #   type: Item
-  #   image: ./assets/actor/item/sword_icon.png
-  #   mask: ./assets/actor/item/sword_icon.png
-  #   start: [500,100]
-  #   scale: 1
-  #   action: sword
+  - id: sword
+    type: Item
+    image: ./assets/actor/item/sword_icon.png
+    mask: ./assets/actor/item/sword_icon.png
+    start: [500,100]
+    scale: 1
+    action: sword
 
 behind:
   - id: grate exit
-    type: Edge
+    type: EdgeEnd
     image: ./assets/block/null.png
     mask: ./assets/block/block.png
     start: [-32,-32]

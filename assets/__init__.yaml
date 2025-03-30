@@ -62,12 +62,14 @@ PLAYER_CTRL: 0
 
 # INITAL_SCENE: ./assets/scene/mansion_yard.yaml
 # PLAYER_START_POSITION: [825,584]
+# INITAL_SCENE: ./assets/scene/boss_room.yaml
 # PLAYER_START_POSITION: [300,200]
 INITAL_SCENE: ./assets/scene/red_castle_valley.yaml
-# INITAL_SCENE: ./assets/scene/boss_room.yaml
+PLAYER_START_POSITION: [338,900] 
+
 PLAYER: ./assets/actor/player.yaml
 
-PLAYER_START_POSITION: [338,900] 
+
 # INITAL_SCENE: ./assets/scene/blank_scene.yaml
 
 SPRITE_GROUPS:
