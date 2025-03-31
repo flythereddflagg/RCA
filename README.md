@@ -28,7 +28,7 @@
 - Software tools: [Python](https://www.python.org/), [Pygame](https://www.pygame.org), [PyYAML](https://pyyaml.org/), [VSCodium](https://vscodium.com/), [paint.net](https://getpaint.net/), [Piskel](https://www.piskelapp.com/),  [Aseprite](https://www.aseprite.org/)
 - Created and directed by: Mark Redd
 - Programming and data structure design: Mark Redd
-- Concept art: Emma Redd
+- Concept art: Elizabeth Floyd, Emma Redd
 - Pixel art and animation: Mark Redd
 - Art Consulting: Elizabeth Floyd
 - Music: Mark Redd, Emma Redd
