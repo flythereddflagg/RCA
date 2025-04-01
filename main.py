@@ -10,11 +10,25 @@ def main():
     pg.init()
     INIT_PATH = "./assets/__init__.yaml"
     game = GameState(INIT_PATH)
-    game.run()
-    
-    pg.display.quit()
-    pg.quit()
-    print("Game ended successfully!")
+    if game.LOG_INPUT:
+
+        try:
+            game.run()
+        finally:
+            with open("./replay.icl", 'w') as f:
+                output = "\n".join([
+                    "|".join(line) 
+                    for line in game.input.input_record
+                ])
+                f.write(output)
+            pg.display.quit()
+            pg.quit()
+            print("Game ended successfully!")
+    else:
+        game.run()
+        pg.display.quit()
+        pg.quit()
+        print("Game ended successfully!")
 
 
 if __name__ == "__main__":

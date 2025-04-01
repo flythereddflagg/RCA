@@ -21,7 +21,7 @@ class GameState(DictObj):
     connects the hardware to game logic and holds the game state
     including the scenes
     """
-    def __init__(self, data_path):
+    def __init__(self, data_path, REPLAY=None):
         init_data = load_yaml(data_path)
         super().__init__(**init_data)
         self.dt = 1
@@ -29,6 +29,7 @@ class GameState(DictObj):
         self.paused = False
         self.scene = None
         self.player = None
+        self.REPLAY = REPLAY
         self.input = Input(self)
         # TODO make a scene manager that loads a bunch of scenes here and then loads them into the game and remembers them.
         self.saved_scenes = {}
