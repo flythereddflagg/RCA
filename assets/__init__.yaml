@@ -7,7 +7,7 @@ SHOW_EVENTS: false # print events in terminal
 FPS_COUNTER: true # print FPS on game screen
 SHOW_MASK: false # shows hit masks of every entity when debug is true
 SHOW_BG_MASK: false # if debug AND show mask then show bg mask too
-LOG_INPUT: true # for recreating bugs (See input.py)
+LOG_INPUT: false # for recreating bugs (See input.py)
 
 # initial screen size
 RESOLUTION: 360

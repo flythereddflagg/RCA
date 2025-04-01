@@ -11,11 +11,11 @@ def main():
     INIT_PATH = "./assets/__init__.yaml"
     game = GameState(INIT_PATH)
     if game.LOG_INPUT:
-
+        import datetime
         try:
             game.run()
         finally:
-            with open("./replay.icl", 'w') as f:
+            with open(f"./replay_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.icl", 'w') as f:
                 output = "\n".join([
                     "|".join(line) 
                     for line in game.input.input_record

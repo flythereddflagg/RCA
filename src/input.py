@@ -98,12 +98,15 @@ class Input():
     
     def get(self):
         # return [action for action in self.buffer.keys()]
+        inputs = list(self.buffer.keys())
+
         if self.REPLAY is None:
-            inputs = list(self.buffer.keys())
             if self.LOG_INPUT:
                 self.input_record.append(inputs)
             return inputs
         else:
+            if 'QUIT' in inputs:
+                return inputs
             inputs = [
                 thing 
                 for thing in next(self.lines).strip().split('|') 
