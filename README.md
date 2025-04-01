@@ -4,9 +4,9 @@
 **Email: redddogjr@gmail.com**
 
 **To build:**
-- python distribution installed
-- `conda install pyyaml pygame cx_freeze` **OR** `pip install pyyaml pygame cx_freeze`
-- `python setup.py build`
+- Python distribution installed (Python >= 3.10)
+- Python packages needed for build: [pygame](https://www.pygame.org/wiki/about), [pyyaml](https://pyyaml.org/), [cx_freeze](https://marcelotduarte.github.io/cx_Freeze/) (These may be installed with pip using `python -m pip install --upgrade pygame pyyaml cx_freeze`)
+- Once Python and all packages are installed run `python setup.py build` from the project's root directory
 
 ## World 1: In the shadow of the mountain
 
@@ -25,10 +25,10 @@
 
 - Powered by: Pygame
 - Produced by: FlyTheReddFlagg Games
-- Software tools: [Python](https://www.python.org/), [Pygame](https://www.pygame.org), [PyYAML](https://pyyaml.org/), [VSCodium](https://vscodium.com/), [paint.net](https://getpaint.net/), [Piskel](https://www.piskelapp.com/),  [Aseprite](https://www.aseprite.org/)
+- Software tools: [Python](https://www.python.org/), [Pygame](https://www.pygame.org), [PyYAML](https://pyyaml.org/), [VSCodium](https://vscodium.com/), [Aseprite](https://www.aseprite.org/)
 - Created and directed by: Mark Redd
 - Programming and data structure design: Mark Redd
-- Concept art: Emma Redd
+- Concept art: Elizabeth Floyd, Emma Redd
 - Pixel art and animation: Mark Redd
 - Art Consulting: Elizabeth Floyd
 - Music: Mark Redd, Emma Redd
