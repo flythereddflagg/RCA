@@ -1,6 +1,11 @@
 import sys
 from cx_Freeze import setup, Executable
 
+# VERSION file contains the name of the version to be next released.
+# INCREMENT VERSION AFTER EVERY RELEASE
+with open("./VERSION") as f:
+    VERSION = f.read().strip()
+
 game_description = """Red Castle Avenger - The Game"""
 
 # Dependencies are automatically detected, but it might need
@@ -21,7 +26,7 @@ executables = [
 
 setup_options = {
     "name"           : 'RCA',
-    "version"        : '0.1.3',
+    "version"        : VERSION,
     "description"    : game_description,
     "options"        : {'build_exe': build_options},
     "executables"    : executables

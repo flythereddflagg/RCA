@@ -6,7 +6,6 @@ Initializes the game from a data file and initiates the game
 def main():
     import pygame as pg
     from src import GameState
-
     pg.init()
     INIT_PATH = "./assets/__init__.yaml"
     game = GameState(INIT_PATH)
@@ -15,7 +14,9 @@ def main():
         try:
             game.run()
         finally:
-            with open(f"./replay_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.icl", 'w') as f:
+            with open("./VERSION") as f:
+                VERSION = f.read().strip()
+            with open(f"./replay_{VERSION}_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.icl", 'w') as f:
                 output = "\n".join([
                     "|".join(line) 
                     for line in game.input.input_record
