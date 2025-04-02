@@ -16,7 +16,9 @@ def main():
         finally:
             with open("./VERSION") as f:
                 VERSION = f.read().strip()
-            with open(f"./replay_{VERSION}_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.icl", 'w') as f:
+            filename = f"./replay_{VERSION}"\
+                f"_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.icl"
+            with open(filename, 'w') as f:
                 output = "\n".join([
                     "|".join(line) 
                     for line in game.input.input_record
