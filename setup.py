@@ -14,7 +14,10 @@ build_options = {
     'packages'      : ['src'], 
     'excludes'      : ['cx_freeze'],
     'include_files' : [
-        ("assets", "assets")
+        ("assets", "assets"),
+        "VERSION",
+        "README.md",
+        "LICENSE"
     ]
 }
 
