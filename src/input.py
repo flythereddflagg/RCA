@@ -19,6 +19,14 @@ class Input():
         self.CTLR_BUTTON = self.game.CTLR_BUTTON
         self.CTLR_AXES = self.game.CTLR_AXES
         self.SHOW_EVENTS = self.game.SHOW_EVENTS
+        self.LOG_INPUT = self.game.LOG_INPUT
+        self.REPLAY = self.game.REPLAY
+        if self.REPLAY is not None:
+            with open(self.REPLAY) as f:
+                self.lines = iter(f.readlines())
+        else:
+            self.lines = None
+        self.input_record = []
         self.buffer:dict = {}
         self.last_update_time = 0
         self.held = {
@@ -90,7 +98,21 @@ class Input():
     
     def get(self):
         # return [action for action in self.buffer.keys()]
-        return list(self.buffer.keys())
+        inputs = list(self.buffer.keys())
+
+        if self.REPLAY is None:
+            if self.LOG_INPUT:
+                self.input_record.append(inputs)
+            return inputs
+        else:
+            if 'QUIT' in inputs:
+                return inputs
+            inputs = [
+                thing 
+                for thing in next(self.lines).strip().split('|') 
+                if thing
+            ]
+            return inputs
 
 
     def update_held(self, all_input):

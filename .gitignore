@@ -4,6 +4,7 @@
 **.vscode
 **.mscbackup
 **.bkp
+**.icl
 # IGNORE THE FOLLOWING FOLDERS
 build/
 dist/

@@ -6,15 +6,32 @@ Initializes the game from a data file and initiates the game
 def main():
     import pygame as pg
     from src import GameState
-
     pg.init()
     INIT_PATH = "./assets/__init__.yaml"
     game = GameState(INIT_PATH)
-    game.run()
-    
-    pg.display.quit()
-    pg.quit()
-    print("Game ended successfully!")
+    if game.LOG_INPUT:
+        import datetime
+        try:
+            game.run()
+        finally:
+            with open("./VERSION") as f:
+                VERSION = f.read().strip()
+            filename = f"./replay_{VERSION}"\
+                f"_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.icl"
+            with open(filename, 'w') as f:
+                output = "\n".join([
+                    "|".join(line) 
+                    for line in game.input.input_record
+                ])
+                f.write(output)
+            pg.display.quit()
+            pg.quit()
+            print("Game ended successfully!")
+    else:
+        game.run()
+        pg.display.quit()
+        pg.quit()
+        print("Game ended successfully!")
 
 
 if __name__ == "__main__":
