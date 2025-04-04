@@ -18,14 +18,12 @@ SCALE: 2
 KEY_BIND:
   REFRESH: u
   QUIT: backspace
-
   UP: up
   DOWN: down
   LEFT: left
   RIGHT: right
   BUTTON_1: c
   BUTTON_2: v
-
   R_UP: w
   R_DOWN: s
   R_LEFT: a
