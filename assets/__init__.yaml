@@ -18,20 +18,39 @@ SCALE: 2
 KEY_BIND:
   REFRESH: u
   QUIT: backspace
-  START: return
-  SELECT: p
+
   UP: up
   DOWN: down
   LEFT: left
   RIGHT: right
-  BUTTON_1: n
-  BUTTON_2: m
-  BUTTON_3: ','
-  BUTTON_4: '.'
-  R_UP: i
-  R_DOWN: k
-  R_LEFT: j
-  R_RIGHT: l
+  BUTTON_1: c
+  BUTTON_2: v
+
+  R_UP: w
+  R_DOWN: s
+  R_LEFT: a
+  R_RIGHT: d
+  # not currently used
+  BUTTON_3: z
+  BUTTON_4: x
+  START: return
+  SELECT: p
+  # REFRESH: u
+  # QUIT: backspace
+  # START: return
+  # SELECT: p
+  # UP: up
+  # DOWN: down
+  # LEFT: left
+  # RIGHT: right
+  # BUTTON_1: n
+  # BUTTON_2: m
+  # BUTTON_3: ','
+  # BUTTON_4: '.'
+  # R_UP: i
+  # R_DOWN: k
+  # R_LEFT: j
+  # R_RIGHT: l
 
 
 # Controller bindings

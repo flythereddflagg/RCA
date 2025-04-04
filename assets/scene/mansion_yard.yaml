@@ -73,11 +73,11 @@ behind:
     scale: 1
     scene_path: ./assets/scene/corridor.yaml
     exit_dir: DOWN
-  - id: grate exit 
-    type: Edge
-    image: ./assets/block/block.png
-    mask: ./assets/block/block.png
-    start: [232,313]
-    scale: 1
-    scene_path: ./assets/scene/boss_room.yaml
-    exit_dir: RIGHT
+  # - id: grate exit 
+  #   type: Edge
+  #   image: ./assets/block/block.png
+  #   mask: ./assets/block/block.png
+  #   start: [232,313]
+  #   scale: 1
+  #   scene_path: ./assets/scene/boss_room.yaml
+  #   exit_dir: RIGHT

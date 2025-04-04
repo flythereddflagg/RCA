@@ -19,12 +19,13 @@ background:
      - solid
 
 overlay:
-  - id: foreground
-    type: Decal
-    image: ./assets/scene/forest/west_forest_overlay.png
   - id: foreground2
     type: Decal
     image: ./assets/scene/forest/cave_overlay.png
+  - id: foreground
+    type: Decal
+    image: ./assets/scene/forest/west_forest_overlay.png
+
 
 foreground:
   - id: sword
