@@ -20,7 +20,7 @@ def main():
                 f"_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.icl"
             with open(filename, 'w') as f:
                 output = "\n".join([
-                    "|".join(line) 
+                    "|".join([str(i) for i in line]) 
                     for line in game.input.input_record
                 ])
                 f.write(output)
