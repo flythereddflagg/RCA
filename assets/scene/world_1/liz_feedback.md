@@ -1,0 +1,8 @@
+- skylight in alley way to highlight the dirt 
+- Torches by dirt to dig?
+- Talking frog (with little butterfly wings)
+- tongue attack
+- player damage animation is too fast. (invincibility frames?) Force pause on damage (EVERYthing pauses.)
+- Enemy i frames and shock and visual pause upon taking damage.
+- title screen mirror dimension other world
+- 
