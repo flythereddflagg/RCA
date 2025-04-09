@@ -128,3 +128,7 @@ behind:
     scale: 2.5
     scene_path: ./assets/scene/placeholder.yaml
     exit_dir: UP
+  
+  - id: red castle valley theme
+    type: Music
+    filename: ./assets/music/RCA_OVERWORLD/RCA_OVERWORLD_v3.mp3

@@ -17,6 +17,7 @@ class Scene():
         self.id = yaml_path
         self.data = load_yaml(yaml_path)
         self.all_sprites = pg.sprite.Group()
+        self.nodes = []
         self.groups = {
             group_name: pg.sprite.Group() 
             for group_name in groups
@@ -48,11 +49,11 @@ class Scene():
     ):
         if node.scene is not self:
             node.scene = self
-        sprite_instance = (
-            node 
-            if isinstance(node, pg.sprite.Sprite) else 
-            node.sprite
-        )
+        self.nodes.append(node)
+        sprite_instance = node.sprite
+
+        if sprite_instance is None: return
+        
         if sprite_instance.scene is not self:
             sprite_instance.scene = self
         self.all_sprites.add(sprite_instance)

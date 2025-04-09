@@ -30,14 +30,17 @@ class Decal(pg.sprite.Sprite):
                 **options
     ):
         super().__init__()
+        self.scene = scene
         id_ = options.get('id')
-        self.id = id_ if id_ else str(type(self)) + str(id(self)) 
+        self.id = id_ if id_ else str(type(self)) + str(id(self))
         self.options = options
+        self.sprite = self        
+
         self.image_path = image
         self.mask_path = mask if mask else self.image_path
         self.init_scale = scale
         self.parent = parent
-        self.scene = scene
+
         self.init_scale = scale
         self.image = None
         self.rect = None
@@ -58,6 +61,9 @@ class Decal(pg.sprite.Sprite):
         self.set_image(image, mask)
 
 
+    def update(self):
+        if self.parent: self.parent.update()
+
 
     def scale_by(self, factor):
         self.scale *= factor
@@ -77,8 +83,7 @@ class Decal(pg.sprite.Sprite):
         self.scale_by(scale)
 
 
-    def update(self):
-        if self.parent: self.parent.update()
+
 
     def signal(self, *args, **options):
         if self.parent: self.parent.signal(*args, **options)

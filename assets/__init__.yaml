@@ -7,7 +7,7 @@ SHOW_EVENTS: false # print events in terminal
 FPS_COUNTER: true # print FPS on game screen
 SHOW_MASK: false # shows hit masks of every entity when debug is true
 SHOW_BG_MASK: false # if debug AND show mask then show bg mask too
-LOG_INPUT: true # for recreating bugs (See input.py)
+LOG_INPUT: false # for recreating bugs (See input.py)
 
 # initial screen size
 RESOLUTION: 360
@@ -82,11 +82,13 @@ PLAYER_CTRL: 0
 # PLAYER_START_POSITION: [825,584]
 # INITAL_SCENE: ./assets/scene/boss_room.yaml
 # PLAYER_START_POSITION: [300,200]
-INITAL_SCENE: ./assets/scene/red_castle_valley.yaml
-PLAYER_START_POSITION: [338,900] 
+# INITAL_SCENE: ./assets/scene/red_castle_valley.yaml
+# PLAYER_START_POSITION: [338,900] 
 
 PLAYER: ./assets/actor/player.yaml
 
+INITAL_SCENE: ./assets/scene/startup.yaml
+PLAYER_START_POSITION: [100,100] 
 
 # INITAL_SCENE: ./assets/scene/blank_scene.yaml
 

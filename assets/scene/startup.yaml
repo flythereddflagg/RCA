@@ -1,0 +1,13 @@
+id: startup
+INIT_ZOOM: 1 # amount to scale everything
+CAMERASLACK: 100 # pixels from center screen before the camera moves
+
+DRAW_LAYERS: # layers will be drawn in this order
+  - background
+  - foreground
+
+background:
+  - id: pygame_powered
+    type: Decal
+    image: ./assets/block/pygame_powered.png
+
