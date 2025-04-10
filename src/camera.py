@@ -16,9 +16,14 @@ class Camera(Node):
         for sprite in self.scene.all_sprites.sprites():
             if sprite.scale != self.cur_zoom * sprite.init_scale:
                 sprite.scale_abs(self.cur_zoom * sprite.init_scale)
-        if not self.scene.game.player: return
+        if not self.scene.game.player:
+            background = self.scene.layers['background'].sprites()[0]
+            movex, movey = background.sprite.rect.topleft
+            self.pan(-movex, -movey)
+            return
         self.follow_player()
-        if not self.scene.game.DEBUG: self.stop_at_border()
+        if not self.scene.game.DEBUG: 
+            self.stop_at_border()
 
 
     def pan(self, movex, movey):

@@ -1,13 +1,23 @@
 id: startup
-INIT_ZOOM: 1 # amount to scale everything
+INIT_ZOOM: 1 # amount to scale everything -1 means no camera
 CAMERASLACK: 100 # pixels from center screen before the camera moves
 
 DRAW_LAYERS: # layers will be drawn in this order
   - background
   - foreground
 
-background:
+foreground:
   - id: pygame_powered
     type: Decal
     image: ./assets/block/pygame_powered.png
+    start: [0, 50]
+  - id: startup music
+    type: Music
+    filename: ./assets/music/RCA_OVERWORLD/RCA_titlescreen.mp3
+
+
+background:
+  - id: null_bg
+    type: Decal
+    image: ./assets/block/null.png
 

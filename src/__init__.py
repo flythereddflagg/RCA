@@ -22,6 +22,7 @@ class GameState(DictObj):
     including the scenes
     """
     def __init__(self, data_path, REPLAY=None):
+        self.PLAYER_DATA = None
         init_data = load_yaml(data_path)
         super().__init__(**init_data)
         self.dt = 1
@@ -46,30 +47,34 @@ class GameState(DictObj):
             [self.SCREENWIDTH, self.SCREENHEIGHT], pg.RESIZABLE
         )
         self.clock = pg.time.Clock()
-
-        player_data = load_yaml(self.PLAYER)
-        player_data['game'] = self
-        self.load_scene(
-            yaml_path=self.INITAL_SCENE, 
-            player=Scene.node_from_dict(None, player_data)
-        )
-        
-        self.player.sprite.rect.center = self.PLAYER_START_POSITION
         
         if self.FPS_COUNTER or self.DEBUG:
             self.fps_counter = pg.font.SysFont("Sans", 22)
         
+        self.load_scene(yaml_path=self.INITAL_SCENE)
+        if self.PLAYER_DATA:
+            self.init_player()
 
-    def load_scene(self, player=None, **options) -> Scene:
-        self.player = player
+
+    def init_player(self):
+        player_data = load_yaml(self.PLAYER_DATA)
+        player_data['game'] = self
+        self.player = Scene.node_from_dict(None, player_data)
+        self.player.sprite.rect.center = self.PLAYER_START_POSITION
+        
+        self.scene.place_node(
+            self.player, 
+            self.scene.layers['foreground'],
+            groups=self.player.options.get("groups")  
+        )
+
+
+    def load_scene(self, **options) -> Scene:
         self.scene = Scene(
             game=self,  groups=self.SPRITE_GROUPS, **options
         )
-        if player:
-            self.scene.place_node(self.player, self.scene.layers['foreground'],
-                groups=self.player.options.get("groups")  
-            )
-        return self.scene
+
+        return self.scene # return reference to scene if needed
 
 
     def run(self):

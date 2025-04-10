@@ -15,6 +15,7 @@ class Scene():
         """
         self.game = game
         self.id = yaml_path
+        self.camera = None
         self.data = load_yaml(yaml_path)
         self.all_sprites = pg.sprite.Group()
         self.nodes = []
@@ -30,8 +31,9 @@ class Scene():
         }
         
         self.load()
+        self.zoom = self.data.get('INIT_ZOOM')
         self.camera = Camera(self)
-        self.camera.zoom_by(self.game.SCALE * self.data.get('INIT_ZOOM'))
+        self.camera.zoom_by(self.game.SCALE * self.zoom)
         # make it so non-sprite nodes get loaded as well in self.load
 
     @staticmethod
