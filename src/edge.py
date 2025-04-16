@@ -26,8 +26,9 @@ class Edge(Decal):
         old_scene.deconstruct() 
         # print("loading", self.options['scene_path'])
         new_scene = game.load_scene(
-            yaml_path=self.options['scene_path'], player=player
+            yaml_path=self.options['scene_path']
         )
+        new_scene.game.init_player(player)
 
         sprites = new_scene.all_sprites.sprites()
         block = list(filter(lambda x: x.id == self.id, sprites))[0]

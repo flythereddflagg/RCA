@@ -39,6 +39,13 @@ foreground:
     start: [59,449]
     scale: 1
     action: shovel
+  - id: statue key
+    type: Item
+    image: ./assets/block/silver_key.png
+    mask: ./assets/block/silver_key.png
+    scale: 1
+    start: [900,500]
+    action: null
 
 behind:
   - id: bridge_exit

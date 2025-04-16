@@ -42,8 +42,8 @@ behind:
     scale: 1
     scene_path: ./assets/scene/mansion_yard.yaml
     exit_dir: LEFT
-  - id: boss theme
-    type: Music
-    filename: ./assets/music/boss_theme_filled.mp3
+  # - id: boss theme
+  #   type: Music
+  #   filename: ./assets/music/boss_theme_filled.mp3
 
   

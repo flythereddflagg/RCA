@@ -37,7 +37,7 @@ class Decal(pg.sprite.Sprite):
         self.sprite = self        
 
         self.image_path = image
-        self.mask_path = mask if mask else self.image_path
+        self.mask_path = mask
         self.init_scale = scale
         self.parent = parent
 

@@ -7,7 +7,7 @@ def main():
     import pygame as pg
     from src import GameState
     pg.init()
-    INIT_PATH = "./assets/__init__.yaml"
+    INIT_PATH = "./assets/init.yaml"
     game = GameState(INIT_PATH)
     if game.LOG_INPUT:
         import datetime

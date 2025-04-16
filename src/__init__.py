@@ -56,11 +56,12 @@ class GameState(DictObj):
             self.init_player()
 
 
-    def init_player(self):
-        player_data = load_yaml(self.PLAYER_DATA)
-        player_data['game'] = self
-        self.player = Scene.node_from_dict(None, player_data)
-        self.player.sprite.rect.center = self.PLAYER_START_POSITION
+    def init_player(self, player=None):
+        if not player:
+            player_data = load_yaml(self.PLAYER_DATA)
+            player_data['game'] = self
+            self.player = Scene.node_from_dict(None, player_data)
+            self.player.sprite.rect.center = self.PLAYER_START_POSITION
         
         self.scene.place_node(
             self.player, 

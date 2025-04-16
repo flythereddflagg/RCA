@@ -100,8 +100,8 @@ class Scene():
         print(current_player_position)
         self.game.load_scene(
             yaml_path=self.id, 
-            player=self.game.player
         )
+        self.game.init_player(self.game.player)
         
         self.game.player.sprite.rect.topleft = current_player_position
         self.camera.zoom_by(self.game.SCALE * self.data.get('INIT_ZOOM'))

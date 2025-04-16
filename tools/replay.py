@@ -6,7 +6,7 @@ def main():
     from src import GameState
     input_file = sys.argv[1]
     pg.init()
-    INIT_PATH = "./assets/__init__.yaml"
+    INIT_PATH = "./assets/init.yaml"
     game = GameState(INIT_PATH, REPLAY=input_file)
     game.run()
     

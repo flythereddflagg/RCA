@@ -1,5 +1,5 @@
 ####
-#### COPIED FROM ./assets/__init__.yaml
+#### COPIED FROM ./assets/init.yaml
 ####
 
 SHOW_EVENTS: false # print events in terminal
