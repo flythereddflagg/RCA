@@ -7,10 +7,19 @@ DRAW_LAYERS: # layers will be drawn in this order
   - foreground
 
 foreground:
-  - id: pygame_powered
+  - id: startup_animation
     type: Decal
-    image: ./assets/block/pygame_powered.png
     start: [0, 50]
+    image: 
+    path_prefix: ./assets/scene/startup/
+    animations:
+      intro:
+        datafile: startup.json
+        repeat: false
+      titlescreen: 
+        datafile: mountain_no_eyes.json
+        repeat: true
+
   - id: startup music
     type: Music
     filename: ./assets/music/RCA_OVERWORLD/RCA_titlescreen.mp3

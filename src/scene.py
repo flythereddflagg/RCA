@@ -29,7 +29,6 @@ class Scene():
             group_name: pg.sprite.Group() 
             for group_name in self.draw_layers
         }
-        
         self.load()
         self.zoom = self.data.get('INIT_ZOOM')
         self.camera = Camera(self)
