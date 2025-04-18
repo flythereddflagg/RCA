@@ -256,6 +256,7 @@
   "size": { "w": 4480, "h": 1080 },
   "scale": "1",
   "frameTags": [
+   { "name": "all", "from": 0, "to": 30, "direction": "forward", "color": "#000000ff" }
   ],
   "layers": [
    { "name": "BG", "opacity": 255, "blendMode": "normal" },

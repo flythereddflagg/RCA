@@ -123,7 +123,8 @@ class Animation():
                 tag = d_tag
                 break
 
-        else: raise Exception("I done goofed on this.")
+        else:
+            tag = 0
 
         meta_dict = frame_tags[tag]
         counter = range(meta_dict['from'], meta_dict['to'] + 1)

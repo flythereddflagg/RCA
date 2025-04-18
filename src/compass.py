@@ -26,7 +26,7 @@ class Compass():
         if isinstance(direction, int) and 0 <= direction < N_DIRECTIONS:
             return direction
         if any(map(lambda x: isinstance(direction, x), [str, tuple])):
-            return Compass.i_map[direction]
+            return Compass.i_map.get(direction)
         
         if not isinstance(direction, pg.math.Vector2): raise ValueError(
             "Given direction must be of type: int|str|tuple|pg.math."\

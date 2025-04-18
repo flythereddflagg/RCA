@@ -8,9 +8,9 @@ DRAW_LAYERS: # layers will be drawn in this order
 
 foreground:
   - id: startup_animation
-    type: Decal
-    start: [0, 50]
-    image: 
+    type: CutScene
+    # start: [0, 50]
+    image: ./assets/block/null.png
     path_prefix: ./assets/scene/startup/
     animations:
       intro:
