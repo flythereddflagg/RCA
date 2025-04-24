@@ -17,7 +17,7 @@ foreground:
         datafile: startup.json
         repeat: false
       titlescreen: 
-        datafile: mountain_no_eyes.json
+        datafile: mountain_rev2.json
         repeat: true
 
   - id: startup music
