@@ -169,7 +169,6 @@
    { "name": "wireframe_fleshed", "opacity": 255, "blendMode": "normal" },
    { "name": "fey_mountain", "opacity": 255, "blendMode": "normal" },
    { "name": "red_castle_mountain", "opacity": 255, "blendMode": "normal" },
-   { "name": "colored_adjusted", "opacity": 255, "blendMode": "normal" },
    { "name": "holly", "opacity": 255, "blendMode": "normal" },
    { "name": "antishore", "opacity": 255, "blendMode": "normal" },
    { "name": "fey_shrooms", "opacity": 255, "blendMode": "normal" },
