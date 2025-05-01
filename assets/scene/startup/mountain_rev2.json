@@ -177,7 +177,6 @@
    { "name": "reflection_shadows", "opacity": 255, "blendMode": "normal" },
    { "name": "rocks", "opacity": 255, "blendMode": "normal" },
    { "name": "shore", "opacity": 255, "blendMode": "normal" },
-   { "name": "trees", "opacity": 255, "blendMode": "normal" },
    { "name": "larry", "opacity": 255, "blendMode": "normal" },
    { "name": "trees", "opacity": 255, "blendMode": "normal" },
    { "name": "ripples", "opacity": 255, "blendMode": "normal" },
