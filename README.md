@@ -16,7 +16,7 @@
 - ✓ Items: [ ✓sword, ✓shovel, ✓pickle, ✓gate key, ✓statue key]
 - Item mechanics completely fleshed out
 - Larry AND Holly are playable with these items but both play differently and have different exits at the end (e.g. Larry has less knockback from bludgeoning but is more susceptible to piercing while Holly is the opposite.) (exits are the Original exit to the village and the exit to the mountain or something TBD)
-- Enemies: [ wolf, ossifrage, goblin (club and arrows), and Rouken the dragon]
+- Enemies: [ wolf, ossifrage, goblin (club and arrows), and Fey Frog]
 - Boss fight must have cheese in the form of the chandelier
 - Basic parallax in the background or major foreground
 - A good amount of polish so that the game is "complete"
