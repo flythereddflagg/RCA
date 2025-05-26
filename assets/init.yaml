@@ -89,7 +89,7 @@ PLAYER_START_POSITION: [300,200]
 
 
 # INITAL_SCENE: ./assets/scene/startup.yaml
-PLAYER_START_POSITION: [100,100] 
+# PLAYER_START_POSITION: [100,100] 
 
 
 # INITAL_SCENE: ./assets/scene/blank_scene.yaml
