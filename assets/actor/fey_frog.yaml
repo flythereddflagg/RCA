@@ -17,5 +17,5 @@ animations:
     datafile: "jumps.json"
     repeat: True
   damage:
-    datafile: "jumps.json"
+    datafile: "damage.json"
     repeat: false
