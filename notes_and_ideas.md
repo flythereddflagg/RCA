@@ -1,3 +1,13 @@
+## Ideas from Liz
+
+- Meatball enemy: may be eaten for a small amount of damage
+  - 1 hp damage to eat
+  - if you do not eat the meatball, it will grow into a Meatball Tree that can walk around and throw other meatball
+  - Enemy that you can ignore like a piranha plant in Mario but it evolves into the large meatball (this only works if you go by this area various times)
+  - middle evolution that becomes the larger one: may be eaten but does more damage
+  - This is a larger problem later if you ignore it
+- Garbage people, sentient garbage people
+
 ## Ideas for game
 
 - Use probably don't know as a forest theme
