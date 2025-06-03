@@ -61,6 +61,8 @@ def mask_collision(self, other):
             f"{sprite.id} has invalid mask: {sprite.mask}"
     
     if pg.sprite.spritecollideany(self, other, pg.sprite.collide_mask):
+        print("Mask collision activated!")
+        
         return True
     return False
 
@@ -80,7 +82,7 @@ def list_collided(self, other) -> list:
         self, other, False, pg.sprite.collide_mask
     )
     if collided_others is None: return []
-    
+    if collided_others: print(f"List collided activated! {collided_others}")
     return collided_others
 
 
@@ -91,10 +93,13 @@ def get_center_screen():
         return (centerx, centery)
 
 
-def class_from_str(class_name):
+def class_from_str(class_name:str):
+    """
+    RETURN a reference to a class with PARAM class_name. Will raise
+    AttributeError if class cannot be found
+    """
     module_name = "." + class_name.lower()
     module = importlib.import_module(module_name, package='src')
-    # get the class, will raise AttributeError if class cannot be found
     class_ref = getattr(module, class_name)
     return class_ref
 

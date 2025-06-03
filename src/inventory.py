@@ -2,7 +2,7 @@ import pygame as pg
 
 from .item import Item
 from .decal import Decal
-from .tools import get_center_screen, list_collided
+from .tools import get_center_screen
 from .compass import Compass
 from .node import Node
 

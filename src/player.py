@@ -18,6 +18,9 @@ RIGHT_STICK_AX = ["R_"+direction for direction in Compass.strings]
 LEFT_STICK_AX = ["L_"+direction for direction in Compass.strings]
 # TODO implement the left stick with the above line
 
+# TODO separate input from player. 
+# A player is any Node that goes and finds input.
+
 
 class Player(Node):
     def __init__(self, game, **options):
