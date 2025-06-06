@@ -7,9 +7,7 @@ class EdgeEnd(Edge):
     def exec_trigger(self):
         # super().exec_trigger()
         end_text = pg.font.SysFont("Sans", 44)
-        surface = end_text.render(
-            "YOU WIN!!! (Press backspace to quit.)", True, (255,255,255)
-        )
+        surface = end_text.render("YOU WIN!!! (Press backspace to quit.)", True, (255,255,255))
         sprite = pg.sprite.Sprite()
         sprite.image = surface
         sprite.rect = surface.get_rect()
