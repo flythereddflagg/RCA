@@ -55,7 +55,7 @@ class Decal(pg.sprite.Sprite):
         mask = (
             pg.mask.from_surface(pg.image.load(self.mask_path).convert_alpha())
             if self.mask_path
-            else None
+            else pg.mask.Mask(size=(32, 32), fill=False)
         )
         
         self.set_image(image, mask)

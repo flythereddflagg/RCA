@@ -10,6 +10,7 @@ class EdgeEnd(Edge):
         surface = end_text.render("YOU WIN!!! (Press backspace to quit.)", True, (255,255,255))
         sprite = pg.sprite.Sprite()
         sprite.image = surface
+        sprite.mask = pg.mask.Mask(size=(32, 32), fill=False)
         sprite.rect = surface.get_rect()
         sprite.rect.center = get_center_screen()
         self.scene.layers['hud'].add(sprite)
