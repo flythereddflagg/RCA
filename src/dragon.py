@@ -28,6 +28,7 @@ class Dragon(Decal):
         self.hp = 50
         self.damage_direction = pg.math.Vector2(0,1)
         self.state = "stand"
+        random.seed(2343414142) # to make it determineistic
 
     def apply_physics(self):
         
