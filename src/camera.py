@@ -13,9 +13,13 @@ class Camera(Node):
         self.cur_zoom = 1
 
     def update(self):
-        for sprite in self.scene.all_sprites.sprites():
+        for sprite in self.scene.all_nodes.sprites():
+            # TODO check if this code is necessary
             if sprite.scale != self.cur_zoom * sprite.init_scale:
-                sprite.scale_abs(self.cur_zoom * sprite.init_scale)
+                sprite.scale_by(
+                    self.cur_zoom * sprite.init_scale, 
+                    absolute=True
+                )
         if not self.scene.game.player:
             background = self.scene.layers['background'].sprites()[0]
             movex, movey = background.sprite.rect.topleft

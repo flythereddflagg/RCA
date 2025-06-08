@@ -53,12 +53,12 @@ class Dragon(Decal):
         
 
         if self.hp <= 0:
-            sprite = [sprite for sprite in self.scene.all_sprites.sprites() if sprite.id == "grate exit"][0]
+            sprite = [sprite for sprite in self.scene.all_nodes.sprites() if sprite.id == "grate exit"][0]
             sprite.set_image(pg.image.load("./assets/block/block.png").convert_alpha())
             sprite.rect.topleft = get_center_screen()
             sprite.kill()
             self.scene.layers["foreground"].add(sprite)
-            self.scene.all_sprites.add(sprite)
+            self.scene.all_nodes.add(sprite)
             self.kill()
 
 

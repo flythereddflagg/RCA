@@ -17,7 +17,7 @@ class Scene():
         self.id = yaml_path
         self.camera = None
         self.data = load_yaml(yaml_path)
-        self.all_sprites = pg.sprite.Group()
+        self.all_nodes = pg.sprite.Group()
         self.nodes = []
         self.groups = {
             group_name: pg.sprite.Group() 
@@ -57,7 +57,7 @@ class Scene():
         
         if sprite_instance.scene is not self:
             sprite_instance.scene = self
-        self.all_sprites.add(sprite_instance)
+        self.all_nodes.add(sprite_instance)
         layer.add(sprite_instance)
 
         if groups:
@@ -127,7 +127,7 @@ class Scene():
         self.game.saved_scenes[self.id] = scene_dict
 
         # TODO make a save scene and load scene. Will this work?
-        # for sprite in self.all_sprites.sprites():
+        # for sprite in self.all_nodes.sprites():
         #     if sprite is self.game.player.sprite: continue
         #     sprite.kill()
         

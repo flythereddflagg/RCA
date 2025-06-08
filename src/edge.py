@@ -30,7 +30,7 @@ class Edge(Decal):
         )
         new_scene.game.init_player(player)
 
-        sprites = new_scene.all_sprites.sprites()
+        sprites = new_scene.all_nodes.sprites()
         block = list(filter(lambda x: x.id == self.id, sprites))[0]
         player.sprite.rect.center = block.rect.center
         dx, dy = Compass.unit_vector(block.options['exit_dir'])

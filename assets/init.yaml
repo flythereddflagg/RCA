@@ -7,7 +7,7 @@ SHOW_EVENTS: false # print events in terminal
 FPS_COUNTER: true # print FPS on game screen
 SHOW_MASK: true # shows hit masks of every entity when debug is true
 SHOW_BG_MASK: false # if debug AND show mask then show bg mask too
-LOG_INPUT: true # for recreating bugs (See input.py)
+LOG_INPUT: false # for recreating bugs (See input.py)
 
 # initial screen size
 RESOLUTION: 360
@@ -54,6 +54,7 @@ CTLR_BIND:
   R_LEFT: RSX-
   R_RIGHT: RSX+
 
+# TODO redo this whole controller nonsense
 # pygame's controller config list
 # CTLR_BUTTON: A,B,X,Y,-,home,+,LS,RS,LB,RB,dUP,dDOWN,dLEFT,dRIGHT,PrtScn
 # Y,B,A,X,L,R,ZL,ZR,-,+,LS,RS,Home,PrtScn,LSX,LSY,RSX,RSY

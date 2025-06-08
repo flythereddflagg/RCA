@@ -73,9 +73,9 @@ class Inventory(Node):
                 self.sprite, self.left_hand, self.right_hand,
                 self.left_item, self.right_item, self.marker
             ]:
-                sprite.add(self.scene.all_sprites)
+                sprite.add(self.scene.all_nodes)
             for sprite in self.slot_sprites:
-                sprite.add(self.scene.all_sprites)
+                sprite.add(self.scene.all_nodes)
         input_held = self.player.scene.game.input.held
         
         if not any(
@@ -150,7 +150,7 @@ class Inventory(Node):
             "scale": INV_SCALE
         })
         self.slot_sprites.add(new_slot)
-        new_slot.add(self.scene.all_sprites)
+        new_slot.add(self.scene.all_nodes)
         return self.slots[-1]
 
 

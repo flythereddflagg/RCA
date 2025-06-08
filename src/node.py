@@ -1,10 +1,22 @@
-class Node():
+import pygame as pg
+
+
+class Node(pg.sprite.Sprite):
     """Interface class for all in-game objects that have or manage sprites"""
-    def __init__(self, scene, **options):
+    def __init__(
+                self, 
+                scene, 
+                parent:'Node'=None, 
+                child:list['Node']=None, 
+                **options
+    ):
+        super().__init__()
         self.scene = scene # Force all nodes to have a scene
         id_ = options.get('id')
         self.id = id_ if id_ else str(type(self)) + str(id(self))
         self.options = options
+        self.parent = parent
+        self.child = child
 
 
     def update(self):
