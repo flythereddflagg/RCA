@@ -156,11 +156,11 @@ class Player(Node):
     def update(self):
         self.apply_todos()
         self.check_signals()
+        self.check_collision()
         self.animation.update()
         self.hitmask.update()
-        self.check_collision()
-        self.apply_physics()
         self.inventory.update()
+        self.apply_physics()
         
         if self.inventory.hp <= 0:
             self.scene.game.player = None

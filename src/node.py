@@ -7,7 +7,7 @@ class Node(pg.sprite.Sprite):
                 self, 
                 scene, 
                 parent:'Node'=None, 
-                child:list['Node']=None, 
+                children:list['Node']=None, 
                 **options
     ):
         super().__init__()
@@ -16,7 +16,7 @@ class Node(pg.sprite.Sprite):
         self.id = id_ if id_ else str(type(self)) + str(id(self))
         self.options = options
         self.parent = parent
-        self.child = child
+        self.children = None if children is None else pg.sprite.Group(*children)
 
 
     def update(self):
@@ -28,3 +28,4 @@ class Node(pg.sprite.Sprite):
             "Interface method was called. Implement"
             f" the 'update' function in class {type(self)}"
         )
+

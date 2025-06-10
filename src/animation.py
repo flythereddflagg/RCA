@@ -6,6 +6,7 @@ import pygame as pg
 
 from .tools import load_json
 from .compass import Compass
+from .node import Node
 
 JSON = '.json'
 
@@ -30,18 +31,19 @@ class Reel:
     repeat:bool
 
 
-class Animation():
+class Animation(Node):
     """
     A system for setting the parent sprite object's image.
-
     """
     def __init__(
         self, parent, animations:dict, path_prefix='./'
     ):
-        self.parent = parent # parent must have a 'state' attribute
+        # parent must have a 'state' attribute
+        super().__init__(scene=parent.scene, parent=parent)
         self.previous:str = None
         self.last_state:str = None
-        self.last_direction:int = self.parent.move.direction
+        # TODO make direction an optional attribute?
+        self.last_direction:int = Compass.DOWN 
         self.last_set_frame_time = 0 # time since the last frame was set
         self.active = False # is an animation active?
         self.frame_counter = iter([]) # generator counter for the frame index
