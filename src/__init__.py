@@ -12,6 +12,7 @@ from .dict_obj import DictObj
 from .scene import Scene
 from .tools import load_yaml
 from .input import Input
+from .node import node_from_dict
 
 BLACK = (0, 0, 0)
 
@@ -60,7 +61,7 @@ class GameState(DictObj):
         if not player:
             player_data = load_yaml(self.PLAYER_DATA)
             player_data['game'] = self
-            self.player = Scene.node_from_dict(None, player_data)
+            self.player = node_from_dict(self, player_data)
             self.player.sprite.rect.center = self.PLAYER_START_POSITION
         
         self.scene.place_node(

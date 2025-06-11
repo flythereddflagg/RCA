@@ -4,7 +4,7 @@ import pygame as pg
 
 from .tools import load_yaml, class_from_str, filter_serializable
 from .camera import Camera
-from .node import Node
+from .node import Node, node_from_dict
 
 
 class Scene():  
@@ -35,14 +35,6 @@ class Scene():
         self.camera.zoom_by(self.game.SCALE * self.zoom)
         # make it so non-sprite nodes get loaded as well in self.load
 
-    @staticmethod
-    def node_from_dict(self, node_init:dict):
-        node_init['scene'] = self
-        yaml = node_init.get("yaml")
-        if yaml: node_init = {**node_init, **load_yaml(yaml)}
-        class_str = node_init['type']
-        node = class_from_str(class_str)(**node_init)
-        return node
 
 
     def place_node(
@@ -83,7 +75,7 @@ class Scene():
                 ): 
                     continue
                     
-                node = Scene.node_from_dict(self, node_init)
+                node = node_from_dict(self, node_init)
                 # TODO code here for new starting place for dropped items (further down the road?)
                 self.place_node(
                     node, layer, 

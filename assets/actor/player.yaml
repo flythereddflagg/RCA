@@ -9,23 +9,26 @@ mask: ./assets/actor/larry/larry_base_mask.png
 groups:
   - player
 
-path_prefix: "./assets/actor/larry/"
 
 
-animations:
-  stand:
-    datafile: "larry_emote.json"
-    repeat: True
-  walk:
-    datafile: "larry_walk.json"
-    repeat: True
-  sword:
-    datafile: larry_sword_swing.json
-    hitmask: larry_sword_swing_mask.json
-    repeat: False
-  damage:
-    repeat: False
-    datafile: larry_damage.json
-  shovel:
-    repeat: False
-    datafile: larry_shovel.json
+children:
+  - id: animations
+    type: Animation
+    path_prefix: "./assets/actor/larry/"
+    animations:
+      stand:
+        datafile: "larry_emote.json"
+        repeat: True
+      walk:
+        datafile: "larry_walk.json"
+        repeat: True
+      sword:
+        datafile: larry_sword_swing.json
+        hitmask: larry_sword_swing_mask.json
+        repeat: False
+      damage:
+        repeat: False
+        datafile: larry_damage.json
+      shovel:
+        repeat: False
+        datafile: larry_shovel.json

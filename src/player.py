@@ -31,11 +31,13 @@ class Player(Node):
         
         self.damage_direction = pg.math.Vector2(0,1)
         self.move = Movement(self.sprite, **self.options)
+        ## TEMP work around
+        opts = options['children'][0]
         self.animation = Animation(
-            self, self.options['animations'], self.options["path_prefix"]
+            self, opts['animations'], opts["path_prefix"]
         )
         self.hitmask = HitMask(
-            self, self.options['animations'], self.options["path_prefix"]
+            self, opts['animations'], opts["path_prefix"]
         )
         self.inventory = Inventory(self, money=0, hp=100, hp_max=100)
         self.input_held = None

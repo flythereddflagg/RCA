@@ -4,6 +4,7 @@ import pygame as pg
 
 from .decal import Decal
 from .tools import list_collided
+from .node import node_from_dict
 
 throw_dist = 32 # pixels
 
@@ -33,7 +34,7 @@ class SoftDirt(Decal):
                 # # throw it up and to the left 32 pixels
                 # pg.math.Vector2([-throw_dist,-throw_dist]) 
             ) + self.rect.topleft
-            node = self.scene.node_from_dict(self.scene, item)
+            node = node_from_dict(self, item)
             groups = self.options.get("groups")
             self.scene.place_node(
                 node, layer, groups=groups, start=start_vector
