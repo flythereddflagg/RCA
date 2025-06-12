@@ -33,9 +33,9 @@ class Player(Node):
         self.move = Movement(self.sprite, **self.options)
         ## TEMP work around
         opts = options['children'][0]
-        self.animation = Animation(
-            self, opts['animations'], opts["path_prefix"]
-        )
+        # self.animation = Animation(
+        #     self, opts['animations'], opts["path_prefix"]
+        # )
         self.hitmask = HitMask(
             self, opts['animations'], opts["path_prefix"]
         )
@@ -118,7 +118,10 @@ class Player(Node):
 
 
     def apply_todos(self):
-        if self.animation and self.animation.active: 
+        # TODO rework this workaround code
+        animation = [sprite for sprite in self.children.sprites() if sprite.id == "animations"][0]
+        # if self.animation and self.animation.active: 
+        if animation and animation.active: 
             # reject all current todos
             self.todo_list = [] 
             return
@@ -127,7 +130,7 @@ class Player(Node):
         # revert to "idle" animation if no input is given
         if (
             not self.todo_list and 
-            (not self.animation or not self.animation.active)
+            (not animation or not animation.active)
         ):
             self.state = DEFAULT_STATE
             return
@@ -159,7 +162,8 @@ class Player(Node):
         self.apply_todos()
         self.check_signals()
         self.check_collision()
-        self.animation.update()
+        self.children.update()
+        # self.animation.update()
         self.hitmask.update()
         self.inventory.update()
         self.apply_physics()
