@@ -11,9 +11,10 @@ INV_SCALE = 1
 
 class Inventory(Node):
     def __init__(
-        self, player, money:int=0, hp:int=0, hp_max:int=0, max_money=999
+        self, parent, money:int=0, hp:int=0, hp_max:int=0, max_money=999, 
+        **kwargs
     ):
-        super().__init__(player.scene)
+        super().__init__(parent=parent, **kwargs)
         self.sprite = Decal(**{
             "parent": self,
             "id": "inventory_screen",
@@ -29,7 +30,7 @@ class Inventory(Node):
         self.HP_MAX:int = hp_max
         self.max_money = max_money
         self.active = False
-        self.player = player
+        self.player = parent
         self.left_item:Item = self.empty_item()
         self.right_item:Item = self.empty_item()
         self.sprite.rect.center = get_center_screen()
@@ -88,6 +89,10 @@ class Inventory(Node):
         if slot_index is not None:
             slot_rect = self.slot_sprites.sprites()[slot_index].rect
             self.marker.rect.center = slot_rect.center
+        
+        if self.hp <= 0:
+            self.scene.game.player = None
+            self.parent.kill()
 
         
     def toggle(self):

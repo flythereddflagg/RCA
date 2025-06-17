@@ -32,3 +32,8 @@ children:
       shovel:
         repeat: False
         datafile: larry_shovel.json
+  - id: inventory
+    type: Inventory
+    money: 0
+    hp: 100
+    hp_max: 100

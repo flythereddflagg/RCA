@@ -3,8 +3,8 @@ import pygame as pg
 from .decal import Decal
 from .compass import Compass
 from .movement import Movement
-from .animation import Animation
-from .inventory import Inventory
+# from .animation import Animation
+# from .inventory import Inventory
 from .tools import list_collided
 from .item import EMPTY
 from .node import Node
@@ -33,13 +33,9 @@ class Player(Node):
         self.move = Movement(self.sprite, **self.options)
         ## TEMP work around
         opts = options['children'][0]
-        # self.animation = Animation(
-        #     self, opts['animations'], opts["path_prefix"]
-        # )
         self.hitmask = HitMask(
             self, opts['animations'], opts["path_prefix"]
         )
-        self.inventory = Inventory(self, money=0, hp=100, hp_max=100)
         self.input_held = None
         self.state = DEFAULT_STATE
 
@@ -102,9 +98,9 @@ class Player(Node):
             if self.inventory.active:
                 self.inventory.select("LEFT")
             elif self.inventory.left_item.id != EMPTY:
-                animation_id = self.inventory.left_item.action
-                if animation_id:
-                    self.state = animation_id
+                self.animation_id = self.inventory.left_item.action
+                if self.animation_id:
+                    self.state = self.animation_id
         
         if (RIGHT_HAND_BUTTON in actions and 
             not self.input_held[RIGHT_HAND_BUTTON]
@@ -112,25 +108,22 @@ class Player(Node):
             if self.inventory.active:
                 self.inventory.select("RIGHT")
             elif self.inventory.right_item.id != EMPTY:
-                animation_id = self.inventory.right_item.action
-                if animation_id:
-                    self.state = animation_id
+                self.animation_id = self.inventory.right_item.action
+                if self.animation_id:
+                    self.state = self.animation_id
 
 
     def apply_todos(self):
-        # TODO rework this workaround code
-        animation = [sprite for sprite in self.children.sprites() if sprite.id == "animations"][0]
-        # if self.animation and self.animation.active: 
-        if animation and animation.active: 
+        if self.animation and self.animation.active: 
             # reject all current todos
             self.todo_list = [] 
             return
         self.input_held = self.game.input.held
 
-        # revert to "idle" animation if no input is given
+        # revert to "idle" self.animation if no input is given
         if (
             not self.todo_list and 
-            (not animation or not animation.active)
+            (not self.animation or not self.animation.active)
         ):
             self.state = DEFAULT_STATE
             return
@@ -163,7 +156,7 @@ class Player(Node):
         self.check_signals()
         self.check_collision()
         self.children.update()
-        # self.animation.update()
+        # self.self.animation.update()
         self.hitmask.update()
         self.inventory.update()
         self.apply_physics()

@@ -49,3 +49,23 @@ class Node(pg.sprite.Sprite):
             f" the 'update' function in class {type(self)}"
         )
 
+
+    def child_by_id(self, id_str:str) -> 'Node':
+        if self.children:
+            child = [
+                sprite 
+                for sprite in self.children.sprites() 
+                if sprite.id == id_str
+            ]
+            if len(child) == 1:
+                return child[0]
+            elif len(child) > 1:
+                raise ValueError(f"Multiple Children returned for ID {id_str}")
+        
+        return None # case len(child) == 0 or is an invalid value
+
+    
+    def __getattr__(self, name):
+        return self.child_by_id(name)
+    
+    #TODO add code here that implments adding and killing children
