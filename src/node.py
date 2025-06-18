@@ -67,5 +67,14 @@ class Node(pg.sprite.Sprite):
     
     def __getattr__(self, name):
         return self.child_by_id(name)
+
     
-    #TODO add code here that implments adding and killing children
+    def kill(self):
+        if self.children:
+            for child in self.children.sprites():
+                child.kill()
+
+        super().kill()
+
+    #TODO add code here that implments adding children
+
