@@ -9,7 +9,7 @@ def main():
     pg.init()
     INIT_PATH = "./assets/init.yaml"
     game = GameState(INIT_PATH)
-    if game.LOG_INPUT:
+    if game.settings.LOG_INPUT:
         import datetime
         try:
             game.run()

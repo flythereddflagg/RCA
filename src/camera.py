@@ -26,7 +26,7 @@ class Camera(Node):
             self.pan(-movex, -movey)
             return
         self.follow_player()
-        if not self.scene.game.DEBUG: 
+        if not self.scene.game.settings.DEBUG: 
             self.stop_at_border()
 
 

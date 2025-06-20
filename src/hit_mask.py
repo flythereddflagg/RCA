@@ -28,7 +28,7 @@ class HitMask(Animation):
         )
         new_mask = pg.mask.from_surface(current.image)
         self.sprite.mask = new_mask.scale(
-            pg.math.Vector2(new_mask.get_size())*self.parent.game.SCALE
+            pg.math.Vector2(new_mask.get_size())*self.parent.game.settings.SCALE
         )
         self.frame_time = current.duration
         self.last_set_frame_time = pg.time.get_ticks()

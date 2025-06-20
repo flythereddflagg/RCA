@@ -14,12 +14,12 @@ class Input():
 
     def __init__(self, game):
         self.game = game
-        self.KEY_BIND = self.game.KEY_BIND
-        self.CTLR_BIND = self.game.CTLR_BIND
-        self.CTLR_BUTTON = self.game.CTLR_BUTTON
-        self.CTLR_AXES = self.game.CTLR_AXES
-        self.SHOW_EVENTS = self.game.SHOW_EVENTS
-        self.LOG_INPUT = self.game.LOG_INPUT
+        self.KEY_BIND = self.game.settings.KEY_BIND
+        self.CTLR_BIND = self.game.settings.CTLR_BIND
+        self.CTLR_BUTTON = self.game.settings.CTLR_BUTTON
+        self.CTLR_AXES = self.game.settings.CTLR_AXES
+        self.SHOW_EVENTS = self.game.settings.SHOW_EVENTS
+        self.LOG_INPUT = self.game.settings.LOG_INPUT
         self.REPLAY = self.game.REPLAY
         if self.REPLAY is not None:
             with open(self.REPLAY) as f:
@@ -35,11 +35,11 @@ class Input():
         }
         self.controller_buttons = {
             name: index 
-            for index, name in enumerate(self.game.CTLR_BUTTON.split(','))
+            for index, name in enumerate(self.game.settings.CTLR_BUTTON.split(','))
         }
         self.controller_axes = {
             name: index 
-            for index, name in enumerate(self.game.CTLR_AXES.split(','))
+            for index, name in enumerate(self.game.settings.CTLR_AXES.split(','))
         }
         
         # detect and load controllers

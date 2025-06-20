@@ -17,15 +17,13 @@ from .node import node_from_dict
 BLACK = (0, 0, 0)
 
 
-class GameState(DictObj):
+class GameState():
     """
     connects the hardware to game logic and holds the game state
     including the scenes
     """
     def __init__(self, data_path, REPLAY=None):
-        self.PLAYER_DATA = None
-        init_data = load_yaml(data_path)
-        super().__init__(**init_data)
+        self.settings:DictObj = load_yaml(data_path)
         self.dt = 1
         self.running = False
         self.paused = False
@@ -35,13 +33,13 @@ class GameState(DictObj):
         self.input = Input(self)
         # TODO make a scene manager that loads a bunch of scenes here and then loads them into the game and remembers them.
         self.saved_scenes = {}
-        w, h = self.ASPECT_RATIO
+        w, h = self.settings.ASPECT_RATIO
         float_aspect_ratio = w / h
 
         self.SCREENWIDTH, self.SCREENHEIGHT = (
-            int(self.RESOLUTION * float_aspect_ratio) *
-            self.SCALE,
-            self.RESOLUTION * self.SCALE
+            int(self.settings.RESOLUTION * float_aspect_ratio) *
+            self.settings.SCALE,
+            self.settings.RESOLUTION * self.settings.SCALE
         )        
 
         self.screen = pg.display.set_mode(
@@ -49,20 +47,20 @@ class GameState(DictObj):
         )
         self.clock = pg.time.Clock()
         
-        if self.FPS_COUNTER or self.DEBUG:
+        if self.settings.FPS_COUNTER or self.settings.DEBUG:
             self.fps_counter = pg.font.SysFont("Sans", 22)
         
-        self.load_scene(yaml_path=self.INITAL_SCENE)
-        if self.PLAYER_DATA:
+        self.load_scene(yaml_path=self.settings.INITAL_SCENE)
+        if self.settings.PLAYER_DATA:
             self.init_player()
 
 
     def init_player(self, player=None):
         if not player:
-            player_data = load_yaml(self.PLAYER_DATA)
+            player_data = load_yaml(self.settings.PLAYER_DATA)
             player_data['game'] = self
             self.player = node_from_dict(self, player_data)
-            self.player.sprite.rect.center = self.PLAYER_START_POSITION
+            self.player.sprite.rect.center = self.settings.PLAYER_START_POSITION
         
         self.scene.place_node(
             self.player, 
@@ -73,7 +71,7 @@ class GameState(DictObj):
 
     def load_scene(self, **options) -> Scene:
         self.scene = Scene(
-            game=self,  groups=self.SPRITE_GROUPS, **options
+            game=self,  groups=self.settings.SPRITE_GROUPS, **options
         )
 
         return self.scene # return reference to scene if needed
@@ -90,8 +88,8 @@ class GameState(DictObj):
             self.draw_frame()
             self.dt = (
                 self.clock.tick() 
-                if self.FPS < -1 else 
-                self.clock.tick(self.FPS)
+                if self.settings.FPS < -1 else 
+                self.clock.tick(self.settings.FPS)
             )
 
 
@@ -106,14 +104,14 @@ class GameState(DictObj):
         if (
             "REFRESH" in game_input and 
             not self.input.held["REFRESH"] and 
-            self.DEBUG and 
+            self.settings.DEBUG and 
             self.scene
         ):
             self.scene.refresh()
 
         # apply all the input
-        if self.player:
-            self.player.apply(game_input)
+        # if self.player:
+        #     self.player.apply(game_input)
 
         # update everything in the scene
         if self.scene and not self.paused: 
@@ -126,7 +124,7 @@ class GameState(DictObj):
         for group_name in self.scene.draw_layers:
             self.scene.layers[group_name].draw(self.screen) 
         
-        if self.DEBUG:
+        if self.settings.DEBUG:
             self.render_debug()
         
         pg.display.flip()
@@ -134,7 +132,7 @@ class GameState(DictObj):
 
 
     def render_debug(self):
-        if self.FPS_COUNTER:
+        if self.settings.FPS_COUNTER:
             fps = str(int(self.clock.get_fps()))
             fps_sprite = self.fps_counter.render(fps, True, (255,255,255))
             self.screen.blit(fps_sprite, (10,10))
@@ -149,11 +147,11 @@ class GameState(DictObj):
                     self.screen, (255,255,255), sprite.rect, width=2
                 )
                 pos1, pos2 = (
-                    str(pg.math.Vector2(sprite.rect.topleft)//self.SCALE), 
+                    str(pg.math.Vector2(sprite.rect.topleft)//self.settings.SCALE), 
                     str((
                         pg.math.Vector2(sprite.rect.topleft) - 
                         pg.math.Vector2(background.rect.topleft)
-                    )//self.SCALE)
+                    )//self.settings.SCALE)
                 )
                 pos_sprite = sprite.pos.render(
                     f"{pos1} ; {pos2}", 
@@ -163,9 +161,9 @@ class GameState(DictObj):
                     pos_sprite, 
                     pg.math.Vector2(sprite.rect.topleft) - (0, 15)
                 )
-                if self.SHOW_MASK and sprite.mask:
+                if self.settings.SHOW_MASK and sprite.mask:
                     if (
-                        not self.SHOW_BG_MASK and 
+                        not self.settings.SHOW_BG_MASK and 
                         sprite in self.scene.layers['background']
                     ): continue
                     self.screen.blit(

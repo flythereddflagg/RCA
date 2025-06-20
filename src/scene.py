@@ -32,7 +32,7 @@ class Scene():
         self.load()
         self.zoom = self.data.get('INIT_ZOOM')
         self.camera = Camera(self)
-        self.camera.zoom_by(self.game.SCALE * self.zoom)
+        self.camera.zoom_by(self.game.settings.SCALE * self.zoom)
         # make it so non-sprite nodes get loaded as well in self.load
 
 
@@ -95,7 +95,7 @@ class Scene():
         self.game.init_player(self.game.player)
         
         self.game.player.sprite.rect.topleft = current_player_position
-        self.camera.zoom_by(self.game.SCALE * self.data.get('INIT_ZOOM'))
+        self.camera.zoom_by(self.game.settings.SCALE * self.data.get('INIT_ZOOM'))
 
 
     def update(self):        
