@@ -5,6 +5,7 @@ import pygame as pg
 from .tools import load_yaml, class_from_str, filter_serializable
 from .camera import Camera
 from .node import Node, node_from_dict
+from .decal import Decal
 
 
 class Scene():  
@@ -23,16 +24,22 @@ class Scene():
             group_name: pg.sprite.Group() 
             for group_name in groups
         }
-        self.draw_layers = self.data.DRAW_LAYERS.copy()
+        self.draw_layers = self.data.layers.copy()
         self.draw_layers.append('hud') # hud is a given
         self.layers = {
             group_name: pg.sprite.Group() 
             for group_name in self.draw_layers
         }
+        # guarentee there is always a background
+        if "background" not in self.draw_layers: 
+            self.draw_layers.insert(0, "background")
+            self.layers['background'] = pg.sprite.Group()
+            self.layers['background'].add(Decal(self))
         self.load()
-        self.zoom = self.data.get('INIT_ZOOM')
-        self.camera = Camera(self)
-        self.camera.zoom_by(self.game.settings.SCALE * self.zoom)
+        self.zoom = self.data.get('zoom')
+        self.camera = Camera(self) if self.data.get("camera") else None
+        if self.camera: 
+            self.camera.zoom_by(self.game.settings.SCALE * self.zoom)
         # make it so non-sprite nodes get loaded as well in self.load
 
 
@@ -95,7 +102,7 @@ class Scene():
         self.game.init_player(self.game.player)
         
         self.game.player.sprite.rect.topleft = current_player_position
-        self.camera.zoom_by(self.game.settings.SCALE * self.data.get('INIT_ZOOM'))
+        self.camera.zoom_by(self.game.settings.SCALE * self.data.get('zoom'))
 
 
     def update(self):        

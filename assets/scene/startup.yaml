@@ -1,8 +1,8 @@
 id: startup
-INIT_ZOOM: 1 # amount to scale everything -1 means no camera
+zoom: 1 # amount to scale everything -1 means no camera
 CAMERASLACK: 100 # pixels from center screen before the camera moves
 
-DRAW_LAYERS: # layers will be drawn in this order
+layers: # layers will be drawn in this order
   - background
   - foreground
 

@@ -8,14 +8,13 @@ the game running.
 import pygame as pg
 import collections
 
-from .dict_obj import DictObj
 from .scene import Scene
 from .tools import load_yaml
 from .input import Input
 from .node import node_from_dict
 
 BLACK = (0, 0, 0)
-
+# TODO make a scene manager that loads a bunch of scenes here and then loads them into the game and remembers them.
 
 class GameState():
     """
@@ -23,49 +22,37 @@ class GameState():
     including the scenes
     """
     def __init__(self, data_path, REPLAY=None):
-        self.settings:DictObj = load_yaml(data_path)
+        self.settings:'.dictobj.DictObj' = load_yaml(data_path)
         self.dt = 1
         self.running = False
         self.paused = False
         self.scene = None
-        self.player = None
-        self.REPLAY = REPLAY
-        self.input = Input(self)
-        # TODO make a scene manager that loads a bunch of scenes here and then loads them into the game and remembers them.
         self.saved_scenes = {}
+        self.REPLAY = REPLAY
+        self.screen = self.init_screen()
+        self.clock = pg.time.Clock()
+        self.fps_counter = (
+            pg.font.SysFont("Sans", 22) 
+            if self.settings.FPS_COUNTER or self.settings.DEBUG
+            else None
+        )
+        self.input = Input(self)
+        
+        self.load_scene(yaml_path=self.settings.INITAL_SCENE)
+
+
+    def init_screen(self):
         w, h = self.settings.ASPECT_RATIO
         float_aspect_ratio = w / h
 
-        self.SCREENWIDTH, self.SCREENHEIGHT = (
+        self.screenwidth, self.screenheight = (
             int(self.settings.RESOLUTION * float_aspect_ratio) *
             self.settings.SCALE,
             self.settings.RESOLUTION * self.settings.SCALE
         )        
 
-        self.screen = pg.display.set_mode(
-            [self.SCREENWIDTH, self.SCREENHEIGHT], pg.RESIZABLE
-        )
-        self.clock = pg.time.Clock()
-        
-        if self.settings.FPS_COUNTER or self.settings.DEBUG:
-            self.fps_counter = pg.font.SysFont("Sans", 22)
-        
-        self.load_scene(yaml_path=self.settings.INITAL_SCENE)
-        if self.settings.PLAYER_DATA:
-            self.init_player()
-
-
-    def init_player(self, player=None):
-        if not player:
-            player_data = load_yaml(self.settings.PLAYER_DATA)
-            player_data['game'] = self
-            self.player = node_from_dict(self, player_data)
-            self.player.sprite.rect.center = self.settings.PLAYER_START_POSITION
-        
-        self.scene.place_node(
-            self.player, 
-            self.scene.layers['foreground'],
-            groups=self.player.options.get("groups")  
+        return pg.display.set_mode(
+            [self.screenwidth, self.screenheight], pg.RESIZABLE
         )
 
 
@@ -82,9 +69,7 @@ class GameState():
 
         while self.running:
             self.input.update()
-            game_input = self.input.get()
-            self.logic(game_input)
-            self.input.update_held(game_input)
+            self.logic()
             self.draw_frame()
             self.dt = (
                 self.clock.tick() 
@@ -93,9 +78,10 @@ class GameState():
             )
 
 
-    def logic(self, game_input):
+    def logic(self):
         # run all game logic here
         # quit overrides everything else
+        game_input = self.input.get()
         if "QUIT" in game_input:
             self.running = False
             return
@@ -108,10 +94,6 @@ class GameState():
             self.scene
         ):
             self.scene.refresh()
-
-        # apply all the input
-        # if self.player:
-        #     self.player.apply(game_input)
 
         # update everything in the scene
         if self.scene and not self.paused: 
@@ -137,8 +119,8 @@ class GameState():
             fps_sprite = self.fps_counter.render(fps, True, (255,255,255))
             self.screen.blit(fps_sprite, (10,10))
             
-        background = self.scene.layers['background'].sprites()[0]
-        for group_name in self.scene.data.DRAW_LAYERS:
+        background = self.scene.layers['background'].sprites()[0] 
+        for group_name in self.scene.data.layers:
             sprites = self.scene.layers[group_name].sprites()
             for sprite in sprites:
                 if not vars(sprite).get('pos'):

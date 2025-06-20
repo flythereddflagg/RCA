@@ -1,12 +1,12 @@
 id: forest
-DRAW_LAYERS:
+layers:
   - behind
   - background
   - foreground
   - overlay
 
 # amount to scale everything
-INIT_ZOOM: 1
+zoom: 1
 # pixels before camera moves instead of player
 CAMERASLACK: 100
 
