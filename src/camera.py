@@ -8,9 +8,11 @@ from .node import Node
 class Camera(Node):
     def __init__(self, scene):
         super().__init__(scene)
-        self.mobile_groups = list(self.scene.layers.keys())
+        self.mobile_groups = self.scene.draw_layers.copy()
         self.mobile_groups.remove('hud')
         self.cur_zoom = 1
+        self.camera.zoom_by(self.game.settings.SCALE * self.scene.zoom)
+        
 
     def update(self):
         for sprite in self.scene.all_nodes.sprites():
@@ -21,7 +23,7 @@ class Camera(Node):
                     absolute=True
                 )
         if not self.scene.game.player:
-            background = self.scene.layers['background'].sprites()[0]
+            background = self.scene.groups['background'].sprites()[0]
             movex, movey = background.sprite.rect.topleft
             self.pan(-movex, -movey)
             return
@@ -37,7 +39,7 @@ class Camera(Node):
         """
         if not movex and not movey: return
         for group in self.mobile_groups:
-            for sprite in self.scene.layers[group]:
+            for sprite in self.scene.groups[group]:
                 sprite.rect.move_ip(-movex, -movey)
 
 
@@ -72,7 +74,7 @@ class Camera(Node):
 
     def stop_at_border(self):
         screen_w, screen_h = pg.display.get_surface().get_size()
-        background = self.scene.layers['background'].sprites()[0]
+        background = self.scene.groups['background'].sprites()[0]
 
         # if background is too small then just return without modifying
         background_w, background_h = background.rect.size
@@ -103,7 +105,7 @@ class Camera(Node):
         if factor is None: return
         self.cur_zoom *= factor
         if self.cur_zoom == 0: self.cur_zoom = 1 # 0 resets scale
-        background = self.scene.layers['background'].sprites()[0]
+        background = self.scene.groups['background'].sprites()[0]
         screen_data = pg.display.Info()
         centerx = screen_data.current_w // 2
         centery = screen_data.current_h // 2
@@ -117,7 +119,7 @@ class Camera(Node):
 
         for group in self.mobile_groups:
             if group == 'background': continue
-            for sprite in self.scene.layers[group]:
+            for sprite in self.scene.groups[group]:
                 x, y = sprite.rect.center
                 sprite.scale_by(factor)
                 sprite.rect.center = (

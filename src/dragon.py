@@ -57,7 +57,7 @@ class Dragon(Decal):
             sprite.set_image(pg.image.load("./assets/block/block.png").convert_alpha())
             sprite.rect.topleft = get_center_screen()
             sprite.kill()
-            self.scene.layers["foreground"].add(sprite)
+            self.scene.groups["foreground"].add(sprite)
             self.scene.all_nodes.add(sprite)
             self.kill()
 

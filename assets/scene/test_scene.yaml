@@ -1,5 +1,14 @@
-id: blank
 layers: []
-zoom: 1
 
+background:
+  - id: boss room
+    type: Decal
+    image: ./assets/scene/boss_room/boss_room.png
+    mask: ./assets/scene/boss_room/boss_room_mask.png
+    groups: 
+     - solid # a group to be in for certain effects
 
+other:
+  - id: camera
+    type: Camera
+    

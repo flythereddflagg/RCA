@@ -16,65 +16,44 @@ class Scene():
         """
         self.game = game
         self.id = yaml_path
-        self.camera = None
-        self.data = load_yaml(yaml_path)
+        self.init = load_yaml(yaml_path)
+        self.draw_layers = self.init.layers.copy()
         self.all_nodes = pg.sprite.Group()
-        self.nodes = []
         self.groups = {
-            group_name: pg.sprite.Group() 
-            for group_name in groups
+            **{
+                group_name: pg.sprite.Group() 
+                for group_name in groups
+            },
+            **{
+                key: pg.sprite.Group() 
+                for key, val in self.init.items()
+                if isinstance(val, dict)
+            }
         }
-        self.draw_layers = self.data.layers.copy()
-        self.draw_layers.append('hud') # hud is a given
-        self.layers = {
-            group_name: pg.sprite.Group() 
-            for group_name in self.draw_layers
-        }
-        # guarentee there is always a background
+        # hud is a given and is always drawn last
+        self.draw_layers.append('hud')
+        self.groups["hud"] = pg.sprite.Group()
+ 
+        # guarentee there is always a background drawn first
         if "background" not in self.draw_layers: 
             self.draw_layers.insert(0, "background")
-            self.layers['background'] = pg.sprite.Group()
-            self.layers['background'].add(Decal(self))
+            self.groups['background'] = pg.sprite.Group()
+            self.groups['background'].add(Decal(self))
         self.load()
-        self.zoom = self.data.get('zoom')
-        self.camera = Camera(self) if self.data.get("camera") else None
-        if self.camera: 
-            self.camera.zoom_by(self.game.settings.SCALE * self.zoom)
-        # make it so non-sprite nodes get loaded as well in self.load
-
-
-
-    def place_node(
-        self, node:Node, layer:pg.sprite.Group, groups=None, start=None
-    ):
-        if node.scene is not self:
-            node.scene = self
-        self.nodes.append(node)
-        sprite_instance = node.sprite
-
-        if sprite_instance is None: return
-        
-        if sprite_instance.scene is not self:
-            sprite_instance.scene = self
-        self.all_nodes.add(sprite_instance)
-        layer.add(sprite_instance)
-
-        if groups:
-            for group in groups:
-                self.groups[group].add(sprite_instance)
-        if start:
-            sprite_instance.rect.topleft = pg.math.Vector2(start)
+        # since these are guarenteed to exist, provide references to them
+        self.background = self.groups['background']
+        self.hud = self.groups['hud']
 
 
     def load(self):
         ### adjust scene based on game state (remembers how scenes were)
         adjust_scene = self.id in self.game.saved_scenes
         ###
-        for name, layer in self.layers.items():
-            layer_data = self.data.get(name)
-            if not layer_data: continue
+        for name, group in self.groups.items():
+            group_data = self.init.get(name)
+            if not group_data: continue
 
-            for node_init in layer_data:
+            for node_init in group_data:
                 node_id = node_init['id']
                 if (
                     adjust_scene and 
@@ -85,15 +64,42 @@ class Scene():
                 node = node_from_dict(self, node_init)
                 # TODO code here for new starting place for dropped items (further down the road?)
                 self.place_node(
-                    node, layer, 
+                    node, group, 
                     node.options.get("groups"), node_init.get('start')
                 )
+
+
+    def place_node(
+        self, node:Node, group:pg.sprite.Group, groups=None, start=None
+    ):
+        if node.scene is not self:
+            node.scene = self
+        self.all_nodes.add(node)
+        sprite_instance = node.sprite
+
+        if sprite_instance is None: return
+        
+        if sprite_instance.scene is not self:
+            sprite_instance.scene = self
+        self.all_nodes.add(sprite_instance)
+        group.add(sprite_instance)
+
+        if groups:
+            for group in groups:
+                self.groups[group].add(sprite_instance)
+        if start:
+            sprite_instance.rect.topleft = pg.math.Vector2(start)
+
+
+    def update(self):        
+        self.all_nodes.update()
+
 
     def refresh(self):
         self.camera.zoom_by(0)
         current_player_position = (
             pg.math.Vector2(self.game.player.sprite.rect.topleft) - 
-            pg.math.Vector2(self.layers['background'].sprites()[0].rect.topleft)
+            pg.math.Vector2(self.groups['background'].sprites()[0].rect.topleft)
         )
         print(current_player_position)
         self.game.load_scene(
@@ -102,23 +108,14 @@ class Scene():
         self.game.init_player(self.game.player)
         
         self.game.player.sprite.rect.topleft = current_player_position
-        self.camera.zoom_by(self.game.settings.SCALE * self.data.get('zoom'))
-
-
-    def update(self):        
-        # update all sprites
-        for group_name in self.draw_layers:
-            self.layers[group_name].update()
-        
-        # finally, update the camera
-        if self.camera: self.camera.update()
+        self.camera.zoom_by(self.game.settings.SCALE * self.init.get('zoom'))
 
 
     def deconstruct(self):
         # save the scene as is
         scene_dict = {}
-        for layer, group in self.layers.items():
-            scene_dict[layer] = {
+        for name, group in self.groups.items():
+            scene_dict[name] = {
                 sprite.id:list(sprite.rect.center) 
                 for sprite in group.sprites()
             }

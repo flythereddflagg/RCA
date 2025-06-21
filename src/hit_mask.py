@@ -15,7 +15,7 @@ class HitMask(Animation):
     def update(self):
         super().update()
         
-        foreground = self.parent.game.scene.layers['foreground']
+        foreground = self.parent.game.scene.groups['foreground']
         if self.sprite not in foreground:
             foreground.add(self.sprite)
 

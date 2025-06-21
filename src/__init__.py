@@ -104,7 +104,7 @@ class GameState():
 
         self.screen.fill(BLACK)
         for group_name in self.scene.draw_layers:
-            self.scene.layers[group_name].draw(self.screen) 
+            self.scene.groups[group_name].draw(self.screen) 
         
         if self.settings.DEBUG:
             self.render_debug()
@@ -119,9 +119,9 @@ class GameState():
             fps_sprite = self.fps_counter.render(fps, True, (255,255,255))
             self.screen.blit(fps_sprite, (10,10))
             
-        background = self.scene.layers['background'].sprites()[0] 
-        for group_name in self.scene.data.layers:
-            sprites = self.scene.layers[group_name].sprites()
+        background = self.scene.groups['background'].sprites()[0] 
+        for group_name in self.scene.draw_layers:
+            sprites = self.scene.groups[group_name].sprites()
             for sprite in sprites:
                 if not vars(sprite).get('pos'):
                     sprite.pos = pg.font.SysFont("Sans", 10)
@@ -146,7 +146,7 @@ class GameState():
                 if self.settings.SHOW_MASK and sprite.mask:
                     if (
                         not self.settings.SHOW_BG_MASK and 
-                        sprite in self.scene.layers['background']
+                        sprite in self.scene.groups['background']
                     ): continue
                     self.screen.blit(
                         sprite.mask.to_surface(setcolor = (0,0,255,255), unsetcolor = None),

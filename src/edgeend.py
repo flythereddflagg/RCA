@@ -13,7 +13,7 @@ class EdgeEnd(Edge):
         sprite.mask = pg.mask.Mask(size=(32, 32), fill=False)
         sprite.rect = surface.get_rect()
         sprite.rect.center = get_center_screen()
-        self.scene.layers['hud'].add(sprite)
+        self.scene.groups['hud'].add(sprite)
         self.kill()
         self.scene.game.player.sprite.kill()
         

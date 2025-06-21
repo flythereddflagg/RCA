@@ -25,7 +25,7 @@ class SoftDirt(Decal):
     def be_dug(self, sprite):
         # I assume that any sprite that has a "shovel" state 
         # should probably have a parent. Maybe not though?
-        layer = [layer for key, layer in self.scene.layers.items() if self in layer][0]
+        layer = [layer for key, layer in self.scene.groups.items() if self in layer][0]
         for item in self.treasure:
             start_vector = (
                 pg.math.Vector2(item["start"])

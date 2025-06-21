@@ -66,7 +66,16 @@ class Node(pg.sprite.Sprite):
 
     
     def __getattr__(self, name):
-        return self.child_by_id(name)
+        """
+        Same as get_child_by_id but will raise attribute error
+        if it does not exist.
+        """
+        node = self.child_by_id(name)
+        if node is None:
+            raise AttributeError(
+                f"Node <{self.id}> does not have attribute nor child '{name}'"
+            )
+        return node
 
     
     def kill(self):
