@@ -17,32 +17,37 @@ class Scene():
         self.game = game
         self.id = yaml_path
         self.init = load_yaml(yaml_path)
+        
         self.draw_layers = self.init.layers.copy()
+        # guarentee background exists and is drawn first
+        if "background" not in self.draw_layers:
+            self.draw_layers.insert(0, "background")
+        # guarentee hud exists and is drawn last
+        if "hud" not in self.draw_layers:
+            self.draw_layers.append('hud') 
+        
         self.all_nodes = pg.sprite.Group()
         self.groups = {
+            **{
+                group_name: pg.sprite.Group()
+                for group_name in self.draw_layers
+            },
             **{
                 group_name: pg.sprite.Group() 
                 for group_name in groups
             },
             **{
-                key: pg.sprite.Group() 
-                for key, val in self.init.items()
-                if isinstance(val, dict)
+                group_name: pg.sprite.Group() 
+                for group_name, dict_item in self.init.items()
+                if isinstance(dict_item, dict)
             }
         }
-        # hud is a given and is always drawn last
-        self.draw_layers.append('hud')
-        self.groups["hud"] = pg.sprite.Group()
- 
-        # guarentee there is always a background drawn first
-        if "background" not in self.draw_layers: 
-            self.draw_layers.insert(0, "background")
-            self.groups['background'] = pg.sprite.Group()
-            self.groups['background'].add(Decal(self))
-        self.load()
         # since these are guarenteed to exist, provide references to them
-        self.background = self.groups['background']
-        self.hud = self.groups['hud']
+        self.background = self.groups["background"]
+        self.hud = self.groups["hud"]
+        
+        self.load()
+        
 
 
     def load(self):
@@ -67,6 +72,9 @@ class Scene():
                     node, group, 
                     node.options.get("groups"), node_init.get('start')
                 )
+        # guarentee a blank background sprite if none exists.
+        if not self.background.sprites():
+            self.background.add(Decal(self))
 
 
     def place_node(
@@ -99,7 +107,7 @@ class Scene():
         self.camera.zoom_by(0)
         current_player_position = (
             pg.math.Vector2(self.game.player.sprite.rect.topleft) - 
-            pg.math.Vector2(self.groups['background'].sprites()[0].rect.topleft)
+            pg.math.Vector2(self.background.sprites()[0].rect.topleft)
         )
         print(current_player_position)
         self.game.load_scene(

@@ -98,9 +98,9 @@ class Inventory(Node):
     def toggle(self):
         self.active = False if self.active else True
         toggle_state = (
-            self.player.scene.groups['hud'].add 
+            self.player.scene.hud.add 
             if self.active else 
-            self.player.scene.groups['hud'].remove
+            self.player.scene.hud.remove
         )
         # ORDER MATTERS first we do the backpack and hands
         for sprite in [self.sprite, self.left_hand, self.right_hand]:
