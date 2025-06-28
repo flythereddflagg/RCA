@@ -35,7 +35,7 @@ class SoftDirt(Decal):
                 # pg.math.Vector2([-throw_dist,-throw_dist]) 
             ) + self.rect.topleft
             node = node_from_dict(self, item)
-            groups = self.options.get("groups")
+            groups = self.init.get("groups")
             self.scene.place_node(
                 node, layer, groups=groups, start=start_vector
             )

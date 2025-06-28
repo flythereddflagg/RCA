@@ -10,7 +10,7 @@ class Movement():
     independently of the camera. Also can be animated.
     """
 
-    def __init__(self, sprite, **options):
+    def __init__(self, sprite, **init):
         self.sprite = sprite
         self.direction = Compass.DOWN
         self.dist_buffer = 0

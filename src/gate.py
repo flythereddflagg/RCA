@@ -10,7 +10,7 @@ class Gate(Decal):
         self.key_id = key_id
 
     def update(self):
-        player = self.scene.game.player
+        player = self.scene.groups.get("player").sprites()[0]
         dist_sqr = (
             pg.math.Vector2(self.rect.center) - 
             pg.math.Vector2(player.sprite.rect.center)

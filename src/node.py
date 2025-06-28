@@ -18,14 +18,15 @@ class Node(pg.sprite.Sprite):
                 scene, 
                 parent:'Node'=None, 
                 children:list[dict]=None, 
-                **options
+                **init
     ):
         super().__init__()
         self.scene = scene # Force all nodes to have a scene
-        id_ = options.get('id')
+        id_ = init.get('id')
         self.id = id_ if id_ else str(type(self)) + str(id(self))
-        self.options = options
+        self.init = init
         self.parent = parent
+        self.sprite = None
         if children:
             for child in children:
                 child['parent'] = self
@@ -37,6 +38,9 @@ class Node(pg.sprite.Sprite):
                 for child in children
             ])
         )
+        if self.children:
+            for child in self.children.sprites():
+                setattr(self, child.id, child)
 
 
     def update(self):
@@ -65,20 +69,23 @@ class Node(pg.sprite.Sprite):
         return None # case len(child) == 0 or is an invalid value
 
     
-    def __getattr__(self, name):
-        """
-        Same as get_child_by_id but will raise attribute error
-        if it does not exist.
-        """
-        node = self.child_by_id(name)
-        if node is None:
-            raise AttributeError(
-                f"Node <{self.id}> does not have attribute nor child '{name}'"
-            )
-        return node
+    # def __getattr__(self, name):
+    #     """
+    #     Same as get_child_by_id but will raise attribute error
+    #     if it does not exist.
+    #     """
+    #     node = self.child_by_id(name)
+    #     if node is None:
+    #         raise AttributeError(
+    #             f"Node <{self.id}> does not have attribute nor child '{name}'"
+    #         )
+    #     return node
 
     
     def kill(self):
+        """
+        if you kill a parent. Kill all children too.
+        """
         if self.children:
             for child in self.children.sprites():
                 child.kill()

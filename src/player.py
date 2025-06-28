@@ -20,19 +20,19 @@ LEFT_STICK_AX = ["L_"+direction for direction in Compass.strings]
 
 
 class Player(Node):
-    def __init__(self, game, **options):
-        super().__init__(**options)
-        self.game = game
-        self.options = options
+    def __init__(self, **init):
+        super().__init__(**init)
+        self.scene.game = game
+        self.init = init
         self.speed = DEFAULT_SPEED
         self.todo_list = []
         self.signals = []
-        self.sprite = Decal(parent=self, **options)
+        self.sprite = Decal(parent=self, **init)
         
         self.damage_direction = pg.math.Vector2(0,1)
-        self.move = Movement(self.sprite, **self.options)
+        self.move = Movement(self.sprite, **self.init)
         ## TEMP work around
-        opts = options['children'][0]
+        opts = init['children'][0]
         self.hitmask = HitMask(
             self, opts['animations'], opts["path_prefix"]
         )
@@ -118,7 +118,7 @@ class Player(Node):
             # reject all current todos
             self.todo_list = [] 
             return
-        self.input_held = self.game.input.held
+        self.input_held = self.scene.game.input.held
 
         # revert to "idle" self.animation if no input is given
         if (
@@ -162,7 +162,7 @@ class Player(Node):
         self.apply_physics()
         
         if self.inventory.hp <= 0:
-            self.scene.game.player = None
+            self.scene.groups.get("player").sprites()[0] = None
             self.sprite.kill()
 
 

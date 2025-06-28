@@ -36,14 +36,14 @@ class Animation(Node):
     A system for setting the parent sprite object's image.
     """
     def __init__(
-        self, parent, animations:dict, path_prefix='./', **options
+        self, parent, animations:dict, path_prefix='./', **init
     ):
         # this code is just to get the data structure to work
-        scene = options.get("scene")
+        scene = init.get("scene")
         scene = parent.scene if scene is None else scene
-        if 'scene' in options: options.pop("scene")
+        if 'scene' in init: init.pop("scene")
         # parent must have a 'state' attribute
-        super().__init__(scene=scene, parent=parent, **options)
+        super().__init__(scene=scene, parent=parent, **init)
         self.previous:str = None
         self.last_state:str = None
         # TODO make direction an optional attribute?

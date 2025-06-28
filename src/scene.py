@@ -17,6 +17,8 @@ class Scene():
         self.game = game
         self.id = yaml_path
         self.init = load_yaml(yaml_path)
+        zoom = self.init.get("zoom")
+        self.zoom = zoom if zoom else 1
         
         self.draw_layers = self.init.layers.copy()
         # guarentee background exists and is drawn first
@@ -38,8 +40,8 @@ class Scene():
             },
             **{
                 group_name: pg.sprite.Group() 
-                for group_name, dict_item in self.init.items()
-                if isinstance(dict_item, dict)
+                for group_name, val in self.init.items()
+                if val and isinstance(val[0], dict)
             }
         }
         # since these are guarenteed to exist, provide references to them
@@ -47,6 +49,9 @@ class Scene():
         self.hud = self.groups["hud"]
         
         self.load()
+        print(self.id)
+        print([group for group in self.groups])
+        print([sprite.id for sprite in self.all_nodes.sprites()])
         
 
 
@@ -70,7 +75,7 @@ class Scene():
                 # TODO code here for new starting place for dropped items (further down the road?)
                 self.place_node(
                     node, group, 
-                    node.options.get("groups"), node_init.get('start')
+                    node.init.get("groups"), node_init.get('start')
                 )
         # guarentee a blank background sprite if none exists.
         if not self.background.sprites():

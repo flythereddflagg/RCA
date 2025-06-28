@@ -7,8 +7,8 @@ from .tools import mask_collision
 
 class Edge(Decal):
     """an edge is a sprite that connects two scenes in the map graph"""
-    def __init__(self, **options):
-        super().__init__(**options)
+    def __init__(self, **init):
+        super().__init__(**init)
 
     def update(self):
         self.check_collision()
@@ -22,18 +22,18 @@ class Edge(Decal):
     def exec_trigger(self):
         old_scene = self.scene
         game = self.scene.game
-        player = self.scene.game.player
+        player = self.scene.groups.get("player").sprites()[0]
         old_scene.deconstruct() 
-        # print("loading", self.options['scene_path'])
+        # print("loading", self.init['scene_path'])
         new_scene = game.load_scene(
-            yaml_path=self.options['scene_path']
+            yaml_path=self.init['scene_path']
         )
         new_scene.game.init_player(player)
 
         sprites = new_scene.all_nodes.sprites()
         block = list(filter(lambda x: x.id == self.id, sprites))[0]
         player.sprite.rect.center = block.rect.center
-        dx, dy = Compass.unit_vector(block.options['exit_dir'])
+        dx, dy = Compass.unit_vector(block.init['exit_dir'])
         player.sprite.rect.x += dx*(player.sprite.rect.w/2 + block.rect.w/2)
         player.sprite.rect.y += dy*(player.sprite.rect.h/2 + block.rect.h/2)
         new_scene.camera.center_player()

@@ -6,23 +6,30 @@ from .node import Node
 # TODO make adaptive camera the follows the player and gives them better FOV in the direction they are facing.
 
 class Camera(Node):
-    def __init__(self, scene):
-        super().__init__(scene)
+    def __init__(self, **init):
+        super().__init__(**init)
         self.mobile_groups = self.scene.draw_layers.copy()
         self.mobile_groups.remove('hud')
         self.cur_zoom = 1
-        self.camera.zoom_by(self.game.settings.SCALE * self.scene.zoom)
+        self.zoom_by(self.scene.game.settings.SCALE * self.scene.zoom)
         
 
     def update(self):
-        for sprite in self.scene.all_nodes.sprites():
+        for node in self.scene.all_nodes.sprites():
             # TODO check if this code is necessary
-            if sprite.scale != self.cur_zoom * sprite.init_scale:
+            sprite = node.sprite
+            if sprite and sprite.scale != self.cur_zoom * sprite.init_scale:
                 sprite.scale_by(
                     self.cur_zoom * sprite.init_scale, 
                     absolute=True
                 )
-        if not self.scene.game.player:
+        player_group = self.scene.groups.get("player")
+        player = (
+            player_group.sprites()[0]
+            if player_group and player_group.sprites() 
+            else None
+        )
+        if not player:
             background = self.scene.background.sprites()[0]
             movex, movey = background.sprite.rect.topleft
             self.pan(-movex, -movey)
@@ -44,7 +51,7 @@ class Camera(Node):
 
 
     def follow_player(self):
-        player = self.scene.game.player.sprite
+        player = self.scene.groups.get("player").sprites()[0].sprite
         center = pg.math.Vector2(*get_center_screen())
         player_pos = pg.math.Vector2(player.rect.center)
         movex, movey = player_pos - center

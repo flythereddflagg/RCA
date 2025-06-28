@@ -13,12 +13,12 @@ MOVEMENTS = Compass.strings + ['STOP', 'STOP', "STOP"]
 ACTION_TIME_RANGE = [200, 1000]
 
 class Ossifrage(Decal):
-    def __init__(self, **options):
-        super().__init__(**options)
+    def __init__(self, **init):
+        super().__init__(**init)
         self.sprite = self
-        self.move = Movement(self, **self.options)
+        self.move = Movement(self, **self.init)
         self.animation = Animation(
-            self, self.options['animations'], self.options["path_prefix"]
+            self, self.init['animations'], self.init["path_prefix"]
         )
         self.action_time = 0
         self.last_action_time = 0

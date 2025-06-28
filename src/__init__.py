@@ -56,9 +56,9 @@ class GameState():
         )
 
 
-    def load_scene(self, **options) -> Scene:
+    def load_scene(self, **init) -> Scene:
         self.scene = Scene(
-            game=self,  groups=self.settings.SPRITE_GROUPS, **options
+            game=self,  groups=self.settings.SPRITE_GROUPS, **init
         )
 
         return self.scene # return reference to scene if needed

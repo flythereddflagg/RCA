@@ -36,9 +36,9 @@ class Decal(Node):
                 parent:Node=None,
                 child:[Node]=None,
                 animation:'.animation.Animation'=None,
-                **options
+                **init
     ):
-        super().__init__(scene, parent=parent, child=child, **options)
+        super().__init__(scene, parent=parent, child=child, **init)
         self.sprite = self        
 
         self.image_path = image
@@ -85,8 +85,8 @@ class Decal(Node):
         self.mask = self.original.mask.scale(new_mask_size)
 
 
-    def signal(self, *args, **options):
-        if self.parent: self.parent.signal(*args, **options)
+    def signal(self, *args, **init):
+        if self.parent: self.parent.signal(*args, **init)
     
 
     def set_image(

@@ -15,5 +15,5 @@ class EdgeEnd(Edge):
         sprite.rect.center = get_center_screen()
         self.scene.hud.add(sprite)
         self.kill()
-        self.scene.game.player.sprite.kill()
+        self.scene.groups.get("player").sprites()[0].sprite.kill()
         

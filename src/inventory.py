@@ -91,7 +91,7 @@ class Inventory(Node):
             self.marker.rect.center = slot_rect.center
         
         if self.hp <= 0:
-            self.scene.game.player = None
+            self.scene.groups.get("player").sprites()[0] = None
             self.parent.kill()
 
         

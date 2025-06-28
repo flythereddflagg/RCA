@@ -4,9 +4,9 @@ from .tools import list_collided
 EMPTY = 'empty'
 
 class Item(Decal):
-    def __init__(self, **options):
-        super().__init__(**options)
-        self.action = options["action"]
+    def __init__(self, **init):
+        super().__init__(**init)
+        self.action = init["action"]
     
     def __repr__(self):
         return f"<Item - {self.id}>"
