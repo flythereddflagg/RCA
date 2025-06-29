@@ -1,4 +1,3 @@
-id: <scene name>
 zoom: 1 # amount to scale everything
 CAMERASLACK: 100 # pixels from center screen before the camera moves
 
@@ -11,10 +10,10 @@ layers: # layers will be drawn in this order
 
 
 # sprites in each drawing layer
-overlay:
-  - id: boss room overlay
-    type: Decal
-    image: ./assets/scene/boss_room/boss_room_overlay.png
+# overlay:
+#   - id: boss room overlay
+#     type: Decal
+#     image: ./assets/scene/boss_room/boss_room_overlay.png
 
 
 background:
@@ -56,3 +55,8 @@ behind:
     scale: 1
     scene_path: ./assets/scene/corridor.yaml
     exit_dir: LEFT
+
+other:
+  - id: camera
+    type: Camera
+    

@@ -41,7 +41,7 @@ class Scene():
             **{
                 group_name: pg.sprite.Group() 
                 for group_name, val in self.init.items()
-                if val and isinstance(val[0], dict)
+                if isinstance(val, list) and val and isinstance(val[0], dict)
             }
         }
         # since these are guarenteed to exist, provide references to them
@@ -49,10 +49,6 @@ class Scene():
         self.hud = self.groups["hud"]
         
         self.load()
-        print(self.id)
-        print([group for group in self.groups])
-        print([sprite.id for sprite in self.all_nodes.sprites()])
-        
 
 
     def load(self):

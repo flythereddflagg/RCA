@@ -30,9 +30,11 @@ class Camera(Node):
             else None
         )
         if not player:
+            # if there is no player, 
+            # move the camera to put the background topleft at 0,0
             background = self.scene.background.sprites()[0]
             movex, movey = background.sprite.rect.topleft
-            self.pan(-movex, -movey)
+            self.pan(movex, movey)
             return
         self.follow_player()
         if not self.scene.game.settings.DEBUG: 
@@ -41,13 +43,15 @@ class Camera(Node):
 
     def pan(self, movex, movey):
         """
-        Moves everything mobile to the correct position
+        Moves everything mobile in the negative x and y directions
+        by movex and movey pixels respectively.
         This simulates moving the camera
         """
         if not movex and not movey: return
         for group in self.mobile_groups:
             for sprite in self.scene.groups[group]:
                 sprite.rect.move_ip(-movex, -movey)
+
 
 
     def follow_player(self):
@@ -57,7 +61,7 @@ class Camera(Node):
         movex, movey = player_pos - center
         
         movex, movey = self.add_camera_slack(
-            movex, movey, self.scene.data.CAMERASLACK
+            movex, movey, self.scene.init.CAMERASLACK
         )
         self.pan(movex, movey)
 
@@ -112,6 +116,7 @@ class Camera(Node):
         if factor is None: return
         self.cur_zoom *= factor
         if self.cur_zoom == 0: self.cur_zoom = 1 # 0 resets scale
+        print(self.scene.groups)
         background = self.scene.background.sprites()[0]
         screen_data = pg.display.Info()
         centerx = screen_data.current_w // 2

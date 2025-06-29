@@ -136,7 +136,7 @@ class GameState():
                     )//self.settings.SCALE)
                 )
                 pos_sprite = sprite.pos.render(
-                    f"{pos1} ; {pos2}", 
+                    f"<{sprite.id}> {pos1} ; {pos2}", 
                     True, (255,255,255)
                 )
                 self.screen.blit(
