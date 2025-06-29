@@ -17,11 +17,9 @@ class Scene():
         self.game = game
         self.id = yaml_path
         self.init = load_yaml(yaml_path)
-        zoom = self.init.get("zoom")
-        self.zoom = zoom if zoom else 1
         
         self.draw_layers = self.init.layers.copy()
-        # guarentee background exists and is drawn first
+        # guarentee background exists
         add_background_blank = False
         if "background" not in self.draw_layers:
             add_background_blank = True
@@ -49,7 +47,7 @@ class Scene():
         # since these are guarenteed to exist, provide references to them
         self.background = self.groups["background"]
         self.hud = self.groups["hud"]
-        
+
         # guarentee a blank background sprite if none exists.
         if add_background_blank:
             self.background.add(Decal(self))    

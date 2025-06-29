@@ -6,12 +6,13 @@ from .node import Node
 # TODO make adaptive camera the follows the player and gives them better FOV in the direction they are facing.
 
 class Camera(Node):
-    def __init__(self, **init):
+    def __init__(self, zoom=1, slack=0, **init):
         super().__init__(**init)
         self.mobile_groups = self.scene.draw_layers.copy()
         self.mobile_groups.remove('hud')
         self.cur_zoom = 1
-        self.zoom_by(self.scene.game.settings.SCALE * self.scene.zoom)
+        self.slack = slack
+        self.zoom_by(self.scene.game.settings.SCALE * zoom)
         
 
     def update(self):
@@ -60,24 +61,24 @@ class Camera(Node):
         player_pos = pg.math.Vector2(player.rect.center)
         movex, movey = player_pos - center
         
-        movex, movey = self.add_camera_slack(
-            movex, movey, self.scene.init.CAMERASLACK
+        movex, movey = self.add_slack(
+            movex, movey, self.slack
         )
         self.pan(movex, movey)
 
     
-    def add_camera_slack(self, movex, movey, camera_slack):
+    def add_slack(self, movex, movey, slack):
         """
         Takes the vector given by (movex, movey) and reduces it by 
-        camera slack if either component is greater than camera_slack
+        camera slack if either component is greater than slack
         """
-        if abs(movex) > camera_slack:
+        if abs(movex) > slack:
             pos_neg = 1 if movex > 0 else -1
-            movex = pos_neg * (abs(movex) - camera_slack)
+            movex = pos_neg * (abs(movex) - slack)
         else: movex = 0
-        if abs(movey) > camera_slack:
+        if abs(movey) > slack:
             pos_neg = 1 if movey > 0 else -1
-            movey = pos_neg * (abs(movey) - camera_slack)
+            movey = pos_neg * (abs(movey) - slack)
         else: movey = 0
         
         return movex, movey
@@ -106,10 +107,10 @@ class Camera(Node):
 
 
     def center_player(self):
-        tmp_storage = self.scene.data.CAMERASLACK
-        self.scene.data.CAMERASLACK = 0
+        tmp_storage = self.slack
+        self.slack = 0
         self.follow_player()
-        self.scene.data.CAMERASLACK = tmp_storage
+        self.slack = tmp_storage
 
 
     def zoom_by(self, factor):
