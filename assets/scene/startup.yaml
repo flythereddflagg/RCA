@@ -3,7 +3,6 @@ zoom: 1 # amount to scale everything -1 means no camera
 CAMERASLACK: 100 # pixels from center screen before the camera moves
 
 layers: # layers will be drawn in this order
-  - background
   - foreground
 
 foreground:
@@ -20,13 +19,12 @@ foreground:
         datafile: mountain_rev2.json
         repeat: true
 
+other:
   - id: startup music
     type: Music
     filename: ./assets/music/RCA_OVERWORLD/RCA_titlescreen.mp3
+  - id: camera
+    type: Camera
 
 
-background:
-  - id: null_bg
-    type: Decal
-    image: ./assets/block/null.png
 

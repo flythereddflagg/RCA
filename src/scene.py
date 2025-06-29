@@ -22,7 +22,9 @@ class Scene():
         
         self.draw_layers = self.init.layers.copy()
         # guarentee background exists and is drawn first
+        add_background_blank = False
         if "background" not in self.draw_layers:
+            add_background_blank = True
             self.draw_layers.insert(0, "background")
         # guarentee hud exists and is drawn last
         if "hud" not in self.draw_layers:
@@ -48,6 +50,9 @@ class Scene():
         self.background = self.groups["background"]
         self.hud = self.groups["hud"]
         
+        # guarentee a blank background sprite if none exists.
+        if add_background_blank:
+            self.background.add(Decal(self))    
         self.load()
 
 
@@ -73,9 +78,6 @@ class Scene():
                     node, group, 
                     node.init.get("groups"), node_init.get('start')
                 )
-        # guarentee a blank background sprite if none exists.
-        if not self.background.sprites():
-            self.background.add(Decal(self))
 
 
     def place_node(

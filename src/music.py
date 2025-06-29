@@ -8,5 +8,8 @@ class Music(Node):
         self.filename = filename
         self.sprite = None
         pg.mixer.music.load(self.filename)
-        pg.mixer.music.play(-1) 
+        pg.mixer.music.play(-1)
+    
+    def update(self):
+        pass
 
