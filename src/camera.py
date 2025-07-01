@@ -24,12 +24,7 @@ class Camera(Node):
                     self.cur_zoom * sprite.init_scale, 
                     absolute=True
                 )
-        player_group = self.scene.groups.get("player")
-        player = (
-            player_group.sprites()[0]
-            if player_group and player_group.sprites() 
-            else None
-        )
+        player = self.scene.get_player()
         if not player:
             # if there is no player, 
             # move the camera to put the background topleft at 0,0
@@ -56,7 +51,7 @@ class Camera(Node):
 
 
     def follow_player(self):
-        player = self.scene.groups.get("player").sprites()[0].sprite
+        player = self.scene.get_player().sprite
         center = pg.math.Vector2(*get_center_screen())
         player_pos = pg.math.Vector2(player.rect.center)
         movex, movey = player_pos - center

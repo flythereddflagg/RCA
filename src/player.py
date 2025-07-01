@@ -3,7 +3,7 @@ import pygame as pg
 from .decal import Decal
 from .compass import Compass
 from .movement import Movement
-# from .animation import Animation
+# from .animations import animations
 # from .inventory import Inventory
 from .tools import list_collided
 from .item import EMPTY
@@ -22,7 +22,6 @@ LEFT_STICK_AX = ["L_"+direction for direction in Compass.strings]
 class Player(Node):
     def __init__(self, **init):
         super().__init__(**init)
-        self.scene.game = game
         self.init = init
         self.speed = DEFAULT_SPEED
         self.todo_list = []
@@ -98,9 +97,9 @@ class Player(Node):
             if self.inventory.active:
                 self.inventory.select("LEFT")
             elif self.inventory.left_item.id != EMPTY:
-                self.animation_id = self.inventory.left_item.action
-                if self.animation_id:
-                    self.state = self.animation_id
+                self.animations_id = self.inventory.left_item.action
+                if self.animations_id:
+                    self.state = self.animations_id
         
         if (RIGHT_HAND_BUTTON in actions and 
             not self.input_held[RIGHT_HAND_BUTTON]
@@ -108,22 +107,22 @@ class Player(Node):
             if self.inventory.active:
                 self.inventory.select("RIGHT")
             elif self.inventory.right_item.id != EMPTY:
-                self.animation_id = self.inventory.right_item.action
-                if self.animation_id:
-                    self.state = self.animation_id
+                self.animations_id = self.inventory.right_item.action
+                if self.animations_id:
+                    self.state = self.animations_id
 
 
     def apply_todos(self):
-        if self.animation and self.animation.active: 
+        if self.animations and self.animations.active: 
             # reject all current todos
             self.todo_list = [] 
             return
         self.input_held = self.scene.game.input.held
 
-        # revert to "idle" self.animation if no input is given
+        # revert to "idle" self.animations if no input is given
         if (
             not self.todo_list and 
-            (not self.animation or not self.animation.active)
+            (not self.animations or not self.animations.active)
         ):
             self.state = DEFAULT_STATE
             return
@@ -156,13 +155,12 @@ class Player(Node):
         self.check_signals()
         self.check_collision()
         self.children.update()
-        # self.self.animation.update()
+        # self.self.animations.update()
         self.hitmask.update()
         self.inventory.update()
         self.apply_physics()
         
         if self.inventory.hp <= 0:
-            self.scene.groups.get("player").sprites()[0] = None
             self.sprite.kill()
 
 

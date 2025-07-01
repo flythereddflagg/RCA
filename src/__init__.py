@@ -6,12 +6,10 @@ the game running.
 """
 
 import pygame as pg
-import collections
 
 from .scene import Scene
 from .tools import load_yaml
 from .input import Input
-from .node import node_from_dict
 
 BLACK = (0, 0, 0)
 # TODO make a scene manager that loads a bunch of scenes here and then loads them into the game and remembers them.
@@ -38,7 +36,10 @@ class GameState():
         )
         self.input = Input(self)
         
-        self.load_scene(yaml_path=self.settings.INITAL_SCENE)
+        self.load_scene(
+            yaml_path=self.settings.INITAL_SCENE,
+            add_in=self.settings.init_add_in
+        )
 
 
     def init_screen(self):

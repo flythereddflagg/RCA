@@ -9,14 +9,24 @@ from .decal import Decal
 
 
 class Scene():  
-    def __init__(self, game, yaml_path, groups):
+    def __init__(
+            self, 
+            game, 
+            yaml_path, 
+            groups, 
+            add_in:dict=None
+        ):
         """
         All this must do load the data from a YAML file
         and load each sprite into a group
         """
         self.game = game
         self.id = yaml_path
+        
         self.init = load_yaml(yaml_path)
+        add_in = add_in if add_in else {}
+        for key, val in add_in.items():
+            self.init[key].extend(val)
         
         self.draw_layers = self.init.layers.copy()
         # guarentee background exists
@@ -63,14 +73,13 @@ class Scene():
             if not group_data: continue
 
             for node_init in group_data:
-                node_id = node_init['id']
+                node = node_from_dict(self, node_init)
+                # skip a node because it has been removed previously in a saved scene
                 if (
                     adjust_scene and 
-                    node_id not in self.game.saved_scenes[self.id][name].keys()
+                    node.id not in self.game.saved_scenes[self.id][name].keys()
                 ): 
                     continue
-                    
-                node = node_from_dict(self, node_init)
                 # TODO code here for new starting place for dropped items (further down the road?)
                 self.place_node(
                     node, group, 
@@ -135,4 +144,19 @@ class Scene():
         # for sprite in self.all_nodes.sprites():
         #     if sprite is self.game.player.sprite: continue
         #     sprite.kill()
+    
+    def get_player(self, player_number:int=0) -> Node:
+        """
+        Gets a reference to the player number specified.
+        Defaults to first player.
+        Returns None if specified player does not exist
+        in the player group or player group does not exist.
+        """
+        player_group = self.groups.get("player")
+        if not player_group: return None
+        player = (
+            player_group.sprites()[player_number]
+            if len(player_group.sprites()) > player_number
+            else None
+        )
         

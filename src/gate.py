@@ -10,7 +10,9 @@ class Gate(Decal):
         self.key_id = key_id
 
     def update(self):
-        player = self.scene.groups.get("player").sprites()[0]
+        player = self.scene.get_player()
+        if not player:
+            return
         dist_sqr = (
             pg.math.Vector2(self.rect.center) - 
             pg.math.Vector2(player.sprite.rect.center)
@@ -19,8 +21,6 @@ class Gate(Decal):
             dist_sqr//self.scene.game.settings.SCALE**2 < collide_dist and
             player.inventory.possesed(self.key_id)
         ):
-            assert (
-                player.inventory.remove_item(self.key_id), 
+            assert player.inventory.remove_item(self.key_id),\
                 "gate key was possesed but did not get removed properly"
-            )
             self.kill()

@@ -68,7 +68,6 @@ foreground:
   #   action: shovel
 
   - id: ossifrage 1
-    type: Ossifrage
     yaml: ./assets/actor/ossifrage.yaml
     start: [835,506]
 

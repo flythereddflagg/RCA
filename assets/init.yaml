@@ -5,7 +5,7 @@ FPS: 90 # game is unstable at FPS > about 100
 DEBUG: true # show debug info on screen?
 SHOW_EVENTS: false # print events in terminal
 FPS_COUNTER: true # print FPS on game screen
-SHOW_MASK: true # shows hit masks of every entity when debug is true
+SHOW_MASK: false # shows hit masks of every entity when debug is true
 SHOW_BG_MASK: false # if debug AND show mask then show bg mask too
 LOG_INPUT: false # for recreating bugs (See input.py)
 
@@ -63,22 +63,17 @@ CTLR_BUTTON: Y,B,A,X,LB,RB,LT,RT,-,+,LS,RS,home,PrtScn
 CTLR_AXES: LSX,LSY,RSX,RSY
 PLAYER_CTRL: 0
 
-# PLAYER_DATA: ./assets/actor/player.yaml
+init_add_in:
+  foreground:
+    - yaml: ./assets/actor/player.yaml
+      start: [338,450]
 
 # INITAL_SCENE: ./assets/scene/mansion_yard.yaml
-# PLAYER_START_POSITION: [825,584]
 # INITAL_SCENE: ./assets/scene/boss_room.yaml
 # INITAL_SCENE: ./assets/scene/test_scene.yaml
-# PLAYER_START_POSITION: [300,200]
-# INITAL_SCENE: ./assets/scene/red_castle_valley.yaml
-# PLAYER_START_POSITION: [338,900] 
+# INITAL_SCENE: ./assets/scene/startup.yaml
+INITAL_SCENE: ./assets/scene/red_castle_valley.yaml
 
-
-INITAL_SCENE: ./assets/scene/startup.yaml
-# PLAYER_START_POSITION: [100,100] 
-
-
-# INITAL_SCENE: ./assets/scene/blank_scene.yaml
 
 SPRITE_GROUPS:
   - solid     # solid entities

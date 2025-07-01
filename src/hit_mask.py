@@ -4,7 +4,7 @@ from .animation import Animation
 from .decal import Decal
 
 class HitMask(Animation):
-    def __init__(self, parent, animations:dict, path_prefix='./'):
+    def __init__(self, parent:".node.Node", animations:dict, path_prefix='./'):
         mask_animations = animations.copy()
         for key, entry in mask_animations.items():
             entry['datafile'] = entry["hitmask"] if "hitmask" in entry else entry['datafile']
@@ -15,7 +15,7 @@ class HitMask(Animation):
     def update(self):
         super().update()
         
-        foreground = self.parent.game.scene.groups['foreground']
+        foreground = self.parent.scene.game.scene.groups['foreground']
         if self.sprite not in foreground:
             foreground.add(self.sprite)
 
@@ -28,7 +28,8 @@ class HitMask(Animation):
         )
         new_mask = pg.mask.from_surface(current.image)
         self.sprite.mask = new_mask.scale(
-            pg.math.Vector2(new_mask.get_size())*self.parent.game.settings.SCALE
+            pg.math.Vector2(new_mask.get_size())*
+            self.parent.scene.game.settings.SCALE
         )
         self.frame_time = current.duration
         self.last_set_frame_time = pg.time.get_ticks()
