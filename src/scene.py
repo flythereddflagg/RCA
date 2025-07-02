@@ -154,9 +154,11 @@ class Scene():
         """
         player_group = self.groups.get("player")
         if not player_group: return None
+        player_sprites = player_group.sprites()
         player = (
-            player_group.sprites()[player_number]
-            if len(player_group.sprites()) > player_number
+            player_sprites[player_number]
+            if len(player_sprites) > player_number
             else None
         )
+        return player
         

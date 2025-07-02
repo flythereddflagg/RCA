@@ -112,11 +112,12 @@ class Player(Node):
                     self.state = self.animations_id
 
 
-    def apply_todos(self):
+    def apply_input(self):
         if self.animations and self.animations.active: 
             # reject all current todos
             self.todo_list = [] 
             return
+        self.todo_list.extend(self.scene.game.input.get())
         self.input_held = self.scene.game.input.held
 
         # revert to "idle" self.animations if no input is given
@@ -151,7 +152,7 @@ class Player(Node):
 
 
     def update(self):
-        self.apply_todos()
+        self.apply_input()
         self.check_signals()
         self.check_collision()
         self.children.update()
