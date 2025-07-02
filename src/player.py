@@ -163,6 +163,7 @@ class Player(Node):
         
         if self.inventory.hp <= 0:
             self.sprite.kill()
+        print(self.sprite.rect.topleft)
 
 
     def add_todo(self, action):
