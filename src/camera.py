@@ -112,7 +112,6 @@ class Camera(Node):
         if factor is None: return
         self.cur_zoom *= factor
         if self.cur_zoom == 0: self.cur_zoom = 1 # 0 resets scale
-        print(self.scene.groups)
         background = self.scene.background.sprites()[0]
         screen_data = pg.display.Info()
         centerx = screen_data.current_w // 2

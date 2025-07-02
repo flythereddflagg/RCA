@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 import itertools
-import pprint
 
 import pygame as pg
 
@@ -36,12 +35,8 @@ class Animation(Node):
     A system for setting the parent sprite object's image.
     """
     def __init__(
-        self, parent, animations:dict, path_prefix='./', **init
+        self, scene, parent, animations:dict, path_prefix='./', **init
     ):
-        # this code is just to get the data structure to work
-        scene = init.get("scene")
-        scene = parent.scene if scene is None else scene
-        if 'scene' in init: init.pop("scene")
         # parent must have a 'state' attribute
         super().__init__(scene=scene, parent=parent, **init)
         self.previous:str = None
@@ -55,6 +50,7 @@ class Animation(Node):
         self.frame_time = 1 # duration of the current frame
         self.path_prefix = path_prefix
         self.animations = {}
+        assert isinstance(animations, dict), f"{str(animations)}"
         self.load_animations(animations)
 
 

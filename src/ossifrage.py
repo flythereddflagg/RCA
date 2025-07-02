@@ -5,7 +5,6 @@ import pygame as pg
 from .decal import Decal
 from .compass import Compass
 from .movement import Movement
-from .animation import Animation
 from .tools import list_collided
 
 
@@ -15,11 +14,7 @@ ACTION_TIME_RANGE = [200, 1000]
 class Ossifrage(Decal):
     def __init__(self, **init):
         super().__init__(**init)
-        self.sprite = self
         self.move = Movement(self, **self.init)
-        self.animation = Animation(
-            self, self.init['animations'], self.init["path_prefix"]
-        )
         self.action_time = 0
         self.last_action_time = 0
         self.action = None
@@ -31,7 +26,7 @@ class Ossifrage(Decal):
 
     def apply_physics(self):
         
-        if self.state == 'damage' and self.animation.active:
+        if self.state == 'damage' and self.animations.active:
             self.move(self.damage_direction, speed=3*self.speed)
 
     def choose_action(self):
@@ -47,7 +42,7 @@ class Ossifrage(Decal):
         
         self.apply_action(self.action)
         self.check_signals()
-        self.animation.update()
+        self.animations.update()
         self.apply_physics()
         
 
@@ -69,7 +64,7 @@ class Ossifrage(Decal):
         self.signals.append(signal)
 
     def apply_action(self, action):
-        if self.animation.active: return
+        if self.animations.active: return
 
         if action in Compass.strings: 
             # ^ means a direction button is being pressed
@@ -86,13 +81,13 @@ class Ossifrage(Decal):
 
 
     def check_collision(self):
-        if self.state == 'damage' and self.animation.active:
+        if self.state == 'damage' and self.animations.active:
             return
 
         for player in list_collided(self, self.scene.groups['player']):
-            if (player.animation and\
-                player.animation.current['id'] == 'damage' and\
-                player.animation.active
+            if (player.animations and\
+                player.animations.current['id'] == 'damage' and\
+                player.animations.active
             ): continue
 
             damage_direction = (

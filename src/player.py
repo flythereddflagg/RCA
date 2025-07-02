@@ -31,10 +31,10 @@ class Player(Node):
         self.damage_direction = pg.math.Vector2(0,1)
         self.move = Movement(self.sprite, **self.init)
         ## TEMP work around
-        opts = init['children'][0]
-        self.hitmask = HitMask(
-            self, opts['animations'], opts["path_prefix"]
-        )
+        # opts = self.animations.
+        # self.hitmask = HitMask(
+        #     self, opts['animations'], opts["path_prefix"]
+        # )
         self.input_held = None
         self.state = DEFAULT_STATE
 
@@ -156,7 +156,7 @@ class Player(Node):
         self.check_collision()
         self.children.update()
         # self.self.animations.update()
-        self.hitmask.update()
+        # self.hitmask.update()
         self.inventory.update()
         self.apply_physics()
         
