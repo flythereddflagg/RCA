@@ -140,10 +140,25 @@ class GameState():
                     f"<{sprite.id}> {pos1} ; {pos2}", 
                     True, (255,255,255)
                 )
-                self.screen.blit(
-                    pos_sprite, 
-                    pg.math.Vector2(sprite.rect.topleft) - (0, 15)
+                pos_rect = pos_sprite.get_rect()
+                screen_rect = self.screen.get_rect()
+                # keep it inside the screen.
+                text_pos = pg.math.Vector2(sprite.rect.topleft) - (0, 15)
+                x, y = text_pos
+                x = 0 if x < 0 else x
+                x = (
+                    screen_rect.right - pos_rect.size[0] 
+                    if x > screen_rect.right - pos_rect.size[0] 
+                    else x
                 )
+                y = 0 if y < 0 else y
+                y = (
+                    screen_rect.bottom - pos_rect.size[1] 
+                    if y > screen_rect.bottom - pos_rect.size[1] 
+                    else y
+                )
+                text_pos = (x, y)
+                self.screen.blit(pos_sprite, text_pos)
                 if self.settings.SHOW_MASK and sprite.mask:
                     if (
                         not self.settings.SHOW_BG_MASK and 

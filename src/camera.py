@@ -5,6 +5,8 @@ from .node import Node
 
 # TODO make adaptive camera the follows the player and gives them better FOV in the direction they are facing.
 
+# TODO separate the zoom from screen size and zoom generally
+
 class Camera(Node):
     def __init__(self, zoom=1, slack=0, **init):
         super().__init__(**init)

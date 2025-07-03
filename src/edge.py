@@ -33,12 +33,14 @@ class Edge(Decal):
             self.scene.groups["foreground"], 
             groups=["player"]
         )
-        print(new_scene.groups["player"])
+        # print(new_scene.groups["player"])
 
         sprites = new_scene.all_nodes.sprites()
         block = list(filter(lambda x: x.id == self.id, sprites))[0]
         player.sprite.rect.center = block.rect.center
+        print(block.rect.center)
         dx, dy = Compass.unit_vector(block.init['exit_dir'])
         player.sprite.rect.x += dx*(player.sprite.rect.w/2 + block.rect.w/2)
         player.sprite.rect.y += dy*(player.sprite.rect.h/2 + block.rect.h/2)
+        print(player.sprite.rect.topleft)
         
