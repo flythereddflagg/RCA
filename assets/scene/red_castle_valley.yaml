@@ -134,4 +134,4 @@ other:
 #   filename: ./assets/music/RCA_OVERWORLD/RCA_OVERWORLD_v3.mp3
   - id: camera
     type: Camera
-    camera_slack: 100
+    slack: 100
