@@ -152,6 +152,12 @@ class Player(Node):
 
 
     def update(self):
+        # print(
+        #     "player pos", 
+        #     self.sprite.rect.topleft, 
+        #     pg.math.Vector2(self.sprite.rect.topleft) - 
+        #     pg.math.Vector2(self.scene.background.sprites()[0].rect.topleft)
+        # )
         self.apply_input()
         self.check_signals()
         self.check_collision()

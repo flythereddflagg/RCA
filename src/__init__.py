@@ -89,13 +89,22 @@ class GameState():
 
         # key to refresh scene
         if (
+            self.settings.DEBUG and 
             "REFRESH" in game_input and 
             not self.input.held["REFRESH"] and 
-            self.settings.DEBUG and 
+            
             self.scene
         ):
             self.scene.refresh()
 
+        # make a breakpoint and open debugger at any time
+        if (
+            self.settings.DEBUG and
+            "BREAKPOINT" in game_input and 
+            not self.input.held["BREAKPOINT"]
+        ):
+            breakpoint()
+        
         # update everything in the scene
         if self.scene and not self.paused: 
             self.scene.update()

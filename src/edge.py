@@ -30,7 +30,7 @@ class Edge(Decal):
         
         new_scene.place_node(
             player, 
-            self.scene.groups["foreground"], 
+            new_scene.groups["foreground"], 
             groups=["player"]
         )
         # print(new_scene.groups["player"])

@@ -64,4 +64,5 @@ behind:
 # other:
 #   - id: camera
 #     type: Camera
+#     slack: 100
 

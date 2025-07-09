@@ -99,6 +99,7 @@ class Scene():
         
         if sprite_instance.scene is not self:
             sprite_instance.scene = self
+
         self.all_nodes.add(sprite_instance)
         group.add(sprite_instance)
 
