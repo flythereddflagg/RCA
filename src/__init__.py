@@ -103,6 +103,7 @@ class GameState():
             "BREAKPOINT" in game_input and 
             not self.input.held["BREAKPOINT"]
         ):
+            print("\n\n---\nDEBUG: Entering the Python debugger...\n---\n\n")
             breakpoint()
         
         # update everything in the scene
