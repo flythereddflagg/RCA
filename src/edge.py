@@ -11,12 +11,9 @@ class Edge(Decal):
         super().__init__(**init)
 
     def update(self):
-        self.check_collision()
-    
-
-    def check_collision(self):
         if mask_collision(self, self.scene.groups['player']):
             self.exec_trigger()
+        
     
 
     def exec_trigger(self):
@@ -42,5 +39,5 @@ class Edge(Decal):
         dx, dy = Compass.unit_vector(block.init['exit_dir'])
         player.sprite.rect.x += dx*(player.sprite.rect.w/2 + block.rect.w/2)
         player.sprite.rect.y += dy*(player.sprite.rect.h/2 + block.rect.h/2)
-        print(player.sprite.rect.topleft)
+        print(player.sprite.rect.center)
         

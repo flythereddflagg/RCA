@@ -90,16 +90,17 @@ class Scene():
     def place_node(
         self, node:Node, group:pg.sprite.Group, groups=None, start=None
     ):
+        print(f"placing {node.id}")
         if node.scene is not self:
             node.scene = self
         self.all_nodes.add(node)
-        sprite_instance = node.sprite
+        sprite_instance:'.decal.Decal' = node.sprite
 
         if sprite_instance is None: return
         
         if sprite_instance.scene is not self:
             sprite_instance.scene = self
-
+        sprite_instance.sprite.scale_by(1, absolute=True)
         self.all_nodes.add(sprite_instance)
         group.add(sprite_instance)
 
@@ -146,6 +147,7 @@ class Scene():
         #     if sprite is self.game.player.sprite: continue
         #     sprite.kill()
     
+    
     def get_player(self, player_number:int=0) -> Node:
         """
         Gets a reference to the player number specified.
@@ -162,4 +164,15 @@ class Scene():
             else None
         )
         return player
-        
+    
+
+    def node_by_id(self, id_str:str) -> '.node.Node':
+        return [
+            node 
+            for node in self.all_nodes.sprites() 
+            if node.id == id_str
+        ]
+    
+
+    def node_ids(self) -> list['.node.Node']:
+        return [node.id for node in self.all_nodes.sprites()]
