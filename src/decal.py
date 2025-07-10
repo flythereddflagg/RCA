@@ -46,7 +46,6 @@ class Decal(Node):
         self.init_scale = scale
         self.parent = parent
 
-        self.init_scale = scale
         self.image = (
             pg.image.load(self.image_path).convert_alpha() 
             if self.image_path 
@@ -71,6 +70,7 @@ class Decal(Node):
 
 
     def scale_by(self, factor, absolute=False):
+        print(f"Scaling {self.id} by {factor}, abs: {absolute}")
         self.scale = factor if absolute else self.scale * factor
         assert self.scale > 0, f"{self.id}: Scale must be > 0"
         pos = self.rect.center
@@ -122,7 +122,7 @@ class Decal(Node):
         if image:
             # update the original, rescale and place if the image has changed
             self.original = Original(self.image, self.mask, self.rect.size)
-            self.scale_by(self.init_scale)
+            self.scale_by(self.scale, absolute=True)
             self.rect.center = cur_pos
 
     

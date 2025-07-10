@@ -61,8 +61,8 @@ behind:
     scene_path: ./assets/scene/red_castle_valley.yaml
     exit_dir: LEFT
 
-# other:
-#   - id: camera
-#     type: Camera
-#     slack: 100
+other:
+  - id: camera
+    type: Camera
+    slack: 100
 

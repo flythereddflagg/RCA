@@ -18,14 +18,6 @@ class Camera(Node):
         
 
     def update(self):
-        for node in self.scene.all_nodes.sprites():
-            # TODO check if this code is necessary
-            sprite = node.sprite
-            if sprite and sprite.scale != self.cur_zoom * sprite.init_scale:
-                sprite.scale_by(
-                    self.cur_zoom * sprite.init_scale, 
-                    absolute=True
-                )
         player = self.scene.get_player()
         if not player:
             # if there is no player, 
