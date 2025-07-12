@@ -90,7 +90,6 @@ class Scene():
     def place_node(
         self, node:Node, group:pg.sprite.Group, groups=None, start=None
     ):
-        print(f"placing {node.id}")
         if node.scene is not self:
             node.scene = self
         self.all_nodes.add(node)
@@ -100,7 +99,7 @@ class Scene():
         
         if sprite_instance.scene is not self:
             sprite_instance.scene = self
-        sprite_instance.sprite.scale_by(1, absolute=True)
+        # sprite_instance.sprite.scale_by(1, absolute=True)
         self.all_nodes.add(sprite_instance)
         group.add(sprite_instance)
 
