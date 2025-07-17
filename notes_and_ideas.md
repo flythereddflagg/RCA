@@ -7,7 +7,6 @@
   - middle evolution that becomes the larger one: may be eaten but does more damage
   - This is a larger problem later if you ignore it
 - Garbage people, sentient garbage people
-- Snail enemy has reference to Mom's blob of jello from "better off dead" 
 - "its got rasins in it...you like raisins" (achievement title?) This is a separate character than the snail.
 - poison trail of "slime" (not destructible) mal-effect on player 
 - garbage can (dented) lid opens little soda with arms and legs come out and spray (acidic?) soda on you
