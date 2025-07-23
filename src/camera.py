@@ -111,7 +111,7 @@ class Camera(Node):
         centery = screen_data.current_h // 2
         bg_w, bg_h = background.rect.size
         bg_x, bg_y = background.rect.topleft
-        # background.scale_by(factor)
+        background.scale_by(factor)
         bg_w_new, bg_h_new = background.rect.size
         bg_x_new = centerx - bg_w_new * (centerx - bg_x) / bg_w
         bg_y_new = centery - bg_h_new * (centery - bg_y) / bg_h
@@ -121,7 +121,7 @@ class Camera(Node):
             if group == 'background': continue
             for sprite in self.scene.groups[group]:
                 x, y = sprite.rect.center
-                # sprite.scale_by(factor)
+                sprite.scale_by(factor)
                 sprite.rect.center = (
                     bg_x_new + bg_w_new * (x - bg_x) / bg_w, 
                     bg_y_new + bg_h_new * (y - bg_y) / bg_h

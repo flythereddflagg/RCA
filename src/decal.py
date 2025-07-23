@@ -62,7 +62,8 @@ class Decal(Node):
         self.scale = 1.0
         
         # this needs to run to initally set the scale
-        self.set_image(self.image, self.mask) 
+        self.set_image(self.image, self.mask)
+        self.scale_by(self.init_scale, absolute=True)
         
 
     def update(self):
@@ -124,6 +125,9 @@ class Decal(Node):
             self.original = Original(self.image, self.mask, self.rect.size)
             # self.scale_by(self.scale, absolute=True)
             self.rect.center = cur_pos
+        
+        if self.scale != 1:
+            self.scale_by(self.scale, absolute=True)
 
     
     def get_null(self, mask:bool=False) -> pg.surface.Surface|pg.mask.Mask:

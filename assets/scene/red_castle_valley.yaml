@@ -135,3 +135,4 @@ other:
   - id: camera
     type: Camera
     slack: 100
+    # zoom: 1.5
