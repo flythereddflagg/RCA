@@ -12,7 +12,7 @@ LOG_INPUT: false # for recreating bugs (See input.py)
 # initial screen size
 RESOLUTION: 360
 ASPECT_RATIO: [16,9]
-SCALE: 1
+SCALE: 2
 
 # key bindings for keyboard input
 KEY_BIND:

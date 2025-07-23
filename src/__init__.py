@@ -27,7 +27,7 @@ class GameState():
         self.scene = None
         self.saved_scenes = {}
         self.REPLAY = REPLAY
-        self.screen = self.init_screen()
+        self.screen, self.draw_surface = self.init_screen()
         self.clock = pg.time.Clock()
         self.fps_counter = (
             pg.font.SysFont("Sans", 22) 
@@ -45,6 +45,11 @@ class GameState():
     def init_screen(self):
         w, h = self.settings.ASPECT_RATIO
         float_aspect_ratio = w / h
+        ## TODO Test if this works well.
+        draw_surface_w, draw_surface_h = (
+            int(self.settings.RESOLUTION * float_aspect_ratio),
+            self.settings.RESOLUTION
+        )        
 
         self.screenwidth, self.screenheight = (
             int(self.settings.RESOLUTION * float_aspect_ratio) *
@@ -52,9 +57,12 @@ class GameState():
             self.settings.RESOLUTION * self.settings.SCALE
         )        
 
-        return pg.display.set_mode(
-            [self.screenwidth, self.screenheight], pg.RESIZABLE
-        )
+        return (
+            pg.display.set_mode(
+                [self.screenwidth, self.screenheight], pg.RESIZABLE
+            ),
+            pg.Surface((draw_surface_w, draw_surface_h))
+        )        
 
 
     def load_scene(self, **init) -> Scene:
@@ -113,13 +121,27 @@ class GameState():
 
     def draw_frame(self):
 
-        self.screen.fill(BLACK)
+        # self.screen.fill(BLACK)
+        # for group_name in self.scene.draw_layers:
+        #     self.scene.groups[group_name].draw(self.screen) 
+        
+        # if self.settings.DEBUG:
+        #     self.render_debug()
+
+        self.draw_surface.fill(BLACK)
         for group_name in self.scene.draw_layers:
-            self.scene.groups[group_name].draw(self.screen) 
+            self.scene.groups[group_name].draw(self.draw_surface) 
         
         if self.settings.DEBUG:
             self.render_debug()
         
+        self.screen.blit(
+            pg.transform.scale(
+                self.draw_surface, self.screen.get_size()
+            ),
+            # -pg.math.Vector2(self.screen.get_size())/2
+            (0,0)
+        )
         pg.display.flip()
 
 
@@ -128,7 +150,8 @@ class GameState():
         if self.settings.FPS_COUNTER:
             fps = str(int(self.clock.get_fps()))
             fps_sprite = self.fps_counter.render(fps, True, (255,255,255))
-            self.screen.blit(fps_sprite, (10,10))
+            #self.screen.blit(fps_sprite, (10,10))
+            self.draw_surface.blit(fps_sprite, (10,10))
             
         background = self.scene.background.sprites()[0] 
         for group_name in self.scene.draw_layers:
@@ -137,7 +160,8 @@ class GameState():
                 if not vars(sprite).get('pos'):
                     sprite.pos = pg.font.SysFont("Sans", 10)
                 pg.draw.rect(
-                    self.screen, (255,255,255), sprite.rect, width=2
+                    # self.screen, (255,255,255), sprite.rect, width=2
+                    self.draw_surface, (255,255,255), sprite.rect, width=2
                 )
                 pos1, pos2 = (
                     str(pg.math.Vector2(sprite.rect.topleft)//self.settings.SCALE), 
@@ -151,7 +175,8 @@ class GameState():
                     True, (255,255,255)
                 )
                 pos_rect = pos_sprite.get_rect()
-                screen_rect = self.screen.get_rect()
+                # screen_rect = self.screen.get_rect()
+                screen_rect = self.draw_surface.get_rect()
                 # keep it inside the screen.
                 text_pos = pg.math.Vector2(sprite.rect.topleft) - (0, 15)
                 x, y = text_pos
@@ -168,14 +193,20 @@ class GameState():
                     else y
                 )
                 text_pos = (x, y)
-                self.screen.blit(pos_sprite, text_pos)
+                # self.screen.blit(pos_sprite, text_pos)
+                self.draw_surface.blit(pos_sprite, text_pos)
                 if self.settings.SHOW_MASK and sprite.mask:
                     if (
                         not self.settings.SHOW_BG_MASK and 
                         sprite in self.scene.background
                     ): continue
-                    self.screen.blit(
+                    # self.screen.blit(
+                    self.draw_surface.blit(
                         sprite.mask.to_surface(setcolor = (0,0,255,255), unsetcolor = None),
                         sprite.rect.topleft
                     )
+
+
+    def get_center(self):
+        return pg.math.Vector2(*self.draw_surface.get_size()) / 2
                     

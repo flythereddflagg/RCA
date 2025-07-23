@@ -1,7 +1,6 @@
 import pygame as pg
 
 from .edge import Edge
-from .tools import get_center_screen
 
 class EdgeEnd(Edge):
     def exec_trigger(self):
@@ -12,7 +11,7 @@ class EdgeEnd(Edge):
         sprite.image = surface
         sprite.mask = pg.mask.Mask(size=(32, 32), fill=False)
         sprite.rect = surface.get_rect()
-        sprite.rect.center = get_center_screen()
+        sprite.rect.center = self.scene.game.get_center()
         self.scene.hud.add(sprite)
         self.kill()
         self.scene..sprites()[0].sprite.kill()

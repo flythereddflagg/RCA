@@ -1,6 +1,5 @@
 import pygame as pg
 
-from .tools import get_center_screen
 from .node import Node
 
 # TODO make adaptive camera the follows the player and gives them better FOV in the direction they are facing.
@@ -47,7 +46,7 @@ class Camera(Node):
 
     def follow_player(self):
         player = self.scene.get_player().sprite
-        center = pg.math.Vector2(*get_center_screen())
+        center = pg.math.Vector2(*self.scene.game.get_center())
         player_pos = pg.math.Vector2(player.rect.center)
         movex, movey = player_pos - center
         

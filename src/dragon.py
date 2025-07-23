@@ -6,7 +6,7 @@ from .decal import Decal
 from .compass import Compass
 from .movement import Movement
 from .animation import Animation
-from .tools import list_collided, get_center_screen
+from .tools import list_collided
 
 
 MOVEMENTS = Compass.strings + ['STOP', 'STOP', "STOP"]
@@ -55,7 +55,7 @@ class Dragon(Decal):
         if self.hp <= 0:
             sprite = [sprite for sprite in self.scene.all_nodes.sprites() if sprite.id == "grate exit"][0]
             sprite.set_image(pg.image.load("./assets/block/block.png").convert_alpha())
-            sprite.rect.topleft = get_center_screen()
+            sprite.rect.topleft = self.scene.game.get_center()
             sprite.kill()
             self.scene.groups["foreground"].add(sprite)
             self.scene.all_nodes.add(sprite)

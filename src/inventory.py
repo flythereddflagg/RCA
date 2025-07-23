@@ -2,7 +2,7 @@ import pygame as pg
 
 from .item import Item
 from .decal import Decal
-from .tools import get_center_screen, list_collided
+from .tools import list_collided
 from .compass import Compass
 from .node import Node
 
@@ -33,7 +33,7 @@ class Inventory(Node):
         self.player = parent
         self.left_item:Item = self.empty_item()
         self.right_item:Item = self.empty_item()
-        self.sprite.rect.center = get_center_screen()
+        self.sprite.rect.center = self.scene.game.get_center()
 
         self.slot_sprites = pg.sprite.Group()
 
