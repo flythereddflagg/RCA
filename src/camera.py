@@ -4,8 +4,7 @@ from .node import Node
 
 # TODO make adaptive camera the follows the player and gives them better FOV in the direction they are facing.
 
-# TODO separate the zoom from screen size and zoom generally
-# TODO we need to have 3 separate sprite scales one for the game/screen, one for the scene zoom, and one for the sprite. Scale by does all three.
+
 
 class Camera(Node):
     def __init__(self, zoom=1, slack=0, **init):
@@ -14,7 +13,7 @@ class Camera(Node):
         self.mobile_groups.remove('hud')
         self.cur_zoom = 1
         self.slack = slack
-        self.zoom_by(self.scene.game.settings.SCALE * zoom)
+        self.zoom_by(zoom)
         
 
     def update(self):
