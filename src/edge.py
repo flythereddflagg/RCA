@@ -17,5 +17,30 @@ class Edge(Decal):
     
 
     def exec_trigger(self):
-        pass
-        
+        player = self.scene.get_player()
+        game = self.scene.game
+        player_layer = [
+            grp
+            for grp in self.scene.draw_layers 
+            if player in self.scene.groups[grp]
+        ][0]
+        self.scene.deconstruct()
+        new_scene = game.load_scene(
+            yaml_path=self.init["scene_path"]
+        )
+
+        out_block = new_scene.node_by_id(self.id)[0]
+        half_size = (
+            pg.math.Vector2(player.sprite.rect.size) / 2 +
+            pg.math.Vector2(out_block.sprite.rect.size) / 2
+        )
+        start_pos = (
+            pg.math.Vector2(out_block.sprite.rect.topleft) + 
+            half_size.elementwise() * 
+            Compass.unit_vector(out_block.init["exit_dir"])
+        )
+        print(start_pos, out_block.sprite.rect.topleft)
+        new_scene.place_node(
+            player, new_scene.groups[player_layer], 
+            player.init.get("groups"), start=start_pos
+        )
