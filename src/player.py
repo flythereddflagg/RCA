@@ -66,7 +66,7 @@ class Player(Node):
         for direction in Compass.strings:
             if not (direction in actions): continue
             dirs +=1
-            self.move(direction, speed=self.speed * self.sprite.scale)
+            self.move(direction, speed=self.speed)
             self.state = 'walk'
 
 

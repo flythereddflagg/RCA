@@ -17,14 +17,17 @@ class Edge(Decal):
     
 
     def exec_trigger(self):
-        player = self.scene.get_player()
+        player_sprite = self.scene.get_player()
+        player = player_sprite.parent
         game = self.scene.game
         player_layer = [
             grp
             for grp in self.scene.draw_layers 
-            if player in self.scene.groups[grp]
+            if player_sprite in self.scene.groups[grp]
         ][0]
         # self.scene.deconstruct()
+        # for sprite in self.scene.all_nodes:
+        #     sprite.kill()
         new_scene = game.load_scene(
             yaml_path=self.init["scene_path"]
         )
@@ -47,3 +50,5 @@ class Edge(Decal):
             player, new_scene.groups[player_layer], 
             player.init.get("groups"), start=start_pos
         )
+        self.scene.all_nodes.cancel_update()
+        print("Completed edge loading")

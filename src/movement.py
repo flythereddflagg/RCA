@@ -28,7 +28,6 @@ class Movement():
         @param distance MUST be of type: int
         @param speed may be int or float
         """
-        
         if change_direction: self.direction = Compass.index(direction)
         if speed:
             fps = self.sprite.scene.game.clock.get_fps()

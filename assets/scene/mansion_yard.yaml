@@ -88,3 +88,8 @@ behind:
   #   scale: 1
   #   scene_path: ./assets/scene/boss_room.yaml
   #   exit_dir: RIGHT
+
+other:
+  - id: camera
+    type: Camera
+    slack: 100

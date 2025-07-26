@@ -8,6 +8,28 @@ from .node import Node, node_from_dict
 from .decal import Decal
 
 
+class SpriteGroup(pg.sprite.Group):
+
+    def cancel_update(self):
+        self.cancel = True
+
+    def update(self, *args, **kwargs):
+        """call the update method of every member sprite
+
+        Group.update(*args, **kwargs): return None
+
+        Calls the update method of every member sprite. All arguments that
+        were passed to this method are passed to the Sprite update function.
+
+        """
+        self.cancel = False
+        for sprite in self.sprites():
+            if self.cancel:
+                break
+            sprite.update(*args, **kwargs)
+
+
+
 class Scene():  
     def __init__(
             self, 
@@ -38,7 +60,7 @@ class Scene():
         if "hud" not in self.draw_layers:
             self.draw_layers.append('hud') 
         
-        self.all_nodes = pg.sprite.Group()
+        self.all_nodes = SpriteGroup()
         self.groups = {
             **{
                 group_name: pg.sprite.Group()
