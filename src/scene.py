@@ -99,7 +99,7 @@ class Scene():
         
         if sprite_instance.scene is not self:
             sprite_instance.scene = self
-        # sprite_instance.sprite.scale_by(1, absolute=True)
+
         self.all_nodes.add(sprite_instance)
         group.add(sprite_instance)
 
@@ -135,7 +135,7 @@ class Scene():
         scene_dict = {}
         for name, group in self.groups.items():
             scene_dict[name] = {
-                sprite.id:list(sprite.rect.center) 
+                sprite.id: list(sprite.rect.center)
                 for sprite in group.sprites()
             }
 

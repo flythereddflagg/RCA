@@ -24,7 +24,7 @@ class Edge(Decal):
             for grp in self.scene.draw_layers 
             if player in self.scene.groups[grp]
         ][0]
-        self.scene.deconstruct()
+        # self.scene.deconstruct()
         new_scene = game.load_scene(
             yaml_path=self.init["scene_path"]
         )
@@ -39,7 +39,10 @@ class Edge(Decal):
             half_size.elementwise() * 
             Compass.unit_vector(out_block.init["exit_dir"])
         )
-        print(start_pos, out_block.sprite.rect.topleft)
+        bg_pos = pg.math.Vector2(
+            new_scene.background.sprites()[0].sprite.rect.topleft
+        )
+        print(start_pos - bg_pos, out_block.sprite.rect.topleft - bg_pos, Compass.unit_vector(out_block.init["exit_dir"]), half_size)
         new_scene.place_node(
             player, new_scene.groups[player_layer], 
             player.init.get("groups"), start=start_pos

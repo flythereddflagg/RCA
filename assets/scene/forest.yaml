@@ -57,7 +57,7 @@ behind:
     image: ./assets/block/block.png
     mask: ./assets/block/block.png
     start: [409,234]
-    scale: 1
+    scale: 3
     scene_path: ./assets/scene/red_castle_valley.yaml
     exit_dir: LEFT
 
