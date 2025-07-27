@@ -5,7 +5,7 @@
 SHOW_EVENTS: false # print events in terminal
 
 # key bindings for keyboard input
-KEY_BIND:
+key_bind:
   REFRESH: u
   QUIT: backspace
   START: return
@@ -24,7 +24,7 @@ KEY_BIND:
   R_RIGHT: l
 
 # Controller bindings
-CTLR_BIND:
+ctlr_bind:
   REFRESH: 'PrtScn'
   QUIT: '-'
   START: '+'

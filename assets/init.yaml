@@ -1,21 +1,41 @@
-# Screen Constants
-# Frame rate ( in Frames / second)
-FPS: 90 # game is unstable at FPS > about 100
-# FPS: 0 # do not limit FPS
+### DEBUG SETTINGS ###
+# Frame rate ( in Frames / second) DPS:0 => do not limit FPS
+FPS: 90
 DEBUG: true # show debug info on screen?
-SHOW_EVENTS: true # print events in terminal
-FPS_COUNTER: true # print FPS on game screen
-SHOW_MASK: false # shows hit masks of every entity when debug is true
+SHOW_EVENTS: true # print input events in terminal
+FPS_COUNTER: true # show FPS on game screen
+SHOW_MASK: false # shows hit masks of every entity when debug = true
 SHOW_BG_MASK: false # if debug AND show mask then show bg mask too
 LOG_INPUT: false # for recreating bugs (See input.py)
 
-# initial screen size
+### SCREEN/GAME WINDOW CONSTANTS ###
 RESOLUTION: 360
 ASPECT_RATIO: [16,9]
 SCALE: 2
 
+### GAME INIT ###
+init_add_in:
+  foreground:
+    - yaml: ./assets/actor/player.yaml
+      start: [338,450]
+
+# initial_scene: ./assets/scene/mansion_yard.yaml
+# initial_scene: ./assets/scene/boss_room.yaml
+# initial_scene: ./assets/scene/test_scene.yaml
+# initial_scene: ./assets/scene/startup.yaml
+initial_scene: ./assets/scene/red_castle_valley.yaml
+
+
+sprite_groups:
+  - solid     # solid entities
+  - player    # user-controlled sprites           
+  - foe       # enemies
+
+ctlr_button: Y,B,A,X,LB,RB,LT,RT,-,+,LS,RS,home,PrtScn
+ctlr_axes: LSX,LSY,RSX,RSY
+
 # key bindings for keyboard input
-KEY_BIND:
+key_bind:
   REFRESH: u
   BREAKPOINT: 'y'
   QUIT: backspace
@@ -37,7 +57,7 @@ KEY_BIND:
 
 
 # Controller bindings
-CTLR_BIND:
+ctlr_bind:
   REFRESH: 'PrtScn'
   QUIT: '-'
   START: '+'
@@ -54,29 +74,3 @@ CTLR_BIND:
   R_DOWN: RSY+
   R_LEFT: RSX-
   R_RIGHT: RSX+
-
-# TODO redo this whole controller nonsense
-# pygame's controller config list
-# CTLR_BUTTON: A,B,X,Y,-,home,+,LS,RS,LB,RB,dUP,dDOWN,dLEFT,dRIGHT,PrtScn
-# Y,B,A,X,L,R,ZL,ZR,-,+,LS,RS,Home,PrtScn,LSX,LSY,RSX,RSY
-CTLR_BUTTON: Y,B,A,X,LB,RB,LT,RT,-,+,LS,RS,home,PrtScn
-# CTLR_AXES: LSX,LSY,RSX,RSY,LT,RT
-CTLR_AXES: LSX,LSY,RSX,RSY
-PLAYER_CTRL: 0
-
-init_add_in:
-  foreground:
-    - yaml: ./assets/actor/player.yaml
-      start: [338,450]
-
-# INITAL_SCENE: ./assets/scene/mansion_yard.yaml
-# INITAL_SCENE: ./assets/scene/boss_room.yaml
-# INITAL_SCENE: ./assets/scene/test_scene.yaml
-# INITAL_SCENE: ./assets/scene/startup.yaml
-INITAL_SCENE: ./assets/scene/red_castle_valley.yaml
-
-
-SPRITE_GROUPS:
-  - solid     # solid entities
-  - player    # user-controlled sprites           
-  - foe       # enemies

@@ -37,7 +37,7 @@ class GameState():
         self.input = Input(self)
         
         self.load_scene(
-            yaml_path=self.settings.INITAL_SCENE,
+            yaml_path=self.settings.initial_scene,
             add_in=self.settings.init_add_in
         )
 
@@ -67,7 +67,7 @@ class GameState():
 
     def load_scene(self, **init) -> Scene:
         self.scene = Scene(
-            game=self,  groups=self.settings.SPRITE_GROUPS, **init
+            game=self,  groups=self.settings.sprite_groups, **init
         )
 
         return self.scene # return reference to scene if needed
