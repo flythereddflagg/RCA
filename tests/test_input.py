@@ -7,17 +7,22 @@ if __name__ == "__main__":
     import pygame as pg
 
     pg.init()
-    game = load_yaml("./tests/input_test.yaml")
+    clock = pg.time.Clock()
+    game = load_yaml("./assets/init.yaml")
+    display = pg.display.set_mode((300, 300))
     input_obj = Input(game)
     input_gotten = []
     # while "QUIT" not in input_gotten:
-    while True:
+    running = True
+    while running:
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                running = False  # Flag that we are done so we exit this loop.
         input_obj.update()
         input_gotten = input_obj.get()
-        if test_controller:
-            print(f"\r{str(input_obj.controller_state):100}", end="")
-        elif input_gotten:
-            print(f"\r{str(input_gotten):100}", end="")
+        print(input_gotten)
+        clock.tick(30)
+
 
     pg.quit()
     print()

@@ -31,8 +31,6 @@ sprite_groups:
   - player    # user-controlled sprites           
   - foe       # enemies
 
-ctlr_button: Y,B,A,X,LB,RB,LT,RT,-,+,LS,RS,home,PrtScn
-ctlr_axes: LSX,LSY,RSX,RSY
 
 # key bindings for keyboard input
 key_bind:
@@ -56,21 +54,4 @@ key_bind:
   SELECT: p
 
 
-# Controller bindings
-ctlr_bind:
-  REFRESH: 'PrtScn'
-  QUIT: '-'
-  START: '+'
-  SELECT: home
-  UP: LSY-
-  DOWN: LSY+
-  LEFT: LSX-
-  RIGHT: LSX+
-  BUTTON_1: LT
-  BUTTON_2: RT
-  BUTTON_3: A 
-  BUTTON_4: B
-  R_UP: RSY-
-  R_DOWN: RSY+
-  R_LEFT: RSX-
-  R_RIGHT: RSX+
+

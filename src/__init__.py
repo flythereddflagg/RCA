@@ -34,7 +34,7 @@ class GameState():
             if self.settings.FPS_COUNTER or self.settings.DEBUG
             else None
         )
-        self.input = Input(self)
+        self.input = Input(self.settings)
         
         self.load_scene(
             yaml_path=self.settings.initial_scene,
