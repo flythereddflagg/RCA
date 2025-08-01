@@ -42,7 +42,8 @@ class Input():
         return self.actions, self.held
 
 
-    def ctlr_input(self, player):
+    def ctlr_input(self, player:int) -> list[float]:
+
         if not self.controllers: return []
         axes_state = [
             self.controllers[player].get_axis(i) 
@@ -54,32 +55,17 @@ class Input():
             for i in range(self.controllers[player].get_numbuttons())
         ]
         hat_state = [
-            self.controllers[player].get_hat(i)
+            hatval
             for i in range(self.controllers[player].get_numhats())
+            for hatval in self.controllers[player].get_hat(i)
         ]
-        print(button_state +  hat_state + [round(val, 3) for val in axes_state])
-        
-        # self.controller_state = button_state + 
-        # button_input = [
-        #     key for key, bind in self.ctlr_bind.items()
-        #     if bind in self.controller_buttons and
-        #     button_states[self.controller_buttons[bind]]
-        # ]
-        # axes_input = []
-        # for key, bind in self.ctlr_bind.items():
-        #     ax, sign = bind[:-1], bind[-1]
-        #     if ax in self.controller_axes:
-        #         one = int(sign + '1')
-        #         ax_value = round(axes[self.controller_axes[ax]], 1)
-        #         ax_value = ax_value if abs(ax_value) > DEAD_ZONE else 0.0
-        #         # ax_value is not 0 and one and ax_value are the same sign
-        #         if (ax_value * one) > 0:
-        #             axes_input.append((key, ax_value))
-
-        # if self.SHOW_EVENTS and axes_input: print(axes_input)
-        
-
-        # return button_input + axes_input
+        all_ctrl_inputs = (
+            button_state +  
+            hat_state + 
+            [round(val, 2) for val in axes_state]
+        )
+    
+        return [float(val) for val in all_ctrl_inputs]
 
 
     def keyboard_input(self):
