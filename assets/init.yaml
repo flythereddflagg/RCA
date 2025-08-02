@@ -53,5 +53,36 @@ key_bind:
   START: return
   SELECT: p
 
+# Controller key: 
+#   LS/RS: Left/Right Stick
+#   LT/RT: Left/Right Trigger
+#   LB/RB: Left/Right Bumper
+#   X/Y: X/Y button
+#   x/y: x/y axes
+#   Dx/Dy: Dpad x/Dpad y 
+#   a: gives the continuous "axis" value of an input instead of a binary on/off input (e.g. RTa gives continuous value but RT just gives on or off)
+#   Hm: Home/Xbox button
+#   Ps: Screenshot button
+#   !: No button assigned
 
-
+8BitDo Fultimate 2C Wireless: 
+  LSx LSy RSx RSy RTa LTa A B L4 X Y R4 LB RB LT RT - + Hm LS RS ! Dx Dy
+BDA Core (Plus) Wired Controller:
+  LSx LSy RSx RSy Y B A X L R ZL ZR - + LS RS Hm Ps Dx Dy
+ctlr_bind: 
+  QUIT: backspace
+  UP: LSy-
+  DOWN: LSy+
+  LEFT: LSx-
+  RIGHT: LSx+
+  BUTTON_1: A
+  BUTTON_2: B
+  START: +
+  SELECT: '-'
+  # not currently used
+  BUTTON_3: X
+  BUTTON_4: 'Y'
+  R_UP: RSy-
+  R_DOWN: RSy+
+  R_LEFT: RSx-
+  R_RIGHT: RSx+

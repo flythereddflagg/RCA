@@ -29,18 +29,20 @@ class Input():
 
     def update(self):
         self.ctlr_input(0)
-        self.actions = self.keyboard_input()
+        self.actions:list[str] = self.keyboard_input()
         self.held = [
             action 
             for action in self.actions 
             if action in self.last_actions
         ]
-        self.last_actions = self.actions
+        self.last_actions = self.actions.copy()
         
     
     def get(self):
         return self.actions, self.held
 
+    def map_ctlr_input(self, inputs) -> list[str]:
+        return []
 
     def ctlr_input(self, player:int) -> list[float]:
 
@@ -60,15 +62,15 @@ class Input():
             for hatval in self.controllers[player].get_hat(i)
         ]
         all_ctrl_inputs = (
+            [round(val, 2) for val in axes_state] +
             button_state +  
-            hat_state + 
-            [round(val, 2) for val in axes_state]
+            hat_state
         )
     
         return [float(val) for val in all_ctrl_inputs]
 
 
-    def keyboard_input(self):
+    def keyboard_input(self) -> list[str]:
         pressed_keys = pg.key.get_pressed()
         game_input = [
             key for key, bind in self.key_bind.items()
