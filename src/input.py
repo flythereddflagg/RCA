@@ -1,6 +1,7 @@
 """
 file: src/input.py
 """
+# TODO add fuzzy finding of controllers via the difflib
 from dataclasses import dataclass
 
 import pygame as pg
@@ -17,6 +18,7 @@ class Input():
     def __init__(self, binds, *args, **kwargs):
         self.key_bind = binds.get("key_bind")
         self.ctlr_bind = binds.get("ctlr_bind")
+        self.binds = binds
         self.actions = []
         self.held = []
         self.last_actions = []
@@ -41,8 +43,9 @@ class Input():
     def get(self):
         return self.actions, self.held
 
-    def map_ctlr_input(self, inputs) -> list[str]:
-        return []
+    def map_ctlr_input(self, inputs:list[float]) -> list[str]:
+        
+        return 
 
     def ctlr_input(self, player:int) -> list[float]:
 
