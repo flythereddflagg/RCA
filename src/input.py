@@ -3,6 +3,7 @@ file: src/input.py
 """
 # TODO add fuzzy finding of controllers via the difflib
 from dataclasses import dataclass
+import re
 
 import pygame as pg
 from .compass import Compass
@@ -18,6 +19,10 @@ class Input():
     def __init__(self, binds, *args, **kwargs):
         self.key_bind = binds.get("key_bind")
         self.ctlr_bind = binds.get("ctlr_bind")
+        self.inv_ctlr_bind = (
+            {val:key for key, val in self.ctlr_bind.items()} 
+            if self.ctlr_bind else None
+        )
         self.binds = binds
         self.actions = []
         self.held = []
@@ -30,8 +35,8 @@ class Input():
 
 
     def update(self):
-        self.ctlr_input(0)
-        self.actions:list[str] = self.keyboard_input()
+        ctlr_input = self.map_ctlr_input(self.ctlr_input(0), 0)
+        self.actions:list[str] = list(set(self.keyboard_input() + ctlr_input))
         self.held = [
             action 
             for action in self.actions 
@@ -43,9 +48,30 @@ class Input():
     def get(self):
         return self.actions, self.held
 
-    def map_ctlr_input(self, inputs:list[float]) -> list[str]:
+    def map_ctlr_input(self, inputs:list[float], player:int) -> list[str]:
+        if not inputs: return []
+
+        name = self.controllers[player].get_name()
         
-        return 
+        mapping_str = (
+            self.binds[name] 
+            if name in self.binds 
+            else self.binds["Generic"]
+        )
+        
+        mapping = [
+            list(item) 
+            for item in zip(re.split(r"[\s]+", mapping_str.strip()), inputs)
+        ]
+        print(mapping)
+        raise Exception
+        
+        actions = [
+            (self.inv_ctlr_bind.get(action), value) 
+            for action, value in mapping 
+            if value and action in self.inv_ctlr_bind
+        ]
+        return actions
 
     def ctlr_input(self, player:int) -> list[float]:
 
@@ -76,7 +102,7 @@ class Input():
     def keyboard_input(self) -> list[str]:
         pressed_keys = pg.key.get_pressed()
         game_input = [
-            key for key, bind in self.key_bind.items()
+            (key, 1.0) for key, bind in self.key_bind.items()
             if pressed_keys[pg.key.key_code(bind)]
         ]
         return game_input

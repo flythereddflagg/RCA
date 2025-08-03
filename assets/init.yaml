@@ -58,22 +58,21 @@ key_bind:
 #   LT/RT: Left/Right Trigger
 #   LB/RB: Left/Right Bumper
 #   X/Y: X/Y button
-#   x/y: x/y axes
+#   x/y: x/y axes (gives a continuous value as opposed to discrete)
 #   Dx/Dy: Dpad x/Dpad y 
-#   a: gives the continuous "axis" value of an input instead of a binary on/off input (e.g. RTa gives continuous value but RT just gives on or off)
-#   Hm: Home/Xbox button
-#   Ps: Screenshot button
-#   !: No button assigned
+#   HM: Home/Xbox button
+#   PS: Screenshot button
+#   !: No button assigned/used
 
-8BitDo Fultimate 2C Wireless: 
-# LSx LSy RSx RSy RTa LTa A B L4 X Y R4 LB RB LT RT - + Hm LS RS ! Dx Dy
-  LSx LSy RSx RSy !   !   S E !  W N !  LB RB LT RT - + Hm LS RS ! Dx Dy
+8BitDo Ultimate 2C Wireless: 
+# LSx LSy RSx RSy RTx LTx A B L4 X Y R4 LB RB LT RT - + HM LS RS ! Dx Dy
+  LSx LSy RSx RSy !   !   S E !  W N !  LB RB LT RT - + HM LS RS ! Dx Dy
 BDA Core (Plus) Wired Controller:
-# LSx LSy RSx RSy Y B A X L  R  ZL ZR - + LS RS Hm Ps Dx Dy
-  LSx LSy RSx RSy W S E N LB RB LT RT - + LS RS Hm Ps Dx Dy
+# LSx LSy RSx RSy Y B A X L  R  ZL ZR - + LS RS HM PS Dx Dy
+  LSx LSy RSx RSy W S E N LB RB LT RT - + LS RS HM PS Dx Dy
 
 Generic:
-  LSx LSy RSx RSy S E W N LB RB LT RT - + LS RS Hm Ps Dx Dy
+  LSx LSy RSx RSy S E W N LB RB LT RT - + LS RS HM PS Dx Dy
 
 ctlr_bind: 
   QUIT: backspace
