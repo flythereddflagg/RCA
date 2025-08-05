@@ -32,7 +32,20 @@ class Input():
             pg.joystick.Joystick(i)
             for i in range(pg.joystick.get_count())
         ]
-
+        controller_names = [
+            ctlr.get_name()
+            for ctlr in self.controllers
+        ]
+        mapping_str = [
+            self.binds[name] 
+            if name in self.binds 
+            else self.binds["Generic"]
+            for name in controller_names
+        ]
+        self.controller_mappings = [
+            re.split(r"[\s]+", map_string.strip())
+            for map_string in mapping_str
+        ]
 
     def update(self):
         ctlr_input = self.map_ctlr_input(self.ctlr_input(0), 0)
@@ -50,28 +63,25 @@ class Input():
 
     def map_ctlr_input(self, inputs:list[float], player:int) -> list[str]:
         if not inputs: return []
-
-        name = self.controllers[player].get_name()
-        
-        mapping_str = (
-            self.binds[name] 
-            if name in self.binds 
-            else self.binds["Generic"]
-        )
         
         mapping = [
             list(item) 
-            for item in zip(re.split(r"[\s]+", mapping_str.strip()), inputs)
+            for item in zip(self.controller_mappings[player], inputs)
         ]
-        print(mapping)
-        raise Exception
+        for i, inps in enumerate(mapping):
+            inp, val = inps
+            if 'x' in inp or 'y' in inp:
+                inp = inp + "-" if val < 0.0 else inp + "+"
+                mapping[i] = [inp, val]
+
         
         actions = [
             (self.inv_ctlr_bind.get(action), value) 
             for action, value in mapping 
-            if value and action in self.inv_ctlr_bind
+            if abs(value) > DEAD_ZONE and action in self.inv_ctlr_bind
         ]
         return actions
+
 
     def ctlr_input(self, player:int) -> list[float]:
 

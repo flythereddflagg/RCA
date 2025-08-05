@@ -65,7 +65,7 @@ key_bind:
 #   !: No button assigned/used
 
 8BitDo Ultimate 2C Wireless: 
-# LSx LSy RSx RSy RTx LTx A B L4 X Y R4 LB RB LT RT - + HM LS RS ! Dx Dy
+# LSx LSy RSx RSy RTa LTa A B L4 X Y R4 LB RB LT RT - + HM LS RS ! Dx Dy
   LSx LSy RSx RSy !   !   S E !  W N !  LB RB LT RT - + HM LS RS ! Dx Dy
 BDA Core (Plus) Wired Controller:
 # LSx LSy RSx RSy Y B A X L  R  ZL ZR - + LS RS HM PS Dx Dy
