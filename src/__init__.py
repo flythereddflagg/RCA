@@ -34,7 +34,7 @@ class GameState():
             if self.settings.FPS_COUNTER or self.settings.DEBUG
             else None
         )
-        self.input = Input(self.settings)
+        self.input = Input(self, self.settings)
         
         self.load_scene(
             yaml_path=self.settings.initial_scene,
@@ -45,7 +45,6 @@ class GameState():
     def init_screen(self):
         w, h = self.settings.ASPECT_RATIO
         float_aspect_ratio = w / h
-        ## TODO Test if this works well.
         draw_surface_w, draw_surface_h = (
             int(self.settings.RESOLUTION * float_aspect_ratio),
             self.settings.RESOLUTION

@@ -26,6 +26,7 @@ class Player(Node):
         self.speed = DEFAULT_SPEED
         self.todo_list = []
         self.signals = []
+        self.input_held = []
         self.sprite = Decal(parent=self, **init)
         
         self.damage_direction = pg.math.Vector2(0,1)
@@ -40,10 +41,6 @@ class Player(Node):
 
     def signal(self, signal_):
         self.signals.append(signal_)
-
-
-    def apply(self, game_input):
-        self.todo_list.extend(game_input)
 
     def get_actions_values(self):
         actions, values = [], []
@@ -85,7 +82,7 @@ class Player(Node):
             )
 
         self.inventory.marker.rect.center = (
-            self.inventory.sprite.rect.center + 
+            self.inventory.sprite.repct.center + 
             vector
         )
 
@@ -117,8 +114,8 @@ class Player(Node):
             # reject all current todos
             self.todo_list = [] 
             return
-        self.todo_list.extend(self.scene.game.input.get())
-        self.input_held = self.scene.game.input.held
+        actions, self.input_held = self.scene.game.input.get()
+        self.todo_list.extend(actions)
 
         # revert to "idle" self.animations if no input is given
         if (
@@ -152,28 +149,15 @@ class Player(Node):
 
 
     def update(self):
-        # print(
-        #     "player pos", 
-        #     self.sprite.rect.topleft, 
-        #     pg.math.Vector2(self.sprite.rect.topleft) - 
-        #     pg.math.Vector2(self.scene.background.sprites()[0].rect.topleft)
-        # )
         self.apply_input()
         self.check_signals()
         self.check_collision()
         self.children.update()
-        # self.self.animations.update()
-        # self.hitmask.update()
         self.inventory.update()
         self.apply_physics()
         
         if self.inventory.hp <= 0:
             self.sprite.kill()
-        # print(self.sprite.rect.topleft)
-
-
-    def add_todo(self, action):
-        self.todo_list.append(action)
 
 
     def signal(self, signal):

@@ -16,7 +16,8 @@ BUFFER_TIME = 250 # ms
 
 class Input():
 
-    def __init__(self, binds, *args, **kwargs):
+    def __init__(self, parent, binds, *args, **kwargs):
+        self.parent = parent
         self.key_bind = binds.get("key_bind")
         self.ctlr_bind = binds.get("ctlr_bind")
         self.inv_ctlr_bind = (
@@ -48,7 +49,8 @@ class Input():
         ]
 
     def update(self):
-        ctlr_input = self.map_ctlr_input(self.ctlr_input(0), 0)
+        # player one only for now
+        ctlr_input = self.map_ctlr_input(self.ctlr_input(0), 0) 
         self.actions:list[str] = list(set(self.keyboard_input() + ctlr_input))
         self.held = [
             action 
@@ -56,10 +58,12 @@ class Input():
             if action in self.last_actions
         ]
         self.last_actions = self.actions.copy()
+        if self.parent.settings.SHOW_EVENTS and self.actions:
+            print(self.actions, self.held)
         
     
     def get(self):
-        return self.actions, self.held
+        return self.actions.copy(), self.held.copy()
 
     def map_ctlr_input(self, inputs:list[float], player:int) -> list[str]:
         if not inputs: return []

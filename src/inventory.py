@@ -77,10 +77,10 @@ class Inventory(Node):
                 sprite.add(self.scene.all_nodes)
             for sprite in self.slot_sprites:
                 sprite.add(self.scene.all_nodes)
-        input_held = self.player.scene.game.input.held
+        input_held = self.player.input_held
         
         if not any(
-            [input_held[key] for key in ["R_UP","R_DOWN","R_LEFT","R_RIGHT"]]
+            [inp in ["R_UP","R_DOWN","R_LEFT","R_RIGHT"] for inp in input_held]
         ):
             if self.active: self.toggle()
             self.marker.rect.center = self.sprite.rect.center
