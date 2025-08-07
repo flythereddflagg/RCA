@@ -82,7 +82,7 @@ class Player(Node):
             )
 
         self.inventory.marker.rect.center = (
-            self.inventory.sprite.repct.center + 
+            self.inventory.sprite.rect.center + 
             vector
         )
 

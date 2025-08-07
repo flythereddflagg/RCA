@@ -89,15 +89,15 @@ class GameState():
     def logic(self):
         # run all game logic here
         # quit overrides everything else
-        game_input = self.input.get()
-        if "QUIT" in game_input:
+        game_input, held = self.input.get()
+        if ("QUIT", 1.0) in game_input:
             self.running = False
             return
 
         # key to refresh scene
         if (
             self.settings.DEBUG and 
-            "REFRESH" in game_input and 
+            ("REFRESH", 1.0) in game_input and 
             not self.input.held["REFRESH"] and 
             
             self.scene

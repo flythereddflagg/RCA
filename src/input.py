@@ -49,9 +49,16 @@ class Input():
         ]
 
     def update(self):
+        events = pg.event.get()
+        if self.parent.settings.SHOW_EVENTS and events:
+            print(events)
+        for event in events:
+            if event.type == pg.QUIT:
+                self.actions = [("QUIT", 1.0)]
+                return
         # player one only for now
         ctlr_input = self.map_ctlr_input(self.ctlr_input(0), 0) 
-        self.actions:list[str] = list(set(self.keyboard_input() + ctlr_input))
+        self.actions:list[tuple[str, float]] = list(set(self.keyboard_input() + ctlr_input))
         self.held = [
             action 
             for action in self.actions 
@@ -65,7 +72,9 @@ class Input():
     def get(self):
         return self.actions.copy(), self.held.copy()
 
-    def map_ctlr_input(self, inputs:list[float], player:int) -> list[str]:
+    def map_ctlr_input(
+        self, inputs:list[float], player:int
+    ) -> list[tuple[str, float]]:
         if not inputs: return []
         
         mapping = [
@@ -113,7 +122,7 @@ class Input():
         return [float(val) for val in all_ctrl_inputs]
 
 
-    def keyboard_input(self) -> list[str]:
+    def keyboard_input(self) -> list[tuple[str, float]]:
         pressed_keys = pg.key.get_pressed()
         game_input = [
             (key, 1.0) for key, bind in self.key_bind.items()
