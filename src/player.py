@@ -24,37 +24,28 @@ class Player(Node):
         super().__init__(**init)
         self.init = init
         self.speed = DEFAULT_SPEED
-        self.todo_list = []
         self.signals = []
         self.input_held = []
         self.sprite = Decal(parent=self, **init)
-        
         self.damage_direction = pg.math.Vector2(0,1)
         self.move = Movement(self.sprite, **self.init)
-        ## TEMP work around
-        # opts = self.animations.
-        # self.hitmask = HitMask(
-        #     self, opts['animations'], opts["path_prefix"]
-        # )
-        self.input_held = None
         self.state = DEFAULT_STATE
+
+
+    def update(self):
+        self.apply_input()
+        self.check_signals()
+        self.check_collision()
+        self.children.update()
+        self.inventory.update()
+        self.apply_physics()
+        
+        if self.inventory.hp <= 0:
+            self.sprite.kill()
+
 
     def signal(self, signal_):
         self.signals.append(signal_)
-
-    def get_actions_values(self):
-        actions, values = [], []
-        for action in self.todo_list:
-            if isinstance(action, tuple):
-                action, value = action
-            elif isinstance(action, str):
-                action, value = action, 0.0
-            else:
-                raise ValueError(f"Invalid input: {action}")
-
-            actions.append(action)
-            values.append(value)
-        return actions, values
 
 
     def apply_direction(self, actions, values):
@@ -111,28 +102,19 @@ class Player(Node):
 
     def apply_input(self):
         if self.animations and self.animations.active: 
-            # reject all current todos
-            self.todo_list = [] 
             return
-        actions, self.input_held = self.scene.game.input.get()
-        self.todo_list.extend(actions)
+        actions_val, self.input_held = self.scene.game.input.get()
 
         # revert to "idle" self.animations if no input is given
-        if (
-            not self.todo_list and 
-            (not self.animations or not self.animations.active)
-        ):
+        if not actions_val:
             self.state = DEFAULT_STATE
             return
 
-        actions, values = self.get_actions_values()
+        actions, values = list(map(list, zip(*actions_val)))
 
         self.apply_direction(actions, values)
         self.apply_right_stick(actions, values)
         self.apply_buttons(actions, values)
-
-        # reset the todo_list
-        self.todo_list = [] 
 
 
     def apply_physics(self):
@@ -144,20 +126,6 @@ class Player(Node):
             )
         # TODO refine how damage works including Iframes, knockback and stuff like that.
         # split damage into knockback and other various states that need to be applied
-        
-
-
-
-    def update(self):
-        self.apply_input()
-        self.check_signals()
-        self.check_collision()
-        self.children.update()
-        self.inventory.update()
-        self.apply_physics()
-        
-        if self.inventory.hp <= 0:
-            self.sprite.kill()
 
 
     def signal(self, signal):
