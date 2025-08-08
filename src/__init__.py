@@ -98,8 +98,7 @@ class GameState():
         if (
             self.settings.DEBUG and 
             ("REFRESH", 1.0) in game_input and 
-            not self.input.held["REFRESH"] and 
-            
+            not "REFRESH" not in held and 
             self.scene
         ):
             self.scene.refresh()
@@ -119,14 +118,6 @@ class GameState():
 
 
     def draw_frame(self):
-
-        # self.screen.fill(BLACK)
-        # for group_name in self.scene.draw_layers:
-        #     self.scene.groups[group_name].draw(self.screen) 
-        
-        # if self.settings.DEBUG:
-        #     self.render_debug()
-
         self.draw_surface.fill(BLACK)
         for group_name in self.scene.draw_layers:
             self.scene.groups[group_name].draw(self.draw_surface) 
@@ -138,7 +129,6 @@ class GameState():
             pg.transform.scale(
                 self.draw_surface, self.screen.get_size()
             ),
-            # -pg.math.Vector2(self.screen.get_size())/2
             (0,0)
         )
         pg.display.flip()

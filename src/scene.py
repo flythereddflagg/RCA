@@ -110,7 +110,7 @@ class Scene():
 
 
     def place_node(
-        self, node:Node, group:pg.sprite.Group, groups=None, start=None
+        self, node:Node, draw_layer:pg.sprite.Group=None, groups=None, start=None
     ):
         if node.scene is not self:
             node.scene = self
@@ -123,8 +123,12 @@ class Scene():
             sprite_instance.scene = self
 
         self.all_nodes.add(sprite_instance)
-        group.add(sprite_instance)
+       
+        # decal to be in ONLY one draw_layer or otherwise not be drawn
+        if draw_layer is not None:
+            draw_layer.add(sprite_instance)
 
+        # node can exist in other groups though
         if groups:
             for group in groups:
                 self.groups[group].add(sprite_instance)
@@ -137,6 +141,7 @@ class Scene():
 
 
     def refresh(self):
+        # TODO this is all garbage since our last refactor. REWRITE!
         self.camera.zoom_by(0)
         current_player_position = (
             pg.math.Vector2(self.game.player.sprite.rect.topleft) - 

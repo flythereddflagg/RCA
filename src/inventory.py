@@ -95,6 +95,7 @@ class Inventory(Node):
 
         
     def toggle(self):
+        print("Calling inventory.toggle")
         self.active = False if self.active else True
         toggle_state = (
             self.player.scene.hud.add 
