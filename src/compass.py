@@ -50,7 +50,9 @@ class Compass():
         return Compass.vec_map[Compass.index(direction)]
     
     @staticmethod
-    def vector(direction:int|str|tuple|pg.math.Vector2)->pg.math.Vector2:
+    def vector(
+        direction:int|str|tuple[int, int]|tuple[float, float]|pg.math.Vector2
+    )->pg.math.Vector2:
         """Returns the normalized vector in the given direction"""
         if any(map(lambda x: isinstance(direction, x), [int, str, tuple])):
             return pg.math.Vector2(Compass.unit_vector(direction))

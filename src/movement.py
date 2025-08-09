@@ -45,9 +45,7 @@ class Movement():
             self.dist_buffer = distance % 1
 
         distance = int(distance)
-        # BUG cannot use Compass.vector here because it can cause an
-        # infinte loop in foreground_rejection()
-        xunit, yunit = Compass.unit_vector(direction)
+        xunit, yunit = Compass.vector(direction)
         addx, addy = distance * xunit, distance * yunit
         self.sprite.rect.move_ip(addx, addy)
         
@@ -57,6 +55,8 @@ class Movement():
     def foreground_rejection(self, xunit, yunit):
         if not xunit and not yunit: return # protects against infinite loop
         if 'solid' not in self.sprite.scene.groups.keys(): return
+        if 0 < abs(xunit) < 1: xunit = int(xunit / abs(xunit))
+        if 0 < abs(yunit) < 1: yunit = int(yunit / abs(yunit))
         while mask_collision(self.sprite, self.sprite.scene.groups['solid']):
             self.sprite.rect.move_ip(-xunit, -yunit) # move back 1
 
