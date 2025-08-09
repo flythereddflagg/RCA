@@ -31,15 +31,16 @@ overlay:
     image: ./assets/scene/red_castle_valley/red_castle_valley_overlay.png
 
 foreground:
-  # - id: big ol rock
-  #   type: Decal
-  #   image: ./assets/block/big_ol_rock.png
-  #   mask: ./assets/block/big_ol_rock.png
-  #   start: [745,765]
-  #   scale: 2
-  #   groups: 
-  #    - solid
+  - id: big ol rock
+    type: Decal
+    image: ./assets/block/big_ol_rock.png
+    mask: ./assets/block/big_ol_rock.png
+    start: [745,765]
+    scale: 2
+    groups: 
+     - solid
 
+# TODO guard is not working
   # - id: guard
   #   type: Gate
   #   key_id: jar of pickles

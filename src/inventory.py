@@ -30,7 +30,6 @@ class Inventory(Node):
         self.HP_MAX:int = hp_max
         self.max_money = max_money
         self.active = False
-        self.player = parent
         self.left_item:Item = self.empty_item()
         self.right_item:Item = self.empty_item()
         self.sprite.rect.center = self.scene.game.get_center()
@@ -68,8 +67,8 @@ class Inventory(Node):
 
 
     def update(self):
-        if self.scene is not self.player.scene:
-            self.scene = self.player.scene
+        if self.scene is not self.parent.scene:
+            self.scene = self.parent.scene
             for sprite in [
                 self.sprite, self.left_hand, self.right_hand,
                 self.left_item, self.right_item, self.marker
@@ -77,13 +76,13 @@ class Inventory(Node):
                 sprite.add(self.scene.all_nodes)
             for sprite in self.slot_sprites:
                 sprite.add(self.scene.all_nodes)
-        input_held = self.player.input_held
+        input_actions, _ = self.parent.scene.game.input.get()
         
-        if not any(
-            [inp in ["R_UP","R_DOWN","R_LEFT","R_RIGHT"] for inp in input_held]
-        ):
+        if not any([
+            inp in ["R_UP","R_DOWN","R_LEFT","R_RIGHT"] 
+            for inp, _ in input_actions
+        ]):
             if self.active: self.toggle()
-            self.marker.rect.center = self.sprite.rect.center
         
         slot_index = self.get_selected_item_slot()
         if slot_index is not None:
@@ -98,9 +97,9 @@ class Inventory(Node):
         print("Calling inventory.toggle")
         self.active = False if self.active else True
         toggle_state = (
-            self.player.scene.hud.add 
+            self.parent.scene.hud.add 
             if self.active else 
-            self.player.scene.hud.remove
+            self.parent.scene.hud.remove
         )
         # ORDER MATTERS first we do the backpack and hands
         for sprite in [self.sprite, self.left_hand, self.right_hand]:
@@ -124,6 +123,9 @@ class Inventory(Node):
         # finally the hand items and the marker goes LAST
         for sprite in [self.left_item, self.right_item, self.marker]:
             toggle_state(sprite)
+        
+        if not self.active:
+            self.marker.rect.center = self.sprite.rect.center
 
 
     def change_money(self, amount:int):
