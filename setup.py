@@ -36,9 +36,6 @@ setup_options = {
 }
 
 
+
 setup(**setup_options)
-# to build:
-# conda install pyyaml pygame cx_freeze
-# OR
-# pip install pyyaml pygame cx_freeze
-# python setup.py build
+

@@ -67,7 +67,8 @@ class Decal(Node):
         
 
     def update(self):
-        if self.parent: self.parent.update()
+        # if self.parent: self.parent.update()
+        pass
 
 
     def scale_by(self, factor, absolute=False):

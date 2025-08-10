@@ -18,7 +18,7 @@ class Gate(Decal):
             pg.math.Vector2(player.sprite.rect.center)
         ).length_squared()
         if (
-            dist_sqr//self.scene.game.settings.SCALE**2 < collide_dist and
+            dist_sqr < collide_dist and
             player.inventory.possesed(self.key_id)
         ):
             assert player.inventory.remove_item(self.key_id),\
