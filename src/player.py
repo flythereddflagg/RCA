@@ -3,8 +3,6 @@ import pygame as pg
 from .decal import Decal
 from .compass import Compass
 from .movement import Movement
-# from .animations import animations
-# from .inventory import Inventory
 from .tools import list_collided
 from .item import EMPTY
 from .node import Node
@@ -16,7 +14,6 @@ LEFT_HAND_BUTTON = "BUTTON_1"
 RIGHT_HAND_BUTTON = "BUTTON_2"
 RIGHT_STICK_AX = ["R_"+direction for direction in Compass.strings]
 LEFT_STICK_AX = ["L_"+direction for direction in Compass.strings]
-# TODO implement the left stick with the above line
 
 
 class Player(Node):
@@ -80,7 +77,7 @@ class Player(Node):
 
     def apply_buttons(self, actions, values):
         if (LEFT_HAND_BUTTON in actions and 
-            not self.input_held[LEFT_HAND_BUTTON]
+            LEFT_HAND_BUTTON not in self.input_held
         ):
             if self.inventory.active:
                 self.inventory.select("LEFT")
@@ -90,7 +87,7 @@ class Player(Node):
                     self.state = self.animations_id
         
         if (RIGHT_HAND_BUTTON in actions and 
-            not self.input_held[RIGHT_HAND_BUTTON]
+            RIGHT_HAND_BUTTON in self.input_held
         ):
             if self.inventory.active:
                 self.inventory.select("RIGHT")

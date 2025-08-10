@@ -2,7 +2,7 @@ import venv
 import subprocess
 import sys
 
-
+# TODO: setup an autobuild system
 virtual_environment = venv.create("./install", clear=True)
 
 activate = (

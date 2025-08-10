@@ -162,6 +162,7 @@ class Inventory(Node):
 
 
     def add_item(self, item:Item):
+        print(f"adding item: {item.id}")
         if self.left_item.id == 'empty':
             self.left_item = item
             self.left_item.rect.center = self.left_hand.rect.center
@@ -242,6 +243,7 @@ class Inventory(Node):
 
     def possesed(self, id_:str) -> bool:
         for item in [self.left_item, self.right_item] + self.slots:
+            print(item.id)
             if item and item.id == id_:
                 return True
         return False
