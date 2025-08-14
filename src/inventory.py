@@ -94,7 +94,6 @@ class Inventory(Node):
 
         
     def toggle(self):
-        print("Calling inventory.toggle")
         self.active = False if self.active else True
         toggle_state = (
             self.parent.scene.hud.add 
@@ -162,18 +161,21 @@ class Inventory(Node):
 
 
     def add_item(self, item:Item):
-        print(f"adding item: {item.id}")
+        
         if self.left_item.id == 'empty':
             self.left_item = item
+            breakpoint()
             self.left_item.rect.center = self.left_hand.rect.center
+            
             return item
         if self.right_item.id == 'empty':
             self.right_item = item
             self.right_item.rect.center = self.right_hand.rect.center
+            
             return item
         for i, slot in enumerate(self.slots):
             if  slot.id == 'empty':
-                print(f"adding item {item}")
+                
                 self.slots[i] = item
                 self.slots[i].rect.center = (
                     self.slot_sprites.sprites()[i].rect.center
@@ -183,7 +185,7 @@ class Inventory(Node):
         return None
 
 
-    def remove_item(self, id_:str) -> Item|None:
+    def remove_item(self, id_:str) -> Item:
         """returns an empty item if it removed successfully None otherwise"""
         for i, slot in enumerate(self.slots):
             if slot.id == id_:
@@ -242,8 +244,9 @@ class Inventory(Node):
 
 
     def possesed(self, id_:str) -> bool:
+        
         for item in [self.left_item, self.right_item] + self.slots:
-            print(item.id)
+            
             if item and item.id == id_:
                 return True
         return False

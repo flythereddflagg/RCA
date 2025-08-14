@@ -108,7 +108,6 @@ class Player(Node):
             return
 
         actions, values = list(map(list, zip(*actions_val)))
-        print("a", actions, "v", values)
 
         self.apply_direction(actions, values)
         self.apply_right_stick(actions, values)

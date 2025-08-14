@@ -106,8 +106,8 @@ class GameState():
         # make a breakpoint and open debugger at any time
         if (
             self.settings.DEBUG and
-            "BREAKPOINT" in game_input and 
-            not self.input.held["BREAKPOINT"]
+            ("BREAKPOINT", 1.0) in game_input and 
+            "BREAKPOINT" not in self.input.held
         ):
             print("\n\n---\nDEBUG: Entering the Python debugger...\n---\n\n")
             breakpoint()
