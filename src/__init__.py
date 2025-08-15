@@ -125,11 +125,21 @@ class GameState():
         if self.settings.DEBUG:
             self.render_debug()
         
+        scn_w, scn_h = self.screen.get_size()
+        w, h = self.settings.ASPECT_RATIO
+        aspect_ratio = w / h
+        scn_aspect_ratio = scn_w / scn_h
+        new_size = (
+            (scn_w, scn_w / aspect_ratio)
+            if scn_aspect_ratio < aspect_ratio else
+            (scn_h * aspect_ratio, scn_h)
+        )
+        self.screen.fill(BLACK)
         self.screen.blit(
             pg.transform.scale(
-                self.draw_surface, self.screen.get_size()
+                self.draw_surface, new_size
             ),
-            (0,0)
+            (pg.math.Vector2([scn_w, scn_h]) - new_size)/2
         )
         pg.display.flip()
 

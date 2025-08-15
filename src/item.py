@@ -8,9 +8,6 @@ class Item(Decal):
         super().__init__(**init)
         self.action = init.get("action")
     
-    def __repr__(self):
-        return f"<Item - {self.id}>"
-    
     def update(self):
         self.check_collision()
 
