@@ -161,12 +161,10 @@ class Inventory(Node):
 
 
     def add_item(self, item:Item):
-        
+        print(f"adding {item}")
         if self.left_item.id == 'empty':
             self.left_item = item
-            breakpoint()
             self.left_item.rect.center = self.left_hand.rect.center
-            
             return item
         if self.right_item.id == 'empty':
             self.right_item = item

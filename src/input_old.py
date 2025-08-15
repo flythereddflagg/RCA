@@ -117,7 +117,6 @@ class Input():
 
     def update_held(self, all_input):
         self.held = {key:False for key in self.held.keys()}
-        # breakpoint()
         for held_action in all_input:
             if isinstance(held_action, tuple):
                 held_action, _ = held_action

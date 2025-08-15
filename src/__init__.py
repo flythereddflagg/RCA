@@ -107,7 +107,7 @@ class GameState():
         if (
             self.settings.DEBUG and
             ("BREAKPOINT", 1.0) in game_input and 
-            "BREAKPOINT" not in self.input.held
+            "BREAKPOINT" not in held
         ):
             print("\n\n---\nDEBUG: Entering the Python debugger...\n---\n\n")
             breakpoint()

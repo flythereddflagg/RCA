@@ -19,6 +19,7 @@ class Item(Decal):
             if player.inventory:
                 print("\n\n###trying to add item to player!\n\n")
                 new_slot = player.inventory.add_item(self)
+                print(f"added {new_slot}")
                 if new_slot is None: return # no more slots can be added
                 self.kill()
             break
