@@ -241,7 +241,7 @@ class Inventory(Node):
         return None
 
 
-    def possesed(self, id_:str) -> bool:
+    def contains(self, id_:str) -> bool:
         
         for item in [self.left_item, self.right_item] + self.slots:
             

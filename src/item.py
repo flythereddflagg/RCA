@@ -19,7 +19,12 @@ class Item(Decal):
             if player.inventory:
                 print("\n\n###trying to add item to player!\n\n")
                 new_slot = player.inventory.add_item(self)
-                print(f"added {new_slot}")
+                print(
+                    f"added {new_slot} {player.inventory.left_item}",
+                    f" {player.inventory.contains(new_slot.id)}",
+                    f"id: {id(player)}"
+                )
+                print(self.scene.groups['player'].sprites())
                 if new_slot is None: return # no more slots can be added
                 self.kill()
             break

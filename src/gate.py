@@ -17,11 +17,11 @@ class Gate(Decal):
             pg.math.Vector2(self.rect.center) - 
             pg.math.Vector2(player.sprite.rect.center)
         ).length_squared()
-        print(self.key_id, player.id, player.inventory.possesed(self.key_id), player.inventory.left_item)
+        print(self.key_id, player.id, player.inventory.contains(self.key_id), player.inventory.left_item, f"id: {id(player)}")
         if (
             dist_sqr < collide_dist and
-            player.inventory.possesed(self.key_id)
+            player.inventory.contains(self.key_id)
         ):
             assert player.inventory.remove_item(self.key_id),\
-                "gate key was possesed but did not get removed properly"
+                "gate key was contains but did not get removed properly"
             self.kill()
