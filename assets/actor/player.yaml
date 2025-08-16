@@ -2,12 +2,8 @@
 # this yaml file should have the settings specific to the
 # character but not any one scene
 
-id: PLAYER
+id: player_node
 type: Player
-image: ./assets/actor/larry/larry_base.png
-mask: ./assets/actor/larry/larry_base_mask.png
-groups:
-  - player
 
 
 
@@ -37,3 +33,9 @@ children:
     money: 0
     hp: 100
     hp_max: 100
+  - id: sprite
+    type: Decal
+    image: ./assets/actor/larry/larry_base.png
+    mask: ./assets/actor/larry/larry_base_mask.png
+    groups:
+      - player

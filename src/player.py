@@ -19,11 +19,9 @@ LEFT_STICK_AX = ["L_"+direction for direction in Compass.strings]
 class Player(Node):
     def __init__(self, **init):
         super().__init__(**init)
-        self.init = init
         self.speed = DEFAULT_SPEED
         self.signals = []
         self.input_held = []
-        self.sprite = Decal(parent=self, **init)
         self.damage_direction = pg.math.Vector2(0,1)
         self.move = Movement(self.sprite, **self.init)
         self.state = DEFAULT_STATE
