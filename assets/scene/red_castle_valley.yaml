@@ -40,7 +40,6 @@ foreground:
     groups: 
      - solid
 
-# TODO guard is not working
   - id: guard
     type: Gate
     key_id: jar of pickles

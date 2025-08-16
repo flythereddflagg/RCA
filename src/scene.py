@@ -110,11 +110,19 @@ class Scene():
 
 
     def place_node(
-        self, node:Node, draw_layer:pg.sprite.Group=None, groups=None, start=None
+        self, node:Node, draw_layer:pg.sprite.Group=None, 
+        groups=None, start=None
     ):
         if node.scene is not self:
             node.scene = self
         self.all_nodes.add(node)
+        for child in node.children:
+            self.place_node(
+                child, 
+                groups=child.init.get("groups"), 
+                start=child.init.get("start")
+            )
+
         sprite_instance:'.decal.Decal' = node.sprite
 
         if sprite_instance is None: return
@@ -182,6 +190,7 @@ class Scene():
         in the player group or player group does not exist.
         """
         player_group = self.groups.get("player")
+        print("player_group", player_group)
         if not player_group: return None
         player_sprites = player_group.sprites()
         player = (

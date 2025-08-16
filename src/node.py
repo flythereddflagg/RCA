@@ -27,20 +27,14 @@ class Node(pg.sprite.Sprite):
         self.init = init
         self.parent = parent
         self.sprite = None
-        if children:
+        self.children = pg.sprite.Group()
+        if children:                
             for child in children:
                 child['parent'] = self
-        self.children = (
-            None 
-            if children is None 
-            else pg.sprite.Group(*[
-                node_from_dict(self.scene, child)
-                for child in children
-            ])
-        )
-        if self.children:
-            for child in self.children.sprites():
-                setattr(self, child.id, child)
+                node = node_from_dict(self.scene, child)
+                self.children.add(node)
+                setattr(self, node.id, node)
+
 
 
     def update(self):
@@ -67,19 +61,6 @@ class Node(pg.sprite.Sprite):
                 raise ValueError(f"Multiple Children returned for ID {id_str}")
         
         return None # case len(child) == 0 or is an invalid value
-
-    
-    # def __getattr__(self, name):
-    #     """
-    #     Same as get_child_by_id but will raise attribute error
-    #     if it does not exist.
-    #     """
-    #     node = self.child_by_id(name)
-    #     if node is None:
-    #         raise AttributeError(
-    #             f"Node <{self.id}> does not have attribute nor child '{name}'"
-    #         )
-    #     return node
 
     
     def kill(self):

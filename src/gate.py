@@ -10,9 +10,14 @@ class Gate(Decal):
         self.key_id = key_id
 
     def update(self):
-        player = self.scene.get_player()
-        if not player:
+        player_sprite = self.scene.get_player()
+        if not player_sprite:
             return
+        player = (
+            player_sprite 
+            if not player_sprite.parent 
+            else player_sprite.parent
+        )
         dist_sqr = (
             pg.math.Vector2(self.rect.center) - 
             pg.math.Vector2(player.sprite.rect.center)
