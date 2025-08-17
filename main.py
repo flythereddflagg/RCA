@@ -5,33 +5,38 @@ Initializes the game from a data file and initiates the game
 """
 def main():
     import pygame as pg
-    from src import GameState
+    from src import Engine
     pg.init()
     INIT_PATH = "./assets/init.yaml"
-    game = GameState(INIT_PATH)
+    game = Engine(INIT_PATH)
+    
     if game.settings.LOG_INPUT:
         import datetime
         try:
             game.run()
         finally:
-            with open("./VERSION") as f:
-                VERSION = f.read().strip()
-            filename = f"./replay_{VERSION}"\
-                f"_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.icl"
-            with open(filename, 'w') as f:
-                output = "\n".join([
-                    "|".join([str(i) for i in line]) 
-                    for line in game.input.input_record
-                ])
-                f.write(output)
-            pg.display.quit()
-            pg.quit()
-            print("Game ended successfully!")
+            write_log(game)
     else:
         game.run()
-        pg.display.quit()
-        pg.quit()
-        print("Game ended successfully!")
+    
+    pg.display.quit()
+    pg.quit()
+    print("Game ended successfully!")
+
+
+def write_log(game):
+    with open("./VERSION") as f:
+        VERSION = f.read().strip()
+    filename = (
+        f"./replay_{VERSION}"\
+        f"_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.icl"
+    )
+    with open(filename, 'w') as f:
+        output = "\n".join([
+            "|".join([str(i) for i in line]) 
+            for line in game.input.input_record
+        ])
+        f.write(output)
 
 
 if __name__ == "__main__":

@@ -3,11 +3,11 @@ def main():
     import sys
     sys.path.append(".")
     import pygame as pg
-    from src import GameState
+    from src import Engine
     input_file = sys.argv[1]
     pg.init()
     INIT_PATH = "./assets/init.yaml"
-    game = GameState(INIT_PATH, REPLAY=input_file)
+    game = Engine(INIT_PATH, REPLAY=input_file)
     game.run()
     
     pg.display.quit()

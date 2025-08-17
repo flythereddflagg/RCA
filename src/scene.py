@@ -166,6 +166,7 @@ class Scene():
 
 
     def deconstruct(self):
+        # TODO serialize scene as YAML and save then delete
         # save the scene as is
         scene_dict = {}
         for name, group in self.groups.items():

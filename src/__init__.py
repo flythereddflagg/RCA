@@ -14,7 +14,7 @@ from .input import Input
 BLACK = (0, 0, 0)
 # TODO make a scene manager that loads a bunch of scenes here and then loads them into the game and remembers them.
 
-class GameState():
+class Engine():
     """
     connects the hardware to game logic and holds the game state
     including the scenes
