@@ -25,7 +25,7 @@ class Engine():
         self.running = False
         self.paused = False
         self.scene = None
-        self.saved_scenes = {}
+        self.saved_scenes:dict[str, Scene] = {}
         self.REPLAY = REPLAY
         self.screen, self.draw_surface = self.init_screen()
         self.clock = pg.time.Clock()
@@ -63,7 +63,7 @@ class Engine():
             pg.Surface((draw_surface_w, draw_surface_h))
         )        
 
-
+    # TODO completely load and destroy a scene and check that it worked
     def load_scene(self, **init) -> Scene:
         self.scene = Scene(
             game=self,  groups=self.settings.sprite_groups, **init
