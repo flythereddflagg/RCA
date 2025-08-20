@@ -2,7 +2,7 @@ import pygame as pg
 
 from .compass import Compass
 from .tools import mask_collision
-
+# BUG get rid of jitter when camera moves with player 
 
 class Movement():
     """

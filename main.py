@@ -52,8 +52,6 @@ if __name__ == "__main__":
 # TODO make a startup screen
 # TODO make a load screen
 # TODO make scene transitions a la LTTP (polish)
-
-# TODO: Items: [ ✓sword, ✓shovel, pickle, gate key, statue key]
 # TODO: Item mechanics completely fleshed out
 # TODO: Larry AND Holly are playable with these items but both play differently and have different exits at the end (e.g. Larry has less knockback from bludgeoning but is more susceptible to piercing while Holly is the opposite.) (exits are the Original exit to the village and the exit to the mountain or something TBD)
 # TODO: Boss fight must have cheese in the form of the chandelier

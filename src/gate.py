@@ -22,7 +22,7 @@ class Gate(Decal):
             pg.math.Vector2(self.rect.center) - 
             pg.math.Vector2(player.sprite.rect.center)
         ).length_squared()
-        print(self.key_id, player.id, player.inventory.contains(self.key_id), player.inventory.left_item, f"id: {type(player), id(player)}", f"id: {type(player.inventory), id(player.inventory)}")
+
         if (
             dist_sqr < collide_dist and
             player.inventory.contains(self.key_id)

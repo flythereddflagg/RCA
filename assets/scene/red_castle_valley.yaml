@@ -49,12 +49,12 @@ foreground:
     scale: 1
     groups: 
      - solid
-  - id: jar of pickles
-    type: Item
-    image: ./assets/block/jar_of_pickles.png
-    mask: ./assets/block/jar_of_pickles.png
-    start: [300,300]
-    action: null
+  # - id: jar of pickles
+  #   type: Item
+  #   image: ./assets/block/jar_of_pickles.png
+  #   mask: ./assets/block/jar_of_pickles.png
+  #   start: [300,300]
+  #   action: null
 
   # - id: wall
   #   type: Decal

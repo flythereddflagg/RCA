@@ -191,7 +191,6 @@ class Scene():
         in the player group or player group does not exist.
         """
         player_group = self.groups.get("player")
-        print("player_group", player_group)
         if not player_group: return None
         player_sprites = player_group.sprites()
         player = (
