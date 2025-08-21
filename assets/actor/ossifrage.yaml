@@ -10,10 +10,10 @@ groups:
 
 
 children:
-  - id: animations
+  - id: animation
     type: Animation
     path_prefix: "./assets/actor/ossifrage/"
-    animations:
+    animation:
       stand:
         datafile: "ossifrage_stand.json"
         repeat: True

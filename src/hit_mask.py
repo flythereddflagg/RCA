@@ -4,11 +4,11 @@ from .animation import Animation
 from .decal import Decal
 
 class HitMask(Animation):
-    def __init__(self, parent:".node.Node", animations:dict, path_prefix='./'):
-        mask_animations = animations.copy()
-        for key, entry in mask_animations.items():
+    def __init__(self, parent:".node.Node", animation:dict, path_prefix='./'):
+        mask_animation = animation.copy()
+        for key, entry in mask_animation.items():
             entry['datafile'] = entry["hitmask"] if "hitmask" in entry else entry['datafile']
-        super().__init__(parent, mask_animations, path_prefix)
+        super().__init__(parent, mask_animation, path_prefix)
         
         self.sprite = Decal(self.parent.scene)
 
@@ -24,7 +24,7 @@ class HitMask(Animation):
 
     def set_frame(self) -> None: # override parent
         current:Frame = (
-            self.animations[self.parent.state].frames[self.frame_index]
+            self.animation[self.parent.state].frames[self.frame_index]
         )
         new_mask = pg.mask.from_surface(current.image)
         self.sprite.mask = new_mask.scale(

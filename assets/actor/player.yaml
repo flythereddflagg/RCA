@@ -8,10 +8,10 @@ type: Player
 
 
 children:
-  - id: animations
+  - id: animation
     type: Animation
     path_prefix: "./assets/actor/larry/"
-    animations:
+    animation:
       stand:
         datafile: "larry_emote.json"
         repeat: True

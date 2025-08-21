@@ -35,7 +35,7 @@ class Animation(Node):
     A system for setting the parent sprite object's image.
     """
     def __init__(
-        self, scene, parent, animations:dict, path_prefix='./', **init
+        self, scene, parent, animation:dict, path_prefix='./', **init
     ):
         # parent must have a 'state' attribute
         super().__init__(scene=scene, parent=parent, **init)
@@ -49,22 +49,22 @@ class Animation(Node):
         self.frame_index = 0 # index of the current frame
         self.frame_time = 1 # duration of the current frame
         self.path_prefix = path_prefix
-        self.animations = {}
-        assert isinstance(animations, dict), f"{str(animations)}"
-        self.load_animations(animations)
+        self.animation = {}
+        assert isinstance(animation, dict), f"{str(animation)}"
+        self.load_animation(animation)
 
 
-    def load_animations(self, animations) -> None:
-        self.animations = {}
-        for state, data in animations.items():
+    def load_animation(self, animation) -> None:
+        self.animation = {}
+        for state, data in animation.items():
             datafile = data['datafile'] # TODO make 'datafile' mutable to 'hitbox' and then make it so we can have a blank animation? (See the changes in hit_mask.py)
             if not datafile.endswith(JSON): continue
             json_data = load_json(self.path_prefix + datafile)
-            self.animations[state] = Reel(
+            self.animation[state] = Reel(
                 state, datafile, list(), json_data['meta'], data['repeat']
             )
             master_image = pg.image.load(
-                self.path_prefix + self.animations[state].meta['image']
+                self.path_prefix + self.animation[state].meta['image']
             ).convert_alpha()
 
             for name, frame in json_data['frames'].items():
@@ -73,13 +73,13 @@ class Animation(Node):
                     list(frame['frame'].values())
                 )
                 frame["mask"] = pg.mask.from_surface(frame["image"])
-                self.animations[state].frames.append(Frame(**frame))
+                self.animation[state].frames.append(Frame(**frame))
 
 
     def update(self) -> None:
         state:str = self.parent.state
         direction:int = self.parent.move.direction
-        current:Reel = self.animations[state]
+        current:Reel = self.animation[state]
         set_reel = False
 
         # update animation if changed
@@ -117,7 +117,7 @@ class Animation(Node):
         from direction and state data"""
         state:str = self.parent.state
         direction:int = self.parent.move.direction
-        current:Reel = self.animations[state]
+        current:Reel = self.animation[state]
         frame_tags:list[dict] = current.meta['frameTags']
         tag = {}
         for d_tag in range(len(frame_tags)):
@@ -144,7 +144,7 @@ class Animation(Node):
         set the image from the current state and direction and frame index
         """
         current:Frame = (
-            self.animations[self.parent.state].frames[self.frame_index]
+            self.animation[self.parent.state].frames[self.frame_index]
         )
         self.parent.sprite.set_image(current.image)
         self.frame_time = current.duration

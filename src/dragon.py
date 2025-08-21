@@ -29,7 +29,7 @@ class Dragon(Decal):
 
     def apply_physics(self):
         
-        if self.state == 'damage' and self.animations.active:
+        if self.state == 'damage' and self.animation.active:
             self.move(self.damage_direction, speed=3*self.speed)
 
     def choose_action(self):
@@ -45,7 +45,7 @@ class Dragon(Decal):
         
         self.apply_action(self.action)
         self.check_signals()
-        self.animations.update()
+        self.animation.update()
         self.apply_physics()
         
 
@@ -73,7 +73,7 @@ class Dragon(Decal):
         self.signals.append(signal)
 
     def apply_action(self, action):
-        if self.animations.active: return
+        if self.animation.active: return
 
         if action in Compass.strings: 
             # ^ means a direction button is being pressed
@@ -90,13 +90,13 @@ class Dragon(Decal):
 
 
     def check_collision(self):
-        if self.state == 'damage' and self.animations.active:
+        if self.state == 'damage' and self.animation.active:
             return
 
         for player in list_collided(self, self.scene.groups['player']):
-            if (player.animations and\
-                player.animations.current['id'] == 'damage' and\
-                player.animations.active
+            if (player.animation and\
+                player.animation.current['id'] == 'damage' and\
+                player.animation.active
             ): continue
 
             damage_direction = (

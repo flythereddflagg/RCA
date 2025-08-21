@@ -73,9 +73,9 @@ foreground:
   #   scale: 1
   #   action: shovel
 
-  - id: ossifrage 1
-    yaml: ./assets/actor/ossifrage.yaml
-    start: [835,506]
+  # - id: ossifrage 1
+  #   yaml: ./assets/actor/ossifrage.yaml
+  #   start: [835,506]
 
   - id: cactus
     type: Cactus

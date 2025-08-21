@@ -7,7 +7,7 @@ foreground:
     # start: [0, 50]
     image: ./assets/block/null.png
     path_prefix: ./assets/scene/startup/
-    animations:
+    animation:
       intro:
         datafile: startup.json
         repeat: false

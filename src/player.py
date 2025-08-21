@@ -80,9 +80,9 @@ class Player(Node):
             if self.inventory.active:
                 self.inventory.select("LEFT")
             elif self.inventory.left_item.id != EMPTY:
-                self.animations_id = self.inventory.left_item.action
-                if self.animations_id:
-                    self.state = self.animations_id
+                self.animation_id = self.inventory.left_item.action
+                if self.animation_id:
+                    self.state = self.animation_id
         
         if (RIGHT_HAND_BUTTON in actions and 
             RIGHT_HAND_BUTTON in self.input_held
@@ -90,17 +90,17 @@ class Player(Node):
             if self.inventory.active:
                 self.inventory.select("RIGHT")
             elif self.inventory.right_item.id != EMPTY:
-                self.animations_id = self.inventory.right_item.action
-                if self.animations_id:
-                    self.state = self.animations_id
+                self.animation_id = self.inventory.right_item.action
+                if self.animation_id:
+                    self.state = self.animation_id
 
 
     def apply_input(self):
-        if self.animations and self.animations.active: 
+        if self.animation and self.animation.active: 
             return
         actions_val, self.input_held = self.scene.game.input.get()
 
-        # revert to "idle" self.animations if no input is given
+        # revert to "idle" self.animation if no input is given
         if not actions_val:
             self.state = DEFAULT_STATE
             return

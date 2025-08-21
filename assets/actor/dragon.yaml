@@ -9,7 +9,7 @@ groups:
 path_prefix: "./assets/actor/dragon/"
 
 
-animations:
+animation:
   stand:
     datafile: "internet_dragon.json"
     repeat: True
