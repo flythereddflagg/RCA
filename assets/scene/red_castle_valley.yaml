@@ -1,9 +1,13 @@
-# Set up all sprite groups
+# layers specifies draw order
 layers:
   - behind
   - background
   - foreground
   - overlay
+
+nodes: # all children are nodes
+# TODO implement this for all scenes
+# layers are specified in the groups attribute
 
 background:
   # - id: BACKGROUND
