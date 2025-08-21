@@ -1,14 +1,9 @@
 # Set up all sprite groups
-id: red castle valley
 layers:
   - behind
   - background
   - foreground
   - overlay
-# amount to scale everything
-zoom: 1
-# pixels before camera moves instead of player
-CAMERASLACK: 100
 
 background:
   # - id: BACKGROUND

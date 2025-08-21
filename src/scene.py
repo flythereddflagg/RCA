@@ -158,20 +158,13 @@ class Scene():
     def deconstruct(self):
         # TODO serialize scene as YAML and save then delete
         # save the scene as is
-        scene_dict = {}
-        for name, group in self.groups.items():
-            scene_dict[name] = {
-                sprite.id: list(sprite.rect.center)
-                for sprite in group.sprites()
-            }
+        serial = self.serialize()
 
-        self.game.saved_scenes[self.id] = scene_dict
 
-        # TODO make a save scene and load scene. Will this work?
-        # for sprite in self.all_nodes.sprites():
-        #     if sprite is self.game.player.sprite: continue
-        #     sprite.kill()
-    
+    def serialize(self) -> dict:
+        pass
+        # TODO CONTINUE HERE ON THE SERIAL STUFF!
+        
     
     def get_player(self, player_number:int=0) -> Node:
         """
