@@ -6,7 +6,7 @@ layers:
   - overlay
 
 nodes: # all children are nodes
-# TODO implement this for all scenes
+# TODO implement this for all scenes and rewrite scene.py!
 # layers are specified in the groups attribute
 
 background:
