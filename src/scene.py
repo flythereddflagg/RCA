@@ -87,22 +87,12 @@ class Scene():
 
 
     def load(self):
-        ### adjust scene based on game state (remembers how scenes were)
-        adjust_scene = self.id in self.game.saved_scenes
-        ###
         for name, group in self.groups.items():
             group_data = self.init.get(name)
             if not group_data: continue
 
             for node_init in group_data:
                 node = node_from_dict(self, node_init)
-                # skip a node because it has been removed previously in a saved scene
-                if (
-                    adjust_scene and 
-                    node.id not in self.game.saved_scenes[self.id][name].keys()
-                ): 
-                    continue
-                # TODO code here for new starting place for dropped items (further down the road?)
                 self.place_node(
                     node, group, 
                     node.init.get("groups"), node_init.get('start')

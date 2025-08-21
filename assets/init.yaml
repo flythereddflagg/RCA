@@ -17,13 +17,14 @@ SCALE: 2
 init_add_in:
   foreground:
     - yaml: ./assets/actor/player.yaml
-      start: [338,450]
+      # start: [338,450]
+      start: [200,200]
 
 # initial_scene: ./assets/scene/mansion_yard.yaml
-# initial_scene: ./assets/scene/boss_room.yaml
+initial_scene: ./assets/scene/boss_room.yaml
 # initial_scene: ./assets/scene/test_scene.yaml
 # initial_scene: ./assets/scene/startup.yaml
-initial_scene: ./assets/scene/red_castle_valley.yaml
+# initial_scene: ./assets/scene/red_castle_valley.yaml
 
 
 sprite_groups:

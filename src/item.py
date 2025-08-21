@@ -14,17 +14,9 @@ class Item(Decal):
     def check_collision(self):
         if self.id == EMPTY: return
         for player in list_collided(self, self.scene.groups['player']):
-            print("\n\n###trying to add item to player! 1\n\n")
             if player.parent: player = player.parent
             if player.inventory:
-                print("\n\n###trying to add item to player!\n\n")
                 new_slot = player.inventory.add_item(self)
-                print(
-                    f"added {new_slot} {player.inventory.left_item}",
-                    f" {player.inventory.contains(new_slot.id)}",
-                    f"id: {type(player), id(player)}"
-                )
-                print(self.scene.groups['player'].sprites())
                 if new_slot is None: return # no more slots can be added
                 self.kill()
             break
