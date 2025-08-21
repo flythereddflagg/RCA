@@ -1,3 +1,8 @@
+import subprocess
+
+subprocess.run("pip install -r requirements.txt".split())
+
+
 import sys
 from cx_Freeze import setup, Executable
 
@@ -5,6 +10,7 @@ from cx_Freeze import setup, Executable
 # INCREMENT VERSION AFTER EVERY RELEASE
 with open("./VERSION") as f:
     VERSION = f.read().strip()
+
 
 game_description = """Red Castle Avenger - The Game"""
 

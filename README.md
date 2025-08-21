@@ -5,8 +5,9 @@
 
 **To build:**
 - Python distribution installed (Python >= 3.10)
-- Python packages needed for build: [pygame](https://www.pygame.org/wiki/about), [pyyaml](https://pyyaml.org/), [cx_freeze](https://marcelotduarte.github.io/cx_Freeze/) (These may be installed with pip using `python -m pip install --upgrade pygame pyyaml cx_freeze`)
-- Once Python and all packages are installed run `python setup.py build` from the project's root directory
+- *Recommended*: Set up a virtual environment in Python to run the build (e.g. on Linux: `python -m venv build_env`, then `source ./build_env/bin/activate`)
+- Run `python setup.py build` from the project's root directory
+- Dependencies should be downloaded, installed and the project built in the project directory
 
 ## World 1: In the shadow of the mountain
 
