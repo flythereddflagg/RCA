@@ -34,6 +34,16 @@ class Node(pg.sprite.Sprite):
                 node = node_from_dict(self.scene, child)
                 self.children.add(node)
                 setattr(self, node.id, node)
+        self.setup()
+
+    
+    def setup():
+        """
+        Optional to implement in children but replaces the need
+        for complicated call signatures ahd helps to serialize 
+        objects
+        """
+        pass
 
 
 

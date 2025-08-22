@@ -2,7 +2,7 @@ import json
 
 import pygame as pg
 
-from .tools import load_yaml, class_from_str, filter_serializable
+from .tools import load_yaml, save_yaml
 from .camera import Camera
 from .node import Node, node_from_dict
 from .decal import Decal
@@ -46,6 +46,9 @@ class Scene():
         self.id = yaml_path
         
         self.init = load_yaml(yaml_path)
+        save_yaml({
+            "layers":self.init.layers, "nodes":self.init.nodes
+        }, "og.yaml")
 
         add_in = add_in if add_in else {}
         self.init["nodes"].extend(add_in)
@@ -79,6 +82,7 @@ class Scene():
         if add_background_blank:
             self.background.add(Decal(self))    
         self.load()
+        self.deconstruct()
 
 
     def load(self):
@@ -147,11 +151,25 @@ class Scene():
         # TODO serialize scene as YAML and save then delete
         # save the scene as is
         serial = self.serialize()
+        print("serial\n\n", serial)
+        print("\n\n end serial")
+        save_yaml(serial, "test.yaml")
+        breakpoint()
 
 
     def serialize(self) -> dict:
-        pass
-        # TODO CONTINUE HERE ON THE SERIAL STUFF!
+        nodes = []
+        for node in self.all_nodes:
+            if node.parent is not None: continue
+            init = node.init
+            if init.get("start"):
+                init["start"] = [int(i) for i in (
+                    pg.math.Vector2(node.sprite.rect.topleft) - 
+                    pg.math.Vector2(self.background.sprites()[0].rect.topleft)
+                )]
+            nodes.append(init)
+        return {"layers":self.draw_layers, "nodes": nodes}
+
         
     
     def get_player(self, player_number:int=0) -> Node:

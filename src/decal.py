@@ -27,24 +27,12 @@ class Decal(Node):
     from the parent class
     """
 
-    def __init__(
-                self, 
-                scene,
-                image:str=None,
-                scale:float=1, 
-                mask:str=None, 
-                parent:Node=None,
-                child:[Node]=None,
-                animation:'.animation.Animation'=None,
-                **init
-    ):
-        super().__init__(scene, parent=parent, child=child, **init)
+    def setup(self):
         self.sprite = self        
 
-        self.image_path = image
-        self.mask_path = mask
-        self.init_scale = scale
-        self.parent = parent
+        self.image_path:str = self.init.get("image")
+        self.mask_path:str = self.init.get("mask")
+        self.init_scale:float = self.init.get("scale", 1)
 
         self.image = (
             pg.image.load(self.image_path).convert_alpha() 

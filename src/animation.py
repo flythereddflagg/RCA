@@ -34,11 +34,12 @@ class Animation(Node):
     """
     A system for setting the parent sprite object's image.
     """
-    def __init__(
-        self, scene, parent, animation:dict, path_prefix='./', **init
-    ):
+    def setup(self):
+        # force the exitence of the animation
+        assert self.init.get('animation'), "No animation dict provided in init"
+        assert isinstance(self.init.get('animation'), dict), \
+            f"invalid animation in init {str(animation)}"
         # parent must have a 'state' attribute
-        super().__init__(scene=scene, parent=parent, **init)
         self.previous:str = None
         self.last_state:str = None
         # TODO make direction an optional attribute?
@@ -48,10 +49,9 @@ class Animation(Node):
         self.frame_counter = iter([]) # generator counter for the frame index
         self.frame_index = 0 # index of the current frame
         self.frame_time = 1 # duration of the current frame
-        self.path_prefix = path_prefix
+        self.path_prefix = self.init.get('path_prefix', "./") 
         self.animation = {}
-        assert isinstance(animation, dict), f"{str(animation)}"
-        self.load_animation(animation)
+        self.load_animation(self.init.get('animation'))
 
 
     def load_animation(self, animation) -> None:

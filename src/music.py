@@ -3,9 +3,10 @@ import pygame as pg
 from .node import Node
 
 class Music(Node):
-    def __init__(self, filename, **init):
-        super().__init__(**init)
-        self.filename = filename
+
+    def setup(self)
+        self.filename = self.init.get("filename")
+        assert self.filename, "No filename given"
         self.sprite = None
         pg.mixer.music.load(self.filename)
         pg.mixer.music.play(-1)

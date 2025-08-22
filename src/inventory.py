@@ -10,11 +10,8 @@ N_SLOTS = 6
 INV_SCALE = 1
 
 class Inventory(Node):
-    def __init__(
-        self, parent, money:int=0, hp:int=0, hp_max:int=0, max_money=999, 
-        **kwargs
-    ):
-        super().__init__(parent=parent, **kwargs)
+
+    def setup(self):
         self.sprite = Decal(**{
             "parent": self,
             "id": "inventory_screen",
@@ -25,10 +22,10 @@ class Inventory(Node):
         })
 
         self.slots:list[Item] = []
-        self.money:int = money # gold coins
-        self.hp:int = hp
-        self.HP_MAX:int = hp_max
-        self.max_money = max_money
+        self.money:int = self.init.get("money", 0) # gold coins
+        self.hp:int = self.init.get("hp", 0)
+        self.HP_MAX:int = self.init.get("hp_max", 0)
+        self.max_money = self.init.get("max_money", 999)
         self.active = False
         self.left_item:Item = self.empty_item()
         self.right_item:Item = self.empty_item()

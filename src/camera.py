@@ -7,13 +7,13 @@ from .node import Node
 
 
 class Camera(Node):
-    def __init__(self, zoom=1, slack=0, **init):
-        super().__init__(**init)
+    
+    def setup(self):
         self.mobile_groups = self.scene.draw_layers.copy()
         self.mobile_groups.remove('hud')
         self.cur_zoom = 1
-        self.slack = slack
-        self.zoom_by(zoom)
+        self.slack = self.init.get("slack", 0) 
+        self.zoom_by(self.init.get("zoom", 1))
         
 
     def update(self):
