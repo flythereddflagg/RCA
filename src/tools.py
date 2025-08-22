@@ -37,10 +37,16 @@ def filter_serializable(structure:dict|list):
 
 
 
-def load_yaml(yaml_path):
+def load_yaml(yaml_path) -> DictObj:
     with open(yaml_path) as f:
         yaml_data = yaml.load(f.read(), Loader=yaml.Loader)
     return DictObj(**yaml_data)
+
+
+def save_yaml(data:dict|list, yaml_path:str):
+    yaml_str = yaml.dump(data, Dumper=yaml.Dumper)
+    with open(yaml_path, 'w') as f:
+        f.write(yaml_str)
 
 
 def load_json(json_path):

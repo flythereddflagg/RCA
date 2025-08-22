@@ -1,95 +1,82 @@
-id: mansion yard
-zoom: 1 # amount to scale everything
-CAMERASLACK: 100 # pixels from center screen before the camera moves
-
-layers: # layers will be drawn in this order
-  - behind
+layers:
+- behind
+- background
+- foreground
+- overlay
+- hud
+nodes:
+- groups:
+  - solid
   - background
-  # - behind
-  - foreground
+  id: mansion yard map
+  image: ./assets/scene/mansion_yard/mansion_yard_bg.png
+  mask: ./assets/scene/mansion_yard/mansion_yard_mask.png
+  type: Decal
+- groups:
   - overlay
-  - hud
-
-background:
-  - id: mansion yard map
-    type: Decal
-    image: ./assets/scene/mansion_yard/mansion_yard_bg.png
-    mask: ./assets/scene/mansion_yard/mansion_yard_mask.png
-    groups: 
-     - solid
-
-overlay:
-  - id: mansion yard map
-    type: Decal
-    image: ./assets/scene/mansion_yard/mansion_yard_overlay.png
-  - id: statue block
-    type: Gate
-    key_id: statue key
-    image: ./assets/scene/mansion_yard/statue.png
-    mask: ./assets/scene/mansion_yard/statue_mask.png
-    start: [742,125]
-    groups: 
-     - solid
-
-foreground:
-  - id: shovel
-    type: Item
-    image: ./assets/actor/item/shovel.png
-    mask: ./assets/actor/item/shovel.png
-    start: [59,449]
-    scale: 1
-    action: shovel
-  # - id: statue key
-  #   type: Item
-  #   image: ./assets/block/silver_key.png
-  #   mask: ./assets/block/silver_key.png
-  #   scale: 1
-  #   start: [900,500]
-  #   action: null
-
-behind:
-  - id: bridge_exit
-    type: Edge
-    image: ./assets/block/block.png
-    mask: ./assets/block/block.png
-    start: [884,673]
-    scale: 1
-    scene_path: ./assets/scene/red_castle_valley.yaml
-    exit_dir: UP
-  # - id: forest_exit
-  #   type: Edge
-  #   image: ./assets/block/block.png
-  #   mask: ./assets/block/block.png
-  #   start: [1410,1343]
-  #   scale: 2.5
-  #   scene_path: ./assets/scene/placeholder.yaml
-  #   exit_dir: UP
-  - id: alley_exit
-    type: Edge
-    image: ./assets/block/block.png
-    mask: ./assets/block/block.png
-    start: [663,175]
-    scale: 1
-    scene_path: ./assets/scene/alleyway.yaml
-    exit_dir: RIGHT
-  - id: statue_exit 
-    type: Edge
-    image: ./assets/block/block.png
-    mask: ./assets/block/block.png
-    start: [849,213]
-    scale: 1
-    scene_path: ./assets/scene/corridor.yaml
-    exit_dir: DOWN
-  # - id: grate exit 
-  #   type: Edge
-  #   image: ./assets/block/block.png
-  #   mask: ./assets/block/block.png
-  #   start: [232,313]
-  #   scale: 1
-  #   scene_path: ./assets/scene/boss_room.yaml
-  #   exit_dir: RIGHT
-
-other:
-  - id: camera
-    type: Camera
-    slack: 100
+  id: mansion yard map
+  image: ./assets/scene/mansion_yard/mansion_yard_overlay.png
+  type: Decal
+- groups:
+  - solid
+  - overlay
+  id: statue block
+  image: ./assets/scene/mansion_yard/statue.png
+  key_id: statue key
+  mask: ./assets/scene/mansion_yard/statue_mask.png
+  start:
+  - 742
+  - 125
+  type: Gate
+- action: shovel
+  groups:
+  - foreground
+  id: shovel
+  image: ./assets/actor/item/shovel.png
+  mask: ./assets/actor/item/shovel.png
+  scale: 1
+  start:
+  - 59
+  - 449
+  type: Item
+- exit_dir: UP
+  groups:
+  - behind
+  id: bridge_exit
+  image: ./assets/block/block.png
+  mask: ./assets/block/block.png
+  scale: 1
+  scene_path: ./assets/scene/red_castle_valley.yaml
+  start:
+  - 884
+  - 673
+  type: Edge
+- exit_dir: RIGHT
+  groups:
+  - behind
+  id: alley_exit
+  image: ./assets/block/block.png
+  mask: ./assets/block/block.png
+  scale: 1
+  scene_path: ./assets/scene/alleyway.yaml
+  start:
+  - 663
+  - 175
+  type: Edge
+- exit_dir: DOWN
+  groups:
+  - behind
+  id: statue_exit
+  image: ./assets/block/block.png
+  mask: ./assets/block/block.png
+  scale: 1
+  scene_path: ./assets/scene/corridor.yaml
+  start:
+  - 849
+  - 213
+  type: Edge
+- groups:
+  - other
+  id: camera
+  slack: 100
+  type: Camera

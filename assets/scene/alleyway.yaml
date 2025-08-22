@@ -1,50 +1,51 @@
-id: <scene name>
-zoom: 1 # amount to scale everything
-CAMERASLACK: 100 # pixels from center screen before the camera moves
-
-layers: # layers will be drawn in this order
-  - behind
+layers:
+- behind
+- background
+- foreground
+- overlay
+- hud
+nodes:
+- groups:
+  - solid
   - background
-  - foreground
+  id: alleyway map
+  image: ./assets/scene/alleyway/alley_way.png
+  mask: ./assets/scene/alleyway/alley_way_mask.png
+  type: Decal
+- groups:
   - overlay
-  - hud
-
-# sprites in each drawing layer
-background:
-  - id: alleyway map
-    type: Decal
-    image: ./assets/scene/alleyway/alley_way.png
-    mask: ./assets/scene/alleyway/alley_way_mask.png
-    groups: 
-     - solid # a group to be in for certain effects
-overlay:
-  - id: alleyway shadows
-    type: Decal
-    image: ./assets/scene/alleyway/alley_way_overlay.png
-
-foreground:
-  - id: rubble dirt
-    type: SoftDirt
-    image: ./assets/block/soft_dirt.png
-    mask: ./assets/block/soft_dirt_mask.png
-    start: [92,76]
+  id: alleyway shadows
+  image: ./assets/scene/alleyway/alley_way_overlay.png
+  type: Decal
+- groups:
+  - foreground
+  id: rubble dirt
+  image: ./assets/block/soft_dirt.png
+  mask: ./assets/block/soft_dirt_mask.png
+  scale: 1
+  start:
+  - 92
+  - 76
+  treasure:
+  - action: null
+    id: gate key
+    image: ./assets/block/gold_key.png
+    mask: ./assets/block/gold_key.png
     scale: 1
-    treasure:   
-      - id: gate key
-        type: Item
-        image: ./assets/block/gold_key.png
-        mask: ./assets/block/gold_key.png
-        start: [64,0]
-        scale: 1
-        action: null
-
-
-behind:
-  - id: alley_exit
-    type: Edge
-    image: ./assets/block/block.png
-    mask: ./assets/block/block.png
-    start: [581,80]
-    scale: 1
-    scene_path: ./assets/scene/mansion_yard.yaml
-    exit_dir: LEFT
+    start:
+    - 64
+    - 0
+    type: Item
+  type: SoftDirt
+- exit_dir: LEFT
+  groups:
+  - behind
+  id: alley_exit
+  image: ./assets/block/block.png
+  mask: ./assets/block/block.png
+  scale: 1
+  scene_path: ./assets/scene/mansion_yard.yaml
+  start:
+  - 581
+  - 80
+  type: Edge

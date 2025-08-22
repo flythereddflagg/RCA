@@ -1,31 +1,32 @@
-id: <scene name>
-zoom: 1 # amount to scale everything
-CAMERASLACK: 100 # pixels from center screen before the camera moves
-
-layers: # layers will be drawn in this order
+layers:
+- background
+- foreground
+- hud
+nodes:
+- groups:
+  - solid
   - background
+  id: <unique ID 2>
+  image: <image path>
+  mask: <mask image path>
+  type: Decal
+- groups:
   - foreground
-  - hud
-
-background:
-  - id: <unique ID 2>
-    type: Decal
-    image: <image path>
-    mask: <mask image path>
-    groups: 
-     - solid # a group to be in for certain effects
-
-foreground:
-  - id: <unique ID 2>
-    type: Decal <or subclass>
-    yaml: <path to yaml data>
-    start: [700,900] # where on the background do you want to start?
-
-  - id: <unique ID 3>
-    type: Edge
-    image: <image path>
-    mask: <image path>
-    start: [845,-80] # where on the background do you want to start?
-    scale: 2.5 # x factor to scale the image.
-    scene_path: <new scene path>
-    exit_dir: <direction of exit into this scene>
+  id: <unique ID 2>
+  start:
+  - 700
+  - 900
+  type: Decal <or subclass>
+  yaml: <path to yaml data>
+- exit_dir: <direction of exit into this scene>
+  groups:
+  - foreground
+  id: <unique ID 3>
+  image: <image path>
+  mask: <image path>
+  scale: 2.5
+  scene_path: <new scene path>
+  start:
+  - 845
+  - -80
+  type: Edge

@@ -47,7 +47,7 @@ class Edge(Decal):
         )
         print(start_pos - bg_pos, out_block.sprite.rect.topleft - bg_pos, Compass.unit_vector(out_block.init["exit_dir"]), half_size)
         new_scene.place_node(
-            player, new_scene.groups[player_layer], 
+            player, 
             player.init.get("groups"), start=start_pos
         )
         self.scene.all_nodes.cancel_update()

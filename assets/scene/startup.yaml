@@ -1,28 +1,27 @@
-layers: # layers will be drawn in this order
+layers:
+- foreground
+nodes:
+- animation:
+    intro:
+      datafile: startup.json
+      repeat: false
+    titlescreen:
+      datafile: mountain_rev2.json
+      repeat: true
+  groups:
   - foreground
-
-foreground:
-  - id: startup_animation
-    type: CutScene
-    # start: [0, 50]
-    image: ./assets/block/null.png
-    path_prefix: ./assets/scene/startup/
-    animation:
-      intro:
-        datafile: startup.json
-        repeat: false
-      titlescreen: 
-        datafile: mountain_rev2.json
-        repeat: true
-
-other:
-  - id: startup music
-    type: Music
-    filename: ./assets/music/RCA_OVERWORLD/RCA_titlescreen.mp3
-  - id: camera
-    type: Camera
-    zoom: 1 # amount to scale everything -1 means no camera
-    slack: 100 # pixels from center screen before the camera moves
-
-
-
+  id: startup_animation
+  image: ./assets/block/null.png
+  path_prefix: ./assets/scene/startup/
+  type: CutScene
+- filename: ./assets/music/RCA_OVERWORLD/RCA_titlescreen.mp3
+  groups:
+  - other
+  id: startup music
+  type: Music
+- groups:
+  - other
+  id: camera
+  slack: 100
+  type: Camera
+  zoom: 1
