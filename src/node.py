@@ -15,13 +15,13 @@ class Node(pg.sprite.Sprite):
     """Interface class for all in-game objects that have or manage sprites"""
     def __init__(
                 self, 
-                scene, 
+                scene=None,
                 parent:'Node'=None, 
                 children:list[dict]=None, 
                 **init
     ):
         super().__init__()
-        self.scene = scene # Force all nodes to have a scene
+        self.scene = scene
         id_ = init.get('id')
         self.id = id_ if id_ else str(type(self)) + str(id(self))
         self.init = init

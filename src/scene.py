@@ -36,7 +36,7 @@ class Scene():
             game, 
             yaml_path, 
             groups, 
-            add_in:dict=None
+            add_in:list[dict]=None
         ):
         """
         All this must do load the data from a YAML file
@@ -46,9 +46,9 @@ class Scene():
         self.id = yaml_path
         
         self.init = load_yaml(yaml_path)
+
         add_in = add_in if add_in else {}
-        for key, val in add_in.items():
-            self.init[key].extend(val)
+        self.init["nodes"].extend(add_in)
         
         self.draw_layers = self.init.layers.copy()
         # guarentee background exists
@@ -69,11 +69,6 @@ class Scene():
             **{
                 group_name: pg.sprite.Group() 
                 for group_name in groups
-            },
-            **{
-                group_name: pg.sprite.Group() 
-                for group_name, val in self.init.items()
-                if isinstance(val, list) and val and isinstance(val[0], dict)
             }
         }
         # since these are guarenteed to exist, provide references to them
@@ -87,22 +82,18 @@ class Scene():
 
 
     def load(self):
-        for name, group in self.groups.items():
-            group_data = self.init.get(name)
-            if not group_data: continue
-
-            for node_init in group_data:
-                node = node_from_dict(self, node_init)
-                self.place_node(
-                    node, group, 
-                    node.init.get("groups"), node_init.get('start')
-                )
+        for node_init in self.init.get("nodes"):
+            print(node_init)
+            node = node_from_dict(self, node_init)
+            self.place_node(
+                node, 
+                node.init.get("groups"), 
+                node_init.get('start')
+            )
 
 
-    def place_node(
-        self, node:Node, draw_layer:pg.sprite.Group=None, 
-        groups=None, start=None
-    ):
+
+    def place_node(self, node:Node, groups=None, start=None):
         if node.scene is not self:
             node.scene = self
         self.all_nodes.add(node)
@@ -121,14 +112,11 @@ class Scene():
             sprite_instance.scene = self
 
         self.all_nodes.add(sprite_instance)
-       
-        # decal to be in ONLY one draw_layer or otherwise not be drawn
-        if draw_layer is not None:
-            draw_layer.add(sprite_instance)
 
-        # node can exist in other groups though
         if groups:
             for group in groups:
+                if group not in self.groups:
+                    self.groups[group] = pg.sprite.Group()
                 self.groups[group].add(sprite_instance)
         if start:
             sprite_instance.rect.topleft = pg.math.Vector2(start)

@@ -15,10 +15,11 @@ SCALE: 2
 
 ### GAME INIT ###
 init_add_in:
-  foreground:
-    - yaml: ./assets/actor/player.yaml
-      start: [338,450] # red castle valley
-      # start: [200,200] # boss room
+  - yaml: ./assets/actor/player.yaml
+    start: [338,450] # red castle valley
+    # start: [200,200] # boss room
+    groups:
+      - foreground
 
 # initial_scene: ./assets/scene/mansion_yard.yaml
 # initial_scene: ./assets/scene/boss_room.yaml

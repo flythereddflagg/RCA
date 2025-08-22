@@ -5,31 +5,23 @@ layers:
   - foreground
   - overlay
 
-nodes: # all children are nodes
 # TODO implement this for all scenes and rewrite scene.py!
 # layers are specified in the groups attribute
-
-background:
-  # - id: BACKGROUND
-  #   type: Decal
-  #   image: ./assets/scene/red_castle_valley/background.png
-  #   mask: ./assets/scene/red_castle_valley/foreground.png
-  #   groups: 
-  #    - solid
-
+nodes: # all children are nodes
   - id: BACKGROUND
     type: Decal
     image: ./assets/scene/red_castle_valley/red_castle_valley_bg.png
     mask: assets/scene/red_castle_valley/red_castle_valley_mask.png
     groups:
       - solid
+      - background
 
-overlay:
   - id: foreground
     type: Decal
     image: ./assets/scene/red_castle_valley/red_castle_valley_overlay.png
+    groups:
+      - overlay
 
-foreground:
   - id: big ol rock
     type: Decal
     image: ./assets/block/big_ol_rock.png
@@ -38,6 +30,7 @@ foreground:
     scale: 2
     groups: 
      - solid
+     - foreground
 
   - id: guard
     type: Gate
@@ -48,12 +41,15 @@ foreground:
     scale: 1
     groups: 
      - solid
+     - foreground
   # - id: jar of pickles
   #   type: Item
   #   image: ./assets/block/jar_of_pickles.png
   #   mask: ./assets/block/jar_of_pickles.png
   #   start: [300,300]
   #   action: null
+    # groups:
+    #   - foreground
 
   # - id: wall
   #   type: Decal
@@ -63,6 +59,7 @@ foreground:
   #   scale: 0.75
   #   groups: 
   #    - solid
+  #    - foreground
 
   # - id: shovel
   #   type: Item
@@ -71,10 +68,14 @@ foreground:
   #   start: [800,200]
   #   scale: 1
   #   action: shovel
+  #   groups:
+  #    - foreground
 
   # - id: ossifrage 1
   #   yaml: ./assets/actor/ossifrage.yaml
   #   start: [835,506]
+  #   groups:
+        # - foreground
 
   - id: cactus
     type: Cactus
@@ -82,6 +83,8 @@ foreground:
     mask: ./assets/block/cactus.png
     start: [956,337]
     scale: 1
+    groups: 
+     - foreground
 
   - id: backpack
     type: Backpack
@@ -89,6 +92,8 @@ foreground:
     mask: ./assets/block/backpack.png
     start: [358,531]
     scale: 1
+    groups: 
+     - foreground    
 
   - id: soft_dirt
     type: SoftDirt
@@ -96,6 +101,8 @@ foreground:
     mask: ./assets/block/soft_dirt_mask.png
     start: [221,624]
     scale: 1
+    groups: 
+     - foreground
     treasure:   
       - id: statue key
         type: Item
@@ -105,7 +112,6 @@ foreground:
         start: [64,0]
         action: null
 
-behind:
   - id: bridge_exit
     type: Edge
     image: ./assets/block/block.png
@@ -114,6 +120,8 @@ behind:
     scale: 2
     scene_path: ./assets/scene/mansion_yard.yaml
     exit_dir: DOWN
+    groups: 
+     - behind
 
   - id: forest_red_castle_valley_connection
     type: Edge
@@ -123,6 +131,8 @@ behind:
     scale: 1
     scene_path: ./assets/scene/forest.yaml
     exit_dir: RIGHT
+    groups: 
+     - behind
 
   - id: mountain trail exit
     type: Edge
@@ -132,8 +142,10 @@ behind:
     scale: 2.5
     scene_path: ./assets/scene/placeholder.yaml
     exit_dir: UP
+    groups: 
+     - behind
   
-other:
+
 # - id: red castle valley theme
 #   type: Music
 #   filename: ./assets/music/RCA_OVERWORLD/RCA_OVERWORLD_v3.mp3
