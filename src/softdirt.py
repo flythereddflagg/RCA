@@ -37,9 +37,7 @@ class SoftDirt(Decal):
             ) + self.rect.topleft
             node = node_from_dict(self, item)
             groups = self.init.get("groups")
-            self.scene.place_node(
-                node, layer, groups=groups, start=start_vector
-            )
+            self.scene.place_node(node, groups=groups, start=start_vector)
         self.kill()
 
 

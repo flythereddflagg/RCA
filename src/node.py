@@ -83,7 +83,6 @@ class Node(pg.sprite.Sprite):
 
         super().kill()
 
-    #TODO add code here that implments adding children
     def __repr__(self):
         return f"<{str(str(type(self)).split('\'')[1])} - {self.id}>"
     

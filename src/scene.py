@@ -31,31 +31,20 @@ class SpriteGroup(pg.sprite.Group):
 
 
 class Scene():  
-    def __init__(
-            self, 
-            game, 
-            yaml_path=None,
-            yaml_data=None, 
-            add_in:list[dict]=None
-        ):
+    def __init__(self, game, yaml_path, yaml_data=None, add_in:list[dict]=None):
         """
         All this must do load the data from a YAML file
         and load each sprite into a group
         """
-        assert yaml_path or yaml_data, "you must provide yaml data or yaml path"
         self.game = game
-        # TODO NEXT make a scene load from the yaml data
-        self.id = yaml_path if yaml_path else f"<Scene at: {id(self)}>"
+        self.id = yaml_path
         
-        self.init = load_yaml(yaml_path)
-        save_yaml({
-            "layers":self.init.layers, "nodes":self.init.nodes
-        }, "og.yaml")
+        self.init = yaml_data if yaml_data else load_yaml(yaml_path)
 
         add_in = add_in if add_in else []
         self.init["nodes"].extend(add_in)
         
-        self.draw_layers = self.init.layers.copy()
+        self.draw_layers = self.init["layers"].copy()
         # guarentee background exists
         add_background_blank = False
         if "background" not in self.draw_layers:
@@ -73,23 +62,18 @@ class Scene():
         # since these are guarenteed to exist, provide references to them
         self.background = self.groups["background"]
         self.hud = self.groups["hud"]
-
+        
         # guarentee a blank background sprite if none exists.
         if add_background_blank:
-            self.background.add(Decal(self))    
-        self.load()
+            self.place_node(Decal(self), ["background"])
 
-
-    def load(self):
         for node_init in self.init.get("nodes"):
-            print(node_init)
             node = node_from_dict(self, node_init)
             self.place_node(
                 node, 
                 node.init.get("groups"), 
                 node_init.get('start')
             )
-
 
 
     def place_node(self, node:Node, groups=None, start=None):
@@ -132,7 +116,6 @@ class Scene():
             pg.math.Vector2(self.game.player.sprite.rect.topleft) - 
             pg.math.Vector2(self.background.sprites()[0].rect.topleft)
         )
-        print(current_player_position)
         self.game.load_scene(
             yaml_path=self.id, 
         )
@@ -143,11 +126,9 @@ class Scene():
 
 
     def deconstruct(self):
-        # TODO serialize scene as YAML and save then delete
-        # save the scene as is
+        # TODO profile memory usage and destroy scenes?
         serial = self.serialize()
-
-
+        self.game.saved_scenes[self.id] = serial
 
 
     def serialize(self) -> dict:

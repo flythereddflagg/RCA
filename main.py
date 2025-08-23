@@ -50,7 +50,6 @@ if __name__ == "__main__":
 # TODO make a pause and save screen or whatever
 # TODO flesh out HUD
 # TODO make a startup screen
-# TODO make a load screen
 # TODO make scene transitions a la LTTP (polish)
 # TODO: Item mechanics completely fleshed out
 # TODO: Larry AND Holly are playable with these items but both play differently and have different exits at the end (e.g. Larry has less knockback from bludgeoning but is more susceptible to piercing while Holly is the opposite.) (exits are the Original exit to the village and the exit to the mountain or something TBD)

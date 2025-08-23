@@ -42,7 +42,6 @@ class Animation(Node):
         # parent must have a 'state' attribute
         self.previous:str = None
         self.last_state:str = None
-        # TODO make direction an optional attribute?
         self.last_direction:int = Compass.DOWN 
         self.last_set_frame_time = 0 # time since the last frame was set
         self.active = False # is an animation active?

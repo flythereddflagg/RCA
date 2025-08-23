@@ -23,9 +23,6 @@ class Edge(Decal):
             for grp in self.scene.draw_layers 
             if player_sprite in self.scene.groups[grp]
         ][0]
-        # self.scene.deconstruct()
-        # for sprite in self.scene.all_nodes:
-        #     sprite.kill()
         new_scene = game.load_scene(
             yaml_path=self.init["scene_path"]
         )
@@ -49,4 +46,5 @@ class Edge(Decal):
             player.init.get("groups"), start=start_pos
         )
         self.scene.all_nodes.cancel_update()
+        self.scene.deconstruct()
         print("Completed edge loading")

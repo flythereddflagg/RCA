@@ -12,7 +12,6 @@ from .tools import load_yaml
 from .input import Input
 
 BLACK = (0, 0, 0)
-# TODO make a scene manager that loads a bunch of scenes here and then loads them into the game and remembers them.
 
 class Engine():
     """
@@ -63,10 +62,15 @@ class Engine():
             pg.Surface((draw_surface_w, draw_surface_h))
         )        
 
-    # TODO completely load and destroy a scene and check that it worked
-    def load_scene(self, **init) -> Scene:
+    # TODO make a save game file based on saved scenes
+    def load_scene(self, yaml_path, *args, **kwargs) -> Scene:
+        yaml_data = self.saved_scenes.get(yaml_path)
+            
         self.scene = Scene(
-            game=self,  groups=self.settings.sprite_groups, **init
+            game=self, 
+            yaml_path=yaml_path, 
+            yaml_data=yaml_data,
+            *args, **kwargs
         )
 
         return self.scene # return reference to scene if needed
