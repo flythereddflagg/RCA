@@ -148,7 +148,6 @@ class Engine():
         pg.display.flip()
 
 
-
     def render_debug(self):
         if self.settings.FPS_COUNTER:
             fps = str(int(self.clock.get_fps()))

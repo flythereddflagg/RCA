@@ -60,7 +60,7 @@ class Input():
         ctlr_input = self.map_ctlr_input(self.ctlr_input(0), 0) 
         self.actions:list[tuple[str, float]] = list(set(self.keyboard_input() + ctlr_input))
         self.held = [
-            action 
+            action[0]
             for action in self.actions 
             if action in self.last_actions
         ]

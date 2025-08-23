@@ -9,6 +9,9 @@ from .node import Node
 N_SLOTS = 6
 INV_SCALE = 1
 
+
+# TODO fix right hand selection
+
 class Inventory(Node):
 
     def setup(self):

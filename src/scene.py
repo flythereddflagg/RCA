@@ -3,7 +3,6 @@ import json
 import pygame as pg
 
 from .tools import load_yaml, save_yaml
-from .camera import Camera
 from .node import Node, node_from_dict
 from .decal import Decal
 
@@ -86,7 +85,6 @@ class Scene():
                 groups=child.init.get("groups"), 
                 start=child.init.get("start")
             )
-
         sprite_instance:'.decal.Decal' = node.sprite
 
         if sprite_instance is None: return
@@ -110,19 +108,17 @@ class Scene():
 
 
     def refresh(self):
-        # TODO this is all garbage since our last refactor. REWRITE!
-        self.camera.zoom_by(0)
-        current_player_position = (
-            pg.math.Vector2(self.game.player.sprite.rect.topleft) - 
+        """
+        Reset the scene by reloading from the yaml but keep the
+        player's postion
+        """
+        player = self.get_player().sprite.parent
+        current_player_position = list(
+            pg.math.Vector2(player.sprite.rect.topleft) - 
             pg.math.Vector2(self.background.sprites()[0].rect.topleft)
         )
-        self.game.load_scene(
-            yaml_path=self.id, 
-        )
-        self.game.init_player(self.game.player)
-        
-        self.game.player.sprite.rect.topleft = current_player_position
-        self.camera.zoom_by(self.game.settings.SCALE * self.init.get('zoom'))
+        player.init["start"] = current_player_position
+        self.game.load_scene(yaml_path=self.id, add_in=[player.init])
 
 
     def deconstruct(self):
