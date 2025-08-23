@@ -4,7 +4,7 @@ from .animation import Animation
 from .decal import Decal
 
 class HitMask(Animation):
-    # def __init__(self, parent:".node.Node", animation:dict, path_prefix='./'):
+  # TODO fix sword keeps cycling death loop
     def setup(self):
         sibling_id = self.init.get("sibling")
         assert sibling_id, f"{self.id}: No sibling passed into HitMask"
