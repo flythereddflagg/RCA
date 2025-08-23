@@ -90,7 +90,7 @@ class Ossifrage(Decal):
             animation = player.parent.animation
             if (animation and 
                 animation.active and
-                animation.current['id'] == 'damage'
+                player.parent.state == 'damage'
             ): continue
 
             damage_direction = (

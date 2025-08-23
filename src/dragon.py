@@ -30,7 +30,7 @@ class Dragon(Decal):
     def apply_physics(self):
         
         if self.state == 'damage' and self.animation.active:
-            self.move(self.damage_direction, speed=3*self.speed)
+            self.move(self.damage_direction, speed=1*self.speed)
 
     def choose_action(self):
         cur_time = pg.time.get_ticks()
@@ -94,9 +94,10 @@ class Dragon(Decal):
             return
 
         for player in list_collided(self, self.scene.groups['player']):
-            if (player.animation and\
-                player.animation.current['id'] == 'damage' and\
-                player.animation.active
+            animation = player.parent.animation
+            if (animation and
+                player.parent.state == 'damage' and
+                animation.active
             ): continue
 
             damage_direction = (

@@ -166,7 +166,10 @@ class Engine():
                     self.draw_surface, (255,255,255), sprite.rect, width=2
                 )
                 pos1, pos2 = (
-                    str(pg.math.Vector2(sprite.rect.topleft)//self.settings.SCALE), 
+                    str(
+                        pg.math.Vector2(sprite.rect.topleft)
+                        // self.settings.SCALE
+                    ), 
                     str((
                         pg.math.Vector2(sprite.rect.topleft) - 
                         pg.math.Vector2(background.rect.topleft)

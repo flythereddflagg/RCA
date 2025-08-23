@@ -22,6 +22,9 @@ nodes:
   - 55
   type: Dragon
   yaml: ./assets/actor/fey_frog.yaml
+  groups:
+  - foe
+  - foreground
 
 - id: sword
   type: Item
