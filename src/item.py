@@ -4,9 +4,9 @@ from .tools import list_collided
 EMPTY = 'empty'
 
 class Item(Decal):
-    def __init__(self, **init):
-        super().__init__(**init)
-        self.action = init.get("action")
+    def setup(self):
+        super().setup()
+        self.action = self.init.get("action")
     
     def update(self):
         self.check_collision()

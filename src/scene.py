@@ -34,23 +34,25 @@ class Scene():
     def __init__(
             self, 
             game, 
-            yaml_path, 
-            groups, 
+            yaml_path=None,
+            yaml_data=None, 
             add_in:list[dict]=None
         ):
         """
         All this must do load the data from a YAML file
         and load each sprite into a group
         """
+        assert yaml_path or yaml_data, "you must provide yaml data or yaml path"
         self.game = game
-        self.id = yaml_path
+        # TODO NEXT make a scene load from the yaml data
+        self.id = yaml_path if yaml_path else f"<Scene at: {id(self)}>"
         
         self.init = load_yaml(yaml_path)
         save_yaml({
             "layers":self.init.layers, "nodes":self.init.nodes
         }, "og.yaml")
 
-        add_in = add_in if add_in else {}
+        add_in = add_in if add_in else []
         self.init["nodes"].extend(add_in)
         
         self.draw_layers = self.init.layers.copy()
@@ -65,14 +67,8 @@ class Scene():
         
         self.all_nodes = SpriteGroup()
         self.groups = {
-            **{
-                group_name: pg.sprite.Group()
-                for group_name in self.draw_layers
-            },
-            **{
-                group_name: pg.sprite.Group() 
-                for group_name in groups
-            }
+            group_name: pg.sprite.Group()
+            for group_name in self.draw_layers
         }
         # since these are guarenteed to exist, provide references to them
         self.background = self.groups["background"]
@@ -82,7 +78,6 @@ class Scene():
         if add_background_blank:
             self.background.add(Decal(self))    
         self.load()
-        self.deconstruct()
 
 
     def load(self):
@@ -151,24 +146,31 @@ class Scene():
         # TODO serialize scene as YAML and save then delete
         # save the scene as is
         serial = self.serialize()
-        print("serial\n\n", serial)
-        print("\n\n end serial")
-        save_yaml(serial, "test.yaml")
-        breakpoint()
+
+
 
 
     def serialize(self) -> dict:
+        """
+        Return a serialized dict of the init info to recreate the current scene
+        """
         nodes = []
         for node in self.all_nodes:
+            if node in [n.parent for n in self.groups["player"]]:
+                continue
             if node.parent is not None: continue
             init = node.init
             if init.get("start"):
+                assert node.sprite, f"Node {node} is missing its sprite!"
                 init["start"] = [int(i) for i in (
                     pg.math.Vector2(node.sprite.rect.topleft) - 
                     pg.math.Vector2(self.background.sprites()[0].rect.topleft)
                 )]
             nodes.append(init)
-        return {"layers":self.draw_layers, "nodes": nodes}
+            draw_layers = self.draw_layers.copy()
+            draw_layers.remove("hud")
+
+        return {"layers":draw_layers, "nodes": nodes}
 
         
     

@@ -5,9 +5,9 @@ from .decal import Decal
 collide_dist = 50**2 # pixels
 
 class Gate(Decal):
-    def __init__(self, key_id=None, **kwargs):
-        super().__init__(**kwargs)
-        self.key_id = key_id
+    def setup(self):
+        super().setup()
+        self.key_id = self.init.get("key_id")
 
     def update(self):
         player_sprite = self.scene.get_player()

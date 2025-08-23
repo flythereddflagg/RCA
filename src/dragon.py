@@ -13,9 +13,9 @@ MOVEMENTS = Compass.strings + ['STOP', 'STOP', "STOP"]
 ACTION_TIME_RANGE = [200, 1000]
 
 class Dragon(Decal):
-    def __init__(self, **init):
-        super().__init__(**init)
-        self.sprite = self
+
+    def setup(self):
+        super().setup()
         self.move = Movement(self, **self.init)
         self.action_time = 0
         self.last_action_time = 0

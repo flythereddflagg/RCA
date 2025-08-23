@@ -5,8 +5,9 @@ class Move():
     direction = "UP"
 
 class CutScene(Decal):
-    def __init__(self, **init):
-        super().__init__(**init)
+
+    def setup(self):
+        super().setup()
         self.state = "intro"
         self.move = Move()
         self.animation = Animation(
@@ -14,8 +15,6 @@ class CutScene(Decal):
         )
         self.animation.previous = "titlescreen"
 
-        
-        
     
     def update(self):
         self.animation.update()

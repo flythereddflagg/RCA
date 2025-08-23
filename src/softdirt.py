@@ -10,9 +10,10 @@ throw_dist = 32 # pixels
 
 class SoftDirt(Decal):
 
-    def __init__(self, treasure=None, **kwargs):
-        super().__init__(**kwargs)
-        self.treasure = treasure # list of treasures given by the dirt
+    def setup(self):
+        super().setup()
+        # list of treasures given by the dirt
+        self.treasure = self.init.get("treasure") 
 
     def update(self):
         for sprite in list_collided(self, self.scene.groups["player"]):

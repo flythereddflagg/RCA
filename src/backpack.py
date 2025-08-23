@@ -4,8 +4,6 @@ from .decal import Decal
 from .tools import list_collided
 
 class Backpack(Decal):
-    def __init__(self, **init):
-        super().__init__(**init)
 
     def update(self):
         self.check_collision()
