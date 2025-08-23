@@ -28,6 +28,11 @@ children:
       shovel:
         repeat: False
         datafile: larry_shovel.json
+
+  - id: hitmask
+    type: HitMask
+    sibling: animation
+
   - id: inventory
     type: Inventory
     money: 0
@@ -39,3 +44,4 @@ children:
     mask: ./assets/actor/larry/larry_base_mask.png
     groups:
       - player
+

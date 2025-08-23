@@ -6,7 +6,6 @@ from .movement import Movement
 from .tools import list_collided
 from .item import EMPTY
 from .node import Node
-from .hit_mask import HitMask
 
 DEFAULT_SPEED = 200
 DEFAULT_STATE = 'stand'
@@ -139,7 +138,7 @@ class Player(Node):
 
 
     def check_collision(self):
-        if self.state == "sword":
+        if self.state == "sword" and "foe" in self.scene.groups:
             for sprite in list_collided(
                 self.hitmask.sprite, self.scene.groups['foe']
             ):

@@ -179,3 +179,10 @@ class Scene():
 
     def node_ids(self) -> list['.node.Node']:
         return [node.id for node in self.all_nodes.sprites()]
+
+    def node_in_groups(self, node:'.node.Node') -> list[str]:
+        """
+        returns the names of the groups in this scene which contain the node.
+        """
+        return [name for name, group in self.groups.items() if node in group]
+

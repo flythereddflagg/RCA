@@ -4,14 +4,16 @@ layers:
 - foreground
 - overlay
 - hud
+
 nodes:
-- groups:
+- id: boss room
+  type: Decal
+  groups:
   - solid
   - background
-  id: boss room
   image: ./assets/scene/boss_room/boss_room.png
   mask: ./assets/scene/boss_room/boss_room_mask.png
-  type: Decal
+
 - groups:
   - foreground
   id: fey_frog
@@ -20,17 +22,16 @@ nodes:
   - 55
   type: Dragon
   yaml: ./assets/actor/fey_frog.yaml
-- action: sword
+
+- id: sword
+  type: Item
+  action: sword
   groups:
   - foreground
-  id: sword
   image: ./assets/actor/item/sword_icon.png
   mask: ./assets/actor/item/sword_icon.png
-  scale: 1
-  start:
-  - 500
-  - 100
-  type: Item
+  start: [500,100]
+
 - exit_dir: DOWN
   groups:
   - behind
@@ -55,7 +56,5 @@ nodes:
   - 630
   - 164
   type: Edge
-- groups:
-  - other
-  id: camera
+- id: camera
   type: Camera
