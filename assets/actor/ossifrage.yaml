@@ -4,10 +4,6 @@
 type: Ossifrage
 image: "./assets/actor/ossifrage/bird_character_base.png"
 mask: "./assets/actor/ossifrage/bird_character_base.png"
-groups:
-  - foe
-
-
 
 children:
   - id: animation

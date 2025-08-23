@@ -60,10 +60,12 @@ class Ossifrage(Decal):
 
         self.signals = [] # reset signals
 
+
     def signal(self, signal):
         self.signals.append(signal)
 
-    def apply_action(self, action):
+
+    def apply_action(self, action):   
         if self.animation.active: return
 
         if action in Compass.strings: 
@@ -85,9 +87,10 @@ class Ossifrage(Decal):
             return
 
         for player in list_collided(self, self.scene.groups['player']):
-            if (player.animation and\
-                player.animation.current['id'] == 'damage' and\
-                player.animation.active
+            animation = player.parent.animation
+            if (animation and 
+                animation.active and
+                animation.current['id'] == 'damage'
             ): continue
 
             damage_direction = (

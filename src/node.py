@@ -2,11 +2,11 @@ import pygame as pg
 
 from .tools import class_from_str, load_yaml
 
-def node_from_dict(scene:'.scene.Scene', node_init:dict) -> 'Node':
+def node_from_dict(scene:'.scene.Scene', node_init:dict) -> 'Node': 
     node_init['scene'] = scene
     yaml = node_init.get("yaml")
     if yaml: node_init = {**node_init, **load_yaml(yaml)}
-    class_str = node_init['type']
+    class_str = node_init.get('type')
     node = class_from_str(class_str)(**node_init)
     return node
 
@@ -85,4 +85,3 @@ class Node(pg.sprite.Sprite):
 
     def __repr__(self):
         return f"<{str(str(type(self)).split('\'')[1])} - {self.id}>"
-    

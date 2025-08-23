@@ -45,7 +45,6 @@ class Decal(Node):
             if self.mask_path
             else self.get_null(mask=True)
         )
-        self.animation = None
         self.original = Original(self.image, self.mask, self.rect.size)
         self.scale = 1.0
         

@@ -137,6 +137,7 @@ class Scene():
                 continue
             if node.parent is not None: continue
             init = node.init
+            if not init: continue # this may caus bugs
             if init.get("start"):
                 assert node.sprite, f"Node {node} is missing its sprite!"
                 init["start"] = [int(i) for i in (
