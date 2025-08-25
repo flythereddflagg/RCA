@@ -1,11 +1,14 @@
 ## Ideas from Liz
 
 - Meatball enemy: may be eaten for a small amount of damage
-  - 1 hp damage to eat
+  - Eating the meatball drops you to 1 hp
   - if you do not eat the meatball, it will grow into a Meatball Tree that can walk around and throw other meatball
   - Enemy that you can ignore like a piranha plant in Mario but it evolves into the large meatball (this only works if you go by this area various times)
   - middle evolution that becomes the larger one: may be eaten but does more damage
   - This is a larger problem later if you ignore it
+  - Slings a meatball at you in sort of a wide swing of a yo-yo (where the string is a noodle and the round bit is the meatball) and returns to the plant. 
+  - Old lady from "Wedding Singer" pays you in meatballs and is the source of the meatball monster
+  - Old lady innocently sings/dances rappers delight as she gives away meatballs that turn into monsters.
 - Garbage people, sentient garbage people
 - "its got rasins in it...you like raisins" (achievement title?) This is a separate character than the snail.
 - poison trail of "slime" (not destructible) mal-effect on player 
