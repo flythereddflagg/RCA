@@ -14,7 +14,7 @@ def node_from_dict(scene:'.scene.Scene', node_init:dict) -> 'Node':
 class Node(pg.sprite.Sprite):
     """Interface class for all in-game objects that have or manage sprites"""
     def __init__(
-                self, 
+                self,
                 scene=None,
                 parent:'Node'=None, 
                 children:list[dict]=None, 
@@ -36,8 +36,25 @@ class Node(pg.sprite.Sprite):
                 setattr(self, node.id, node)
         self.setup()
 
+
+    def require_attr(self, *names:str, types=None):
+        if types:
+            names = zip(names, types)
+        for name in names:
+            if types:
+                name, type_ = name
+            else:
+                type_ = None
+            object_ = self.init.get(name)
+            assert object_,\
+                f"Required param '{name}' not provided to Node {str(self)}"
+            if type_:
+                assert isinstance(object_, type_),\
+                    f"Required param '{name}' in Node {str(self)} "\
+                    f"has type '{type(object_)}', expected {type_}"
+
     
-    def setup():
+    def setup(self):
         """
         Optional to implement in children but replaces the need
         for complicated call signatures ahd helps to serialize 

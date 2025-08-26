@@ -20,7 +20,6 @@ nodes:
   start:
   - 84
   - 55
-  type: Dragon
   yaml: ./assets/actor/fey_frog.yaml
   groups:
   - foe
@@ -43,10 +42,9 @@ nodes:
   mask: ./assets/block/block.png
   scale: 1
   scene_path: ./assets/scene/mansion_yard.yaml
-  start:
-  - -32
-  - -32
+  start: [-32,-32]
   type: EdgeEnd
+
 - exit_dir: LEFT
   groups:
   - behind

@@ -9,6 +9,7 @@ children:
   - id: animation
     type: Animation
     path_prefix: "./assets/actor/ossifrage/"
+    default_state: stand
     animation:
       stand:
         datafile: "ossifrage_stand.json"
@@ -19,3 +20,7 @@ children:
       damage:
         repeat: False
         datafile: ossifrage_damage.json
+
+  - id: hitmask
+    type: HitMask
+    sibling: animation

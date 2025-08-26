@@ -4,7 +4,6 @@ from .animation import Animation
 from .decal import Decal
 
 class HitMask(Animation):
-  # TODO fix sword keeps cycling death loop
     def setup(self):
         sibling_id = self.init.get("sibling")
         assert sibling_id, f"{self.id}: No sibling passed into HitMask"
@@ -15,6 +14,7 @@ class HitMask(Animation):
             entry['datafile'] = entry["hitmask"] if "hitmask" in entry else entry['datafile']
         self.init["animation"] = mask_animation
         self.init["path_prefix"] = sibling_init["path_prefix"]
+        self.init["default_state"] = sibling_init["path_prefix"]
         super().setup()
         
         self.sprite = Decal(self.scene)

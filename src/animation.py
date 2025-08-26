@@ -35,10 +35,9 @@ class Animation(Node):
     A system for setting the parent sprite object's image.
     """
     def setup(self):
-        # force the exitence of the animation
-        assert self.init.get('animation'), "No animation dict provided in init"
-        assert isinstance(self.init.get('animation'), dict), \
-            f"invalid animation in init {str(animation)}"
+        # force the existence of the animation
+        self.require_attr('animation', types=[dict])
+        self.require_attr('default_state', types=[str])
         # parent must have a 'state' attribute
         self.previous:str = None
         self.last_state:str = None
@@ -51,6 +50,7 @@ class Animation(Node):
         self.path_prefix = self.init.get('path_prefix', "./") 
         self.animation = {}
         self.load_animation(self.init.get('animation'))
+        self.default_state = self.init["default_state"]
 
 
     def load_animation(self, animation) -> None:
@@ -103,7 +103,8 @@ class Animation(Node):
         self.frame_index = next(self.frame_counter, None)
         if self.frame_index is None:
             self.active = False
-            self.parent.state = self.last_state
+            # self.parent.state = self.last_state
+            self.parent.state = self.default_state
             self.set_reel()
             return
 

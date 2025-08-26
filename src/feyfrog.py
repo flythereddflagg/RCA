@@ -11,8 +11,9 @@ from .tools import list_collided
 
 MOVEMENTS = Compass.strings + ['STOP', 'STOP', "STOP"]
 ACTION_TIME_RANGE = [200, 1000]
+DEFAULT_STATE = "stand"
 
-class Dragon(Decal):
+class FeyFrog(Decal):
 
     def setup(self):
         super().setup()
@@ -24,13 +25,15 @@ class Dragon(Decal):
         self.signals = []
         self.hp = 50
         self.damage_direction = pg.math.Vector2(0,1)
-        self.state = "stand"
+        self.state = DEFAULT_STATE
+        self.defualt_state = DEFAULT_STATE
         random.seed(2343414142) # to make it determineistic
 
+
     def apply_physics(self):
-        
         if self.state == 'damage' and self.animation.active:
             self.move(self.damage_direction, speed=1*self.speed)
+
 
     def choose_action(self):
         cur_time = pg.time.get_ticks()
@@ -38,6 +41,7 @@ class Dragon(Decal):
             self.last_action_time = cur_time
             self.action = random.choice(MOVEMENTS)
             self.action_time = random.randint(*ACTION_TIME_RANGE)
+
 
     def update(self):
         self.choose_action() # choose a random action
@@ -69,8 +73,10 @@ class Dragon(Decal):
 
         self.signals = [] # reset signals
 
+
     def signal(self, signal):
         self.signals.append(signal)
+
 
     def apply_action(self, action):
         if self.animation.active: return

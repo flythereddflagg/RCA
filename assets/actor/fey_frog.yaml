@@ -3,19 +3,25 @@
 # this is the default asset path
 image: "./assets/actor/ossifrage/bird_character_base.png"
 mask: "./assets/actor/dragon/hitmask.png"
-
+type: FeyFrog
 
 children:
 - id: animation
   type: Animation
   path_prefix: "./assets/actor/fey_frog/"
+  default_state: stand
   animation:
     stand:
       datafile: "sitting.json"
       repeat: True
     walk:
       datafile: "jumps.json"
+      hitmask: hitmask.json
       repeat: True
     damage:
       datafile: "damage.json"
       repeat: false
+
+- id: hitmask
+  type: HitMask
+  sibling: animation
