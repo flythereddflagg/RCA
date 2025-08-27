@@ -4,14 +4,21 @@ about:
 this file is the engine and runs everything needed to keep 
 the game running.
 """
+import random
 
 import pygame as pg
 
 from .scene import Scene
 from .tools import load_yaml
 from .input import Input
+from .hitmask import HitMask
 
 BLACK = (0, 0, 0)
+
+RGBA_BLUE = (0,0,255,255)
+RGBA_RED = (255,0,0,255)
+RGBA_GREEN = (0,255,0,255)
+
 
 class Engine():
     """
@@ -205,9 +212,20 @@ class Engine():
                         not self.settings.SHOW_BG_MASK and 
                         sprite in self.scene.background
                     ): continue
-                    # self.screen.blit(
+
+                    color = (
+                        (
+                            RGBA_GREEN 
+                            if sprite.parent.init['kind'] == "hitmask" else
+                            RGBA_RED
+                        ) 
+                        if isinstance(sprite.parent, HitMask)
+                        else RGBA_BLUE
+                    )
                     self.draw_surface.blit(
-                        sprite.mask.to_surface(setcolor = (0,0,255,255), unsetcolor = None),
+                        sprite.mask.to_surface(
+                            setcolor = color, unsetcolor = None
+                        ),
                         sprite.rect.topleft
                     )
 

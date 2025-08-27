@@ -13,7 +13,6 @@ class EdgeEnd(Edge):
         )
         sprite = Decal(parent=self)
         sprite.image = surface
-        sprite.mask = pg.mask.Mask(size=(32, 32), fill=False)
         sprite.rect = surface.get_rect()
         sprite.rect.center = self.scene.game.get_center()
         self.scene.hud.add(sprite)

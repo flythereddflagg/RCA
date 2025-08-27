@@ -36,8 +36,7 @@ class Animation(Node):
     """
     def setup(self):
         # force the existence of the animation
-        self.require_attr('animation', types=[dict])
-        self.require_attr('default_state', types=[str])
+        self.require_attr('animation', 'default_state', types=[dict, str])
         # parent must have a 'state' attribute
         self.previous:str = None
         self.last_state:str = None

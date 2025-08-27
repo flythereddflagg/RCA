@@ -33,6 +33,7 @@ children:
   - id: hitmask
     type: HitMask
     sibling: animation
+    kind: hitmask
 
   - id: inventory
     type: Inventory

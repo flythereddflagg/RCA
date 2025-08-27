@@ -5,19 +5,24 @@ from .decal import Decal
 
 class HitMask(Animation):
     def setup(self):
-        sibling_id = self.init.get("sibling")
-        assert sibling_id, f"{self.id}: No sibling passed into HitMask"
+        self.require_attr("sibling", "kind")
+        sibling_id = self.init["sibling"]
+        kind = self.init["kind"]
         sibling_init = self.parent.child_by_id(sibling_id).init
 
         mask_animation = sibling_init["animation"].copy()
         for key, entry in mask_animation.items():
-            entry['datafile'] = entry["hitmask"] if "hitmask" in entry else entry['datafile']
+            entry['datafile'] = (
+                entry[kind] 
+                if kind in entry else 
+                entry['datafile']
+            )
         self.init["animation"] = mask_animation
         self.init["path_prefix"] = sibling_init["path_prefix"]
         self.init["default_state"] = sibling_init["path_prefix"]
         super().setup()
         
-        self.sprite = Decal(self.scene)
+        self.sprite = Decal(self.scene, parent=self)
 
     def update(self):
         super().update()
@@ -37,3 +42,7 @@ class HitMask(Animation):
         self.sprite.set_image(mask=new_mask)
         self.frame_time = current.duration
         self.last_set_frame_time = pg.time.get_ticks()
+    
+    def kill(self):
+        self.sprite.kill()
+        super().kill()
