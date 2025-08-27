@@ -1,6 +1,7 @@
 import pygame as pg
 
 from .edge import Edge
+from .decal import Decal
 
 class EdgeEnd(Edge):
     def exec_trigger(self):
@@ -10,7 +11,7 @@ class EdgeEnd(Edge):
             "YOU WIN!!! (Press backspace to quit.)", 
             True, (255,255,255)
         )
-        sprite = pg.sprite.Sprite()
+        sprite = Decal(parent=self)
         sprite.image = surface
         sprite.mask = pg.mask.Mask(size=(32, 32), fill=False)
         sprite.rect = surface.get_rect()
