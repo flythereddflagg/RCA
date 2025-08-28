@@ -55,7 +55,11 @@ class Animation(Node):
     def load_animation(self, animation) -> None:
         self.animation = {}
         for state, data in animation.items():
-            datafile = data['datafile'] # TODO make 'datafile' mutable to 'hitbox' and then make it so we can have a blank animation? (See the changes in hit_mask.py)
+            datafile = data['datafile']
+            if not datafile:
+                self.animation[state] = self.get_blank_reel(state)
+                continue
+                
             if not datafile.endswith(JSON): continue
             json_data = load_json(self.path_prefix + datafile)
             self.animation[state] = Reel(
@@ -148,6 +152,45 @@ class Animation(Node):
         self.parent.sprite.set_image(current.image)
         self.frame_time = current.duration
         self.last_set_frame_time = pg.time.get_ticks()
- 
 
+
+    def get_blank_reel(self, state:str) -> Reel:
+        meta:dict = {
+            "app": "",
+            "version": "",
+            "image": "",
+            "format": "",
+            "size": { "w": 32, "h": 32 },
+            "scale": "1",
+            "frameTags": [
+                { "name": "left", "from": 0, "to": 0, 
+                    "direction": "forward", "color": "#000000ff" },
+                { "name": "down", "from": 0, "to": 0, 
+                    "direction": "forward", "color": "#000000ff" },
+                { "name": "up", "from": 0, "to": 0, 
+                    "direction": "forward", "color": "#000000ff" },
+                { "name": "right", "from": 0, "to": 0, 
+                    "direction": "forward", "color": "#000000ff" }
+            ],
+            "layers": [
+                { "name": "hitbox", "opacity": 255, "blendMode": "normal" }
+            ],
+            "slices": []
+        }
+        blank_frame:Frame = Frame(
+                    name = "only",
+                    image = pg.surface.Surface(
+                        (32, 32), flags=pg.SRCALPHA
+                    ),
+                    mask = pg.mask.Mask(size=(32, 32), fill=False),
+                    frame = {},
+                    rotated = False,
+                    trimmed = False,
+                    spriteSourceSize = { 
+                        "x": 0, "y": 0, "w": 32, "h": 32 
+                    },
+                    sourceSize = { "w": 32, "h": 32 },
+                    duration = 100
+                )
+        return Reel(state, "", [blank_frame], meta, True)
 

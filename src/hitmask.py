@@ -15,7 +15,7 @@ class HitMask(Animation):
             entry['datafile'] = (
                 entry[kind] 
                 if kind in entry else 
-                entry['datafile']
+                ""
             )
         self.init["animation"] = mask_animation
         self.init["path_prefix"] = sibling_init["path_prefix"]

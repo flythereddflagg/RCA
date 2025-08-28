@@ -166,70 +166,78 @@ class Engine():
         for group_name in self.scene.draw_layers:
             sprites = self.scene.groups[group_name].sprites()
             for sprite in sprites:
-                if not vars(sprite).get('pos'):
-                    sprite.pos = pg.font.SysFont("Sans", 10)
-                pg.draw.rect(
-                    # self.screen, (255,255,255), sprite.rect, width=2
-                    self.draw_surface, (255,255,255), sprite.rect, width=2
-                )
-                pos1, pos2 = (
-                    str(
-                        pg.math.Vector2(sprite.rect.topleft)
-                        // self.settings.SCALE
-                    ), 
-                    str((
-                        pg.math.Vector2(sprite.rect.topleft) - 
-                        pg.math.Vector2(background.rect.topleft)
-                    )//self.settings.SCALE)
-                )
-                pos_sprite = sprite.pos.render(
-                    f"<{sprite.id}> {pos1} ; {pos2}", 
-                    True, (255,255,255)
-                )
-                pos_rect = pos_sprite.get_rect()
-                # screen_rect = self.screen.get_rect()
-                screen_rect = self.draw_surface.get_rect()
-                # keep it inside the screen.
-                text_pos = pg.math.Vector2(sprite.rect.topleft) - (0, 15)
-                x, y = text_pos
-                x = 0 if x < 0 else x
-                x = (
-                    screen_rect.right - pos_rect.size[0] 
-                    if x > screen_rect.right - pos_rect.size[0] 
-                    else x
-                )
-                y = 0 if y < 0 else y
-                y = (
-                    screen_rect.bottom - pos_rect.size[1] 
-                    if y > screen_rect.bottom - pos_rect.size[1] 
-                    else y
-                )
-                text_pos = (x, y)
-                # self.screen.blit(pos_sprite, text_pos)
-                self.draw_surface.blit(pos_sprite, text_pos)
+                if not isinstance(sprite.parent, HitMask):
+                    self.render_sprite_box(sprite, background)
                 if self.settings.SHOW_MASK and sprite.mask:
                     if (
-                        not self.settings.SHOW_BG_MASK and 
-                        sprite in self.scene.background
+                        sprite in self.scene.background and
+                        not self.settings.SHOW_BG_MASK
                     ): continue
 
-                    color = (
-                        (
-                            RGBA_GREEN 
-                            if sprite.parent.init['kind'] == "hitmask" else
-                            RGBA_RED
-                        ) 
-                        if isinstance(sprite.parent, HitMask)
-                        else RGBA_BLUE
-                    )
-                    self.draw_surface.blit(
-                        sprite.mask.to_surface(
-                            setcolor = color, unsetcolor = None
-                        ),
-                        sprite.rect.topleft
-                    )
+                    self.render_mask(sprite)
 
 
     def get_center(self):
         return pg.math.Vector2(*self.draw_surface.get_size()) / 2
-                    
+
+
+    def render_sprite_box(self, sprite, background):
+
+        if not vars(sprite).get('pos'):
+            sprite.pos = pg.font.SysFont("Sans", 10)
+        pg.draw.rect(
+            self.draw_surface, (255,255,255), sprite.rect, width=2
+        )
+        pos1, pos2 = (
+            str(
+                pg.math.Vector2(sprite.rect.topleft)
+                // self.settings.SCALE
+            ), 
+            str((
+                pg.math.Vector2(sprite.rect.topleft) - 
+                pg.math.Vector2(background.rect.topleft)
+            )//self.settings.SCALE)
+        )
+        sprite_id = sprite.id if sprite.id != "sprite" else sprite.parent.id
+        pos_sprite = sprite.pos.render(
+            f"<{sprite_id}> {pos1} ; {pos2}", 
+            True, (255,255,255)
+        )
+        pos_rect = pos_sprite.get_rect()
+        screen_rect = self.draw_surface.get_rect()
+        # keep it inside the screen.
+        text_pos = pg.math.Vector2(sprite.rect.topleft) - (0, 15)
+        x, y = text_pos
+        x = 0 if x < 0 else x
+        x = (
+            screen_rect.right - pos_rect.size[0] 
+            if x > screen_rect.right - pos_rect.size[0] 
+            else x
+        )
+        y = 0 if y < 0 else y
+        y = (
+            screen_rect.bottom - pos_rect.size[1] 
+            if y > screen_rect.bottom - pos_rect.size[1] 
+            else y
+        )
+        text_pos = (x, y)
+
+        self.draw_surface.blit(pos_sprite, text_pos)  
+
+
+    def render_mask(self, sprite):
+        color = (
+            (
+                RGBA_GREEN 
+                if sprite.parent.init['kind'] == "hitmask" else
+                RGBA_RED
+            ) 
+            if isinstance(sprite.parent, HitMask)
+            else RGBA_BLUE
+        )
+        self.draw_surface.blit(
+            sprite.mask.to_surface(
+                setcolor = color, unsetcolor = None
+            ),
+            sprite.rect.topleft
+        )                  
