@@ -99,7 +99,9 @@ class FeyFrog(Decal):
         if self.state == 'damage' and self.animation.active:
             return
 
-        for player in list_collided(self, self.scene.groups['player']):
+        for player in list_collided(
+            self.hitmask.sprite, self.scene.groups['player']
+        ):
             animation = player.parent.animation
             if (animation and
                 player.parent.state == 'damage' and

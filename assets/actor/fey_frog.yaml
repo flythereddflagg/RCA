@@ -12,11 +12,13 @@ children:
   default_state: stand
   animation:
     stand:
-      datafile: "sitting.json"
+      datafile: sitting.json
+      hurtmask: sitting.json
       repeat: True
     walk:
       datafile: "jumps.json"
       hitmask: hitmask.json
+      hurtmask: hurtmask.json
       repeat: True
     damage:
       datafile: "damage.json"
@@ -26,3 +28,7 @@ children:
   type: HitMask
   sibling: animation
   kind: hitmask
+- id: hurtmask
+  type: HitMask
+  sibling: animation
+  kind: hurtmask

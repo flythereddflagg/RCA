@@ -6,36 +6,6 @@ import pygame as pg
 
 from .dict_obj import DictObj
 
-def filter_serializable(structure:dict|list):
-    
-    if isinstance(structure, dict):
-        generator = structure.items()
-        is_dict = True
-        output = {}
-    elif isinstance(structure, list):
-        generator = enumerate(structure)
-        is_dict = False
-        output = []
-    else:
-        return None
-    
-    for key, item in generator:
-        if isinstance(item, (str, int, float, bool)) or item is None:
-            pass
-        elif isinstance(item, (dict, list)):
-            # recurse
-            item = filter_serializable(item)
-        else:
-            item = None
-
-        if is_dict:
-            output[key] = item
-        else:
-            output.append(item)
-        
-    return output
-
-
 
 def load_yaml(yaml_path) -> DictObj:
     with open(yaml_path) as f:
@@ -55,7 +25,7 @@ def load_json(json_path):
     return DictObj(**json_data)
 
 
-def mask_collision(self, other):
+def mask_collision(self:".decal.Decal", other:".decal.Decal"):
     """
     Tests that everyone has a valid mask before
     using spritecollideany.
@@ -71,7 +41,7 @@ def mask_collision(self, other):
     return False
 
 
-def list_collided(self, other) -> list:
+def list_collided(self, other:pg.sprite.Group) -> list[pg.sprite.Sprite]:
     """
     Tests that everyone has a valid mask before
     using returning the collided others.
