@@ -74,7 +74,7 @@ class Camera(Node):
 
 
     def stop_at_border(self):
-        screen_w, screen_h = pg.display.get_surface().get_size()
+        screen_w, screen_h = self.scene.game.draw_surface.get_size()
         background = self.scene.background.sprites()[0]
 
         # if background is too small then just return without modifying

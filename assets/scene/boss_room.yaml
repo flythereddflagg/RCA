@@ -25,14 +25,14 @@ nodes:
   - foe
   - foreground
 
-- id: sword
-  type: Item
-  action: sword
-  groups:
-  - foreground
-  image: ./assets/actor/item/sword_icon.png
-  mask: ./assets/actor/item/sword_icon.png
-  start: [500,100]
+# - id: sword
+#   type: Item
+#   action: sword
+#   groups:
+#   - foreground
+#   image: ./assets/actor/item/sword_icon.png
+#   mask: ./assets/actor/item/sword_icon.png
+#   start: [500,100]
 
 - exit_dir: DOWN
   groups:

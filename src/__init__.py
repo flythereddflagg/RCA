@@ -19,6 +19,8 @@ RGBA_BLUE = (0,0,255,255)
 RGBA_RED = (255,0,0,255)
 RGBA_GREEN = (0,255,0,255)
 
+ALLOW_DEBUG = True
+
 
 class Engine():
     """
@@ -27,6 +29,8 @@ class Engine():
     """
     def __init__(self, data_path, REPLAY=None):
         self.settings:'.dictobj.DictObj' = load_yaml(data_path)
+        if not ALLOW_DEBUG: 
+            self.settings.DEBUG = False
         self.dt = 1
         self.running = False
         self.paused = False
@@ -107,9 +111,9 @@ class Engine():
 
         # key to refresh scene
         if (
-            self.settings.DEBUG and 
             ("REFRESH", 1.0) in game_input and 
             not "REFRESH" not in held and 
+            self.settings.DEBUG and 
             self.scene
         ):
             self.scene.refresh()
