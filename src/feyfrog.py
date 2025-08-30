@@ -6,7 +6,7 @@ from .decal import Decal
 from .compass import Compass
 from .movement import Movement
 from .animation import Animation
-from .tools import list_collided
+from .tools import list_collided, vec
 
 
 MOVEMENTS = Compass.strings + ['STOP', 'STOP', "STOP"]
@@ -24,7 +24,7 @@ class FeyFrog(Decal):
         self.speed = 200 # pixels per second
         self.signals = []
         self.hp = 50
-        self.damage_direction = pg.math.Vector2(0,1)
+        self.damage_direction = vec((0,1))
         self.state = DEFAULT_STATE
         self.defualt_state = DEFAULT_STATE
         random.seed(2343414142) # to make it determineistic
@@ -108,9 +108,8 @@ class FeyFrog(Decal):
                 animation.active
             ): continue
 
-            damage_direction = (
-                pg.math.Vector2(player.rect.center) -
-                pg.math.Vector2(self.rect.center)
+            damage_direction = delta_vec(
+                self.rect.center, player.rect.center
             ).normalize()
             player.signal([
                 'damage', 10, damage_direction

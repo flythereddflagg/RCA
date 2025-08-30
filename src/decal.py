@@ -7,7 +7,7 @@ import yaml
 import pygame as pg
 
 from .dict_obj import DictObj
-from .tools import load_yaml
+from .tools import load_yaml, delta_vec
 from .node import Node
 
 @dataclass
@@ -73,9 +73,6 @@ class Decal(Node):
         ]
         self.mask = self.original.mask.scale(new_mask_size)
 
-
-    def signal(self, *args, **init):
-        if self.parent: self.parent.signal(*args, **init)
     
 
     def set_image(
@@ -97,9 +94,8 @@ class Decal(Node):
         elif not mask and image:
             # this recenters the current mask
             # when there is a new image but no new mask
-            offset = (
-                pg.math.Vector2(self.rect.center) - 
-                pg.math.Vector2(self.original.mask.get_rect().center)
+            offset = delta_vec(
+                self.original.mask.get_rect().center, self.rect.center
             )
             mask_surf = pg.Surface(self.rect.size, flags=pg.SRCALPHA)
             mask_surf.fill((0,0,0,0)) # blank the surface

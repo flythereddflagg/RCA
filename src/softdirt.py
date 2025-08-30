@@ -29,11 +29,11 @@ class SoftDirt(Decal):
         layer = [layer for key, layer in self.scene.groups.items() if self in layer][0]
         for item in self.treasure:
             start_vector = (
-                pg.math.Vector2(item["start"])
-                # pg.math.Vector2([random.random(), random.random()]) * 
+                vec(item["start"])
+                # vec([random.random(), random.random()]) * 
                 # throw_dist + 
                 # # throw it up and to the left 32 pixels
-                # pg.math.Vector2([-throw_dist,-throw_dist]) 
+                # vec([-throw_dist,-throw_dist]) 
             ) + self.rect.topleft
             node = node_from_dict(self, item)
             groups = self.init.get("groups")

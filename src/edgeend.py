@@ -6,7 +6,7 @@ from .decal import Decal
 class EdgeEnd(Edge):
     def exec_trigger(self):
         # super().exec_trigger()
-        end_text = pg.font.SysFont("Sans", 44)
+        end_text = pg.font.SysFont("Sans", 22)
         surface = end_text.render(
             "YOU WIN!!! (Press backspace to quit.)", 
             True, (255,255,255)

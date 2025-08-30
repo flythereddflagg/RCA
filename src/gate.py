@@ -19,8 +19,8 @@ class Gate(Decal):
             else player_sprite.parent
         )
         dist_sqr = (
-            pg.math.Vector2(self.rect.center) - 
-            pg.math.Vector2(player.sprite.rect.center)
+            vec(self.rect.center) - 
+            vec(player.sprite.rect.center)
         ).length_squared()
 
         if (

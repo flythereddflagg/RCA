@@ -16,10 +16,8 @@ class Cactus(Decal):
                 player.state == 'damage' and\
                 player.animation.active
             ): continue
-
-            damage_direction = (
-                pg.math.Vector2(player.sprite.rect.center) -
-                pg.math.Vector2(self.rect.center)
+            damage_direction = delta_vec(
+                self.sprite.rect.center, sprite.rect.center
             ).normalize()
             player.signal([
                 'damage', 10, damage_direction

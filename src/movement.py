@@ -1,7 +1,7 @@
 import pygame as pg
 
 from .compass import Compass
-from .tools import mask_collision
+from .tools import list_collided
 # BUG get rid of jitter when camera moves with player 
 
 class Movement():
@@ -57,6 +57,6 @@ class Movement():
         if 'solid' not in self.sprite.scene.groups.keys(): return
         if 0 < abs(xunit) < 1: xunit = int(xunit / abs(xunit))
         if 0 < abs(yunit) < 1: yunit = int(yunit / abs(yunit))
-        while mask_collision(self.sprite, self.sprite.scene.groups['solid']):
+        while list_collided(self.sprite, self.sprite.scene.groups['solid']):
             self.sprite.rect.move_ip(-xunit, -yunit) # move back 1
 

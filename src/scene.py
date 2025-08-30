@@ -2,7 +2,7 @@ import json
 
 import pygame as pg
 
-from .tools import load_yaml, save_yaml
+from .tools import load_yaml, save_yaml, vec
 from .node import Node, node_from_dict
 from .decal import Decal
 
@@ -100,7 +100,7 @@ class Scene():
                     self.groups[group] = pg.sprite.Group()
                 self.groups[group].add(sprite_instance)
         if start:
-            sprite_instance.rect.topleft = pg.math.Vector2(start)
+            sprite_instance.rect.topleft = vec(start)
 
 
     def update(self):        
@@ -114,8 +114,8 @@ class Scene():
         """
         player = self.get_player().sprite.parent
         current_player_position = list(
-            pg.math.Vector2(player.sprite.rect.topleft) - 
-            pg.math.Vector2(self.background.sprites()[0].rect.topleft)
+            vec(player.sprite.rect.topleft) - 
+            vec(self.background.sprites()[0].rect.topleft)
         )
         player.init["start"] = current_player_position
         self.game.load_scene(yaml_path=self.id, add_in=[player.init])
@@ -141,8 +141,8 @@ class Scene():
             if init.get("start"):
                 assert node.sprite, f"Node {node} is missing its sprite!"
                 init["start"] = [int(i) for i in (
-                    pg.math.Vector2(node.sprite.rect.topleft) - 
-                    pg.math.Vector2(self.background.sprites()[0].rect.topleft)
+                    vec(node.sprite.rect.topleft) - 
+                    vec(self.background.sprites()[0].rect.topleft)
                 )]
             nodes.append(init)
             draw_layers = self.draw_layers.copy()

@@ -21,7 +21,7 @@ class Ossifrage(Decal):
         self.speed = 200 # pixels per second
         self.signals = []
         self.hp = 20
-        self.damage_direction = pg.math.Vector2(0,1)
+        self.damage_direction = vec(0,1)
         self.state = "stand"
 
     def apply_physics(self):
@@ -94,8 +94,8 @@ class Ossifrage(Decal):
             ): continue
 
             damage_direction = (
-                pg.math.Vector2(player.rect.center) -
-                pg.math.Vector2(self.rect.center)
+                vec(player.rect.center) -
+                vec(self.rect.center)
             ).normalize()
             player.signal([
                 'damage', 10, damage_direction

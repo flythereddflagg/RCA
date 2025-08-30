@@ -2,7 +2,7 @@ import pygame as pg
 
 from .item import Item
 from .decal import Decal
-from .tools import list_collided
+from .tools import list_collided, vec
 from .compass import Compass
 from .node import Node
 
@@ -49,11 +49,11 @@ class Inventory(Node):
             self.right_hand.image, True, False
         ) # get the right hand where you want it
 
-        self.left_hand.rect.center = self.sprite.rect.center + pg.math.Vector2(
-            -self.sprite.rect.center[0]//2, 0
+        self.left_hand.rect.center = self.sprite.rect.center + vec(
+            (-self.sprite.rect.center[0]//2, 0)
         )
-        self.right_hand.rect.center = self.sprite.rect.center + pg.math.Vector2(
-            self.sprite.rect.center[0]//2, 0
+        self.right_hand.rect.center = self.sprite.rect.center + vec(
+            (self.sprite.rect.center[0]//2, 0)
         )
         self.marker = Decal(**{
             "parent": self,
@@ -109,8 +109,8 @@ class Inventory(Node):
         for i, slot_sprite in enumerate(self.slot_sprites.sprites()):
             toggle_state(slot_sprite)
             slot_sprite.rect.center = (
-                pg.math.Vector2(self.sprite.rect.center) + 
-                (pg.math.Vector2(Compass.unit_vector(Compass.UP)) * 
+                vec(self.sprite.rect.center) + 
+                (vec(Compass.unit_vector(Compass.UP)) * 
                     self.sprite.image.get_height()
                 ).rotate(i / n_slots * 360)
             )

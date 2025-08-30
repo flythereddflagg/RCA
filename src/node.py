@@ -63,6 +63,9 @@ class Node(pg.sprite.Sprite):
         pass
 
 
+    def signal(self, *args, **init):
+        if self.parent: self.parent.signal(*args, **init)
+
 
     def update(self):
         """

@@ -9,7 +9,7 @@ import random
 import pygame as pg
 
 from .scene import Scene
-from .tools import load_yaml
+from .tools import load_yaml, vec, delta_vec
 from .input import Input
 from .hitmask import HitMask
 
@@ -150,7 +150,7 @@ class Engine():
             pg.transform.scale(
                 self.draw_surface, new_size
             ),
-            (pg.math.Vector2([scn_w, scn_h]) - new_size)/2
+            (vec([scn_w, scn_h]) - new_size)/2
         )
         pg.display.flip()
 
@@ -178,7 +178,7 @@ class Engine():
 
 
     def get_center(self):
-        return pg.math.Vector2(*self.draw_surface.get_size()) / 2
+        return vec(self.draw_surface.get_size()) / 2
 
 
     def render_sprite_box(self, sprite, background):
@@ -190,12 +190,9 @@ class Engine():
         )
         pos1, pos2 = (
             str(
-                pg.math.Vector2(sprite.rect.topleft)
-                // self.settings.SCALE
+                vec(sprite.rect.topleft)// self.settings.SCALE
             ), 
-            str((
-                pg.math.Vector2(sprite.rect.topleft) - 
-                pg.math.Vector2(background.rect.topleft)
+            str((delta_vec(background.rect.topleft, sprite.rect.topleft)
             )//self.settings.SCALE)
         )
         sprite_id = sprite.id if sprite.id != "sprite" else sprite.parent.id
@@ -206,7 +203,7 @@ class Engine():
         pos_rect = pos_sprite.get_rect()
         screen_rect = self.draw_surface.get_rect()
         # keep it inside the screen.
-        text_pos = pg.math.Vector2(sprite.rect.topleft) - (0, 15)
+        text_pos = delta_vec((0, 15), sprite.rect.topleft)
         x, y = text_pos
         x = 0 if x < 0 else x
         x = (

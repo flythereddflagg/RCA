@@ -2,17 +2,16 @@ import pygame as pg
 
 from .decal import Decal
 from .compass import Compass
-from .tools import mask_collision
+from .tools import list_collided
 
 
 class Edge(Decal):
     """an edge is a sprite that connects two scenes in the map graph"""
 
     def update(self):
-        if mask_collision(self, self.scene.groups['player']):
+        if list_collided(self, self.scene.groups['player']):
             self.exec_trigger()
         
-    
 
     def exec_trigger(self):
         player_sprite = self.scene.get_player()
@@ -29,15 +28,15 @@ class Edge(Decal):
 
         out_block = new_scene.node_by_id(self.id)[0]
         half_size = (
-            pg.math.Vector2(player.sprite.rect.size) / 2 +
-            pg.math.Vector2(out_block.sprite.rect.size) / 2
+            vec(player.sprite.rect.size) / 2 +
+            vec(out_block.sprite.rect.size) / 2
         )
         start_pos = (
-            pg.math.Vector2(out_block.sprite.rect.topleft) + 
+            vec(out_block.sprite.rect.topleft) + 
             half_size.elementwise() * 
             Compass.unit_vector(out_block.init["exit_dir"])
         )
-        bg_pos = pg.math.Vector2(
+        bg_pos = vec(
             new_scene.background.sprites()[0].sprite.rect.topleft
         )
         print(start_pos - bg_pos, out_block.sprite.rect.topleft - bg_pos, Compass.unit_vector(out_block.init["exit_dir"]), half_size)

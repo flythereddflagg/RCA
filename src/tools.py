@@ -27,37 +27,34 @@ def load_json(json_path):
 
 def mask_collision(self:".decal.Decal", other:".decal.Decal"):
     """
-    Tests that everyone has a valid mask before
-    using spritecollideany.
+    Tests that both have a valid mask before .
     """
     assert isinstance(self.mask, pg.mask.Mask), \
         f"{self.id} has invlaid mask: {self.mask}"
-    for sprite in other.sprites():
-        assert isinstance(sprite.mask, pg.mask.Mask), \
-            f"{sprite.id} has invalid mask: {sprite.mask}"
+    assert isinstance(other.mask, pg.mask.Mask), \
+        f"{other.id} has invalid mask: {other.mask}"
     
-    if pg.sprite.spritecollideany(self, other, pg.sprite.collide_mask):
-        return True
-    return False
+    return pg.sprite.collide_mask(self, other)
 
 
-def list_collided(self, other:pg.sprite.Group) -> list[pg.sprite.Sprite]:
+def list_collided(
+    self:".decal.Decal", other:list[pg.sprite.Sprite]
+) -> list[pg.sprite.Sprite]:
     """
     Tests that everyone has a valid mask before
     using returning the collided others.
     """
     assert isinstance(self.mask, pg.mask.Mask), \
         f"{self.id} has invlaid mask: {self.mask}"
-    for sprite in other.sprites():
+    
+    for sprite in other:
         assert isinstance(sprite.mask, pg.mask.Mask), \
             f"{sprite.id} has invalid mask: {sprite.mask}"
-
-    collided_others = pg.sprite.spritecollide(
-        self, other, False, pg.sprite.collide_mask
-    )
-    if collided_others is None: return []
-    
-    return collided_others
+    return [
+        sprite 
+        for sprite in other
+        if pg.sprite.collide_mask(self, sprite)
+    ]
 
 
 def get_center_screen():
@@ -65,6 +62,18 @@ def get_center_screen():
         centerx = screen_w // 2
         centery = screen_h // 2
         return (centerx, centery)
+
+def delta_vec(v_from, v_to) -> pg.math.Vector2:
+    """
+    returns the 2d vector between any two points
+    """
+    x, y = v_from[0], v_from[1]
+    a, b = v_to[0], v_to[1]
+    return pg.math.Vector2((a, b)) - pg.math.Vector2((x, y))
+
+def vec(v_input:list|tuple|pg.math.Vector2):
+    """convenience function to convert to vector for vector math"""
+    return pg.math.Vector2((v_input[0], v_input[1]))
 
 
 def class_from_str(class_name):

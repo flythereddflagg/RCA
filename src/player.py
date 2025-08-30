@@ -3,7 +3,7 @@ import pygame as pg
 from .decal import Decal
 from .compass import Compass
 from .movement import Movement
-from .tools import list_collided
+from .tools import list_collided, vec, delta_vec
 from .item import EMPTY
 from .node import Node
 
@@ -22,7 +22,7 @@ class Player(Node):
         self.speed = DEFAULT_SPEED
         self.signals = []
         self.input_held = []
-        self.damage_direction = pg.math.Vector2(0,1)
+        self.damage_direction = vec((0,1))
         self.state = DEFAULT_STATE
 
 
@@ -54,7 +54,7 @@ class Player(Node):
 
     def apply_right_stick(self, actions, values):
         # activate inventory
-        vector = pg.math.Vector2([0,0])
+        vector = vec([0,0])
         for direction in RIGHT_STICK_AX:
             if not (direction in actions): continue
             value = values[actions.index(direction)]
@@ -138,16 +138,18 @@ class Player(Node):
 
 
     def check_collision(self):
-        if self.state == "sword" and "foe" in self.scene.groups:
-            for sprite in list_collided(
-                self.hitmask.sprite, self.scene.groups['foe']
-            ):
-                if sprite.state == 'damage': continue
-                damage_direction = (
-                    pg.math.Vector2(sprite.rect.center) -
-                    pg.math.Vector2(self.sprite.rect.center)
-                ).normalize()
-                sprite.signal([
-                    "damage", 10, damage_direction
-                ])
+        if not (self.state == "sword" and "foe" in self.scene.groups):
+            return
+        hurt_sprites = [
+            sprite.hurtmask.sprite 
+            for sprite in self.scene.groups['foe']
+        ]
+        for sprite in list_collided(self.hitmask.sprite, hurt_sprites):
+            if getattr(sprite, "state", "") == 'damage': continue
+            damage_direction = delta_vec(
+                self.sprite.rect.center, sprite.rect.center
+            ).normalize()
+            sprite.signal([
+                "damage", 10, damage_direction
+            ])
 
