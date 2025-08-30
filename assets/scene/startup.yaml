@@ -1,22 +1,27 @@
 layers:
 - foreground
 nodes:
-- animation:
-    intro:
-      datafile: startup.json
-      repeat: false
-    titlescreen:
-      datafile: mountain_rev2.json
-      repeat: true
-  groups:
-  - foreground
-  id: startup_animation
-  image: ./assets/block/null.png
-  path_prefix: ./assets/scene/startup/
+
+- id: startup_animation
   type: CutScene
-- filename: ./assets/music/RCA_OVERWORLD/RCA_titlescreen.mp3
   groups:
-  - other
+    - foreground
+  image: ./assets/block/null.png
+  
+  children:
+    - id: animation
+      type: Animation
+      path_prefix: ./assets/scene/startup/
+      default_state: titlescreen
+      animation:
+        intro:
+          datafile: startup.json
+          repeat: false
+        titlescreen:
+          datafile: mountain_rev2.json
+          repeat: true
+
+- filename: ./assets/music/RCA_OVERWORLD/RCA_titlescreen.mp3
   id: startup music
   type: Music
 - groups:

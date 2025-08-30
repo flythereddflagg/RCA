@@ -10,10 +10,10 @@ class CutScene(Decal):
         super().setup()
         self.state = "intro"
         self.move = Move()
-        self.animation = Animation(
-            self, self.init['animation'], self.init["path_prefix"]
-        )
-        self.animation.previous = "titlescreen"
+        # self.animation = Animation(
+        #     self, self.init['animation'], self.init["path_prefix"]
+        # )
+        # self.animation.previous = "titlescreen"
 
     
     def update(self):

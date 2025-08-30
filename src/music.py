@@ -4,7 +4,7 @@ from .node import Node
 
 class Music(Node):
 
-    def setup(self)
+    def setup(self):
         self.filename = self.init.get("filename")
         assert self.filename, "No filename given"
         self.sprite = None

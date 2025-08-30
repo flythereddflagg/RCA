@@ -6,6 +6,7 @@
 **.bkp
 **.icl
 # IGNORE THE FOLLOWING FOLDERS
+build_env/
 build/
 dist/
 .pytest_cache/

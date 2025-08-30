@@ -5,7 +5,9 @@
 
 **To build:**
 - Python distribution installed (Python >= 3.10)
-- *Recommended*: Set up a virtual environment in Python to run the build (e.g. on Linux: `python -m venv build_env`, then `source ./build_env/bin/activate`)
+- *Recommended*: Set up a virtual environment in Python to run the build
+    - on Linux: `python -m venv build_env`, then `source ./build_env/bin/activate`
+    - on Windows: `python -m venv build_env`, then `./build_env/bin/activate.bat`
 - Run `python setup.py build` from the project's root directory
 - Dependencies should be downloaded, installed and the project built in the project directory
 
