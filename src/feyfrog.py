@@ -6,7 +6,7 @@ from .decal import Decal
 from .compass import Compass
 from .movement import Movement
 from .animation import Animation
-from .tools import list_collided, vec
+from .tools import list_collided, vec, delta_vec
 
 
 MOVEMENTS = Compass.strings + ['STOP', 'STOP', "STOP"]

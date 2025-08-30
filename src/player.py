@@ -141,7 +141,7 @@ class Player(Node):
         if not (self.state == "sword" and "foe" in self.scene.groups):
             return
         hurt_sprites = [
-            getattr(sprite, "hurtmask", "sprite").sprite
+            getattr(sprite, "hurtmask", sprite).sprite
             for sprite in self.scene.groups['foe']
         ]
         for sprite in list_collided(self.hitmask.sprite, hurt_sprites):
