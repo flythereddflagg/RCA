@@ -2,7 +2,7 @@ import pygame as pg
 
 from .decal import Decal
 from .compass import Compass
-from .tools import list_collided
+from .tools import list_collided, vec
 
 
 class Edge(Decal):

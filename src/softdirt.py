@@ -3,7 +3,7 @@ import random
 import pygame as pg
 
 from .decal import Decal
-from .tools import list_collided
+from .tools import list_collided, vec
 from .node import node_from_dict
 
 throw_dist = 32 # pixels

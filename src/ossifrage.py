@@ -5,7 +5,7 @@ import pygame as pg
 from .decal import Decal
 from .compass import Compass
 from .movement import Movement
-from .tools import list_collided
+from .tools import list_collided, vec, delta_vec
 
 
 MOVEMENTS = Compass.strings + ['STOP', 'STOP', "STOP"]
@@ -21,7 +21,7 @@ class Ossifrage(Decal):
         self.speed = 200 # pixels per second
         self.signals = []
         self.hp = 20
-        self.damage_direction = vec(0,1)
+        self.damage_direction = vec((0,1))
         self.state = "stand"
 
     def apply_physics(self):
@@ -93,9 +93,8 @@ class Ossifrage(Decal):
                 player.parent.state == 'damage'
             ): continue
 
-            damage_direction = (
-                vec(player.rect.center) -
-                vec(self.rect.center)
+            damage_direction = delta_vec(
+                self.rect.center, player.rect.center
             ).normalize()
             player.signal([
                 'damage', 10, damage_direction

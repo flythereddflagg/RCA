@@ -24,3 +24,4 @@ children:
   - id: hitmask
     type: HitMask
     sibling: animation
+    kind: hitmask

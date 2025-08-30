@@ -1,6 +1,7 @@
 import pygame as pg
 
 from .decal import Decal
+from .tools import delta_vec
 
 collide_dist = 50**2 # pixels
 
@@ -18,9 +19,8 @@ class Gate(Decal):
             if not player_sprite.parent 
             else player_sprite.parent
         )
-        dist_sqr = (
-            vec(self.rect.center) - 
-            vec(player.sprite.rect.center)
+        dist_sqr = delta_vec(
+            self.rect.center, player.sprite.rect.center
         ).length_squared()
 
         if (
