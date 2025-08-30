@@ -1,7 +1,7 @@
 import pygame as pg
 
 from .decal import Decal
-from .tools import list_collided
+from .tools import list_collided, delta_vec
 
 class Cactus(Decal):
 
@@ -10,14 +10,18 @@ class Cactus(Decal):
 
 
     def check_collision(self):
-        for player in list_collided(self, self.scene.groups['player']):
+        hurt_sprites = [
+            getattr(sprite, "hurtmask", sprite.sprite).sprite
+            for sprite in self.scene.groups['player']
+        ]
+        for player in list_collided(self, hurt_sprites):
             if player.parent: player = player.parent
             if (player.animation and\
                 player.state == 'damage' and\
                 player.animation.active
             ): continue
             damage_direction = delta_vec(
-                self.sprite.rect.center, sprite.rect.center
+                self.sprite.rect.center, player.sprite.rect.center
             ).normalize()
             player.signal([
                 'damage', 10, damage_direction
