@@ -30,3 +30,6 @@ nodes:
   slack: 100
   type: Camera
   zoom: 1
+# - id: menu
+# TODO NEXT make a menu!
+
