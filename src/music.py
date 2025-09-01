@@ -14,3 +14,8 @@ class Music(Node):
     def update(self):
         pass
 
+
+    def kill(self):
+        pg.mixer.music.stop()
+        pg.mixer.music.unload()
+        super().kill()

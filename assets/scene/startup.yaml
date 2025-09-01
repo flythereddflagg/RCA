@@ -5,9 +5,7 @@ nodes:
 - id: startup_animation
   type: CutScene
   groups:
-    - foreground
-  image: ./assets/block/null.png
-  
+    - foreground  
   children:
     - id: animation
       type: Animation
@@ -20,6 +18,11 @@ nodes:
         titlescreen:
           datafile: mountain_rev2.json
           repeat: true
+    - id: menu
+      type: Menu
+      
+# TODO NEXT make a menu!
+
 
 - filename: ./assets/music/RCA_OVERWORLD/RCA_titlescreen.mp3
   id: startup music
@@ -30,6 +33,5 @@ nodes:
   slack: 100
   type: Camera
   zoom: 1
-# - id: menu
-# TODO NEXT make a menu!
+
 

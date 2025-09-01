@@ -125,6 +125,10 @@ class Scene():
         # TODO profile memory usage and destroy scenes?
         serial = self.serialize()
         self.game.saved_scenes[self.id] = serial
+        for node in self.all_nodes:
+            node.kill()
+
+        self.all_nodes.cancel_update()
 
 
     def serialize(self) -> dict:
@@ -133,7 +137,10 @@ class Scene():
         """
         nodes = []
         for node in self.all_nodes:
-            if node in [n.parent for n in self.groups["player"]]:
+            if (
+                "player" in self.groups and 
+                node in [n.parent for n in self.groups["player"]]
+            ):
                 continue
             if node.parent is not None: continue
             init = node.init

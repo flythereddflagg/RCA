@@ -11,15 +11,20 @@
   - Old lady innocently sings/dances rappers delight as she gives away meatballs that turn into monsters.
 - Garbage people, sentient garbage people
 - "its got rasins in it...you like raisins" (achievement title?) This is a separate character than the snail.
-- poison trail of "slime" (not destructible) mal-effect on player 
-- garbage can (dented) lid opens little soda with arms and legs come out and spray (acidic?) soda on you
+- scheke
+  - poison trail of "slime" (not destructible) mal-effect on player 
+  - guy blows bubbles that pop poison or damage on you
+  - maniacally laughs as he attacks
+  - snail slides with momentum on slime
+
+- garbage can (dented) lid opens little soda with arms and legs come out and spray (acidic?) soda[ Search Assist](https://duckduckgo.com/?q=mu+mu+day+garmet&atb=v441-1&ia=web&assist=true) on you
 - paper bag guys with arms and legs (maybe paper bag jack-o-lanterns)
 - Eyeball plant (augenblatt)
   - Eyeball elastically shoots out of head as projectile and does damage
   - makes a balloon sword and smacks you with it (invulnerable while making the balloon) see clip art for balloon sword
   - Restrains you with extending vines
   - Pink fart cloud is poisonous (spores or whatever)
-  - 
+- NPC meatball lady from Wedding Singer that is making the meatball monsters inadvertently
 
 
 ## Ideas for game

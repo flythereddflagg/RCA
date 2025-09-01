@@ -5,8 +5,6 @@
 id: player_node
 type: Player
 
-
-
 children:
   - id: animation
     type: Animation
@@ -40,10 +38,9 @@ children:
     money: 0
     hp: 100
     hp_max: 100
+    
   - id: sprite
     type: Decal
     image: ./assets/actor/larry/larry_base.png
     mask: ./assets/actor/larry/larry_base_mask.png
-    groups:
-      - player
 

@@ -1,7 +1,7 @@
 ### DEBUG SETTINGS ###
 # Frame rate ( in Frames / second) DPS:0 => do not limit FPS
 FPS: 90
-DEBUG: false # show debug info on screen?
+DEBUG: true # show debug info on screen?
 SHOW_EVENTS: true # print input events in terminal
 FPS_COUNTER: true # show FPS on game screen
 SHOW_MASK: true # shows hit masks of every entity when debug = true
@@ -20,6 +20,15 @@ init_add_in:
   #   # start: [200,200] # boss roosm?
   #   groups:
   #     - foreground
+  #     - player
+
+new_game_scene: ./assets/scene/red_castle_valley.yaml
+new_game_add_in:
+  - yaml: ./assets/actor/player.yaml
+    start: [338,450] # red castle valley
+    groups:
+      - foreground
+      - player
 
 # initial_scene: ./assets/scene/mansion_yard.yaml
 # initial_scene: ./assets/scene/boss_room.yaml
@@ -49,6 +58,7 @@ key_bind:
   START: return
   SELECT: p
 
+# TODO implement controllers with pygame._sdl2.controller
 # Controller key: 
 #   LS/RS: Left/Right Stick
 #   LT/RT: Left/Right Trigger

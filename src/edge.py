@@ -17,15 +17,10 @@ class Edge(Decal):
         player_sprite = self.scene.get_player()
         player = player_sprite.parent
         game = self.scene.game
-        player_layer = [
-            grp
-            for grp in self.scene.draw_layers 
-            if player_sprite in self.scene.groups[grp]
-        ][0]
+        self.scene.deconstruct()
         new_scene = game.load_scene(
             yaml_path=self.init["scene_path"]
         )
-
         out_block = new_scene.node_by_id(self.id)[0]
         half_size = (
             vec(player.sprite.rect.size) / 2 +
@@ -39,11 +34,7 @@ class Edge(Decal):
         bg_pos = vec(
             new_scene.background.sprites()[0].sprite.rect.topleft
         )
-        print(start_pos - bg_pos, out_block.sprite.rect.topleft - bg_pos, Compass.unit_vector(out_block.init["exit_dir"]), half_size)
         new_scene.place_node(
             player, 
             player.init.get("groups"), start=start_pos
         )
-        self.scene.all_nodes.cancel_update()
-        self.scene.deconstruct()
-        print("Completed edge loading")
