@@ -16,7 +16,7 @@ MENU_TEXT = """
 
 class Menu(Node):
     def setup(self):
-        self.font = pg.font.Font("./assets/fonts/DarkCrystalScript.ttf", FONTSIZE)
+        self.font = pg.font.Font("./assets/fonts/BoldPixels.ttf", FONTSIZE)
         self.sprite = Decal(parent=self)
         self.text_surface = None
         self.set_text("Press Start")
