@@ -69,13 +69,13 @@ class Inventory(Node):
     def update(self):
         if self.scene is not self.parent.scene:
             self.scene = self.parent.scene
-            for sprite in [
-                self.sprite, self.left_hand, self.right_hand,
-                self.left_item, self.right_item, self.marker
-            ]:
-                sprite.add(self.scene.all_nodes)
-            for sprite in self.slot_sprites:
-                sprite.add(self.scene.all_nodes)
+            # for sprite in [
+            #     self.sprite, self.left_hand, self.right_hand,
+            #     self.left_item, self.right_item, self.marker
+            # ]:
+            #     sprite.add(self.scene.all_nodes)
+            # for sprite in self.slot_sprites:
+            #     sprite.add(self.scene.all_nodes)
         input_actions, _ = self.parent.scene.game.input.get()
         
         if not any([

@@ -8,7 +8,8 @@ class CutScene(Decal):
 
     def setup(self):
         super().setup()
-        self.state = "titlescreen"
+        # self.state = "titlescreen"
+        self.state = "intro"
         self.move = Move()
 
     
