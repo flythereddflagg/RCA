@@ -15,9 +15,8 @@ class Node(pg.sprite.Sprite):
     """Interface class for all in-game objects that have or manage sprites"""
     def __init__(
                 self,
-                scene=None,
-                parent:'Node'=None, 
-                children:list[dict]=None, 
+                scene:'.scene.Scene'=None,
+                parent:'.node.Node'=None,
                 **init
     ):
         super().__init__()
@@ -28,6 +27,7 @@ class Node(pg.sprite.Sprite):
         self.parent = parent
         self.sprite = None
         self.children = pg.sprite.Group()
+        children:list[dict] = init.get("children")
         if children:                
             for child in children:
                 child['parent'] = self

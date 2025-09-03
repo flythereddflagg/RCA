@@ -38,7 +38,8 @@ class Menu(Node):
         
 
     def a_continue(self):
-        print("\n\n\t-- INFO: Not yet implemented! --\n\n")
+        save_file = None
+        
     
     
     def a_new_game(self):

@@ -26,9 +26,9 @@ class Inventory(Node):
 
         self.slots:list[Item] = []
         self.money:int = self.init.get("money", 0) # gold coins
+        self.max_money = self.init.get("max_money", 999)
         self.hp:int = self.init.get("hp", 0)
         self.HP_MAX:int = self.init.get("hp_max", 0)
-        self.max_money = self.init.get("max_money", 999)
         self.active = False
         self.left_item:Item = self.empty_item()
         self.right_item:Item = self.empty_item()
@@ -65,17 +65,22 @@ class Inventory(Node):
         })
         self.marker.rect.center = self.sprite.rect.center
 
+        slots = self.init.get("slots")
+        if slots:
+            for i in range(slots):
+                self.add_slot()
+
+        items = self.init.get("items")
+        if items:
+            for item_init in items:
+                instance = Item(**item_init)
+                self.add_item(instance)
+
 
     def update(self):
         if self.scene is not self.parent.scene:
             self.scene = self.parent.scene
-            # for sprite in [
-            #     self.sprite, self.left_hand, self.right_hand,
-            #     self.left_item, self.right_item, self.marker
-            # ]:
-            #     sprite.add(self.scene.all_nodes)
-            # for sprite in self.slot_sprites:
-            #     sprite.add(self.scene.all_nodes)
+ 
         input_actions, _ = self.parent.scene.game.input.get()
         
         if not any([
@@ -143,9 +148,28 @@ class Inventory(Node):
         self.hp = self.hp if self.hp < self.HP_MAX else self.HP_MAX
         return self.hp
 
+    
+    def serialize(self):
+        n_slots = len(self.slots)
+        items = [self.left_item.init, self.right_item.init] + [
+            sprite.init for sprite in self.slot_sprites
+        ]
+        return {
+            **self.init, 
+            **{
+                "slots": n_slots,
+                "items": items,
+                "money": self.money,
+                "max_money": self.max_money,
+                "hp": self.hp,
+                "hp_max": self.HP_MAX
+            }
+        }
+
 
     def add_slot(self):
-        if len(self.slots) >= N_SLOTS: return None
+        if len(self.slots) >= N_SLOTS: return None          
+
         self.slots.append(self.empty_item())
         new_slot = Decal(**{
             "parent": self,
@@ -197,6 +221,7 @@ class Inventory(Node):
             return self.right_item
         
         return None
+
 
     def get_selected_item_slot(self):
         indices = self.marker.rect.collidelistall(

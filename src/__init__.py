@@ -4,12 +4,14 @@ about:
 this file is the engine and runs everything needed to keep 
 the game running.
 """
+import os
 import random
+import pathlib
 
 import pygame as pg
 
 from .scene import Scene
-from .tools import load_yaml, vec, delta_vec
+from .tools import load_yaml, save_yaml, vec, delta_vec
 from .input import Input
 from .hitmask import HitMask
 
@@ -21,6 +23,8 @@ RGBA_GREEN = (0,255,0,255)
 
 ALLOW_DEBUG = True
 
+SAVE_PATH = pathlib.Path(os.path.expanduser("~/.local/share/rca/saves"))
+SAVE_FILE = SAVE_PATH / "save_file.yaml"
 
 class Engine():
     """
@@ -85,6 +89,35 @@ class Engine():
         )
 
         return self.scene # return reference to scene if needed
+
+
+    def save_game(self):
+        # ensure save_path exists
+        pathlib.Path(SAVE_PATH).mkdir(parents=True, exist_ok=True)
+        filename = str(SAVE_FILE)
+        # get state of current scene
+        self.saved_scenes[self.scene.id] = self.scene.serialize()
+        # build save file
+        player_node = self.scene.get_player().parent
+        save_file = {
+            "add_in" : player_node.init,
+            "cur_scene" : self.scene.id,
+            "scenes" : self.saved_scenes
+        }
+        # get player state
+        save_file["add_in"]["start"] = (
+            player_node.sprite.rect.topleft
+        )
+        # get inventory state
+        inv_index = [
+            item['id'] for item in save_file["add_in"]["children"]
+        ].index("inventory")
+        save_file["add_in"]["children"][inv_index] = (
+            player_node.inventory.serialize()
+        )
+        print(save_file)
+        breakpoint()
+        save_yaml(save_file, filename)
 
 
     def run(self):
