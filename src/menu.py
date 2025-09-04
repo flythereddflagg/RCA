@@ -38,7 +38,7 @@ class Menu(Node):
         
 
     def a_continue(self):
-        save_file = None
+        self.scene.game.load_game()
         
     
     

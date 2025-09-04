@@ -115,10 +115,20 @@ class Engine():
         save_file["add_in"]["children"][inv_index] = (
             player_node.inventory.serialize()
         )
-        print(save_file)
-        breakpoint()
         save_yaml(save_file, filename)
+        print(f"Saved game data to '{filename}'...")
 
+
+    def load_game(self):
+        # TODO assert file exists!
+
+        save_data = load_yaml(str(SAVE_FILE))
+        self.scene.game.saved_scenes = save_data["scenes"]
+        self.scene.deconstruct()
+        self.scene.game.load_scene(
+            yaml_path=self.scene.game.settings.new_game_scene,
+            add_in=self.scene.game.settings.new_game_add_in
+        )
 
     def run(self):
         self.running = True

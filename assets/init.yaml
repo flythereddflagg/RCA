@@ -15,12 +15,12 @@ SCALE: 2
 
 ### GAME INIT ###
 init_add_in:
-  # - yaml: ./assets/actor/player.yaml
-  #   start: [338,450] # red castle valley
-  #   # start: [200,200] # boss roosm?
-  #   groups:
-  #     - foreground
-  #     - player
+  - yaml: ./assets/actor/player.yaml
+    start: [338,450] # red castle valley
+    # start: [200,200] # boss roosm?
+    groups:
+      - foreground
+      - player
 
 new_game_scene: ./assets/scene/red_castle_valley.yaml
 new_game_add_in:
@@ -33,8 +33,8 @@ new_game_add_in:
 # initial_scene: ./assets/scene/mansion_yard.yaml
 # initial_scene: ./assets/scene/boss_room.yaml
 # initial_scene: ./assets/scene/test_scene.yaml
-initial_scene: ./assets/scene/startup.yaml
-# initial_scene: ./assets/scene/red_castle_valley.yaml
+# initial_scene: ./assets/scene/startup.yaml
+initial_scene: ./assets/scene/red_castle_valley.yaml
 
 
 # key bindings for keyboard input
