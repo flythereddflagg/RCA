@@ -12,10 +12,10 @@ children:
     default_state: stand
     animation:
       stand:
-        datafile: "larry_emote.json"
+        datafile: larry_emote.json
         repeat: True
       walk:
-        datafile: "larry_walk.json"
+        datafile: larry_walk.json
         repeat: True
       sword:
         datafile: larry_sword_swing.json

@@ -84,8 +84,10 @@ class Menu(Node):
         ):
             self.started = True
             self.start_menu()
-        
-        if not self.started: return
+            return
+
+
+
 
         if "UP" in [a[0] for a in actions] and "UP" not in held:
             self.go_up()

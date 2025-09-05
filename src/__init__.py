@@ -7,6 +7,7 @@ the game running.
 import os
 import random
 import pathlib
+import pprint
 
 import pygame as pg
 
@@ -78,14 +79,14 @@ class Engine():
         )        
 
     # TODO make a save game file based on saved scenes
-    def load_scene(self, yaml_path, *args, **kwargs) -> Scene:
+    def load_scene(self, yaml_path, add_in=None) -> Scene:
         yaml_data = self.saved_scenes.get(yaml_path)
             
         self.scene = Scene(
             game=self, 
             yaml_path=yaml_path, 
             yaml_data=yaml_data,
-            *args, **kwargs
+            add_in=add_in
         )
 
         return self.scene # return reference to scene if needed
@@ -98,23 +99,27 @@ class Engine():
         # get state of current scene
         self.saved_scenes[self.scene.id] = self.scene.serialize()
         # build save file
+        # get player state
         player_node = self.scene.get_player().parent
+        player_init = player_node.init.copy()
+             
+        player_init["start"] = list(delta_vec(
+            self.scene.background.sprites()[0].rect.topleft,
+            player_node.sprite.rect.topleft
+        ))
+        # get inventory state
+        inv_index = [
+            item['id'] for item in player_init["children"]
+        ].index("inventory")
+        player_init["children"][inv_index] = (
+            player_node.inventory.serialize()
+        )
         save_file = {
-            "add_in" : player_node.init,
+            "add_in" : [player_init],
             "cur_scene" : self.scene.id,
             "scenes" : self.saved_scenes
         }
-        # get player state
-        save_file["add_in"]["start"] = (
-            player_node.sprite.rect.topleft
-        )
-        # get inventory state
-        inv_index = [
-            item['id'] for item in save_file["add_in"]["children"]
-        ].index("inventory")
-        save_file["add_in"]["children"][inv_index] = (
-            player_node.inventory.serialize()
-        )
+ 
         save_yaml(save_file, filename)
         print(f"Saved game data to '{filename}'...")
 
@@ -123,11 +128,15 @@ class Engine():
         # TODO assert file exists!
 
         save_data = load_yaml(str(SAVE_FILE))
-        self.scene.game.saved_scenes = save_data["scenes"]
+        print("\n\n-- SAVE_DATA --\n\n")
+        pprint.pprint(save_data)
+        print("\n\n-- END SAVE_DATA --\n\n")
+
+        self.saved_scenes = save_data["scenes"]
         self.scene.deconstruct()
-        self.scene.game.load_scene(
-            yaml_path=self.scene.game.settings.new_game_scene,
-            add_in=self.scene.game.settings.new_game_add_in
+        self.load_scene(
+            yaml_path=save_data["cur_scene"],
+            add_in=save_data["add_in"]
         )
 
     def run(self):
