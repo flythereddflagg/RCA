@@ -102,12 +102,12 @@ class Engine():
         # build save file
         # get player state
         player_node = self.scene.get_player().parent
-        player_init = player_node.init.copy()
+        player_init = player_node.init
 
-        player_init["start"] = list(delta_vec(
+        player_init["start"] = [int(x) for x in delta_vec(
             self.scene.background.sprites()[0].rect.topleft,
             player_node.sprite.rect.topleft
-        ))
+        )]
         # get inventory state
         inv_index = [
             item['id'] for item in player_init["children"]

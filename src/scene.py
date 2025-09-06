@@ -127,6 +127,7 @@ class Scene():
         self.game.saved_scenes[self.id] = self.serialize()
 
         for node in self.all_nodes:
+            node.deconstruct()
             self.all_nodes.remove(node)
         
         self.all_nodes.cancel_update()

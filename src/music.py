@@ -15,7 +15,11 @@ class Music(Node):
         pass
 
 
-    def kill(self):
+    def deconstruct(self):
+        super().deconstruct()
+        self.stop()
+
+
+    def stop(self):
         pg.mixer.music.stop()
         pg.mixer.music.unload()
-        super().kill()

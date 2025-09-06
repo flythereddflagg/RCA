@@ -1,3 +1,4 @@
+import copy
 import pygame as pg
 
 from .animation import Animation
@@ -8,19 +9,20 @@ class HitMask(Animation):
         self.require_attr("sibling", "kind")
         sibling_id = self.init["sibling"]
         kind = self.init["kind"]
-        sibling_init = self.parent.child_by_id(sibling_id).init.copy()
+        sibling_init = self.parent.child_by_id(sibling_id).init
 
-        breakpoint()
-        mask_animation = sibling_init["animation"].copy()
+        # deep copy is necessary to avoid overwriting the animation
+        mask_animation = copy.deepcopy(sibling_init["animation"])
         for key, entry in mask_animation.items():
-            entry['datafile'] = (
+            entry["datafile"] = (
                 entry[kind] 
                 if kind in entry else 
                 ""
             )
+
         self.init["animation"] = mask_animation
         self.init["path_prefix"] = sibling_init["path_prefix"]
-        self.init["default_state"] = sibling_init["path_prefix"]
+        self.init["default_state"] = sibling_init["default_state"]
         super().setup()
         
         self.sprite = Decal(self.scene, parent=self)

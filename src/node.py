@@ -64,7 +64,15 @@ class Node(pg.sprite.Sprite):
         objects
         """
         pass
-
+    
+    
+    def deconstruct(self):
+        """
+        Called on scene deconstruction. May be overriden to
+        do specific things when scenes deconstruct.
+        """
+        pass
+        
 
     def signal(self, *args, **init):
         if self.parent: self.parent.signal(*args, **init)

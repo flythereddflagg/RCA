@@ -62,8 +62,8 @@ class Menu(Node):
     def update(self):
         if not self.added and self.parent.state == "titlescreen":
             self.fade_in_text()
-        if self.parent.state == "titlescreen":
-            self.process_input()
+        
+        self.process_input()
     
     
     def fade_in_text(self):
@@ -78,16 +78,21 @@ class Menu(Node):
     def process_input(self):
         actions, held = self.scene.game.input.get()
         if (
+            self.parent.state != "titlescreen" and 
+            "START" in [a[0] for a in actions] and 
+            "START" not in held
+        ):
+            self.parent.state = "titlescreen"
+            return
+
+        if (
             not self.started and 
-            "START" in [a[0] for a in actions] 
-            and "START" not in held
+            "START" in [a[0] for a in actions] and 
+            "START" not in held
         ):
             self.started = True
             self.start_menu()
             return
-
-
-
 
         if "UP" in [a[0] for a in actions] and "UP" not in held:
             self.go_up()
@@ -95,6 +100,7 @@ class Menu(Node):
             self.go_down()
         elif "START" in [a[0] for a in actions] and "START" not in held:
             self.select_option()
+
 
     def go_up(self):
         step_size = self.text_surface.get_size()[1] // len(self.selection)

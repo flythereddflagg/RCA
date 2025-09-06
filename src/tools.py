@@ -14,7 +14,12 @@ def load_yaml(yaml_path) -> DictObj:
 
 
 def save_yaml(data:dict|list, yaml_path:str):
-    yaml_str = yaml.dump(data, Dumper=yaml.Dumper)
+    yaml_str = yaml.dump(
+        data, 
+        Dumper=yaml.Dumper, 
+        default_flow_style=False, 
+        sort_keys=False
+    )
     with open(yaml_path, 'w') as f:
         f.write(yaml_str)
 
