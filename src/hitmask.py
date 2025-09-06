@@ -8,8 +8,9 @@ class HitMask(Animation):
         self.require_attr("sibling", "kind")
         sibling_id = self.init["sibling"]
         kind = self.init["kind"]
-        sibling_init = self.parent.child_by_id(sibling_id).init
+        sibling_init = self.parent.child_by_id(sibling_id).init.copy()
 
+        breakpoint()
         mask_animation = sibling_init["animation"].copy()
         for key, entry in mask_animation.items():
             entry['datafile'] = (

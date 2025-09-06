@@ -18,6 +18,7 @@ LEFT_STICK_AX = ["L_"+direction for direction in Compass.strings]
 class Player(Node):
 
     def setup(self):
+        # breakpoint()
         self.move = Movement(self.sprite)
         self.speed = DEFAULT_SPEED
         self.signals = []

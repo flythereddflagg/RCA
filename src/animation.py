@@ -38,6 +38,7 @@ class Animation(Node):
         # force the existence of the animation
         self.require_attr('animation', 'default_state', types=[dict, str])
         # parent must have a 'state' attribute
+        self.default_state = self.init["default_state"]
         self.previous:str = None
         self.last_state:str = None
         self.last_direction:int = Compass.DOWN 
@@ -49,8 +50,7 @@ class Animation(Node):
         self.path_prefix = self.init.get('path_prefix', "./") 
         self.animation = {}
         self.load_animation(self.init.get('animation'))
-        self.default_state = self.init["default_state"]
-
+        
 
     def load_animation(self, animation) -> None:
         self.animation = {}

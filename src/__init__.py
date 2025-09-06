@@ -93,6 +93,7 @@ class Engine():
 
 
     def save_game(self):
+        # breakpoint()
         # ensure save_path exists
         pathlib.Path(SAVE_PATH).mkdir(parents=True, exist_ok=True)
         filename = str(SAVE_FILE)
@@ -102,7 +103,7 @@ class Engine():
         # get player state
         player_node = self.scene.get_player().parent
         player_init = player_node.init.copy()
-             
+
         player_init["start"] = list(delta_vec(
             self.scene.background.sprites()[0].rect.topleft,
             player_node.sprite.rect.topleft
