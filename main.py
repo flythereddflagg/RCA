@@ -19,7 +19,7 @@ def main():
     else:
         game.run()
     
-    game.save_game()
+    # game.save_game()
     pg.display.quit()
     pg.quit()
     print("Game ended successfully!")
