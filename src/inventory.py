@@ -11,6 +11,7 @@ INV_SCALE = 1
 
 
 # TODO fix right hand selection
+# TODO make this a start menu instead of a live menu
 
 class Inventory(Node):
 
@@ -151,19 +152,20 @@ class Inventory(Node):
     
     def serialize(self):
         n_slots = len(self.slots)
-        items = [self.left_item.init, self.right_item.init] + [
-            sprite.init for sprite in self.slot_sprites
+        items = [
+            sprite.init 
+            for sprite in ([self.left_item, self.right_item] + self.slots)
+            if sprite.id != "empty"
         ]
         return {
-            **self.init, 
-            **{
-                "slots": n_slots,
-                "items": items,
-                "money": self.money,
-                "max_money": self.max_money,
-                "hp": self.hp,
-                "hp_max": self.HP_MAX
-            }
+            "id": self.id,
+            "type": "Inventory",
+            "money": self.money,
+            "max_money": self.max_money,
+            "hp": self.hp,
+            "hp_max": self.HP_MAX,
+            "slots": n_slots,
+            "items": items
         }
 
 
