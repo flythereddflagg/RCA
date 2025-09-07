@@ -58,7 +58,7 @@ class FeyFrog(Decal):
             sprite.set_image(pg.image.load("./assets/block/block.png").convert_alpha())
             sprite.rect.topleft = self.scene.game.get_center()
             sprite.kill()
-            sprite.init.["groups"].append("foreground")
+            sprite.init["groups"].append("foreground")
             self.scene.groups["foreground"].add(sprite)
             self.scene.all_nodes.add(sprite)
             self.kill()
