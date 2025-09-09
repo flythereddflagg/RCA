@@ -5,8 +5,6 @@ layers:
   - foreground
   - overlay
 
-# TODO implement this for all scenes and rewrite scene.py!
-# layers are specified in the groups attribute
 nodes: # all children are nodes
   - id: BACKGROUND
     type: Decal

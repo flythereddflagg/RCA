@@ -13,10 +13,14 @@ MENU_TEXT = """
     Options
     Quit
 """
+DEFAULT_FONT_FILE = "./assets/fonts/BoldPixels.ttf"
 
 class Menu(Node):
     def setup(self):
-        self.font = pg.font.Font("./assets/fonts/BoldPixels.ttf", FONTSIZE)
+        self.font_file = self.init.get("font_file", DEFAULT_FONT_FILE)
+        self.font_size = self.init.get("font_size", FONTSIZE)
+        self.menu_text = self.init.get("menu_text", MENU_TEXT)
+        self.font = pg.font.Font(self.font_file, self.font_size)
         self.sprite = Decal(parent=self)
         self.text_surface = None
         self.set_text("Press Start")
@@ -29,18 +33,17 @@ class Menu(Node):
         self.added = False
         self.started = False
 
-        self.callbacks = {
-            "Continue" : self.a_continue,
-            "New Game" : self.a_new_game,
-            "Options" : self.a_options,
-            "Quit" : self.a_quit
+        self.callbacks = { 
+            text: func for text, func in zip(
+                [line.strip() for line in self.menu_text.split("\n")],
+                [self.a_continue, self.a_new_game, self.a_options, self.a_quit]
+            )
         }
         
 
     def a_continue(self):
         self.scene.game.load_game()
         
-    
     
     def a_new_game(self):
         self.scene.game.saved_scenes = {}
@@ -67,7 +70,6 @@ class Menu(Node):
     
     
     def fade_in_text(self):
-        
         self.sprite.add(self.scene.hud)
         if self.text_surface.get_alpha() >= 255:
             self.added = True
@@ -111,7 +113,7 @@ class Menu(Node):
             self.selected += len(self.selection)
         self.indicator.rect.midright = (
             self.sprite.rect.topleft + 
-            vec([0, step_size * self.selected + FONTSIZE//2])
+            vec([0, step_size * self.selected + self.font_size//2])
         )
 
 
@@ -122,7 +124,7 @@ class Menu(Node):
             self.selected -= len(self.selection)
         self.indicator.rect.midright = (
             self.sprite.rect.topleft + 
-            vec([0, step_size * self.selected + FONTSIZE//2])
+            vec([0, step_size * self.selected + self.font_size//2])
         )
 
 
@@ -150,7 +152,7 @@ class Menu(Node):
 
     def start_menu(self):
 
-        self.set_text(MENU_TEXT)
+        self.set_text(self.menu_text)
         self.sprite.rect.center = (
             self.scene.game.get_center() *  vec([1, 1.5]).elementwise()
         )
@@ -160,7 +162,7 @@ class Menu(Node):
         self.selected = 0
         self.indicator.rect.midright = (
             self.sprite.rect.topleft + 
-            vec([0, FONTSIZE//2 + FONTSIZE*self.selected])
+            vec([0, self.font_size//2 + self.font_size*self.selected])
         )
         
 
