@@ -28,8 +28,6 @@ nodes:
         Options
         Quit
         
-
-
 - filename: ./assets/music/RCA_OVERWORLD/RCA_titlescreen.mp3
   id: startup music
   type: Music

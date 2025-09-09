@@ -31,8 +31,7 @@ class Player(Node):
         self.apply_input()
         self.check_signals()
         self.check_collision()
-        self.children.update()
-        self.inventory.update()
+        # self.children.update()
         self.apply_physics()
         
         if self.inventory.hp <= 0:
@@ -85,7 +84,7 @@ class Player(Node):
                     self.state = self.animation_id
         
         if (RIGHT_HAND_BUTTON in actions and 
-            RIGHT_HAND_BUTTON in self.input_held
+            RIGHT_HAND_BUTTON not in self.input_held
         ):
             if self.inventory.active:
                 self.inventory.select("RIGHT")

@@ -10,7 +10,6 @@ N_SLOTS = 6
 INV_SCALE = 1
 
 
-# TODO fix right hand selection
 # TODO make this a start menu instead of a live menu
 
 class Inventory(Node):
