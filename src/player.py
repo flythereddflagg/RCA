@@ -52,24 +52,7 @@ class Player(Node):
             self.state = 'walk'
 
 
-    def apply_right_stick(self, actions, values):
-        # activate inventory
-        vector = vec([0,0])
-        for direction in RIGHT_STICK_AX:
-            if not (direction in actions): continue
-            value = values[actions.index(direction)]
-            if not self.inventory.active: self.inventory.toggle()
-            multiplier = abs(value) if value else 1.0
-            vector += (
-                Compass.vector(direction[2:]) * 
-                self.inventory.sprite.image.get_height() * 
-                multiplier
-            )
 
-        self.inventory.marker.rect.center = (
-            self.inventory.sprite.rect.center + 
-            vector
-        )
 
 
     def apply_buttons(self, actions, values):
@@ -77,7 +60,7 @@ class Player(Node):
             LEFT_HAND_BUTTON not in self.input_held
         ):
             if self.inventory.active:
-                self.inventory.select("LEFT")
+                self.inventory.select("LEFT") # TODO with this in the inventory script it does nothing remove it?
             elif self.inventory.left_item.id != EMPTY:
                 self.animation_id = self.inventory.left_item.action
                 if self.animation_id:
@@ -107,7 +90,7 @@ class Player(Node):
         actions, values = list(map(list, zip(*actions_val)))
 
         self.apply_direction(actions, values)
-        self.apply_right_stick(actions, values)
+        # self.apply_right_stick(actions, values)
         self.apply_buttons(actions, values)
 
 

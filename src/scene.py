@@ -36,6 +36,7 @@ class Scene():
         and load each sprite into a group
         """
         self.game = game
+        self.paused = False
         self.id = yaml_path
         
         self.init = yaml_data if yaml_data else load_yaml(yaml_path)
@@ -104,7 +105,13 @@ class Scene():
             sprite_instance.rect.topleft = vec(start)
 
 
-    def update(self):        
+    def update(self):
+        if self.paused:
+            pause_group = self.groups.get("paused")
+            if pause_group:
+                pause_group.update()
+            return
+
         self.all_nodes.update()
 
 

@@ -4,6 +4,10 @@ from .node import Node
 from .decal import Decal
 from .tools import vec
 
+# TODO make a option tree. 
+# TODO make it possible to upload feedback from the menu
+
+
 WHITE = (255,255,255)
 ARROW = "->"
 FONTSIZE = 22

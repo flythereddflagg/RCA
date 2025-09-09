@@ -17,6 +17,7 @@ nodes:
   id: mansion yard map
   image: ./assets/scene/mansion_yard/mansion_yard_overlay.png
   type: Decal
+# TODO Fix the hitbox of the statue block!
 - groups:
   - solid
   - overlay

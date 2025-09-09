@@ -78,7 +78,6 @@ class Engine():
             pg.Surface((draw_surface_w, draw_surface_h))
         )        
 
-    # TODO make a save game file based on saved scenes
     def load_scene(self, yaml_path, add_in=None) -> Scene:
         yaml_data = self.saved_scenes.get(yaml_path)
             
@@ -126,7 +125,7 @@ class Engine():
 
 
     def load_game(self):
-        # TODO assert file exists!
+        if not SAVE_FILE.exists(): return
 
         save_data = load_yaml(str(SAVE_FILE))
         print("\n\n-- SAVE_DATA --\n\n")
@@ -181,7 +180,7 @@ class Engine():
             breakpoint()
         
         # update everything in the scene
-        if self.scene and not self.paused: 
+        if self.scene and not self.paused:
             self.scene.update()
 
 

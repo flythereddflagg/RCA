@@ -38,6 +38,8 @@ children:
     money: 0
     hp: 100
     hp_max: 100
+    groups:
+      - paused
     
   - id: sprite
     type: Decal
