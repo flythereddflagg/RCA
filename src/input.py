@@ -6,6 +6,7 @@ from dataclasses import dataclass
 import re
 
 import pygame as pg
+import pygame._sdl2.controller as xbox_input
 from .compass import Compass
 
 
@@ -19,34 +20,52 @@ class Input():
     def __init__(self, parent, binds, *args, **kwargs):
         self.parent = parent
         self.key_bind = binds.get("key_bind")
-        self.ctlr_bind = binds.get("ctlr_bind")
-        self.inv_ctlr_bind = (
-            {val:key for key, val in self.ctlr_bind.items()} 
-            if self.ctlr_bind else None
-        )
         self.binds = binds
         self.actions = []
         self.held = []
         self.last_actions = []
+        self.controller_setup()
 
-        self.controllers = [
-            pg.joystick.Joystick(i)
-            for i in range(pg.joystick.get_count())
-        ]
-        controller_names = [
-            ctlr.get_name()
-            for ctlr in self.controllers
-        ]
-        mapping_str = [
-            self.binds[name] 
-            if name in self.binds 
-            else self.binds["Generic"]
-            for name in controller_names
-        ]
-        self.controller_mappings = [
-            re.split(r"[\s]+", map_string.strip())
-            for map_string in mapping_str
-        ]
+    def controller_setup(self):
+        self.controllers = []
+        if not xbox_input.get_init():
+            xbox_input.init()
+
+        print("Controllers connected:")
+        for i in range(xbox_input.get_count()):
+            print(
+                f"\t{xbox_input.name_forindex(i)};",
+                f"Valid = {xbox_input.is_controller(i)}"
+            )
+            self.controllers.append(xbox_input.Controller(i))
+            print(self.controllers[-1].get_mapping(), "\n\n", self.controllers[-1].get_axis(xbox_input.CONTROLLER_AXIS_LEFTX), "\n\n")
+
+
+        pass
+        # self.ctlr_bind = binds.get("ctlr_bind")
+        # self.inv_ctlr_bind = (
+        #     {val:key for key, val in self.ctlr_bind.items()} 
+        #     if self.ctlr_bind else None
+        # )
+
+        # self.controllers = [
+        #     pg.joystick.Joystick(i)
+        #     for i in range(pg.joystick.get_count())
+        # ]
+        # controller_names = [
+        #     ctlr.get_name()
+        #     for ctlr in self.controllers
+        # ]
+        # mapping_str = [
+        #     self.binds[name] 
+        #     if name in self.binds 
+        #     else self.binds["Generic"]
+        #     for name in controller_names
+        # ]
+        # self.controller_mappings = [
+        #     re.split(r"[\s]+", map_string.strip())
+        #     for map_string in mapping_str
+        # ]
 
     def update(self):
         events = pg.event.get()
@@ -57,8 +76,11 @@ class Input():
                 self.actions = [("QUIT", 1.0)]
                 return
         # player one only for now
-        ctlr_input = self.map_ctlr_input(self.ctlr_input(0), 0) 
-        self.actions:list[tuple[str, float]] = list(set(self.keyboard_input() + ctlr_input))
+        # ctlr_input = self.map_ctlr_input(self.ctlr_input(0), 0) 
+        self.actions:list[tuple[str, float]] = list(set(
+            self.keyboard_input() 
+            + self.controller_input()
+        ))
         self.held = [
             action[0]
             for action in self.actions 
@@ -72,54 +94,54 @@ class Input():
     def get(self):
         return self.actions.copy(), self.held.copy()
 
-    def map_ctlr_input(
-        self, inputs:list[float], player:int
-    ) -> list[tuple[str, float]]:
-        if not inputs: return []
+    # def map_ctlr_input(
+    #     self, inputs:list[float], player:int
+    # ) -> list[tuple[str, float]]:
+    #     if not inputs: return []
         
-        mapping = [
-            list(item) 
-            for item in zip(self.controller_mappings[player], inputs)
-        ]
-        for i, inps in enumerate(mapping):
-            inp, val = inps
-            if 'x' in inp or 'y' in inp:
-                inp = inp + "-" if val < 0.0 else inp + "+"
-                mapping[i] = [inp, val]
+    #     mapping = [
+    #         list(item) 
+    #         for item in zip(self.controller_mappings[player], inputs)
+    #     ]
+    #     for i, inps in enumerate(mapping):
+    #         inp, val = inps
+    #         if 'x' in inp or 'y' in inp:
+    #             inp = inp + "-" if val < 0.0 else inp + "+"
+    #             mapping[i] = [inp, val]
 
         
-        actions = [
-            (self.inv_ctlr_bind.get(action), value) 
-            for action, value in mapping 
-            if abs(value) > DEAD_ZONE and action in self.inv_ctlr_bind
-        ]
-        return actions
+    #     actions = [
+    #         (self.inv_ctlr_bind.get(action), value) 
+    #         for action, value in mapping 
+    #         if abs(value) > DEAD_ZONE and action in self.inv_ctlr_bind
+    #     ]
+    #     return actions
 
 
-    def ctlr_input(self, player:int) -> list[float]:
+    # def ctlr_input(self, player:int) -> list[float]:
 
-        if not self.controllers: return []
-        axes_state = [
-            self.controllers[player].get_axis(i) 
-            for i in range(self.controllers[player].get_numaxes())
-        ]
+    #     if not self.controllers: return []
+    #     axes_state = [
+    #         self.controllers[player].get_axis(i) 
+    #         for i in range(self.controllers[player].get_numaxes())
+    #     ]
         
-        button_state = [
-            self.controllers[player].get_button(i) 
-            for i in range(self.controllers[player].get_numbuttons())
-        ]
-        hat_state = [
-            hatval
-            for i in range(self.controllers[player].get_numhats())
-            for hatval in self.controllers[player].get_hat(i)
-        ]
-        all_ctrl_inputs = (
-            [round(val, 2) for val in axes_state] +
-            button_state +  
-            hat_state
-        )
+    #     button_state = [
+    #         self.controllers[player].get_button(i) 
+    #         for i in range(self.controllers[player].get_numbuttons())
+    #     ]
+    #     hat_state = [
+    #         hatval
+    #         for i in range(self.controllers[player].get_numhats())
+    #         for hatval in self.controllers[player].get_hat(i)
+    #     ]
+    #     all_ctrl_inputs = (
+    #         [round(val, 2) for val in axes_state] +
+    #         button_state +  
+    #         hat_state
+    #     )
     
-        return [float(val) for val in all_ctrl_inputs]
+    #     return [float(val) for val in all_ctrl_inputs]
 
 
     def keyboard_input(self) -> list[tuple[str, float]]:
@@ -144,3 +166,5 @@ class Input():
 
         return event_inputs
 
+    def controller_input(self):
+        return []
