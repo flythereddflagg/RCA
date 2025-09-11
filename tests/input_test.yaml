@@ -14,10 +14,10 @@ key_bind:
   DOWN: down
   LEFT: left
   RIGHT: right
-  BUTTON_1: n
-  BUTTON_2: m
-  BUTTON_3: ','
-  BUTTON_4: '.'
+  BUTTON_S: n
+  BUTTON_E: m
+  BUTTON_W: ','
+  BUTTON_N: '.'
   R_UP: i
   R_DOWN: k
   R_LEFT: j
@@ -33,10 +33,10 @@ ctlr_bind:
   DOWN: LSY+
   LEFT: LSX-
   RIGHT: LSX+
-  BUTTON_1: LT
-  BUTTON_2: RT
-  BUTTON_3: A 
-  BUTTON_4: B
+  BUTTON_S: LT
+  BUTTON_E: RT
+  BUTTON_W: A 
+  BUTTON_N: B
   R_UP: RSY-
   R_DOWN: RSY+
   R_LEFT: RSX-

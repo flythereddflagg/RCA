@@ -9,8 +9,8 @@ from .node import Node
 
 DEFAULT_SPEED = 200
 DEFAULT_STATE = 'stand'
-LEFT_HAND_BUTTON = "BUTTON_1"
-RIGHT_HAND_BUTTON = "BUTTON_2"
+LEFT_HAND_BUTTON = "BUTTON_S"
+RIGHT_HAND_BUTTON = "BUTTON_E"
 RIGHT_STICK_AX = ["R_"+direction for direction in Compass.strings]
 LEFT_STICK_AX = ["L_"+direction for direction in Compass.strings]
 

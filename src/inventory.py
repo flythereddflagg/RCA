@@ -10,10 +10,11 @@ from .node import Node
 
 N_SLOTS = 6
 INV_SCALE = 1
-LEFT_HAND_BUTTON = "BUTTON_1"
-RIGHT_HAND_BUTTON = "BUTTON_2"
+LEFT_HAND_BUTTON = "BUTTON_S"
+RIGHT_HAND_BUTTON = "BUTTON_E"
 RIGHT_STICK_AX = ["R_"+direction for direction in Compass.strings]
 LEFT_STICK_AX = ["L_"+direction for direction in Compass.strings]
+EMPTY = "empty"
 
 # TODO make a proper pause menu with saving and button toggling instead of the right stick
 
