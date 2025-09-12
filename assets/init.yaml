@@ -58,7 +58,6 @@ key_bind:
   START: return
   SELECT: p
 
-
 # Controller key: 
 #   LS/RS: Left/Right Stick
 #   LT/RT: Left/Right Trigger

@@ -25,6 +25,12 @@ nodes:
   image: ./assets/scene/mansion_yard/statue.png
   key_id: statue key
   mask: ./assets/scene/mansion_yard/statue_mask.png
+  children:
+    - id: hitmask
+      type: Decal
+      mask: ./assets/scene/mansion_yard/statue_unlock_mask.png
+      groups: [foreground]
+
   start:
   - 742
   - 125

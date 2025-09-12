@@ -28,7 +28,9 @@ children:
   type: HitMask
   sibling: animation
   kind: hitmask
+  groups: [foreground]
 - id: hurtmask
   type: HitMask
   sibling: animation
   kind: hurtmask
+  groups: [foreground]
