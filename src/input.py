@@ -95,9 +95,9 @@ class Input():
             # + self.event_input(player_number)
         ))
         self.held = [
-            action[0]
-            for action in self.actions 
-            if action in self.last_actions
+            action
+            for action, val in self.actions 
+            if action in [a for a, _ in self.last_actions]
         ]
         self.last_actions = self.actions.copy()
         if self.parent.settings.SHOW_EVENTS and self.actions:
@@ -151,7 +151,9 @@ class Input():
                     norm = axis_val/SDL2_MAX
                 else: 
                     continue
-                actions.append([(action, abs(norm))])
+                if abs(norm) >= DEAD_ZONE:
+                    print(action, norm)
+                    actions.append([(action, abs(norm))])
         
         return actions
 

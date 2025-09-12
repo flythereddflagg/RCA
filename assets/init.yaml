@@ -58,7 +58,7 @@ key_bind:
   START: return
   SELECT: p
 
-# TODO implement controllers with pygame._sdl2.controller
+
 # Controller key: 
 #   LS/RS: Left/Right Stick
 #   LT/RT: Left/Right Trigger
