@@ -42,7 +42,7 @@ class Ossifrage(Decal):
         
         self.apply_action(self.action)
         self.check_signals()
-        self.animation.update()
+        # self.animation.update()
         self.apply_physics()
         
 

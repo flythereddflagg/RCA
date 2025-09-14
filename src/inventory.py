@@ -13,7 +13,7 @@ INV_SCALE = 1
 LEFT_HAND_BUTTON = "BUTTON_S"
 RIGHT_HAND_BUTTON = "BUTTON_E"
 RIGHT_STICK_AX = ["R_"+direction for direction in Compass.strings]
-LEFT_STICK_AX = ["L_"+direction for direction in Compass.strings]
+LEFT_STICK_AX = [direction for direction in Compass.strings]
 EMPTY = "empty"
 
 # TODO make a proper pause menu with saving and button toggling instead of the right stick
@@ -29,9 +29,11 @@ class Inventory(Node):
             "mask": None,
             "scale": INV_SCALE
         })
-        # TODO fix this dumb idea, we really need the parent to be called directly
+        # TODO fix this dumb idea, we really need the parent to be called directly SEE BELOW AS WELL FIX IT
         parent_update = lambda self: self.parent.update()
         self.sprite.update = types.MethodType(parent_update, self.sprite)
+        self.called = False
+        ##
 
         self.slots:list[Item] = []
         self.money:int = self.init.get("money", 0) # gold coins
@@ -87,16 +89,30 @@ class Inventory(Node):
 
 
     def update(self):
+        ## TODO FIX THIS DUMB CODE HERE
+        if self.called:
+            self.called = not self.called
+            return
+        
+        self.called = not self.called
+        ##
+
         if self.scene is not self.parent.scene:
             self.scene = self.parent.scene
  
         input_actions, held = self.parent.scene.game.input.get()
+        new_actions = self.parent.scene.game.input.new_actions()
+        print("new->", new_actions, self, id(self))
+        # breakpoint()
+
+        if "START" in new_actions:
+            self.toggle()
         
-        if not any([
-            inp in ["R_UP","R_DOWN","R_LEFT","R_RIGHT"] 
-            for inp, _ in input_actions
-        ]):
-            if self.active: self.toggle()
+        # if not any([
+        #     inp in ["R_UP","R_DOWN","R_LEFT","R_RIGHT"] 
+        #     for inp, _ in input_actions
+        # ]):
+        #     if self.active: self.toggle()
         
         slot_index = self.get_selected_item_slot()
         if slot_index is not None:
@@ -109,8 +125,8 @@ class Inventory(Node):
         if not input_actions: return
         actions, values = list(map(list, zip(*input_actions)))
 
-        self.apply_right_stick(actions, values)
-        self.apply_buttons(actions, values, held)
+        self.apply_left_stick(actions, values)
+        self.apply_buttons(new_actions)
 
 
         
@@ -293,16 +309,38 @@ class Inventory(Node):
         return False
 
 
-    def apply_right_stick(self, actions, values):
+    # def apply_right_stick(self, actions, values):
+    #     # activate inventory
+    #     vector = vec([0,0])
+    #     for direction in RIGHT_STICK_AX:
+    #         if not (direction in actions): continue
+    #         value = values[actions.index(direction)]
+    #         # this line is for moving the right stick to activate the menu
+    #         # if not self.active: self.toggle()
+    #         multiplier = abs(value) if value else 1.0
+    #         vector += (
+    #             Compass.vector(direction[2:]) * 
+    #             self.sprite.image.get_height() * 
+    #             multiplier
+    #         )
+
+    #     self.marker.rect.center = (
+    #         self.sprite.rect.center + 
+    #         vector
+    #     )
+
+
+    def apply_left_stick(self, actions, values):
         # activate inventory
         vector = vec([0,0])
-        for direction in RIGHT_STICK_AX:
+        for direction in LEFT_STICK_AX:
             if not (direction in actions): continue
             value = values[actions.index(direction)]
-            if not self.active: self.toggle()
+            # this line is for moving the right stick to activate the menu
+            # if not self.active: self.toggle()
             multiplier = abs(value) if value else 1.0
             vector += (
-                Compass.vector(direction[2:]) * 
+                Compass.vector(direction) * 
                 self.sprite.image.get_height() * 
                 multiplier
             )
@@ -313,10 +351,9 @@ class Inventory(Node):
         )
 
 
-    def apply_buttons(self, actions, values, held):
-        if (LEFT_HAND_BUTTON in actions and 
-            LEFT_HAND_BUTTON not in held
-        ):
+    def apply_buttons(self, new_actions):
+
+        if (LEFT_HAND_BUTTON in new_actions):
             if self.active:
                 self.select("LEFT")
             elif self.left_item.id != EMPTY:
@@ -324,9 +361,7 @@ class Inventory(Node):
                 if self.animation_id:
                     self.state = self.animation_id
         
-        if (RIGHT_HAND_BUTTON in actions and 
-            RIGHT_HAND_BUTTON not in held
-        ):
+        if (RIGHT_HAND_BUTTON in new_actions):
             if self.active:
                 self.select("RIGHT")
             elif self.right_item.id != EMPTY:

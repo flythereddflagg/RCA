@@ -156,15 +156,14 @@ class Engine():
     def logic(self):
         # run all game logic here
         # quit overrides everything else
-        game_input, held = self.input.get()
-        if ("QUIT", 1.0) in game_input:
+        new_actions = self.input.new_actions()
+        if "QUIT" in new_actions:
             self.running = False
             return
 
         # key to refresh scene
         if (
-            ("REFRESH", 1.0) in game_input and 
-            not "REFRESH" not in held and 
+            "REFRESH" in new_actions and
             self.settings.DEBUG and 
             self.scene
         ):
@@ -172,9 +171,8 @@ class Engine():
 
         # make a breakpoint and open debugger at any time
         if (
-            self.settings.DEBUG and
-            ("BREAKPOINT", 1.0) in game_input and 
-            "BREAKPOINT" not in held
+            self.settings.DEBUG and 
+            "BREAKPOINT" in new_actions
         ):
             print("\n\n---\nDEBUG: Entering the Python debugger...\n---\n\n")
             breakpoint()

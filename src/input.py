@@ -104,6 +104,11 @@ class Input():
             print(self.actions, self.held)
         
     
+    def new_actions(self):
+        actions, held = self.get()
+        return [action for action, _ in actions if action not in held]
+
+
     def get(self):
         return self.actions.copy(), self.held.copy()
 

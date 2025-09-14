@@ -37,7 +37,7 @@ class Gate(Decal):
             self.rect.center, player.sprite.rect.center
         ).length_squared()
 
-        if not (
+        if (
             dist_sqr < collide_dist and
             player.inventory.contains(self.key_id)
         ):
