@@ -17,7 +17,6 @@ nodes:
   id: mansion yard map
   image: ./assets/scene/mansion_yard/mansion_yard_overlay.png
   type: Decal
-# TODO Fix the hitbox of the statue block!
 - groups:
   - solid
   - overlay
@@ -87,3 +86,11 @@ nodes:
   id: camera
   slack: 100
   type: Camera
+- id: statue key
+  type: Item
+  image: ./assets/block/silver_key.png
+  mask: ./assets/block/silver_key.png
+  scale: 1
+  start: [876,524]
+  action: null
+  groups: ["foreground"]

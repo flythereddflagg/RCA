@@ -26,7 +26,7 @@ nodes:
   scale: 1
   scene_path: ./assets/scene/boss_room.yaml
   start:
-  - -25
+  - 25
   - 80
   type: Edge
 - exit_dir: LEFT
@@ -38,6 +38,6 @@ nodes:
   scale: 1
   scene_path: ./assets/scene/mansion_yard.yaml
   start:
-  - 625
+  - 580
   - 82
   type: Edge

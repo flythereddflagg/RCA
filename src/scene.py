@@ -126,6 +126,7 @@ class Scene():
             vec(self.background.sprites()[0].rect.topleft)
         )
         player.init["start"] = current_player_position
+        self.game.saved_scenes.pop(self.id, None)
         self.game.load_scene(yaml_path=self.id, add_in=[player.init])
 
 
