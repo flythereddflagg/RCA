@@ -243,8 +243,7 @@ class Engine():
             self.draw_surface, (255,255,255), sprite.rect, width=2
         )
         pos1, pos2 = (
-            str(vec(sprite.rect.topleft)
-            ), 
+            str(vec(sprite.rect.topleft)), 
             str(delta_vec(background.rect.topleft, sprite.rect.topleft))
         )
         sprite_id = sprite.id if sprite.id != "sprite" else sprite.parent.id
