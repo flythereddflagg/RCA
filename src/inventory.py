@@ -29,11 +29,6 @@ class Inventory(Node):
             "mask": None,
             "scale": INV_SCALE
         })
-        # TODO fix this dumb idea, we really need the parent to be called directly SEE BELOW AS WELL FIX IT
-        parent_update = lambda self: self.parent.update()
-        self.sprite.update = types.MethodType(parent_update, self.sprite)
-        self.called = False
-        ##
 
         self.slots:list[Item] = []
         self.money:int = self.init.get("money", 0) # gold coins
@@ -87,32 +82,24 @@ class Inventory(Node):
                 instance = Item(**item_init)
                 self.add_item(instance)
 
-
-    def update(self):
-        ## TODO FIX THIS DUMB CODE HERE
-        if self.called:
-            self.called = not self.called
-            return
-        
-        self.called = not self.called
+        ## TODO get rid of this somewhat less stupid but still stupid code
+        if "paused" not in self.scene.groups.keys():
+            self.scene.groups["paused"] = pg.sprite.Group()
+        self.scene.groups["paused"].add(self)
         ##
 
+    def update(self):
         if self.scene is not self.parent.scene:
             self.scene = self.parent.scene
  
         input_actions, held = self.parent.scene.game.input.get()
         new_actions = self.parent.scene.game.input.new_actions()
-        print("new->", new_actions, self, id(self))
-        # breakpoint()
 
         if "START" in new_actions:
             self.toggle()
         
-        # if not any([
-        #     inp in ["R_UP","R_DOWN","R_LEFT","R_RIGHT"] 
-        #     for inp, _ in input_actions
-        # ]):
-        #     if self.active: self.toggle()
+        if not any([inp in LEFT_STICK_AX for inp, _ in input_actions]):
+            self.marker.rect.center = self.sprite.rect.center
         
         slot_index = self.get_selected_item_slot()
         if slot_index is not None:
