@@ -90,7 +90,13 @@ class Scene():
             )
         sprite_instance:'.decal.Decal' = node.sprite
 
-        if sprite_instance is None: return
+        if sprite_instance is None: 
+            if groups:
+                for group in groups:
+                    if group not in self.groups:
+                        self.groups[group] = pg.sprite.Group()
+                    self.groups[group].add(node)
+            return
         
         if sprite_instance.scene is not self:
             sprite_instance.scene = self

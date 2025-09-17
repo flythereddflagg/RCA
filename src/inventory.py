@@ -21,7 +21,7 @@ EMPTY = "empty"
 class Inventory(Node):
 
     def setup(self):
-        self.sprite = Decal(**{
+        self.inventory_sprite = Decal(**{
             "parent": self,
             "id": "inventory_screen",
             "scene": None,
@@ -38,7 +38,7 @@ class Inventory(Node):
         self.active = False
         self.left_item:Item = self.empty_item()
         self.right_item:Item = self.empty_item()
-        self.sprite.rect.center = self.scene.game.get_center()
+        self.inventory_sprite.rect.center = self.scene.game.get_center()
 
         self.slot_sprites = pg.sprite.Group()
 
@@ -55,11 +55,11 @@ class Inventory(Node):
             self.right_hand.image, True, False
         ) # get the right hand where you want it
 
-        self.left_hand.rect.center = self.sprite.rect.center + vec(
-            (-self.sprite.rect.center[0]//2, 0)
+        self.left_hand.rect.center = self.inventory_sprite.rect.center + vec(
+            (-self.inventory_sprite.rect.center[0]//2, 0)
         )
-        self.right_hand.rect.center = self.sprite.rect.center + vec(
-            (self.sprite.rect.center[0]//2, 0)
+        self.right_hand.rect.center = self.inventory_sprite.rect.center + vec(
+            (self.inventory_sprite.rect.center[0]//2, 0)
         )
         self.marker = Decal(**{
             "parent": self,
@@ -69,7 +69,7 @@ class Inventory(Node):
             "mask": None,
             "scale": INV_SCALE
         })
-        self.marker.rect.center = self.sprite.rect.center
+        self.marker.rect.center = self.inventory_sprite.rect.center
 
         slots = self.init.get("slots")
         if slots:
@@ -82,11 +82,7 @@ class Inventory(Node):
                 instance = Item(**item_init)
                 self.add_item(instance)
 
-        ## TODO get rid of this somewhat less stupid but still stupid code
-        if "paused" not in self.scene.groups.keys():
-            self.scene.groups["paused"] = pg.sprite.Group()
-        self.scene.groups["paused"].add(self)
-        ##
+
 
     def update(self):
         if self.scene is not self.parent.scene:
@@ -99,7 +95,7 @@ class Inventory(Node):
             self.toggle()
         
         if not any([inp in LEFT_STICK_AX for inp, _ in input_actions]):
-            self.marker.rect.center = self.sprite.rect.center
+            self.marker.rect.center = self.inventory_sprite.rect.center
         
         slot_index = self.get_selected_item_slot()
         if slot_index is not None:
@@ -126,7 +122,7 @@ class Inventory(Node):
             self.parent.scene.hud.remove
         )
         # ORDER MATTERS first we do the backpack and hands
-        for sprite in [self.sprite, self.left_hand, self.right_hand]:
+        for sprite in [self.inventory_sprite, self.left_hand, self.right_hand]:
             toggle_state(sprite)
 
         # then we do the slots
@@ -134,9 +130,9 @@ class Inventory(Node):
         for i, slot_sprite in enumerate(self.slot_sprites.sprites()):
             toggle_state(slot_sprite)
             slot_sprite.rect.center = (
-                vec(self.sprite.rect.center) + 
+                vec(self.inventory_sprite.rect.center) + 
                 (vec(Compass.unit_vector(Compass.UP)) * 
-                    self.sprite.image.get_height()
+                    self.inventory_sprite.image.get_height()
                 ).rotate(i / n_slots * 360)
             )
         # then the sprites over the slots
@@ -149,7 +145,7 @@ class Inventory(Node):
             toggle_state(sprite)
         
         if not self.active:
-            self.marker.rect.center = self.sprite.rect.center
+            self.marker.rect.center = self.inventory_sprite.rect.center
 
 
     def change_money(self, amount:int):
@@ -307,12 +303,12 @@ class Inventory(Node):
     #         multiplier = abs(value) if value else 1.0
     #         vector += (
     #             Compass.vector(direction[2:]) * 
-    #             self.sprite.image.get_height() * 
+    #             self.inventory_sprite.image.get_height() * 
     #             multiplier
     #         )
 
     #     self.marker.rect.center = (
-    #         self.sprite.rect.center + 
+    #         self.inventory_sprite.rect.center + 
     #         vector
     #     )
 
@@ -328,12 +324,12 @@ class Inventory(Node):
             multiplier = abs(value) if value else 1.0
             vector += (
                 Compass.vector(direction) * 
-                self.sprite.image.get_height() * 
+                self.inventory_sprite.image.get_height() * 
                 multiplier
             )
 
         self.marker.rect.center = (
-            self.sprite.rect.center + 
+            self.inventory_sprite.rect.center + 
             vector
         )
 
