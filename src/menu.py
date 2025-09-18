@@ -6,6 +6,7 @@ from .tools import vec
 
 # TODO make a option tree. 
 # TODO make it possible to upload feedback from the menu
+# TODO make a "select" screen
 
 
 WHITE = (255,255,255)
