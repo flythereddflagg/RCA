@@ -26,7 +26,6 @@ class Gate(Decal):
                 mask_collision(self.hitmask, player_sprite) and
                 player.inventory.contains(self.key_id)
             ):
-                print("hitmask collision failed")
                 assert player.inventory.remove_item(self.key_id),\
                     "gate key was contains but did not get removed properly"
                 self.kill()

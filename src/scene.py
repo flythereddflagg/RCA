@@ -69,7 +69,6 @@ class Scene():
             self.place_node(Decal(self), ["background"])
 
         for node_init in self.init.get("nodes"):
-            print(node_init)
             node = node_from_dict(self, node_init)
             self.place_node(
                 node, 

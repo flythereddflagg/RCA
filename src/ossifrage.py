@@ -51,7 +51,6 @@ class Ossifrage(Decal):
 
 
     def check_signals(self):
-        if self.signals: print(f"[{self.id}] OSSIFRAGE got signals:\n{self.signals}")
         for signal in self.signals:
             if "damage" in signal[0]:
                 self.hp -= signal[1]

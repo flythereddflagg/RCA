@@ -59,7 +59,6 @@ class Decal(Node):
 
 
     def scale_by(self, factor, absolute=False):
-        # print(f"Scaling {self.id} by {factor}, abs: {absolute}")
         self.scale = factor if absolute else self.scale * factor
         assert self.scale > 0, f"{self.id}: Scale must be > 0"
         pos = self.rect.center

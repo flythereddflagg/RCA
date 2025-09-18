@@ -157,7 +157,6 @@ class Input():
                 else: 
                     continue
                 if abs(norm) >= DEAD_ZONE:
-                    print(action, norm)
                     actions.append([(action, abs(norm))])
         
         return actions

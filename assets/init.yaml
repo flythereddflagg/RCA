@@ -1,8 +1,8 @@
 ### DEBUG SETTINGS ###
 # Frame rate ( in Frames / second) DPS:0 => do not limit FPS
 FPS: 90
-DEBUG: true # show debug info on screen?
-SHOW_EVENTS: true # print input events in terminal
+DEBUG: false # show debug info on screen?
+SHOW_EVENTS: false # print input events in terminal
 FPS_COUNTER: true # show FPS on game screen
 SHOW_MASK: true # shows hit masks of every entity when debug = true
 SHOW_BG_MASK: false # if debug AND show mask then show bg mask too

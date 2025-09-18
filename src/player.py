@@ -110,7 +110,6 @@ class Player(Node):
 
 
     def check_signals(self):
-        if self.signals: print(f"[{self.id}] got signals:{self.signals}")
         for signal in self.signals:
             if "damage" in signal[0]:
                 self.inventory.change_health(-signal[1])

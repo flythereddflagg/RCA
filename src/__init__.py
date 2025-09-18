@@ -128,9 +128,6 @@ class Engine():
         if not SAVE_FILE.exists(): return
 
         save_data = load_yaml(str(SAVE_FILE))
-        print("\n\n-- SAVE_DATA --\n\n")
-        pprint.pprint(save_data)
-        print("\n\n-- END SAVE_DATA --\n\n")
 
         self.saved_scenes = save_data["scenes"]
         self.scene.deconstruct()
