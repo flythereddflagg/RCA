@@ -6,7 +6,6 @@ from .tools import vec
 # TODO make adaptive camera the follows the player and gives them better FOV in the direction they are facing.
 
 
-
 class Camera(Node):
     
     def setup(self):

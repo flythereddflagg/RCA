@@ -52,9 +52,6 @@ class Player(Node):
             self.state = 'walk'
 
 
-
-
-
     def apply_buttons(self, actions, values):
         if (LEFT_HAND_BUTTON in actions and 
             LEFT_HAND_BUTTON not in self.input_held

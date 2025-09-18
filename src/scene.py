@@ -137,7 +137,6 @@ class Scene():
 
 
     def deconstruct(self):
-        # TODO profile memory usage and destroy scenes?
         self.game.saved_scenes[self.id] = self.serialize()
 
         for node in self.all_nodes:
@@ -149,8 +148,8 @@ class Scene():
         for name, group in self.groups.items():
             for sprite in group:
                 group.remove(sprite)
-
         
+        del self
 
 
     def serialize(self) -> dict:

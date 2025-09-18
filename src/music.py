@@ -16,7 +16,6 @@ class Music(Node):
 
 
     def deconstruct(self):
-        super().deconstruct()
         self.stop()
 
 

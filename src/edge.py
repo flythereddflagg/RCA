@@ -38,4 +38,4 @@ class Edge(Decal):
             player, 
             player.init.get("groups"), start=start_pos
         )
-        self.scene.game.save_game()
+        game.save_game()
