@@ -7,7 +7,7 @@ from .tools import list_collided, vec, delta_vec
 from .item import EMPTY
 from .node import Node
 
-DEFAULT_SPEED = 200
+DEFAULT_SPEED = 130
 DEFAULT_STATE = 'stand'
 LEFT_HAND_BUTTON = "BUTTON_S"
 RIGHT_HAND_BUTTON = "BUTTON_E"

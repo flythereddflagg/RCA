@@ -1,7 +1,7 @@
 import pygame as pg
 
 from .node import Node
-from .tools import vec
+from .tools import vec, delta_vec
 
 # TODO make adaptive camera the follows the player and gives them better FOV in the direction they are facing.
 
@@ -73,12 +73,19 @@ class Camera(Node):
 
 
     def stop_at_border(self):
+        print("Stoppingasdfas")
         screen_w, screen_h = self.scene.game.draw_surface.get_size()
         background = self.scene.background.sprites()[0]
 
         # if background is too small then just return without modifying
         background_w, background_h = background.rect.size
-        if background_w < screen_w or background_h < screen_h: return
+        if background_w < screen_w or background_h < screen_h:
+            print("Stopping")
+            movex = background.rect.center[0] - screen_w/2
+            movey = background.rect.center[1] - screen_h/2
+            self.pan(movex, movey)
+            return
+    
 
         backx, backy = 0, 0
         if background.rect.left > 0:

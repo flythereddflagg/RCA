@@ -2,8 +2,7 @@ import pygame as pg
 
 from .node import Node
 
-# TODO fix slight glitch between transitions
-# TODO add in fade in and fade out between scenes
+# TODO fix slight glitch between transitions; is it a timing issue?
 # TODO make music triggers for events (spagoot)
 
 class Music(Node):
@@ -28,7 +27,7 @@ class Music(Node):
 
 
         pg.mixer.music.load(self.filename)
-        pg.mixer.music.play(-1)
+        pg.mixer.music.play(-1, fade_ms=1000)
  
     
     def update(self):
