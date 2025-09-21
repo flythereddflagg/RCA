@@ -3,6 +3,8 @@ import pygame as pg
 from .node import Node
 
 # TODO fix slight glitch between transitions
+# TODO add in fade in and fade out between scenes
+# TODO make music triggers for events (spagoot)
 
 class Music(Node):
 
