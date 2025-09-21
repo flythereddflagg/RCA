@@ -71,3 +71,7 @@ nodes:
   id: camera
   slack: 100
   type: Camera
+- id: forest theme
+  type: Music
+  filename: ./assets/music/slow_theme_loop.mp3
+  groups: [paused]
