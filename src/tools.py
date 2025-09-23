@@ -68,12 +68,12 @@ def get_center_screen():
         centery = screen_h // 2
         return (centerx, centery)
 
-def delta_vec(v_from, v_to) -> pg.math.Vector2:
+def diff_vec(v_a, v_b) -> pg.math.Vector2:
     """
     returns the 2d vector between any two points
     """
-    x, y = v_from[0], v_from[1]
-    a, b = v_to[0], v_to[1]
+    a, b = v_a[0], v_a[1]
+    x, y = v_b[0], v_b[1]
     return pg.math.Vector2((a, b)) - pg.math.Vector2((x, y))
 
 def vec(v_input:list|tuple|pg.math.Vector2):

@@ -3,7 +3,7 @@ import pygame as pg
 from .decal import Decal
 from .compass import Compass
 from .movement import Movement
-from .tools import list_collided, vec, delta_vec
+from .tools import list_collided, vec, diff_vec
 from .item import EMPTY
 from .node import Node
 
@@ -125,8 +125,8 @@ class Player(Node):
         ]
         for sprite in list_collided(self.hitmask.sprite, hurt_sprites):
             if getattr(sprite, "state", "") == 'damage': continue
-            damage_direction = delta_vec(
-                self.sprite.rect.center, sprite.rect.center
+            damage_direction = diff_vec(
+                 sprite.rect.center, self.sprite.rect.center
             ).normalize()
             sprite.signal([
                 "damage", 10, damage_direction

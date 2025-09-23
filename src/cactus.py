@@ -1,7 +1,7 @@
 import pygame as pg
 
 from .decal import Decal
-from .tools import list_collided, delta_vec
+from .tools import list_collided, diff_vec
 
 class Cactus(Decal):
 
@@ -20,8 +20,8 @@ class Cactus(Decal):
                 player.state == 'damage' and\
                 player.animation.active
             ): continue
-            damage_direction = delta_vec(
-                self.sprite.rect.center, player.sprite.rect.center
+            damage_direction = diff_vec(
+                 player.sprite.rect.center,self.sprite.rect.center
             ).normalize()
             player.signal([
                 'damage', 10, damage_direction

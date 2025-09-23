@@ -94,3 +94,8 @@ nodes:
 #   start: [876,524]
 #   action: null
 #   groups: ["foreground"]
+- id: ambiance
+  type: Music
+  filename: ./assets/music/CC0_birds-singing-03.mp3
+  groups: [paused]
+

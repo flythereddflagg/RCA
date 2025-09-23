@@ -1,7 +1,7 @@
 import pygame as pg
 
 from .decal import Decal
-from .tools import delta_vec, mask_collision
+from .tools import diff_vec, mask_collision
 
 collide_dist = 50**2 # pixels
 
@@ -31,8 +31,8 @@ class Gate(Decal):
                 self.kill()
             return
 
-        dist_sqr = delta_vec(
-            self.rect.center, player.sprite.rect.center
+        dist_sqr = diff_vec(
+            player.sprite.rect.center, self.rect.center
         ).length_squared()
 
         if (

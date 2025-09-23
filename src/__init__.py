@@ -12,7 +12,7 @@ import pprint
 import pygame as pg
 
 from .scene import Scene
-from .tools import load_yaml, save_yaml, vec, delta_vec
+from .tools import load_yaml, save_yaml, vec, diff_vec
 from .input import Input
 from .hitmask import HitMask
 
@@ -103,9 +103,9 @@ class Engine():
         player_node = self.scene.get_player().parent
         player_init = player_node.init
 
-        player_init["start"] = [int(x) for x in delta_vec(
-            self.scene.background.sprites()[0].rect.topleft,
-            player_node.sprite.rect.topleft
+        player_init["start"] = [int(x) for x in diff_vec(
+            player_node.sprite.rect.topleft,
+            self.scene.background.sprites()[0].rect.topleft            
         )]
         # get inventory state
         inv_index = [
@@ -241,7 +241,7 @@ class Engine():
         )
         pos1, pos2 = (
             str(vec(sprite.rect.topleft)), 
-            str(delta_vec(background.rect.topleft, sprite.rect.topleft))
+            str(diff_vec( sprite.rect.topleft, background.rect.topleft))
         )
         sprite_id = sprite.id if sprite.id != "sprite" else sprite.parent.id
         pos_sprite = sprite.pos.render(
@@ -251,7 +251,7 @@ class Engine():
         pos_rect = pos_sprite.get_rect()
         screen_rect = self.draw_surface.get_rect()
         # keep it inside the screen.
-        text_pos = delta_vec((0, 15), sprite.rect.topleft)
+        text_pos = diff_vec(sprite.rect.topleft, (0, 15))
         x, y = text_pos
         x = 0 if x < 0 else x
         x = (

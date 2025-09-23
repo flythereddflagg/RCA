@@ -5,7 +5,7 @@ import pygame as pg
 from .decal import Decal
 from .compass import Compass
 from .movement import Movement
-from .tools import list_collided, vec, delta_vec
+from .tools import list_collided, vec, diff_vec
 
 
 MOVEMENTS = Compass.strings + ['STOP', 'STOP', "STOP"]
@@ -92,8 +92,8 @@ class Ossifrage(Decal):
                 player.parent.state == 'damage'
             ): continue
 
-            damage_direction = delta_vec(
-                self.rect.center, player.rect.center
+            damage_direction = diff_vec(
+                 player.rect.center, self.rect.center
             ).normalize()
             player.signal([
                 'damage', 10, damage_direction
