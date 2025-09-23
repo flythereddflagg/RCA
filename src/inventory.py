@@ -65,7 +65,7 @@ class Inventory(Node):
             "parent": self,
             "id": "inventory_marker",
             "scene": None,
-            "image": "./assets/actor/inventory_screen/marker.png",
+            "image": "./assets/actor/inventory_screen/marker_icon.png",
             "mask": None,
             "scale": INV_SCALE
         })
