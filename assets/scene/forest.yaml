@@ -60,7 +60,7 @@ nodes:
   id: forest_red_castle_valley_connection
   image: ./assets/block/block.png
   mask: ./assets/block/block.png
-  scale: 3
+  scale: 1
   scene_path: ./assets/scene/red_castle_valley.yaml
   start:
   - 409

@@ -8,6 +8,11 @@ from .node import Node
 class Music(Node):
 
     def setup(self):
+        if (
+            self.scene.game.settings["DEBUG"] 
+            and not self.scene.game.settings["MUSIC"]
+        ):
+            return
         self.filename = self.init.get("filename")
         assert self.filename, "No filename given"
         self.measure_counter = 0.0
@@ -18,8 +23,7 @@ class Music(Node):
         if seq_list is not None:
             self.sequence = iter(seq_list)
             self.cur = next(self.sequence)
-            self.require_attr("measure_time")
-            self.measure_time = self.init.get("measure_time")
+            self.measure_time = self.init.get("measure_time", 1.0)
         else:
             self.sequence = None
             self.cur = None
@@ -31,6 +35,11 @@ class Music(Node):
  
     
     def update(self):
+        if (
+            self.scene.game.settings["DEBUG"] 
+            and not self.scene.game.settings["MUSIC"]
+        ):
+            return
         if self.sequence is None: return
         
         ms_elapsed = pg.mixer.music.get_pos()

@@ -151,17 +151,26 @@ nodes: # all children are nodes
     groups: 
      - behind
   
+  # - id: red castle valley theme
+  #   type: Music
+  #   filename: ./assets/music/red_castle_valley.mp3
+  #   groups: [paused]
+  #   measure_time: 1.846
+  #   sequence:
+  #     # after 28 measures have played goto measure 30
+  #     - [58, goto, 30]
+  #     # after 28 measures have played goto measure 30
+  #     - [28, goto, 30]
   - id: red castle valley theme
     type: Music
-    filename: ./assets/music/red_castle_valley.mp3
+    filename: ./assets/music/red_castle_valley_junk_repeat.mp3
     groups: [paused]
-    measure_time: 1.846
+    measure_time: 1
     sequence:
       # after 28 measures have played goto measure 30
-      - [58, goto, 30]
+      - [10.9, goto, 3.1]
       # after 28 measures have played goto measure 30
-      - [28, goto, 30]
-
+      - [15.3, goto, 18.4]
   - id: camera
     type: Camera
     slack: 100

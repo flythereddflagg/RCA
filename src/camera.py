@@ -14,6 +14,7 @@ class Camera(Node):
         self.cur_zoom = 1
         self.slack = self.init.get("slack", 0) 
         self.zoom_by(self.init.get("zoom", 1))
+
         
 
     def update(self):
@@ -45,9 +46,10 @@ class Camera(Node):
 
     def follow_player(self):
         player = self.scene.get_player().sprite
-        center = vec(self.scene.game.get_center())
-        player_pos = vec(player.rect.center)
-        movex, movey = player_pos - center
+        movex, movey = diff_vec(
+            player.rect.center, 
+            self.scene.game.get_center()
+        )
         
         movex, movey = self.add_slack(
             movex, movey, self.slack
@@ -73,16 +75,17 @@ class Camera(Node):
 
 
     def stop_at_border(self):
-        print("Stoppingasdfas")
         screen_w, screen_h = self.scene.game.draw_surface.get_size()
         background = self.scene.background.sprites()[0]
 
         # if background is too small then just return without modifying
         background_w, background_h = background.rect.size
         if background_w < screen_w or background_h < screen_h:
-            print("Stopping")
-            movex = background.rect.center[0] - screen_w/2
-            movey = background.rect.center[1] - screen_h/2
+            background = self.scene.background.sprites()[0]
+            movex, movey = diff_vec(
+                background.sprite.rect.center,
+                self.scene.game.get_center()
+            )
             self.pan(movex, movey)
             return
     
