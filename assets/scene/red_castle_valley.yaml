@@ -150,7 +150,7 @@ nodes: # all children are nodes
     exit_dir: UP
     groups: 
      - behind
-  # TODO polish sequenceing USE TENACITY?
+  
   - id: red castle valley theme
     type: Music
     filename: ./assets/music/red_castle_valley.mp3

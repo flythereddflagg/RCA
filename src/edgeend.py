@@ -19,6 +19,3 @@ class EdgeEnd(Edge):
         self.kill()
         self.scene.get_player().kill()
         
-
-# TODO make a better ending!
-# TODO make a game over screen

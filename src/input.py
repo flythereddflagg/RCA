@@ -1,7 +1,6 @@
 """
 file: src/input.py
 """
-# TODO add fuzzy finding of controllers via the difflib
 from dataclasses import dataclass
 import re
 

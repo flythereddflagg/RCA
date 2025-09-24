@@ -59,5 +59,3 @@ nodes:
   type: Edge
 - id: camera
   type: Camera
-
-# TODO add a proper ending

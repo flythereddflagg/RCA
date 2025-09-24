@@ -45,8 +45,39 @@ if __name__ == "__main__":
 
 
 # GENERAL TO-DO LIST
-# TODO make meaningful TESTS
-# TODO flesh out HUD
-# TODO make scene transitions a la LTTP (polish)
-# TODO: Larry AND Holly are playable with these items but both play differently and have different exits at the end (e.g. Larry has less knockback from bludgeoning but is more susceptible to piercing while Holly is the opposite.) (exits are the Original exit to the village and the exit to the mountain or something TBD)
-# TODO: A good amount of polish so that the game is "complete"
+# TODO -3- make meaningful TESTS
+# TODO -3- make scene transitions a la LTTP (polish)
+# TODO -4- Larry AND Holly are playable with these items but both play differently and have different exits at the end (e.g. Larry has less knockback from bludgeoning but is more susceptible to piercing while Holly is the opposite.) (exits are the Original exit to the village and the exit to the mountain or something TBD)
+# TODO -3- A good amount of polish so that the game is "complete"
+# TODO -4- add shadow and floating animation?
+
+"""
+list of things that are bugging me about the game so far
+none of this should be content. These are things that I
+need to fix before the game is "done".
+Each item may have a priority from 1 - 5
+1: game breaking/driving me nuts
+2: high priority
+3: we do need to get to it eventually
+4: nice to have but not necessary for MVP
+5: we get to it when we get to it
+---
+TODO -1- add hot plugging of controllers
+TODO -2- make start or "A" be valid ways to select stuff in menus
+TODO -2- grey out or cross out continue when game not found
+TODO -2- add outline to menu text
+TODO -2- include actual options menu with volume sliders and other settings
+TODO -2- add save and quit and options menu in start menu
+TODO -3- make DPAD a valid way to move the character
+TODO -2- tighten up music with loops USE TENACITY?
+TODO -1- fix the shadows in the forest exit cave thing
+TODO -1- Make a HUD finally! and show money in the inventory screen
+TODO -1- FIX draw layering with the eagle statue
+TODO -1- FIX the weird overlapping drawings near the red castle valley bridge
+TODO -1- make all small scenes appear in the MIDDLE of the screen.
+TODO -2- add the dark overlay back into the boss room
+TODO -1- make a proper ending/game over screen
+TODO -1- make inventory have proper labeling too!
+TODO -4- make it possible to upload feedback from the menu
+TODO -4- animate the river/waterfall
+"""

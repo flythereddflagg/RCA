@@ -2,7 +2,8 @@ import pygame as pg
 
 from .compass import Compass
 from .tools import list_collided
-# BUG get rid of jitter when camera moves with player 
+# BUG -1- get rid of jitter when camera moves with player
+# BUG -1- everything darkens when camera moves.
 
 class Movement():
     """
@@ -36,7 +37,7 @@ class Movement():
         if distance < 0:
             direction = Compass.opposite(direction)
             distance *= -1
-        # TODO this chunk is to correct for crazy frame rates do we need it?
+        # TODO -1- this chunk is to correct for crazy frame rates do we need it?
         # self.dist_buffer += distance % 1
         # distance -= distance % 1
             

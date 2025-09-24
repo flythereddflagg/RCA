@@ -16,7 +16,6 @@ RIGHT_STICK_AX = ["R_"+direction for direction in Compass.strings]
 LEFT_STICK_AX = [direction for direction in Compass.strings]
 EMPTY = "empty"
 
-# TODO make a proper pause menu with saving and button toggling instead of the right stick
 
 class Inventory(Node):
 

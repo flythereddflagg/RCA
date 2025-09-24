@@ -7,7 +7,6 @@ class Backpack(Decal):
 
     def update(self):
         self.check_collision()
-        # self.animate() # TODO add shadow and floating animation?
 
 
     def check_collision(self):
