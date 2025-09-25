@@ -2,6 +2,8 @@ import pygame as pg
 
 from .tools import class_from_str, load_yaml
 
+INHERIT_KEY = "_inherit_"
+
 def node_from_dict(scene:'.scene.Scene', node_init:dict) -> 'Node': 
     yaml = node_init.get("yaml")
     if yaml: # overwrite the data in yaml with the node_init 
@@ -25,9 +27,11 @@ class Node(pg.sprite.Sprite):
         id_ = init.get('id')
         self.id = id_ if id_ else str(type(self)) + str(id(self))
         self.init = init
-        # print(self.id, "->", self.init)
-        # if self.id == "player_node": breakpoint()
         self.parent = parent
+        if self.parent:
+            for key, val in self.init.items():
+                if val == INHERIT_KEY:
+                    self.init[key] = self.parent.init.get(key)
         self.sprite = None
         self.children = pg.sprite.Group()
         children:list[dict] = init.get("children")

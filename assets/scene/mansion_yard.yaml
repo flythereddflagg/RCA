@@ -17,23 +17,28 @@ nodes:
   id: mansion yard map
   image: ./assets/scene/mansion_yard/mansion_yard_overlay.png
   type: Decal
-- groups:
+
+- id: statue block
+  type: Gate
+  groups:
   - solid
-  - overlay
-  id: statue block
+  - foreground
   image: ./assets/scene/mansion_yard/statue.png
   key_id: statue key
   mask: ./assets/scene/mansion_yard/statue_mask.png
+  start: [742, 125]
   children:
     - id: hitmask
       type: Decal
       mask: ./assets/scene/mansion_yard/statue_unlock_mask.png
       groups: [foreground]
-
-  start:
-  - 742
-  - 125
-  type: Gate
+      start: _inherit_
+    - id: overlay
+      type: Decal
+      mask: ./assets/scene/mansion_yard/statue_overlay.png
+      groups: [overlay]
+      start: _inherit_
+ 
 - action: shovel
   groups:
   - foreground
