@@ -98,7 +98,7 @@ class Player(Node):
                 speed=3*self.speed, 
                 change_direction=False
             )
-        # TODO refine how damage works including Iframes, knockback and stuff like that.
+        # TODO -3- refine how damage works including Iframes, knockback and stuff like that.
         # split damage into knockback and other various states that need to be applied
 
 

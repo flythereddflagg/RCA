@@ -2,8 +2,7 @@ import pygame as pg
 
 from .node import Node
 
-# TODO fix slight glitch between transitions; is it a timing issue?
-# TODO make music triggers for events (spagoot)
+# TODO -2- make music triggers for events (spagoot)
 
 class Music(Node):
 

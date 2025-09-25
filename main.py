@@ -62,7 +62,6 @@ Each item may have a priority from 1 - 5
 4: nice to have but not necessary for MVP
 5: we get to it when we get to it
 ---
-TODO -1- add hot plugging of controllers
 TODO -2- make start or "A" be valid ways to select stuff in menus
 TODO -2- grey out or cross out continue when game not found
 TODO -2- add outline to menu text

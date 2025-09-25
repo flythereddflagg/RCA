@@ -5,13 +5,14 @@ from dataclasses import dataclass
 import re
 
 import pygame as pg
-import pygame._sdl2.controller as xbox_input
+import pygame._sdl2.controller as pg_sdl2_controller
 from .compass import Compass
 
 
 SDL2_MIN, SDL2_MAX = -32768, 32768
 DEAD_ZONE = 0.5
 BUFFER_TIME = 250 # ms
+USE_SDL2_CTLR = True
 
 
 class Input():
@@ -23,10 +24,13 @@ class Input():
         self.actions = []
         self.held = []
         self.last_actions = []
-        self.controllers = None
-        self.sdl2_controllers = None
-        # self.sdl2_controller_setup()
-        self.ctlr_setup()
+        self.controllers = []
+        self.sdl2_controllers = []
+        if USE_SDL2_CTLR:
+            self.sdl2_controller_setup()
+        else:
+            self.ctlr_setup()
+
 
     def sdl2_controller_setup(self):
         self.sdl2_controller_bind = self.binds.get("SDL2 Controller Bind")
@@ -36,17 +40,16 @@ class Input():
             if "CONTROLLER_" in key
         }
         self.sdl2_controllers = []
-        if not xbox_input.get_init():
-            xbox_input.init()
+        if not pg_sdl2_controller.get_init():
+            pg_sdl2_controller.init()
 
         print("Controllers connected:")
-        for i in range(xbox_input.get_count()):
+        for i in range(pg_sdl2_controller.get_count()):
             print(
-                f"\t{xbox_input.name_forindex(i)};",
-                f"Valid = {xbox_input.is_controller(i)}"
+                f"\t{pg_sdl2_controller.name_forindex(i)};",
+                f"Valid = {pg_sdl2_controller.is_controller(i)}"
             )
-            self.sdl2_controllers.append(xbox_input.Controller(i))
-            print(self.sdl2_controllers[-1].get_mapping(), "\n\n", self.sdl2_controllers[-1].get_axis(pg.CONTROLLER_AXIS_LEFTX), "\n\n")
+            self.sdl2_controllers.append(pg_sdl2_controller.Controller(i))
 
 
     def ctlr_setup(self):
@@ -75,8 +78,23 @@ class Input():
             for map_string in mapping_str
         ]
 
+    def hot_plug_check(self):
+        if USE_SDL2_CTLR:
+            current = self.sdl2_controllers
+            check = pg_sdl2_controller.get_count
+            setup = self.sdl2_controller_setup
+        else:
+            current = self.controllers
+            check = pg.joystick.get_count
+            setup = self.ctlr_setup
+        
+        if len(current) != check():
+            setup()
+
 
     def update(self):
+        # TODO -3- add more player controls player one only for now
+        self.hot_plug_check()
         player_number = 0
         events = pg.event.get()
         if self.parent.settings.SHOW_EVENTS and events:
@@ -85,8 +103,7 @@ class Input():
             if event.type == pg.QUIT:
                 self.actions = [("QUIT", 1.0)]
                 return
-        # TODO add more player controls
-        # player one only for now
+
         self.actions:list[tuple[str, float]] = list(set(
             self.keyboard_input() 
             + self.sdl2_controller_input(player_number)
@@ -111,7 +128,6 @@ class Input():
     def get(self):
         return self.actions.copy(), self.held.copy()
 
-    
 
     def keyboard_input(self) -> list[tuple[str, float]]:
         pressed_keys = pg.key.get_pressed()
@@ -146,7 +162,7 @@ class Input():
                 "BUTTON" in bind and 
                 controller.get_button(self.sdl2_consts[bind])
             ):
-                actions.append([(action, 1.0)])
+                actions.append((action, 1.0))
             elif "AXIS" in bind:
                 axis_val = controller.get_axis(self.sdl2_consts[bind[:-1]])
                 if axis_val < 0 and bind[-1] == "-":
@@ -156,7 +172,7 @@ class Input():
                 else: 
                     continue
                 if abs(norm) >= DEAD_ZONE:
-                    actions.append([(action, abs(norm))])
+                    actions.append((action, abs(norm)))
         
         return actions
 
