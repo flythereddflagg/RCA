@@ -58,9 +58,7 @@ class Player(Node):
         if (LEFT_HAND_BUTTON in actions and 
             LEFT_HAND_BUTTON not in self.input_held
         ):
-            if self.inventory.active:
-                self.inventory.select("LEFT") # TODO -1- with this in the inventory script it does nothing remove it?
-            elif self.inventory.left_item.id != EMPTY:
+            if self.inventory.left_item.id != EMPTY:
                 self.animation_id = self.inventory.left_item.action
                 if self.animation_id:
                     self.state = self.animation_id
@@ -68,9 +66,8 @@ class Player(Node):
         if (RIGHT_HAND_BUTTON in actions and 
             RIGHT_HAND_BUTTON not in self.input_held
         ):
-            if self.inventory.active:
-                self.inventory.select("RIGHT")
-            elif self.inventory.right_item.id != EMPTY:
+
+            if self.inventory.right_item.id != EMPTY:
                 self.animation_id = self.inventory.right_item.action
                 if self.animation_id:
                     self.state = self.animation_id
