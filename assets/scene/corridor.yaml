@@ -41,3 +41,7 @@ nodes:
   - 580
   - 82
   type: Edge
+- groups:
+    - other
+  id: camera
+  type: Camera
