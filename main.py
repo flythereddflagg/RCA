@@ -70,7 +70,6 @@ TODO -2- add save and quit and options menu in start menu
 TODO -3- make DPAD a valid way to move the character
 TODO -2- tighten up music with loops USE TENACITY?
 TODO -1- Make a HUD finally! and show money in the inventory screen
-TODO -1- FIX draw layering with the eagle statue
 TODO -1- FIX the weird overlapping drawings near the red castle valley bridge
 TODO -1- make all small scenes appear in the MIDDLE of the screen.
 TODO -2- add the dark overlay back into the boss room
