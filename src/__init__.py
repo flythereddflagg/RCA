@@ -213,9 +213,11 @@ class Engine():
             #self.screen.blit(fps_sprite, (10,10))
             self.draw_surface.blit(fps_sprite, (10,10))
             
-        background = self.scene.background.sprites()[0] 
+        background = self.scene.background.sprites()[0]
+        self.box_texts = []
         for group_name in self.scene.draw_layers:
             sprites = self.scene.groups[group_name].sprites()
+            
             for sprite in sprites:
                 if not isinstance(sprite.parent, HitMask):
                     self.render_sprite_box(sprite, background)
@@ -233,7 +235,6 @@ class Engine():
 
 
     def render_sprite_box(self, sprite, background):
-
         if not vars(sprite).get('pos'):
             sprite.pos = pg.font.SysFont("Sans", 10)
         pg.draw.rect(
@@ -265,9 +266,15 @@ class Engine():
             if y > screen_rect.bottom - pos_rect.size[1] 
             else y
         )
+        # test if it collides with another rect and move it down if it does
         text_pos = (x, y)
+        test_rect = pg.Rect(x, y, pos_rect.size[0], pos_rect.size[1])
 
-        self.draw_surface.blit(pos_sprite, text_pos)  
+        while test_rect.collidelistall(self.box_texts):
+            test_rect.top += 1
+        self.box_texts.append(test_rect)
+
+        self.draw_surface.blit(pos_sprite, test_rect.topleft)
 
 
     def render_mask(self, sprite):

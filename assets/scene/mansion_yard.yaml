@@ -14,7 +14,7 @@ nodes:
   type: Decal
 - groups:
   - overlay
-  id: mansion yard map
+  id: mansion yard map overlay
   image: ./assets/scene/mansion_yard/mansion_yard_overlay.png
   type: Decal
 
@@ -35,7 +35,7 @@ nodes:
       start: _inherit_
     - id: overlay
       type: Decal
-      mask: ./assets/scene/mansion_yard/statue_overlay.png
+      image: ./assets/scene/mansion_yard/statue_overlay.png
       groups: [overlay]
       start: _inherit_
  
