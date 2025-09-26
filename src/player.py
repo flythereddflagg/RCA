@@ -66,7 +66,6 @@ class Player(Node):
         if (RIGHT_HAND_BUTTON in actions and 
             RIGHT_HAND_BUTTON not in self.input_held
         ):
-
             if self.inventory.right_item.id != EMPTY:
                 self.animation_id = self.inventory.right_item.action
                 if self.animation_id:
