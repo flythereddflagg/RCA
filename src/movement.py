@@ -3,6 +3,8 @@ import pygame as pg
 from .compass import Compass
 from .tools import list_collided
 
+BUFFER_LIMIT = 2
+
 class Movement():
     """
     Non-solid sprite that triggers interaction and moves 
@@ -36,7 +38,14 @@ class Movement():
             direction = Compass.opposite(direction)
             distance *= -1
 
+        if distance < BUFFER_LIMIT:
+            self.dist_buffer += distance % 1
+
+            add_to_dist = int(self.dist_buffer)
+            distance += add_to_dist
+            self.dist_buffer -= add_to_dist
         distance = int(distance)
+
         xunit, yunit = Compass.vector(direction)
         addx, addy = distance * xunit, distance * yunit
         self.sprite.rect.move_ip(addx, addy)

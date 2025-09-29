@@ -23,10 +23,7 @@ class Inventory(Node):
         self.inventory_sprite = Decal(**{
             "parent": self,
             "id": "inventory_screen",
-            "scene": None,
             "image": "./assets/actor/inventory_screen/backpack.png",
-            "mask": None,
-            "scale": INV_SCALE
         })
 
         self.slots:list[Item] = []
@@ -63,10 +60,7 @@ class Inventory(Node):
         self.marker = Decal(**{
             "parent": self,
             "id": "inventory_marker",
-            "scene": None,
             "image": "./assets/actor/inventory_screen/marker_icon.png",
-            "mask": None,
-            "scale": INV_SCALE
         })
         self.marker.rect.center = self.inventory_sprite.rect.center
 
