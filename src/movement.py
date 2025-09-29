@@ -37,13 +37,6 @@ class Movement():
         if distance < 0:
             direction = Compass.opposite(direction)
             distance *= -1
-        # TODO -1- this chunk is to correct for crazy frame rates do we need it?
-        # self.dist_buffer += distance % 1
-        # distance -= distance % 1
-            
-        # if self.dist_buffer > 1: # reset the buffer once it exceeds 1
-        #     distance += self.dist_buffer
-        #     self.dist_buffer = distance % 1
 
         distance = int(distance)
         xunit, yunit = Compass.vector(direction)
