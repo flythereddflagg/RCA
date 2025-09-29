@@ -2,8 +2,6 @@ import pygame as pg
 
 from .compass import Compass
 from .tools import list_collided
-# BUG -1- get rid of jitter when camera moves with player
-# BUG -1- everything darkens when camera moves.
 
 class Movement():
     """
