@@ -3,6 +3,7 @@
 FPS: 90
 SHOW_EVENTS: false # print input events in terminal
 FPS_COUNTER: true # show FPS on game screen
+
 DEBUG: true # debug mode? (Shows rect frames and positions)
 SHOW_MASK: false # in debug mode, shows hit masks of every entity
 SHOW_BG_MASK: false # in debug mode, show mask then show bg mask too

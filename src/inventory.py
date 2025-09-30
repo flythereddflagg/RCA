@@ -25,7 +25,18 @@ class Inventory(Node):
             "id": "inventory_screen",
             "image": "./assets/actor/inventory_screen/backpack.png",
         })
-
+        self.marker = Decal(**{
+            "parent": self,
+            "id": "inventory_marker",
+            "image": "./assets/actor/inventory_screen/marker_icon.png",
+        })
+        self.left_hand, self.right_hand = (
+            Decal(**{
+                "id": f"inventory_hand_{i}",
+                "image": "./assets/actor/inventory_screen/hand.png",
+            })
+            for i in range(2)
+        )
         self.slots:list[Item] = []
         self.money:int = self.init.get("money", 0) # gold coins
         self.max_money = self.init.get("max_money", 999)
@@ -38,15 +49,7 @@ class Inventory(Node):
 
         self.slot_sprites = pg.sprite.Group()
 
-        self.left_hand, self.right_hand = (Decal(**{
-                "id": f"inventory_hand_{i}",
-                "scene": None,
-                "image": "./assets/actor/inventory_screen/hand.png",
-                "mask": None,
-                "scale": INV_SCALE
-            })
-            for i in range(2)
-        )
+        
         self.right_hand.image = pg.transform.flip(
             self.right_hand.image, True, False
         ) # get the right hand where you want it
@@ -57,11 +60,7 @@ class Inventory(Node):
         self.right_hand.rect.center = self.inventory_sprite.rect.center + vec(
             (self.inventory_sprite.rect.center[0]//2, 0)
         )
-        self.marker = Decal(**{
-            "parent": self,
-            "id": "inventory_marker",
-            "image": "./assets/actor/inventory_screen/marker_icon.png",
-        })
+        
         self.marker.rect.center = self.inventory_sprite.rect.center
 
         slots = self.init.get("slots")
