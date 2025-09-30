@@ -37,6 +37,13 @@ class Inventory(Node):
             })
             for i in range(2)
         )
+        self.left_glyph, self.right_glyph = (
+            Decal(**{
+                "id": f"inventory_glyph_{i}",
+                "image": "./assets/block/glyph.png",
+            })
+            for i in range(2)
+        )
         self.slots:list[Item] = []
         self.money:int = self.init.get("money", 0) # gold coins
         self.max_money = self.init.get("max_money", 999)
@@ -60,6 +67,8 @@ class Inventory(Node):
         self.right_hand.rect.center = self.inventory_sprite.rect.center + vec(
             (self.inventory_sprite.rect.center[0]//2, 0)
         )
+        self.left_glyph.rect.midtop = self.left_hand.rect.midbottom
+        self.right_glyph.rect.midtop = self.right_hand.rect.midbottom
         
         self.marker.rect.center = self.inventory_sprite.rect.center
 
@@ -114,7 +123,13 @@ class Inventory(Node):
             self.parent.scene.hud.remove
         )
         # ORDER MATTERS first we do the backpack and hands
-        for sprite in [self.inventory_sprite, self.left_hand, self.right_hand]:
+        for sprite in [
+            self.inventory_sprite, 
+            self.left_hand, 
+            self.right_hand,
+            self.left_glyph,
+            self.right_glyph
+        ]:
             toggle_state(sprite)
 
         # then we do the slots
