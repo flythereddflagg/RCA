@@ -15,7 +15,7 @@ RIGHT_HAND_BUTTON = "BUTTON_E"
 RIGHT_STICK_AX = ["R_"+direction for direction in Compass.strings]
 LEFT_STICK_AX = [direction for direction in Compass.strings]
 EMPTY = "empty"
-
+HP_PER_DECAL = 3
 
 class Inventory(Node):
 
@@ -45,22 +45,40 @@ class Inventory(Node):
             "id": f"inventory_glyph_B",
             "image": "./assets/block/glyph_B.png",
         })
+        
+
+        self.slots:list[Item] = []
+        self.money:int = self.init.get("money", 0) # gold coins
+        self.max_money = self.init.get("max_money", 999)
+        self.hp:int = self.init.get("hp", 0)
+        self.hp_max:int = self.init.get("hp_max", 10)
+        self.active = False
+
         self.life_meter_decal = Decal(**{
-            "id": f"life_meter",
-            "image": "./assets/block/hud_element.png",
+            "id": f"heart_decal",
+            "image": "./assets/block/heart.png",
         })
+        nhearts = self.hp_max // HP_PER_DECAL
+        new_surf = pg.Surface(
+            (vec(self.life_meter_decal.rect.size).elementwise()
+            * vec((nhearts, 1))),
+            flags=pg.SRCALPHA
+            
+        )
+        for i in range(nhearts):
+            new_surf.blit(
+                self.life_meter_decal.image, 
+                (self.life_meter_decal.rect.size[0] * i, 0)
+            )
+
+        self.life_meter_decal.set_image(new_surf)
+
         self.life_meter = Decal(id="life_meter")
         self.life_meter.set_image(pg.Surface(
             self.life_meter_decal.rect.size, flags=pg.SRCALPHA
         ))
         self.life_meter.rect.topleft = (10, 10)
 
-        self.slots:list[Item] = []
-        self.money:int = self.init.get("money", 0) # gold coins
-        self.max_money = self.init.get("max_money", 999)
-        self.hp:int = self.init.get("hp", 0)
-        self.hp_max:int = self.init.get("hp_max", 0)
-        self.active = False
         self.left_item:Item = self.empty_item()
         self.right_item:Item = self.empty_item()
         self.inventory_sprite.rect.center = self.scene.game.get_center()

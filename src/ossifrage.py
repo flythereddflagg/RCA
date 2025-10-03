@@ -96,6 +96,6 @@ class Ossifrage(Decal):
                  player.rect.center, self.rect.center
             ).normalize()
             player.signal([
-                'damage', 10, damage_direction
+                'damage', 1, damage_direction
             ])
             

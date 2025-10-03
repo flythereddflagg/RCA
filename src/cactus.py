@@ -24,6 +24,6 @@ class Cactus(Decal):
                  player.sprite.rect.center,self.sprite.rect.center
             ).normalize()
             player.signal([
-                'damage', 10, damage_direction
+                'damage', 1, damage_direction
             ])
             
