@@ -37,13 +37,20 @@ class Inventory(Node):
             })
             for i in range(2)
         )
-        self.left_glyph, self.right_glyph = (
-            Decal(**{
-                "id": f"inventory_glyph_{i}",
-                "image": "./assets/block/glyph.png",
-            })
-            for i in range(2)
-        )
+        self.left_glyph = Decal(**{
+            "id": f"inventory_glyph_A",
+            "image": "./assets/block/glyph_A.png",
+        })
+        self.right_glyph = Decal(**{
+            "id": f"inventory_glyph_B",
+            "image": "./assets/block/glyph_B.png",
+        })
+        self.life_meter = Decal(**{
+            "id": f"life_meter",
+            "image": "./assets/block/hud_element.png",
+        })
+        self.life_meter.rect.topleft = (10, 10)
+
         self.slots:list[Item] = []
         self.money:int = self.init.get("money", 0) # gold coins
         self.max_money = self.init.get("max_money", 999)
@@ -88,7 +95,7 @@ class Inventory(Node):
     def update(self):
         if self.scene is not self.parent.scene:
             self.scene = self.parent.scene
- 
+
         input_actions, held = self.parent.scene.game.input.get()
         new_actions = self.parent.scene.game.input.new_actions()
 
@@ -103,6 +110,13 @@ class Inventory(Node):
             slot_rect = self.slot_sprites.sprites()[slot_index].rect
             self.marker.rect.center = slot_rect.center
         
+        # TODO -1- refine as we go but this code is temprory
+        self.parent.scene.hud.add(self.life_meter)
+        amount_to_block_out = self.hp / self.hp_max
+        rect_size = (
+            vec([amount_to_block_out,1]).elementwise() 
+            * self.life_meter.rect.size
+        )
         if self.hp <= 0:
             self.parent.kill()
 
@@ -111,7 +125,6 @@ class Inventory(Node):
 
         self.apply_left_stick(actions, values)
         self.apply_buttons(new_actions)
-
 
         
     def toggle(self):
