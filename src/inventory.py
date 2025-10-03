@@ -45,24 +45,27 @@ class Inventory(Node):
             "id": f"inventory_glyph_B",
             "image": "./assets/block/glyph_B.png",
         })
-        self.life_meter = Decal(**{
+        self.life_meter_decal = Decal(**{
             "id": f"life_meter",
             "image": "./assets/block/hud_element.png",
         })
+        self.life_meter = Decal(id="life_meter")
+        self.life_meter.set_image(pg.Surface(
+            self.life_meter_decal.rect.size, flags=pg.SRCALPHA
+        ))
         self.life_meter.rect.topleft = (10, 10)
 
         self.slots:list[Item] = []
         self.money:int = self.init.get("money", 0) # gold coins
         self.max_money = self.init.get("max_money", 999)
         self.hp:int = self.init.get("hp", 0)
-        self.HP_MAX:int = self.init.get("hp_max", 0)
+        self.hp_max:int = self.init.get("hp_max", 0)
         self.active = False
         self.left_item:Item = self.empty_item()
         self.right_item:Item = self.empty_item()
         self.inventory_sprite.rect.center = self.scene.game.get_center()
 
         self.slot_sprites = pg.sprite.Group()
-
         
         self.right_hand.image = pg.transform.flip(
             self.right_hand.image, True, False
@@ -91,7 +94,6 @@ class Inventory(Node):
                 self.add_item(instance)
 
 
-
     def update(self):
         if self.scene is not self.parent.scene:
             self.scene = self.parent.scene
@@ -113,10 +115,20 @@ class Inventory(Node):
         # TODO -1- refine as we go but this code is temprory
         self.parent.scene.hud.add(self.life_meter)
         amount_to_block_out = self.hp / self.hp_max
-        rect_size = (
-            vec([amount_to_block_out,1]).elementwise() 
-            * self.life_meter.rect.size
+        surface = pg.Surface(self.life_meter.rect.size, flags=pg.SRCALPHA)
+        surface.fill((0,0,0,255))
+        pos = (
+            vec(self.life_meter.rect.size).elementwise()
+            * vec([amount_to_block_out ,0])
         )
+        life_mask = pg.mask.from_surface(self.life_meter_decal.image)
+        overlap = life_mask.overlap_mask(pg.mask.from_surface(surface), pos)
+        black_surface = overlap.to_surface(
+            setcolor=(0,0,0, 255), unsetcolor=(0, 0, 0, 0)
+        )
+        self.life_meter.image.blit(self.life_meter_decal.image, (0,0))
+        self.life_meter.image.blit(black_surface, (0,0))#, pos)
+
         if self.hp <= 0:
             self.parent.kill()
 
@@ -181,7 +193,7 @@ class Inventory(Node):
 
     def change_health(self, amount:int) -> int:
         self.hp = self.hp + amount if self.hp + amount > 0 else 0
-        self.hp = self.hp if self.hp < self.HP_MAX else self.HP_MAX
+        self.hp = self.hp if self.hp < self.hp_max else self.hp_max
         return self.hp
 
     
@@ -198,7 +210,7 @@ class Inventory(Node):
             "money": self.money,
             "max_money": self.max_money,
             "hp": self.hp,
-            "hp_max": self.HP_MAX,
+            "hp_max": self.hp_max,
             "slots": n_slots,
             "items": items
         })

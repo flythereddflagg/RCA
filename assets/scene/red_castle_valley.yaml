@@ -87,7 +87,7 @@ nodes: # all children are nodes
     type: Cactus
     image: ./assets/block/cactus.png
     mask: ./assets/block/cactus.png
-    start: [956,337]
+    start: [400,400]
     scale: 1
     groups: 
      - foreground
