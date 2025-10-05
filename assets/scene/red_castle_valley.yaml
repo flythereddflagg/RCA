@@ -99,7 +99,15 @@ nodes: # all children are nodes
     start: [358,531]
     scale: 1
     groups: 
-     - foreground    
+     - foreground
+  
+  - id: coin
+    type: Coin
+    image: ./assets/block/coin.png
+    mask: ./assets/block/coin.png
+    groups: [foreground]
+    value: 1
+    start: [466, 323]
 
   - id: soft_dirt
     type: SoftDirt

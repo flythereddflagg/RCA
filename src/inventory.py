@@ -198,15 +198,16 @@ class Inventory(Node):
             self.marker.rect.center = self.inventory_sprite.rect.center
 
 
-    def change_money(self, amount:int):
+    def change_money(self, amount:int) -> int|None:
         new_amount = self.money + amount
         if new_amount < 0:
-            return -1 # this cannot happen
+            return None # this cannot happen
 
         if new_amount > self.max_money:
             new_amount = self.max_money
         
         self.money = new_amount
+        return new_amount
 
 
     def change_health(self, amount:int) -> int:
