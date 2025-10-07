@@ -69,7 +69,6 @@ TODO -2- include actual options menu with volume sliders and other settings
 TODO -2- add save and quit and options menu in start menu
 TODO -3- make DPAD a valid way to move the character
 TODO -2- tighten up music with loops USE TENACITY?
-TODO -1- Make a HUD finally! and show money in the inventory screen
 TODO -2- add the dark overlay back into the boss room
 TODO -1- make a proper ending screen
 TODO -1- make a proper game over screen

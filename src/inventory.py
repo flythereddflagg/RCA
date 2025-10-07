@@ -45,7 +45,9 @@ class Inventory(Node):
             "id": f"inventory_glyph_B",
             "image": "./assets/block/glyph_B.png",
         })
-        
+        self.money_decal = Decal(id="money_decal")
+        self.coin_decal = Decal(id="coin", image="./assets/block/coin.png")
+        self.money_text = pg.font.Font("./assets/fonts/BoldPixels.ttf", 16)
 
         self.slots:list[Item] = []
         self.money:int = self.init.get("money", 0) # gold coins
@@ -130,7 +132,7 @@ class Inventory(Node):
             slot_rect = self.slot_sprites.sprites()[slot_index].rect
             self.marker.rect.center = slot_rect.center
         
-        # TODO -1- refine as we go but this code is temprory
+        # TODO -3- refine as we go but this code is temporary and was just to get a hud going
         self.parent.scene.hud.add(self.life_meter)
         amount_to_block_out = self.hp / self.hp_max
         surface = pg.Surface(self.life_meter.rect.size, flags=pg.SRCALPHA)
@@ -146,6 +148,24 @@ class Inventory(Node):
         )
         self.life_meter.image.blit(self.life_meter_decal.image, (0,0))
         self.life_meter.image.blit(black_surface, (0,0))#, pos)
+        ###
+
+        money_render = pg.Surface(
+            vec(self.coin_decal.rect.size).elementwise() * vec((4, 1)),
+            flags=pg.SRCALPHA
+        )
+        money_render.blit(self.coin_decal.image, (0,0))
+        rendered_text = self.money_text.render(
+            f"{self.money:03}", True, (255,255,255)
+        )
+        money_render.blit(rendered_text, (self.coin_decal.rect.size[0], 0))
+        self.money_decal.set_image(money_render)
+        self.parent.scene.hud.add(self.money_decal)
+        self.money_decal.rect.bottomright = (
+            self.scene.game.draw_surface.get_rect().bottomright + vec((16,-5))
+        )
+        
+
 
         if self.hp <= 0:
             self.parent.kill()
