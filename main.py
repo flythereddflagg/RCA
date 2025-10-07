@@ -78,4 +78,5 @@ TODO -4- animate the river/waterfall
 TODO -1- fix gate in background of forest. It was mistakenly added in bg
 TODO -3- fix player jitter when camera moves
 TODO -1- make glyph inactive buttons transparent
+TODO -1- make hands swap items when no slots are selected
 """
