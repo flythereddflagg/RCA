@@ -76,6 +76,7 @@ class Menu(Node):
         if self.text_surface.get_alpha() >= 255:
             self.added = True
             return
+        # TODO -4- this effect sucks and depends on frame rate. Fix?
         self.text_surface.set_alpha(self.text_surface.get_alpha() + 1)
 
 

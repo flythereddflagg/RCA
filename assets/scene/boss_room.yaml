@@ -41,9 +41,9 @@ nodes:
   image: ./assets/block/null.png
   mask: ./assets/block/block.png
   scale: 1
-  scene_path: ./assets/scene/mansion_yard.yaml
+  scene_path: ./assets/scene/credits.yaml
   start: [-32,-32]
-  type: EdgeEnd
+  type: Edge
 
 - exit_dir: LEFT
   groups:

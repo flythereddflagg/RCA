@@ -149,7 +149,7 @@ class Scene():
             for sprite in group:
                 group.remove(sprite)
         
-        del self
+
 
 
     def serialize(self) -> dict:

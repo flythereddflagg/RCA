@@ -1,0 +1,19 @@
+layers: []
+nodes:
+- id: credits
+  type: CutScene
+  groups:
+    - background  
+  children:
+    - id: animation
+      type: Animation
+      path_prefix: ./assets/scene/credits/
+      default_state: titlescreen
+      animation:
+        intro:
+          datafile: credits.json
+          repeat: true
+
+  
+  
+
