@@ -9,7 +9,6 @@ class Edge(Decal):
     """an edge is a sprite that connects two scenes in the map graph"""
 
     def update(self):
-        print("calling")
         if list_collided(self, self.scene.groups['player']):
             self.exec_trigger()
         
@@ -18,7 +17,6 @@ class Edge(Decal):
         player_sprite = self.scene.get_player()
         player = player_sprite.parent
         game = self.scene.game
-        print("deconstructing")
         self.scene.deconstruct()
         new_scene = game.load_scene(
             yaml_path=self.init["scene_path"]
