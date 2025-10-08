@@ -165,8 +165,6 @@ class Inventory(Node):
             self.scene.game.draw_surface.get_rect().bottomright + vec((16,-5))
         )
         
-
-
         if self.hp <= 0:
             self.parent.kill()
 
@@ -331,7 +329,12 @@ class Inventory(Node):
 
     def select(self, hand:str) -> Item:
         i_select = self.get_selected_item_slot()
-        if i_select is None: return None
+        if i_select is None: # just swap hands
+            self.right_item, self.left_item = self.left_item, self.right_item
+            self.right_item.rect.center = self.right_hand.rect.center
+            self.left_item.rect.center = self.left_hand.rect.center
+            return None
+
         selected_item:Item = self.slots[i_select]
         if selected_item is None: return None
         if hand.lower()[0] == 'r':
