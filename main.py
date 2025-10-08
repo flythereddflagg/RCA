@@ -75,8 +75,6 @@ TODO -1- make a proper game over screen
 TODO -1- make inventory have proper labeling too!
 TODO -4- make it possible to upload feedback from the menu
 TODO -4- animate the river/waterfall
-TODO -1- fix gate in background of forest. It was mistakenly added in bg
 TODO -3- fix player jitter when camera moves
-TODO -1- make glyph inactive buttons transparent
 TODO -1- make hands swap items when no slots are selected
 """
