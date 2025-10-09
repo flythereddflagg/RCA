@@ -63,7 +63,6 @@ TODO -2- add save and quit and options menu in start menu
 TODO -3- make DPAD a valid way to move the character
 TODO -2- tighten up music with loops USE TENACITY?
 TODO -2- add the dark overlay back into the boss room
-TODO -1- make a proper ending screen
 TODO -1- make a proper game over screen
 TODO -4- make inventory have proper labeling too!
 TODO -4- make it possible to upload feedback from the menu

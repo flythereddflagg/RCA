@@ -1,4 +1,4 @@
-layers: []
+layers: [foreground]
 nodes:
 - id: credits
   type: CutScene
@@ -13,6 +13,10 @@ nodes:
         intro:
           datafile: credits.json
           repeat: true
+- id: credits
+  type: TextRoll
+  groups:
+  - foreground
 
 
 - id: credit music

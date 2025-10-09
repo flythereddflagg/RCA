@@ -58,6 +58,14 @@ class Engine():
 
 
     def init_screen(self):
+        icon_path = self.settings.get("icon")
+        title = self.settings.get("title")
+        if icon_path:
+            pygame_icon = pg.image.load(icon_path)
+            pg.display.set_icon(pygame_icon)
+        if title:
+            pg.display.set_caption(title)
+
         w, h = self.settings.ASPECT_RATIO
         float_aspect_ratio = w / h
         draw_surface_w, draw_surface_h = (
