@@ -22,14 +22,14 @@ please follow the link in the README.
                  CREDITS
 
              -- Powered by -- 
-                 PyGame
+                 pygame
           
             -- Produced by --
             FlyTheReddFlagg Games
             
            -- Software tools --
             Python      VSCodium
-            PyGame      Aseprite
+            pygame      Aseprite
             PyYAML
             
        -- Creation and Direction -- 

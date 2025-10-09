@@ -25,9 +25,9 @@
 
 ## Credits
 
-- Powered by: Pygame
+- Powered by: pygame
 - Produced by: FlyTheReddFlagg Games
-- Software tools: [Python](https://www.python.org/), [Pygame](https://www.pygame.org), [PyYAML](https://pyyaml.org/), [VSCodium](https://vscodium.com/), [Aseprite](https://www.aseprite.org/)
+- Software tools: [Python](https://www.python.org/), [pygame](https://www.pygame.org), [PyYAML](https://pyyaml.org/), [VSCodium](https://vscodium.com/), [Aseprite](https://www.aseprite.org/)
 - Created and directed by: Mark Redd
 - Programming and data structure design: Mark Redd
 - Concept and line art: Elizabeth Floyd, Emma Redd
