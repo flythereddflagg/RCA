@@ -167,6 +167,9 @@ class Inventory(Node):
         
         if self.hp <= 0:
             self.parent.kill()
+            self.parent.scene.game.load_scene(
+                yaml_path="./assets/scene/game_over.yaml"
+            )
 
         if not input_actions: return
         actions, values = list(map(list, zip(*input_actions)))

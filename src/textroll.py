@@ -75,7 +75,8 @@ class TextRoll(Node):
     def setup(self):
         self.font_file = self.init.get("font_file", DEFAULT_FONT_FILE)
         self.font_size = self.init.get("font_size", FONTSIZE)
-        self.text = self.init.get("menu_text", CREDITS)
+        self.text = self.init.get("text", CREDITS)
+        self.scroll_speed = self.init.get("scroll_speed", 20)
         self.font = pg.font.Font(self.font_file, self.font_size)
         self.sprite = Decal(parent=self)
         self.text_surface = None
@@ -89,9 +90,7 @@ class TextRoll(Node):
     def update(self):
         draw_surface = self.scene.game.draw_surface
         if self.sprite.rect.bottom > draw_surface.get_rect().size[1] * 0.55:
-            self.move("UP", speed = 20)
-
-
+            self.move("UP", speed = self.scroll_speed)
 
 
     def set_text(self, text:str):

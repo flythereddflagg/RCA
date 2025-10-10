@@ -1,0 +1,34 @@
+layers: [foreground]
+nodes:
+# - id: credits
+#   type: CutScene
+#   groups:
+#     - background  
+#   children:
+#     - id: animation
+#       type: Animation
+#       path_prefix: ./assets/scene/credits/
+#       default_state: titlescreen
+#       animation:
+#         intro:
+#           datafile: credits.json
+#           repeat: true
+- id: credits
+  type: TextRoll
+  groups:
+  - foreground
+  text: GAME OVER
+  font_size: 44
+  scroll_speed: 40
+
+- id: retry
+  type: Retry
+  groups:
+  - foreground
+
+# - id: game over music
+#   type: Music
+#   filename: ./assets/music/RCA_OVERWORLD/RCA_OVERWORLD_v2.mp3
+  
+  
+

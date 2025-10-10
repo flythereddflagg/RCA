@@ -18,7 +18,6 @@ nodes:
   groups:
   - foreground
 
-
 - id: credit music
   type: Music
   filename: ./assets/music/RCA_OVERWORLD/RCA_OVERWORLD_v2.mp3
