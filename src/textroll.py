@@ -11,7 +11,7 @@ WHITE = (255,255,255)
 FONTSIZE = 22
 DEFAULT_FONT_FILE = "./assets/fonts/BoldPixels.ttf"
 CREDITS = """
-                 THE END
+              To be continued...
 
 
 Thank you so much for playing this demo!
@@ -27,10 +27,10 @@ please follow the link in the README.
             -- Produced by --
             FlyTheReddFlagg Games
             
-           -- Software tools --
+             -- Tech Stack --
             Python      VSCodium
             pygame      Aseprite
-            PyYAML
+            PyYAML      MuseScore
             
        -- Creation and Direction -- 
                 Mark Redd
