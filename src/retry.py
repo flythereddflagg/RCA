@@ -23,7 +23,9 @@ class Retry(Node):
         self.font = pg.font.Font(self.font_file, self.font_size)
         self.sprite = Decal(parent=self)
         self.text_surface = None
+        # self.set_text("\n")
         self.selection = []
+        self.started = False
 
         self.sprite.rect.center = (
             vec([1, 1.75]).elementwise() * self.scene.game.get_center()
@@ -35,8 +37,7 @@ class Retry(Node):
                 [self.a_continue, self.a_quit]
             )
         }
-        self.start_menu()
-
+        
 
     def a_continue(self):
         self.scene.game.load_game()
@@ -47,7 +48,12 @@ class Retry(Node):
 
 
     def update(self):
-        self.process_input()
+        if not self.started and self.parent and self.parent.trigger:
+            self.start_menu()
+            self.started = True
+            
+        if self.started:
+            self.process_input()
 
 
     def process_input(self):
@@ -84,7 +90,6 @@ class Retry(Node):
 
 
     def select_option(self):
-        print(self.callbacks)
         action = self.selection[self.selected]
         self.callbacks[action]()
 

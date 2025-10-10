@@ -85,12 +85,15 @@ class TextRoll(Node):
             self.scene.game.draw_surface.get_rect().midbottom
         )
         self.move = Movement(self.sprite)
+        self.trigger = False
 
 
     def update(self):
         draw_surface = self.scene.game.draw_surface
         if self.sprite.rect.bottom > draw_surface.get_rect().size[1] * 0.55:
             self.move("UP", speed = self.scroll_speed)
+        else:
+            self.trigger = True
 
 
     def set_text(self, text:str):

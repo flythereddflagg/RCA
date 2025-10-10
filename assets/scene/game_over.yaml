@@ -20,11 +20,11 @@ nodes:
   text: GAME OVER
   font_size: 44
   scroll_speed: 40
-
-- id: retry
-  type: Retry
-  groups:
-  - foreground
+  children:
+  - id: retry
+    type: Retry
+    groups:
+    - foreground
 
 # - id: game over music
 #   type: Music
