@@ -9,6 +9,7 @@ from .tools import vec
 WHITE = (255,255,255)
 ARROW = "->"
 FONTSIZE = 22
+# TODO -1- use markdown syntax to specify formatting of text
 MENU_TEXT = """
     Continue
     New Game

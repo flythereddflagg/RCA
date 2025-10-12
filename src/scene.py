@@ -136,8 +136,9 @@ class Scene():
         self.game.load_scene(yaml_path=self.id, add_in=[player.init])
 
 
-    def deconstruct(self):
-        self.game.saved_scenes[self.id] = self.serialize()
+    def deconstruct(self, save_scene=True):
+        if save_scene:
+            self.game.saved_scenes[self.id] = self.serialize()
 
         for node in self.all_nodes:
             node.deconstruct()

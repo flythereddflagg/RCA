@@ -167,6 +167,7 @@ class Inventory(Node):
         
         if self.hp <= 0:
             self.parent.kill()
+            self.parent.scene.deconstruct(save_scene=False)
             self.parent.scene.game.load_scene(
                 yaml_path="./assets/scene/game_over.yaml"
             )

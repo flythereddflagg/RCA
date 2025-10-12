@@ -50,6 +50,9 @@ class Engine():
             else None
         )
         self.input = Input(self, self.settings)
+        self.save_file_path = pathlib.Path(
+            self.settings.get("save_file", SAVE_FILE)
+        )
         
         self.load_scene(
             yaml_path=self.settings.initial_scene,
@@ -102,8 +105,10 @@ class Engine():
     def save_game(self):
         # breakpoint()
         # ensure save_path exists
-        pathlib.Path(SAVE_PATH).mkdir(parents=True, exist_ok=True)
-        filename = str(SAVE_FILE)
+        pathlib.Path(self.save_file_path.parents[0]).mkdir(
+            parents=True, exist_ok=True
+        )
+        filename = str(self.save_file_path)
         # get state of current scene
         self.saved_scenes[self.scene.id] = self.scene.serialize()
         # build save file
@@ -133,9 +138,9 @@ class Engine():
 
 
     def load_game(self):
-        if not SAVE_FILE.exists(): return
+        if not self.save_file_path.exists(): return
 
-        save_data = load_yaml(str(SAVE_FILE))
+        save_data = load_yaml(str(self.save_file_path))
 
         self.saved_scenes = save_data["scenes"]
         self.scene.deconstruct()
