@@ -41,22 +41,22 @@ please follow the link in the README.
             -- Concept Art --
                 Emma Redd
                 Mark Redd
-             Elizabeth Floyd
+           Elizabeth Redd Floyd
 
              -- Line Art --
-             Elizabeth Floyd
+             Elizabeth Redd Floyd
                 Emma Redd
                 
        -- Pixel art and animation --
                 Mark Redd
             
            -- Art Consulting --
-             Elizabeth Floyd
+           Elizabeth Redd Floyd
 
                -- Music --
                 Mark Redd
                 Emma Redd
-             Elizabeth Floyd
+           Elizabeth Redd Floyd
 
                -- Story --
                 Mark Redd
