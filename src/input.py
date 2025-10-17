@@ -46,7 +46,8 @@ class Input():
         print("Controllers connected:")
         for i in range(pg_sdl2_controller.get_count()):
             print(
-                f"\t{pg_sdl2_controller.name_forindex(i)};",
+                # commented out because name_forindex is missing.
+                # f"\t Name: {pg_sdl2_controller.name_forindex(i)};",
                 f"Valid = {pg_sdl2_controller.is_controller(i)}"
             )
             self.sdl2_controllers.append(pg_sdl2_controller.Controller(i))
