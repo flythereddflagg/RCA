@@ -21,7 +21,7 @@ MENU_TEXT = """
 """
 DEFAULT_FONT_FILE = "./assets/fonts/BoldPixels.ttf"
 INDICATOR_X_OFFSET = 0
-TEXT_PADDING = 5
+TEXT_PADDING = 10
 
 class Menu(Node):
     def setup(self):
@@ -130,7 +130,7 @@ class Menu(Node):
             self.selected += len(self.selection)
         self.indicator.rect.midright = (
             self.sprite.rect.topleft + 
-            vec([INDICATOR_X_OFFSET, step_size * self.selected + self.font_size//3])
+            vec([INDICATOR_X_OFFSET, step_size * self.selected + self.font_size//3 + TEXT_PADDING])
         )
 
 
@@ -141,7 +141,7 @@ class Menu(Node):
             self.selected -= len(self.selection)
         self.indicator.rect.midright = (
             self.sprite.rect.topleft + 
-            vec([INDICATOR_X_OFFSET, step_size * self.selected + self.font_size//3])
+            vec([INDICATOR_X_OFFSET, step_size * self.selected + self.font_size//3 + TEXT_PADDING])
         )
 
 
@@ -166,7 +166,7 @@ class Menu(Node):
             max([rect.size[0] for line, rect in rendered_lines])
                 + TEXT_PADDING * 2, 
             max([rect.size[1] for line, rect in rendered_lines])
-                * len(rendered_lines) + TEXT_PADDING * 2, 
+                * len(rendered_lines) + TEXT_PADDING * 3, 
         )
         self.text_surface = pg.surface.Surface(size, flags=pg.SRCALPHA)
         for i, (surface, rect) in enumerate(rendered_lines):
@@ -178,10 +178,10 @@ class Menu(Node):
                         pg.mask.from_surface(surface).to_surface(
                             setcolor=BLACK, unsetcolor=BLANK
                         ), 
-                        vec((TEXT_PADDING, size[1]/len(rendered_lines) * i)) + offset
+                        vec((TEXT_PADDING, size[1]/len(rendered_lines) * i + TEXT_PADDING)) + offset
                     )
             self.text_surface.blit(
-                surface, (TEXT_PADDING, size[1]/len(rendered_lines) * i)
+                surface, (TEXT_PADDING, size[1]/len(rendered_lines) * i + TEXT_PADDING)
             )
 
 
@@ -202,6 +202,6 @@ class Menu(Node):
         self.selected = 0
         self.indicator.rect.midright = (
             self.sprite.rect.topleft + 
-            vec([INDICATOR_X_OFFSET, self.font_size//3 + self.font_size*self.selected])
+            vec([INDICATOR_X_OFFSET, self.font_size//3 + self.font_size*self.selected + TEXT_PADDING])
         )
         
