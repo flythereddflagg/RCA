@@ -8,6 +8,8 @@ from .tools import vec
 
 WHITE = (255,255,255)
 GREY = (128,128,128)
+BLACK = (0, 0, 0)
+BLANK = (0, 0, 0, 0)
 ARROW = "->"
 FONTSIZE = 22
 # TODO -1- use markdown syntax to specify formatting of text
@@ -24,7 +26,8 @@ class Menu(Node):
         self.font_file = self.init.get("font_file", DEFAULT_FONT_FILE)
         self.font_size = self.init.get("font_size", FONTSIZE)
         self.menu_text = self.init.get("menu_text", MENU_TEXT)
-        self.font = pg.font.Font(self.font_file, self.font_size)
+        self.font = pg.freetype.Font(self.font_file, self.font_size)
+        # self.font.antialiased = False
         self.sprite = Decal(parent=self)
         self.text_surface = None
         self.set_text("Press Start")
@@ -146,7 +149,7 @@ class Menu(Node):
         lines = [line.strip() for line in text.split("\n") if line.strip()]
         self.selection = lines
         rendered_lines = [
-            self.font.render(line, True, WHITE)
+            self.font.render(line, fgcolor=WHITE, bgcolor=BLANK)
             if (
                 not "Continue" in line 
                 or self.scene.game.save_file_path.exists()
@@ -155,12 +158,12 @@ class Menu(Node):
             for line in lines
         ]
         size = (
-            max([line.get_size()[0] for line in rendered_lines]), 
-            max([line.get_size()[1] for line in rendered_lines]) *\
+            max([rect.size[0] for line, rect in rendered_lines]), 
+            max([rect.size[1] for line, rect in rendered_lines]) *\
             len(rendered_lines), 
         )
         self.text_surface = pg.surface.Surface(size, flags=pg.SRCALPHA)
-        for i, surface in enumerate(rendered_lines):
+        for i, (surface, rect) in enumerate(rendered_lines):
             self.text_surface.blit(
                 surface, (0, size[1]/len(rendered_lines) * i)
             )
@@ -174,7 +177,7 @@ class Menu(Node):
             self.scene.game.get_center() *  vec([1, 1.5]).elementwise()
         )
         self.indicator = Decal(parent=self) 
-        self.indicator.set_image(self.font.render(ARROW, True, WHITE))
+        self.indicator.set_image(self.font.render(ARROW, WHITE)[0])
         self.indicator.add(self.scene.hud)
         self.selected = 0
         self.indicator.rect.midright = (
