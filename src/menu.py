@@ -6,9 +6,9 @@ from .tools import vec
 
 
 
-WHITE = (255,255,255)
-GREY = (128,128,128)
-BLACK = (0, 0, 0)
+WHITE = (255,255,255, 255)
+GREY = (128,128,128, 255)
+BLACK = (0, 0, 0, 255)
 BLANK = (0, 0, 0, 0)
 ARROW = "->"
 FONTSIZE = 22
@@ -20,6 +20,8 @@ MENU_TEXT = """
     Quit
 """
 DEFAULT_FONT_FILE = "./assets/fonts/BoldPixels.ttf"
+INDICATOR_X_OFFSET = 0
+TEXT_PADDING = 5
 
 class Menu(Node):
     def setup(self):
@@ -91,18 +93,21 @@ class Menu(Node):
 
     def process_input(self):
         actions, held = self.scene.game.input.get()
+        select_button:bool = any([
+            command in [a[0] for a in actions] and
+            command not in held
+            for command in ["START", "BUTTON_S"]
+        ])
         if (
             self.parent.state != "titlescreen" and 
-            "START" in [a[0] for a in actions] and 
-            "START" not in held
+            select_button
         ):
             self.parent.state = "titlescreen"
             return
 
         if (
             not self.started and 
-            "START" in [a[0] for a in actions] and 
-            "START" not in held
+            select_button
         ):
             self.started = True
             self.start_menu()
@@ -114,7 +119,7 @@ class Menu(Node):
             self.go_up()
         elif "DOWN" in [a[0] for a in actions] and "DOWN" not in held:
             self.go_down()
-        elif "START" in [a[0] for a in actions] and "START" not in held:
+        elif select_button:
             self.select_option()
 
 
@@ -125,7 +130,7 @@ class Menu(Node):
             self.selected += len(self.selection)
         self.indicator.rect.midright = (
             self.sprite.rect.topleft + 
-            vec([0, step_size * self.selected + self.font_size//2])
+            vec([INDICATOR_X_OFFSET, step_size * self.selected + self.font_size//3])
         )
 
 
@@ -136,7 +141,7 @@ class Menu(Node):
             self.selected -= len(self.selection)
         self.indicator.rect.midright = (
             self.sprite.rect.topleft + 
-            vec([0, step_size * self.selected + self.font_size//2])
+            vec([INDICATOR_X_OFFSET, step_size * self.selected + self.font_size//3])
         )
 
 
@@ -158,15 +163,28 @@ class Menu(Node):
             for line in lines
         ]
         size = (
-            max([rect.size[0] for line, rect in rendered_lines]), 
-            max([rect.size[1] for line, rect in rendered_lines]) *\
-            len(rendered_lines), 
+            max([rect.size[0] for line, rect in rendered_lines])
+                + TEXT_PADDING * 2, 
+            max([rect.size[1] for line, rect in rendered_lines])
+                * len(rendered_lines) + TEXT_PADDING * 2, 
         )
         self.text_surface = pg.surface.Surface(size, flags=pg.SRCALPHA)
         for i, (surface, rect) in enumerate(rendered_lines):
+            # render text outline sprite
+            for j in range(3):
+                for k in range(3):
+                    offset = vec((j - 1, k - 1))
+                    self.text_surface.blit(
+                        pg.mask.from_surface(surface).to_surface(
+                            setcolor=BLACK, unsetcolor=BLANK
+                        ), 
+                        vec((TEXT_PADDING, size[1]/len(rendered_lines) * i)) + offset
+                    )
             self.text_surface.blit(
-                surface, (0, size[1]/len(rendered_lines) * i)
+                surface, (TEXT_PADDING, size[1]/len(rendered_lines) * i)
             )
+
+
         self.sprite.set_image(self.text_surface)
     
 
@@ -177,11 +195,13 @@ class Menu(Node):
             self.scene.game.get_center() *  vec([1, 1.5]).elementwise()
         )
         self.indicator = Decal(parent=self) 
-        self.indicator.set_image(self.font.render(ARROW, WHITE)[0])
+        self.indicator.set_image(pg.image.load(
+            "./assets/block/text_select.png"
+        ))
         self.indicator.add(self.scene.hud)
         self.selected = 0
         self.indicator.rect.midright = (
             self.sprite.rect.topleft + 
-            vec([0, self.font_size//2 + self.font_size*self.selected])
+            vec([INDICATOR_X_OFFSET, self.font_size//3 + self.font_size*self.selected])
         )
         
