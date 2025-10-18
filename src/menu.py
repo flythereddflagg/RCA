@@ -7,11 +7,12 @@ from .tools import vec
 
 
 WHITE = (255,255,255)
+GREY = (128,128,128)
 ARROW = "->"
 FONTSIZE = 22
 # TODO -1- use markdown syntax to specify formatting of text
 MENU_TEXT = """
-    Continue
+    Continue 
     New Game
     Options
     Quit
@@ -144,7 +145,15 @@ class Menu(Node):
     def set_text(self, text:str):
         lines = [line.strip() for line in text.split("\n") if line.strip()]
         self.selection = lines
-        rendered_lines = [self.font.render(line, True, WHITE) for line in lines]
+        rendered_lines = [
+            self.font.render(line, True, WHITE)
+            if (
+                not "Continue" in line 
+                or self.scene.game.save_file_path.exists()
+            ) else
+            self.font.render(line, True, GREY)
+            for line in lines
+        ]
         size = (
             max([line.get_size()[0] for line in rendered_lines]), 
             max([line.get_size()[1] for line in rendered_lines]) *\

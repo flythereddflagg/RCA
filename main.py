@@ -56,7 +56,6 @@ Each item may have a priority from 1 - 5
 5: we get to it when we get to it
 ---
 TODO -2- make start or "A" be valid ways to select stuff in menus
-TODO -2- grey out or cross out continue when game not found
 TODO -2- add outline to menu text
 TODO -2- include actual options menu with volume sliders and other settings
 TODO -2- add save and quit and options menu in start menu
