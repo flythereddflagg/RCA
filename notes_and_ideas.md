@@ -1,5 +1,10 @@
 ## Ideas from Liz
 
+- NEXT THINGS TO DO:
+  - Meatball enemy
+  - Grandma with dialogue and "rappers delight" and SUNGLASSES and sideways baseball cap
+  - Frog sticking his tongue out to eat player! HOW?
+
 - Meatball enemy: may be eaten for a small amount of damage
   - Eating the meatball drops you to 1 hp
   - if you do not eat the meatball, it will grow into a Meatball Tree that can walk around and throw other meatball
