@@ -5,9 +5,11 @@
 **.mscbackup
 **.bkp
 **.icl
+**-pygbag.???
 # IGNORE THE FOLLOWING FOLDERS
 build_env/
 build/
 dist/
 .pytest_cache/
 install/
+

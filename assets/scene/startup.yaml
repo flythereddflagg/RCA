@@ -28,7 +28,8 @@ nodes:
         Options
         Quit
         
-- filename: ./assets/music/RCA_OVERWORLD/RCA_titlescreen.mp3
+# - filename: ./assets/music/RCA_OVERWORLD/RCA_titlescreen.mp3
+- filename: ./assets/music/RCA_OVERWORLD/RCA_titlescreen.ogg
   id: startup music
   type: Music
 - groups:

@@ -14,10 +14,13 @@ def main():
         import datetime
         try:
             game.run()
+            # game.run()
         finally:
             write_log(game)
     else:
         game.run()
+        # game.run() # necessary for wasm build
+
     
     # game.save_game()
     pg.display.quit()
@@ -39,9 +42,40 @@ def write_log(game):
         ])
         f.write(output)
 
+async def wasm_main():
+    import pygame as pg
+    import yaml
+    from src import Engine
+    pg.init()
+    INIT_PATH = "./assets/init.yaml"
+    game = Engine(INIT_PATH)
+    print(" --- INIT COMPLETE ---")
+    
+    game.running = True
+
+    while game.running:
+        game.input.update()
+        game.logic()
+        game.draw_frame()
+        game.dt = (
+            game.clock.tick() 
+            if game.settings.FPS < -1 else 
+            game.clock.tick(game.settings.FPS)
+        )
+        await asyncio.sleep(0)
+
+
+    pg.display.quit()
+    pg.quit()
+    print("Game ended successfully!")
+
 
 if __name__ == "__main__":
-    main()
+    import sys
+    if sys.platform == "emscripten":
+        asyncio.run(wasm_main())
+    else: # on PC
+        main()
 
 
 """

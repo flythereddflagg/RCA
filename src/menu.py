@@ -4,6 +4,8 @@ from .node import Node
 from .decal import Decal
 from .tools import vec
 
+import pygame.font as pg_freetype
+
 
 
 WHITE = (255,255,255, 255)
@@ -28,7 +30,7 @@ class Menu(Node):
         self.font_file = self.init.get("font_file", DEFAULT_FONT_FILE)
         self.font_size = self.init.get("font_size", FONTSIZE)
         self.menu_text = self.init.get("menu_text", MENU_TEXT)
-        self.font = pg.freetype.Font(self.font_file, self.font_size)
+        self.font = pg_freetype.Font(self.font_file, self.font_size)
         # self.font.antialiased = False
         self.sprite = Decal(parent=self)
         self.text_surface = None
@@ -154,7 +156,8 @@ class Menu(Node):
         lines = [line.strip() for line in text.split("\n") if line.strip()]
         self.selection = lines
         rendered_lines = [
-            self.font.render(line, fgcolor=WHITE, bgcolor=BLANK)
+            # self.font.render(line, false, fgcolor=WHITE, bgcolor=BLANK)
+            self.font.render(line, false, WHITE)
             if (
                 not "Continue" in line 
                 or self.scene.game.save_file_path.exists()
@@ -163,13 +166,13 @@ class Menu(Node):
             for line in lines
         ]
         size = (
-            max([rect.size[0] for line, rect in rendered_lines])
+            max([line.get_size()[0] for line in rendered_lines])
                 + TEXT_PADDING * 2, 
-            max([rect.size[1] for line, rect in rendered_lines])
+            max([line.get_size()[1] for line in rendered_lines])
                 * len(rendered_lines) + TEXT_PADDING * 3, 
         )
         self.text_surface = pg.surface.Surface(size, flags=pg.SRCALPHA)
-        for i, (surface, rect) in enumerate(rendered_lines):
+        for i, surface in enumerate(rendered_lines):
             # render text outline sprite
             for j in range(3):
                 for k in range(3):

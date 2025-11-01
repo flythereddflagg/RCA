@@ -17,7 +17,7 @@ class Music(Node):
         assert self.filename, "No filename given"
         # for wasm build
         # if sys.platform == "emscripten":
-        self.filename = self.filename.replace(".mp3", "-pygbag.ogg")
+        self.filename = self.filename.replace(".ogg", "-pygbag.ogg")
         self.measure_counter = 0.0
         # total measures that have played per music.get_pos
         self.last_update = 0.0 
