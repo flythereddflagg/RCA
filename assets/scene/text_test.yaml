@@ -1,0 +1,26 @@
+layers: [background, foreground]
+nodes:
+- groups:
+  - solid
+  - background
+  id: boss room
+  image: ./assets/scene/boss_room/boss_room.png
+  mask: ./assets/scene/boss_room/boss_room_mask.png
+  type: Decal
+- groups:
+  - other
+  id: camera
+  type: Camera
+- id: test text
+  groups: [foreground]
+  type: TextBox
+  font_size: 50
+  outline: true
+  text: |-
+    the quick brown fox
+    jumped over the
+    lazy dog
+
+  start: [100, 100]
+
+

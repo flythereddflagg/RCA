@@ -159,7 +159,7 @@ class Menu(Node):
                 not "Continue" in line 
                 or self.scene.game.save_file_path.exists()
             ) else
-            self.font.render(line, True, GREY)
+            self.font.render(line, fgcolor=GREY, bgcolor=BLANK)
             for line in lines
         ]
         size = (

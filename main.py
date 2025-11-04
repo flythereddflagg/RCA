@@ -72,4 +72,5 @@ TODO -3- make scene transitions a la LTTP (polish)
 TODO -4- Larry AND Holly are playable with these items but both play differently and have different exits at the end (e.g. Larry has less knockback from bludgeoning but is more susceptible to piercing while Holly is the opposite.) (exits are the Original exit to the village and the exit to the mountain or something TBD)
 TODO -3- A good amount of polish so that the game is "complete"
 TODO -4- add shadow and floating animation?
+BUG -5- fix [src/libmpg123/id3.c:process_comment():587] error: No comment text / valid description?
 """

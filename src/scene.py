@@ -126,14 +126,19 @@ class Scene():
         Reset the scene by reloading from the yaml but keep the
         player's postion
         """
-        player = self.get_player().sprite.parent
-        current_player_position = list(
-            vec(player.sprite.rect.topleft) - 
-            vec(self.background.sprites()[0].rect.topleft)
-        )
-        player.init["start"] = current_player_position
+        player_sprite = self.get_player()
+        if player_sprite:
+            player = player_sprite.sprite.parent
+            current_player_position = list(
+                vec(player.sprite.rect.topleft) - 
+                vec(self.background.sprites()[0].rect.topleft)
+            )
+            player.init["start"] = current_player_position
+            add_in = [player.init]
+        else:
+            add_in = []
         self.game.saved_scenes.pop(self.id, None)
-        self.game.load_scene(yaml_path=self.id, add_in=[player.init])
+        self.game.load_scene(yaml_path=self.id, add_in=add_in)
 
 
     def deconstruct(self, save_scene=True):
