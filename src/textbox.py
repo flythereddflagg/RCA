@@ -12,6 +12,7 @@ FONTSIZE = 22
 DEFAULT_FONT_FILE = "./assets/fonts/BoldPixels.ttf"
 TEXT_PADDING = 10
 
+# TODO -1- set up text crawl and animations!
 
 class TextBox(Node):
     def setup(self):
@@ -32,6 +33,7 @@ class TextBox(Node):
         pass
 
     def set_text(self, text:str):
+        print(repr(text))
         lines = text.split("\n")
         rendered_lines = [
             self.font.render(
