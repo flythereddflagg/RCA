@@ -25,13 +25,39 @@ class TextBox(Node):
         self.bg_color = self.init.get("bg_color", BLANK)
         self.text_padding = self.init.get("text_padding", TEXT_PADDING)
         self.text = self.init.get("text", "")
+        self.scrolling = False
 
         self.font = pg.freetype.Font(self.font_file, self.font_size)
         self.sprite = Decal(parent=self)
-        self.set_text(self.text)
+        # self.set_text(self.text)
+        self.scrolling_text(self.text, speed=15)
 
     def update(self):
-        pass
+        if self.scrolling:
+            self.update_scroll()
+
+    
+    def scrolling_text(self, text, speed:int):
+        # speed is letters per second
+        self.scrolling = True
+        self.scroll_speed = (1 / speed) * 1000 # ms / letter
+        self.cursor = 0
+        self.text = text
+        self.last_time = pg.time.get_ticks()
+
+    def update_scroll(self):
+        cur_time = pg.time.get_ticks()
+        if (cur_time - self.last_time) < self.scroll_speed:
+            return
+
+        self.last_time = cur_time
+        text_to_render = self.text[:self.cursor]
+        self.cursor += 1
+        self.set_text(text_to_render)
+        if self.cursor > len(self.text):
+            self.scrolling = False
+
+
 
     def set_text(self, text:str):
         print(repr(text))
@@ -65,5 +91,6 @@ class TextBox(Node):
             self.text_surface.blit(
                 surface, (self.text_padding, size[1]/len(rendered_lines) * i + self.text_padding)
             )
-
+        pos = self.sprite.rect.topleft
         self.sprite.set_image(self.text_surface)
+        self.sprite.rect.topleft = pos
