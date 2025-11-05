@@ -8,11 +8,12 @@ WHITE = (255,255,255, 255)
 GREY = (128,128,128, 255)
 BLACK = (0, 0, 0, 255)
 BLANK = (0, 0, 0, 0)
-FONTSIZE = 22
+FONTSIZE = 15
 DEFAULT_FONT_FILE = "./assets/fonts/BoldPixels.ttf"
 TEXT_PADDING = 10
 
 # TODO -1- set up text crawl and animations!
+# TODO -3- bound the box and provide auto-wrapping
 
 class TextBox(Node):
     def setup(self):
@@ -37,7 +38,7 @@ class TextBox(Node):
         lines = text.split("\n")
         rendered_lines = [
             self.font.render(
-                line, fgcolor=self.text_color, bgcolor=self.bg_color
+                line, fgcolor=self.text_color, bgcolor=BLANK
             )
             for line in lines
         ]
@@ -46,9 +47,10 @@ class TextBox(Node):
                 + self.text_padding * 2, 
             max([rect.size[1] for line, rect in rendered_lines])
                 * len(rendered_lines) 
-                + self.text_padding * len(rendered_lines), 
+                + self.text_padding * (len(rendered_lines)+2), 
         )
         self.text_surface = pg.surface.Surface(size, flags=pg.SRCALPHA)
+        self.text_surface.fill(self.bg_color)
         for i, (surface, rect) in enumerate(rendered_lines):
             if self.outline:
                 for j in range(3):
@@ -58,10 +60,10 @@ class TextBox(Node):
                             pg.mask.from_surface(surface).to_surface(
                                 setcolor=BLACK, unsetcolor=BLANK
                             ), 
-                            vec((TEXT_PADDING, size[1]/len(rendered_lines) * i + TEXT_PADDING)) + offset
+                            vec((self.text_padding, size[1]/len(rendered_lines) * i + self.text_padding)) + offset
                         )
             self.text_surface.blit(
-                surface, (TEXT_PADDING, size[1]/len(rendered_lines) * i + TEXT_PADDING)
+                surface, (self.text_padding, size[1]/len(rendered_lines) * i + self.text_padding)
             )
 
         self.sprite.set_image(self.text_surface)

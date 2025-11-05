@@ -13,7 +13,7 @@ MUSIC: false # in debug mode, MUSIC = False silences all music.
 ### SCREEN/GAME WINDOW CONSTANTS ###
 RESOLUTION: 360
 ASPECT_RATIO: [16,9]
-SCALE: 2.5
+SCALE: 1
 icon: ./assets/block/game_icon_rev1.png
 title: pygame - Red Castle Avenger
 
