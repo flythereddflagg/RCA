@@ -26,20 +26,24 @@ class TextBox(Node):
         self.text_padding = self.init.get("text_padding", TEXT_PADDING)
         self.text = self.init.get("text", "")
         self.scrolling = False
+        self.box_size = None
 
         self.font = pg.freetype.Font(self.font_file, self.font_size)
+        self.font_height = self.font.get_sized_glyph_height()
         self.sprite = Decal(parent=self)
-        # self.set_text(self.text)
-        self.scrolling_text(self.text, speed=15)
+        self.set_text(self.text)
+        size = self.sprite.rect.size
+        self.scrolling_text(self.text, speed=15, box_size=size)
 
     def update(self):
         if self.scrolling:
             self.update_scroll()
 
     
-    def scrolling_text(self, text, speed:int):
+    def scrolling_text(self, text, speed:int, box_size=None):
         # speed is letters per second
         self.scrolling = True
+        self.box_size = box_size
         self.scroll_speed = (1 / speed) * 1000 # ms / letter
         self.cursor = 0
         self.text = text
@@ -53,13 +57,13 @@ class TextBox(Node):
         self.last_time = cur_time
         text_to_render = self.text[:self.cursor]
         self.cursor += 1
-        self.set_text(text_to_render)
+        self.set_text(text_to_render, self.box_size)
         if self.cursor > len(self.text):
             self.scrolling = False
 
 
 
-    def set_text(self, text:str):
+    def set_text(self, text:str, box_size=None):
         print(repr(text))
         lines = text.split("\n")
         rendered_lines = [
@@ -68,16 +72,16 @@ class TextBox(Node):
             )
             for line in lines
         ]
-        size = (
+        size = box_size if box_size else (
             max([rect.size[0] for line, rect in rendered_lines])
                 + self.text_padding * 2, 
-            max([rect.size[1] for line, rect in rendered_lines])
-                * len(rendered_lines) 
-                + self.text_padding * (len(rendered_lines)+2), 
+            self.font_height * len(rendered_lines) 
+                + self.text_padding *(len(rendered_lines)+2), 
         )
         self.text_surface = pg.surface.Surface(size, flags=pg.SRCALPHA)
         self.text_surface.fill(self.bg_color)
         for i, (surface, rect) in enumerate(rendered_lines):
+            text_y_pos = (self.font_height + self.text_padding) * i + self.text_padding * 2 
             if self.outline:
                 for j in range(3):
                     for k in range(3):
@@ -86,10 +90,10 @@ class TextBox(Node):
                             pg.mask.from_surface(surface).to_surface(
                                 setcolor=BLACK, unsetcolor=BLANK
                             ), 
-                            vec((self.text_padding, size[1]/len(rendered_lines) * i + self.text_padding)) + offset
+                            vec((self.text_padding, text_y_pos)) + offset
                         )
             self.text_surface.blit(
-                surface, (self.text_padding, size[1]/len(rendered_lines) * i + self.text_padding)
+                surface, (self.text_padding, text_y_pos)
             )
         pos = self.sprite.rect.topleft
         self.sprite.set_image(self.text_surface)
