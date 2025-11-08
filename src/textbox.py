@@ -48,6 +48,7 @@ class TextBox(Node):
         self.cursor = 0
         self.text = text
         self.last_time = pg.time.get_ticks()
+        self.set_text("")
 
     def update_scroll(self):
         cur_time = pg.time.get_ticks()
@@ -63,15 +64,23 @@ class TextBox(Node):
 
 
 
-    def set_text(self, text:str, box_size=None):
+    def set_text(self, text:str, box_size:tuple[int, int]=None):
         print(repr(text))
         lines = text.split("\n")
+        if box_size is not None:
+            lines = [" ".join(lines)]
         rendered_lines = [
             self.font.render(
                 line, fgcolor=self.text_color, bgcolor=BLANK
             )
             for line in lines
         ]
+        # TODO flesh out this part!
+        # if box_size is not None:
+        #     bx, by = box_size
+        #     xsize, ysize = rendered_lines[0][1].size
+        #     nchars_per_line = bx / xsize * 
+
         size = box_size if box_size else (
             max([rect.size[0] for line, rect in rendered_lines])
                 + self.text_padding * 2, 
