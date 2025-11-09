@@ -11,6 +11,7 @@ BLANK = (0, 0, 0, 0)
 FONTSIZE = 15
 DEFAULT_FONT_FILE = "./assets/fonts/BoldPixels.ttf"
 TEXT_PADDING = 10
+SCROLL_SPEED = 15
 
 # TODO -1- set up text crawl and animations!
 # TODO -3- bound the box and provide auto-wrapping
@@ -25,15 +26,21 @@ class TextBox(Node):
         self.bg_color = self.init.get("bg_color", BLANK)
         self.text_padding = self.init.get("text_padding", TEXT_PADDING)
         self.text = self.init.get("text", "")
+        self.box_size = self.init.get("box_size")
+        self.scroll = self.init.get("scroll", False)
+        self.scroll_speed = self.init.get("scroll_speed", SCROLL_SPEED)
         self.scrolling = False
-        self.box_size = None
 
         self.font = pg.freetype.Font(self.font_file, self.font_size)
         self.font_height = self.font.get_sized_glyph_height()
         self.sprite = Decal(parent=self)
-        self.set_text(self.text)
-        size = self.sprite.rect.size
-        self.scrolling_text(self.text, speed=15, box_size=size)
+        if self.scroll:
+            self.scrolling_text(
+                self.text, speed=self.scroll_speed, box_size=self.box_size
+            )
+        else:
+            self.set_text(self.text)
+
 
     def update(self):
         if self.scrolling:
@@ -49,6 +56,7 @@ class TextBox(Node):
         self.text = text
         self.last_time = pg.time.get_ticks()
         self.set_text("")
+
 
     def update_scroll(self):
         cur_time = pg.time.get_ticks()
@@ -67,27 +75,23 @@ class TextBox(Node):
     def set_text(self, text:str, box_size:tuple[int, int]=None):
         print(repr(text))
         lines = text.split("\n")
-        if box_size is not None:
-            lines = [" ".join(lines)]
         rendered_lines = [
             self.font.render(
                 line, fgcolor=self.text_color, bgcolor=BLANK
             )
             for line in lines
         ]
-        # TODO flesh out this part!
-        # if box_size is not None:
-        #     bx, by = box_size
-        #     xsize, ysize = rendered_lines[0][1].size
-        #     nchars_per_line = bx / xsize * 
 
-        size = box_size if box_size else (
+        size = (
             max([rect.size[0] for line, rect in rendered_lines])
                 + self.text_padding * 2, 
             self.font_height * len(rendered_lines) 
                 + self.text_padding *(len(rendered_lines)+2), 
         )
-        self.text_surface = pg.surface.Surface(size, flags=pg.SRCALPHA)
+        box_size = size if not box_size else box_size
+        # if sum(size) > sum(box_size): # text will not fit in box #TODO NEXT Continue here!
+
+        self.text_surface = pg.surface.Surface(box_size, flags=pg.SRCALPHA)
         self.text_surface.fill(self.bg_color)
         for i, (surface, rect) in enumerate(rendered_lines):
             text_y_pos = (self.font_height + self.text_padding) * i + self.text_padding * 2 

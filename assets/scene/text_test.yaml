@@ -15,14 +15,17 @@ nodes:
   groups: [foreground]
   type: TextBox
   font_size: 22
-  bg_color: [0,0,0,128]
   text_padding: 3
+  bg_color: [0,0,0,128]
+  scroll: true
+  box_size: [290,81]
+  start: [100, 250]
   outline: true
   text: |-
     The quick brown fox
     jumped over the
     lazy dog!
 
-  start: [200, 200]
+  
 
 
