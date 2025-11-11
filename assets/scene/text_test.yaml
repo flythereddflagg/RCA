@@ -18,13 +18,13 @@ nodes:
   text_padding: 3
   bg_color: [0,0,0,128]
   scroll: true
-  box_size: [290,81]
-  start: [100, 250]
+  box_size: [390,90]
+  start: [200, 250]
   outline: true
   text: |-
-    The quick brown fox
-    jumped over the
-    lazy dog!
+    The quick brown fox jumped over the lazy dog!
+    What a crazy thing to happen. This is no mere
+    coincidence.
 
   
 

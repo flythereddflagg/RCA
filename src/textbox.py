@@ -1,3 +1,4 @@
+import string
 import pygame as pg
 
 from .node import Node
@@ -13,8 +14,6 @@ DEFAULT_FONT_FILE = "./assets/fonts/BoldPixels.ttf"
 TEXT_PADDING = 10
 SCROLL_SPEED = 15
 
-# TODO -1- set up text crawl and animations!
-# TODO -3- bound the box and provide auto-wrapping
 
 class TextBox(Node):
     def setup(self):
@@ -32,6 +31,12 @@ class TextBox(Node):
         self.scrolling = False
 
         self.font = pg.freetype.Font(self.font_file, self.font_size)
+        self.font_char_w = max([
+            xwidth
+            for _, _, _, _, xwidth, _ in self.font.get_metrics(
+                string.printable[:-5]
+            )
+        ])
         self.font_height = self.font.get_sized_glyph_height()
         self.sprite = Decal(parent=self)
         if self.scroll:
@@ -75,6 +80,26 @@ class TextBox(Node):
     def set_text(self, text:str, box_size:tuple[int, int]=None):
         print(repr(text))
         lines = text.split("\n")
+        
+        if box_size:
+            # reformat lines to fit in box
+            line_len = int(
+                box_size[0] // self.font_char_w
+                + self.font_char_w // 2 # add buffer for smaller chars
+            )
+            new_text = " ".join(lines)
+            words = new_text.split(' ')
+            lines = []
+            line = []
+            for word in words:
+                line.append(word)
+                if len(" ".join(line)) > line_len:
+                    line.pop()
+                    lines.append(" ".join(line))
+                    line = [word]
+
+            lines.append(" ".join(line))
+                
         rendered_lines = [
             self.font.render(
                 line, fgcolor=self.text_color, bgcolor=BLANK
@@ -88,11 +113,13 @@ class TextBox(Node):
             self.font_height * len(rendered_lines) 
                 + self.text_padding *(len(rendered_lines)+2), 
         )
-        box_size = size if not box_size else box_size
-        # if sum(size) > sum(box_size): # text will not fit in box #TODO NEXT Continue here!
+        box_size = size if not box_size else box_size      
 
-        self.text_surface = pg.surface.Surface(box_size, flags=pg.SRCALPHA)
-        self.text_surface.fill(self.bg_color)
+        self.text_surface = pg.surface.Surface(size, flags=pg.SRCALPHA)
+        self.bounding_box_surface = pg.surface.Surface(
+            box_size, flags=pg.SRCALPHA
+        )
+        self.bounding_box_surface.fill(self.bg_color)
         for i, (surface, rect) in enumerate(rendered_lines):
             text_y_pos = (self.font_height + self.text_padding) * i + self.text_padding * 2 
             if self.outline:
@@ -108,6 +135,9 @@ class TextBox(Node):
             self.text_surface.blit(
                 surface, (self.text_padding, text_y_pos)
             )
+        self.bounding_box_surface.blit(
+            self.text_surface, [0,  box_size[1] - size[1]]
+        )
         pos = self.sprite.rect.topleft
-        self.sprite.set_image(self.text_surface)
+        self.sprite.set_image(self.bounding_box_surface)
         self.sprite.rect.topleft = pos
