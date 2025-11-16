@@ -31,15 +31,31 @@ nodes: # all children are nodes
      - foreground
 
   - id: guard
-    type: Gate
+    type: Rosie
     key_id: jar of pickles
-    image: ./assets/actor/other/guard_npc.png
+    image: ./assets/actor/rosie/rosie_ref.png
     mask: ./assets/block/block.png
     start: [888,91]
     scale: 1
     groups: 
      - solid
      - foreground
+     - paused
+    textbox: 
+      id: textbox
+      groups: [hud]
+      type: TextBox
+      font_size: 22
+      text_padding: 3
+      bg_color: [0,0,0,128]
+      scroll: true
+      box_size: [390,90]
+      start: [200, 250]
+      outline: true
+      text: |-
+        The quick brown fox jumped over the lazy dog!
+        What a crazy thing to happen. This is no mere
+        coincidence.
   # - id: jar of pickles
   #   type: Item
   #   image: ./assets/block/jar_of_pickles.png
