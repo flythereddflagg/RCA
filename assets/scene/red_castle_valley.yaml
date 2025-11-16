@@ -53,9 +53,9 @@ nodes: # all children are nodes
       start: [200, 250]
       outline: true
       text: |-
-        The quick brown fox jumped over the lazy dog!
-        What a crazy thing to happen. This is no mere
-        coincidence.
+        I don't have any clean Tupperware!
+        ...Now, please, take a bite so I can watch you enjoy! 
+        That's my favorite part!
   # - id: jar of pickles
   #   type: Item
   #   image: ./assets/block/jar_of_pickles.png
