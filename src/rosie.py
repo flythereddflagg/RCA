@@ -27,6 +27,7 @@ class Rosie(Decal):
             if (
                 not self.textbox.scrolling
                 and self.debounce_time != -1
+                # TODO -1- figure this system out next!
                 # and pg.time.get_ticks() - self.debounce_time 
                 # > self.debounce_length
             ):
