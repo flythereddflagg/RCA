@@ -11,8 +11,8 @@ DEFAULT_SPEED = 130
 #DEFAULT_SPEED = 300
 
 DEFAULT_STATE = 'stand'
-LEFT_HAND_BUTTON = "BUTTON_S"
-RIGHT_HAND_BUTTON = "BUTTON_E"
+LEFT_HAND_BUTTON = "BUTTON_W"
+RIGHT_HAND_BUTTON = "BUTTON_S"
 RIGHT_STICK_AX = ["R_"+direction for direction in Compass.strings]
 LEFT_STICK_AX = ["L_"+direction for direction in Compass.strings]
 

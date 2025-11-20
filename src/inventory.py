@@ -10,8 +10,8 @@ from .node import Node
 
 N_SLOTS = 6
 INV_SCALE = 1
-LEFT_HAND_BUTTON = "BUTTON_S"
-RIGHT_HAND_BUTTON = "BUTTON_E"
+LEFT_HAND_BUTTON = "BUTTON_W"
+RIGHT_HAND_BUTTON = "BUTTON_S"
 RIGHT_STICK_AX = ["R_"+direction for direction in Compass.strings]
 LEFT_STICK_AX = [direction for direction in Compass.strings]
 EMPTY = "empty"

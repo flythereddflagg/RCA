@@ -49,6 +49,7 @@ nodes: # all children are nodes
       text_padding: 3
       bg_color: [0,0,0,128]
       scroll: true
+      scroll_speed: 20
       box_size: [390,90]
       start: [200, 250]
       outline: true

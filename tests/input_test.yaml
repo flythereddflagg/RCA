@@ -16,7 +16,7 @@ key_bind:
   RIGHT: right
   BUTTON_S: n
   BUTTON_E: m
-  BUTTON_W: ','
+  BUTTON_E: ','
   BUTTON_N: '.'
   R_UP: i
   R_DOWN: k

@@ -96,7 +96,7 @@ class Menu(Node):
         select_button:bool = any([
             command in [a[0] for a in actions] and
             command not in held
-            for command in ["START", "BUTTON_S"]
+            for command in ["START", "BUTTON_E"]
         ])
         if (
             self.parent.state != "titlescreen" and 

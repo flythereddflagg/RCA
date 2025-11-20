@@ -2,7 +2,7 @@ import pygame as pg
 
 from .decal import Decal
 from .node import node_from_dict
-from .tools import mask_collision
+from .tools import mask_collision, vec
 
 
 
@@ -14,16 +14,39 @@ class Rosie(Decal):
         self.hitmask = Decal(mask_path=self.init.get("image"))
         self.textbox = None
         self.talking = False
+        self.button_cue = node_from_dict(self.scene, 
+            {
+                "id": "cue",
+                "type": "Decal",
+                "image": "./assets/block/glyph_B.png"
+            }
+        )
+        self.cue_placement = (
+            vec(self.scene.game.draw_surface.get_size()).elementwise()
+            * vec([0.5, 1]) 
+            - vec(self.button_cue.sprite.rect.size).elementwise()
+            * vec([0.5, 1])
+        )
 
 
     def update(self):
+        
         player_rect = self.scene.get_player().sprite.rect
         if (
             self.sprite.rect.colliderect(player_rect) 
             and not self.talking 
-            and self.talk_button_pressed()
+            
         ):
-            self.talk()
+            self.scene.place_node(
+                self.button_cue, 
+                ["hud"],
+                self.cue_placement
+            )
+    
+            if self.talk_button_pressed():
+                self.talk()
+        else:
+            self.button_cue.kill()
         if self.textbox:
             if (
                 not self.textbox.scrolling
@@ -36,7 +59,7 @@ class Rosie(Decal):
  
 
     def talk_button_pressed(self):
-        return "BUTTON_W" in self.scene.game.input.new_actions()
+        return "BUTTON_E" in self.scene.game.input.new_actions()
 
 
     def talk(self):

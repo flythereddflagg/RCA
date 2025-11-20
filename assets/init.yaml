@@ -1,10 +1,10 @@
 ### DEBUG SETTINGS ###
 # Frame rate (in Frames / second) FPS: 0 -> do not limit FPS
 FPS: 90
-SHOW_EVENTS: true # print input events in terminal
+SHOW_EVENTS: false # print input events in terminal
 FPS_COUNTER: true # show FPS on game screen
 
-DEBUG: true # debug mode? (Shows rect frames and positions)
+DEBUG: false # debug mode? (Shows rect frames and positions)
 SHOW_MASK: false # in debug mode, shows hit masks of every entity
 SHOW_BG_MASK: false # in debug mode, show mask then show bg mask too
 LOG_INPUT: false # for recreating bugs (See input.py)
@@ -50,9 +50,9 @@ key_bind:
   DOWN: down
   LEFT: left
   RIGHT: right
-  BUTTON_S: c
-  BUTTON_E: v
-  BUTTON_W: ' '
+  BUTTON_S: v
+  BUTTON_E: ' '
+  BUTTON_W: c
   START: return
   # not currently used
   R_UP: w
