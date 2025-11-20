@@ -1,7 +1,7 @@
 ### DEBUG SETTINGS ###
 # Frame rate (in Frames / second) FPS: 0 -> do not limit FPS
 FPS: 90
-SHOW_EVENTS: false # print input events in terminal
+SHOW_EVENTS: true # print input events in terminal
 FPS_COUNTER: true # show FPS on game screen
 
 DEBUG: true # debug mode? (Shows rect frames and positions)
@@ -52,13 +52,13 @@ key_bind:
   RIGHT: right
   BUTTON_S: c
   BUTTON_E: v
+  BUTTON_W: ' '
   START: return
   # not currently used
   R_UP: w
   R_DOWN: s
   R_LEFT: a
   R_RIGHT: d
-  BUTTON_W: z
   BUTTON_N: x
   SELECT: p
 

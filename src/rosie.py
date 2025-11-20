@@ -14,43 +14,33 @@ class Rosie(Decal):
         self.hitmask = Decal(mask_path=self.init.get("image"))
         self.textbox = None
         self.talking = False
-        self.debounce_time = 0
-        self.debounce_length = 2000 # 2 seconds
+
 
     def update(self):
-
         player_rect = self.scene.get_player().sprite.rect
-        if self.sprite.rect.colliderect(player_rect) and not self.talking:
-            self.talking = True
+        if (
+            self.sprite.rect.colliderect(player_rect) 
+            and not self.talking 
+            and self.talk_button_pressed()
+        ):
             self.talk()
         if self.textbox:
             if (
                 not self.textbox.scrolling
-                and self.debounce_time != -1
-                # TODO -1- figure this system out next!
-                # and pg.time.get_ticks() - self.debounce_time 
-                # > self.debounce_length
+                and self.talk_button_pressed()
             ):
-                self.textbox.sprite.kill()
-                self.textbox = None
-                self.scene.paused = False
-                self.debounce_time = pg.time.get_ticks() 
+                self.stop_talk()
             else:
+                # pass
                 self.textbox.update()
-                if self.debounce_time == -1: # debounce time not yet set
-                    self.debounce_time = pg.time.get_ticks() 
-        else:
-            if self.talking:
-                if (
-                    pg.time.get_ticks() 
-                    - self.debounce_time 
-                    > self.debounce_length
-                ):
-                    self.talking = False
-                    self.debounce_time = -1
-    
+ 
+
+    def talk_button_pressed(self):
+        return "BUTTON_W" in self.scene.game.input.new_actions()
+
 
     def talk(self):
+        self.talking = True
         self.scene.paused = True
         self.textbox = node_from_dict(self.scene, self.text_init)
         self.scene.place_node(
@@ -58,4 +48,11 @@ class Rosie(Decal):
             self.textbox.init.get("groups"), 
             self.textbox.init.get('start')
         )
+    
+
+    def stop_talk(self):
+        self.textbox.sprite.kill()
+        self.textbox = None
+        self.scene.paused = False
+        self.talking = False
 
