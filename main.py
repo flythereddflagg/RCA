@@ -55,6 +55,7 @@ Each item may have a priority from 1 - 5
 4: nice to have but not necessary for MVP
 5: we get to it when we get to it
 ---
+TODO -2- make glyphs and keystrokes correspond to various inputs
 TODO -2- make start or "A" be valid ways to select stuff in menus
 TODO -2- add outline to menu text
 TODO -2- include actual options menu with volume sliders and other settings
