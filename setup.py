@@ -2,6 +2,9 @@ import subprocess
 
 subprocess.run("pip install -r requirements.txt".split())
 
+from tools.gather_assets import gather_assets
+
+gather_assets()
 
 import sys
 from cx_Freeze import setup, Executable
@@ -20,7 +23,7 @@ build_options = {
     'packages'      : ['src'], 
     'excludes'      : ['cx_freeze'],
     'include_files' : [
-        ("assets", "assets"),
+        ("./build/tmp_assets/assets", "assets"),
         "VERSION",
         "README.md",
         "LICENSE"
