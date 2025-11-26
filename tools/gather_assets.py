@@ -5,7 +5,7 @@ import pathlib
 
 def gather_assets():
     text_matches = [".png", "/", ".yaml", ".json", ".ttf", ".mp3", ".ogg"]
-    non_matches = ["http:", "#"]
+    non_matches = ["http", "#"]
     tmp_path = "./build/tmp_assets"
     src_path = "./assets"
 
@@ -14,7 +14,11 @@ def gather_assets():
     asset_paths = []
 
     for filename in pathlib.Path(src_path).glob("**/*"):
-        if not(str(filename).endswith(".json") or str(filename).endswith(".yaml")):
+        if not any([
+            str(filename).endswith(ending) 
+            for ending in [".yaml", ".json", ".py"]
+        ]):
+            print(filename, "continue")
             continue
         asset_paths.append(filename)
         orphan_files = []
@@ -53,5 +57,10 @@ def gather_assets():
         os.makedirs(new_path.parents[0], exist_ok=True)
         shutil.copyfile(path, new_path)
 
+    print('--PATHS NOT ADDED (DOES NOT EXIST)--')
+    for path in does_not_exist:
+        print("\t", path)
 
 
+if __name__ == "__main__":
+    gather_assets()

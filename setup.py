@@ -3,8 +3,9 @@ import subprocess
 subprocess.run("pip install -r requirements.txt".split())
 
 from tools.gather_assets import gather_assets
-
+print("copying assets into build dir...", end="")
 gather_assets()
+print("DONE")
 
 import sys
 from cx_Freeze import setup, Executable
