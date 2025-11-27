@@ -27,6 +27,9 @@ ALLOW_DEBUG = True
 SAVE_PATH = pathlib.Path(os.path.expanduser("~/.local/share/rca/saves"))
 SAVE_FILE = SAVE_PATH / "save_file.yaml"
 
+FONTSIZE = 22
+DEFAULT_FONT_FILE = "./assets/fonts/BoldPixels.ttf"
+
 class Engine():
     """
     connects the hardware to game logic and holds the game state
@@ -45,7 +48,7 @@ class Engine():
         self.screen, self.draw_surface = self.init_screen()
         self.clock = pg.time.Clock()
         self.fps_counter = (
-            pg.font.SysFont("Sans", 22) 
+            pg.freetype.Font(DEFAULT_FONT_FILE, FONTSIZE)
             if self.settings.FPS_COUNTER or self.settings.DEBUG
             else None
         )

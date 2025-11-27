@@ -5,12 +5,13 @@ from .decal import Decal
 from .tools import vec
 from .movement import Movement
 
-
+with open("./CREDITS") as f:
+    credit_text = f.read()
 
 WHITE = (255,255,255)
 FONTSIZE = 22
 DEFAULT_FONT_FILE = "./assets/fonts/BoldPixels.ttf"
-CREDITS = """
+CREDITS = f"""
               To be continued...
 
 
@@ -19,47 +20,7 @@ If you would like to leave feedback
 please follow the link in the README.
 
                                          
-                 CREDITS
-
-             -- Powered by -- 
-                 pygame
-          
-            -- Produced by --
-            FlyTheReddFlagg Games
-            
-             -- Tech Stack --
-            Python      VSCodium
-            pygame      Aseprite
-            PyYAML      MuseScore
-            
-       -- Creation and Direction -- 
-                Mark Redd
-
-          -- Software Design --
-                Mark Redd
-
-            -- Concept Art --
-                Emma Redd
-                Mark Redd
-           Elizabeth Redd Floyd
-
-             -- Line Art --
-             Elizabeth Redd Floyd
-                Emma Redd
-                
-       -- Pixel art and animation --
-                Mark Redd
-            
-           -- Art Consulting --
-           Elizabeth Redd Floyd
-
-               -- Music --
-                Mark Redd
-                Emma Redd
-           Elizabeth Redd Floyd
-
-               -- Story --
-                Mark Redd
+{credit_text}
 
 
 
