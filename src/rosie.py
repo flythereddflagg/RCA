@@ -75,6 +75,7 @@ class Rosie(Decal):
 
     def stop_talk(self):
         self.textbox.sprite.kill()
+        del self.textbox
         self.textbox = None
         self.scene.paused = False
         self.talking = False

@@ -225,7 +225,7 @@ class Engine():
     def render_debug(self):
         if self.settings.FPS_COUNTER:
             fps = str(int(self.clock.get_fps()))
-            fps_sprite = self.fps_counter.render(fps, True, (255,255,255))
+            fps_sprite, rect = self.fps_counter.render(fps, True, (255,255,255))
             #self.screen.blit(fps_sprite, (10,10))
             self.draw_surface.blit(fps_sprite, (10,10))
             
