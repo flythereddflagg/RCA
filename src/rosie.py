@@ -14,6 +14,7 @@ class Rosie(Decal):
         self.hitmask = Decal(mask_path=self.init.get("image"))
         self.textbox = None
         self.talking = False
+        self.kill_after = False
         self.button_cue = node_from_dict(self.scene, 
             {
                 "id": "cue",
@@ -27,11 +28,17 @@ class Rosie(Decal):
             - vec(self.button_cue.sprite.rect.size).elementwise()
             * vec([0.5, 1])
         )
+        self.leave_text = """
+        I Just LOVE Pickles! I can snack on them before bed time
+        and then I can use the pickle juice to make a soup!
+        ...In Fact, I am going to do that right now!
+        """
 
 
     def update(self):
         
-        player_rect = self.scene.get_player().sprite.rect
+        player = self.scene.get_player().parent
+        player_rect = player.sprite.rect
         if (
             self.sprite.rect.colliderect(player_rect) 
             and not self.talking 
@@ -44,7 +51,13 @@ class Rosie(Decal):
             )
     
             if self.talk_button_pressed():
-                self.talk()
+                if player.inventory.contains(self.key_id):
+                    assert player.inventory.remove_item(self.key_id),\
+                        "gate key was contains but did not get removed properly"
+                    self.talk(self.leave_text)
+                    self.kill_after = True
+                else:
+                    self.talk()
         else:
             self.button_cue.kill()
         if self.textbox:
@@ -62,7 +75,7 @@ class Rosie(Decal):
         return "BUTTON_E" in self.scene.game.input.new_actions()
 
 
-    def talk(self):
+    def talk(self, alt_text:str=None):
         self.talking = True
         self.scene.paused = True
         self.textbox = node_from_dict(self.scene, self.text_init)
@@ -71,6 +84,9 @@ class Rosie(Decal):
             self.textbox.init.get("groups"), 
             self.textbox.init.get('start')
         )
+        if alt_text is not None:
+            self.textbox.scrolling_text(alt_text)
+
     
 
     def stop_talk(self):
@@ -79,4 +95,6 @@ class Rosie(Decal):
         self.textbox = None
         self.scene.paused = False
         self.talking = False
-
+        if self.kill_after:
+            self.sprite.kill()
+            self.kill()

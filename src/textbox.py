@@ -52,7 +52,7 @@ class TextBox(Node):
             self.update_scroll()
 
     
-    def scrolling_text(self, text, speed:int, box_size=None):
+    def scrolling_text(self, text, speed:int=SCROLL_SPEED, box_size=None):
         # speed is letters per second
         self.scrolling = True
         self.box_size = box_size
