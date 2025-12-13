@@ -29,10 +29,12 @@ class Rosie(Decal):
             * vec([0.5, 1])
         )
         self.leave_text = """
-        I Just LOVE Pickles! I can snack on them before bed time
-        and then I can use the pickle juice to make a soup!
-        ...In Fact, I am going to do that right now!
-        """
+I Just LOVE Pickles! I can snack on them before bed time
+and then I can use the pickle juice to make a soup!
+...In Fact, I am going to do that right now!
+NOW! You listen to me Robbie Hart, you're going to be 
+a fine husband!
+"""
 
 
     def update(self):
@@ -67,7 +69,6 @@ class Rosie(Decal):
             ):
                 self.stop_talk()
             else:
-                # pass
                 self.textbox.update()
  
 
@@ -85,7 +86,9 @@ class Rosie(Decal):
             self.textbox.init.get('start')
         )
         if alt_text is not None:
-            self.textbox.scrolling_text(alt_text)
+            self.textbox.scroll_text(alt_text)
+        else:
+            self.textbox.scroll_text(self.textbox.init.get("text", ""))
 
     
 

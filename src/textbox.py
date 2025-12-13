@@ -26,7 +26,6 @@ class TextBox(Node):
         self.text_padding = self.init.get("text_padding", TEXT_PADDING)
         self.text = self.init.get("text", "")
         self.box_size = self.init.get("box_size")
-        self.scroll = self.init.get("scroll", False)
         self.scroll_speed = self.init.get("scroll_speed", SCROLL_SPEED)
         self.scrolling = False
 
@@ -39,12 +38,12 @@ class TextBox(Node):
         ])
         self.font_height = self.font.get_sized_glyph_height()
         self.sprite = Decal(parent=self)
-        if self.scroll:
-            self.scrolling_text(
-                self.text, speed=self.scroll_speed, box_size=self.box_size
-            )
-        else:
-            self.set_text(self.text)
+        # if self.scroll:
+        #     self.scroll_text(
+        #         self.text, speed=self.scroll_speed, box_size=self.box_size
+        #     )
+        # else:
+        #     self.set_text(self.text)
 
 
     def update(self):
@@ -52,20 +51,24 @@ class TextBox(Node):
             self.update_scroll()
 
     
-    def scrolling_text(self, text, speed:int=SCROLL_SPEED, box_size=None):
-        # speed is letters per second
+    def scroll_text(self, text=None, speed:int=None, box_size=None):
+        if text:
+            self.text = text
+        if speed: # speed is letters per second
+            self.scroll_speed = speed
+        if box_size: 
+            self.box_size = box_size
+        
         self.scrolling = True
-        self.box_size = box_size
-        self.scroll_speed = (1 / speed) * 1000 # ms / letter
+        self.scroll_time = (1 / self.scroll_speed) * 1000 # ms / letter
         self.cursor = 0
-        self.text = text
         self.last_time = pg.time.get_ticks()
         self.set_text("")
 
 
     def update_scroll(self):
         cur_time = pg.time.get_ticks()
-        if (cur_time - self.last_time) < self.scroll_speed:
+        if (cur_time - self.last_time) < self.scroll_time:
             return
 
         self.last_time = cur_time
