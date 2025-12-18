@@ -56,14 +56,14 @@ nodes: # all children are nodes
         I don't have any clean Tupperware!
         ...Now, please, take a bite so I can watch you enjoy! 
         That's my favorite part!
-  - id: jar of pickles
-    type: Item
-    image: ./assets/block/jar_of_pickles.png
-    mask: ./assets/block/jar_of_pickles.png
-    start: [300,300]
-    action: null
-    groups:
-      - foreground
+  # - id: jar of pickles
+  #   type: Item
+  #   image: ./assets/block/jar_of_pickles.png
+  #   mask: ./assets/block/jar_of_pickles.png
+  #   start: [300,300]
+  #   action: null
+  #   groups:
+  #     - foreground
 
   # - id: wall
   #   type: Decal

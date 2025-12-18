@@ -46,11 +46,7 @@ a fine husband!
             and not self.talking 
             
         ):
-            self.scene.place_node(
-                self.button_cue, 
-                ["hud"],
-                self.cue_placement
-            )
+            self.scene.place_node(self.button_cue, ["hud"], self.cue_placement)
     
             if self.talk_button_pressed():
                 if player.inventory.contains(self.key_id):
