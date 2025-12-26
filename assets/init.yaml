@@ -29,7 +29,9 @@ init_add_in:
 new_game_scene: ./assets/scene/red_castle_valley.yaml
 new_game_add_in:
   - yaml: ./assets/actor/player.yaml
-    start: [338,450] # red castle valley
+    # start: [338,450] # red castle valley
+    start: [892,150] # red castle valley
+
     groups:
       - foreground
       - player

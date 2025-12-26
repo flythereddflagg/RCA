@@ -81,7 +81,7 @@ def vec(v_input:list|tuple|pg.math.Vector2):
     return pg.math.Vector2((v_input[0], v_input[1]))
 
 
-def class_from_str(class_name):
+def class_from_str(class_name:str)->"python class":
     module_name = "." + class_name.lower()
     module = importlib.import_module(module_name, package='src')
     # get the class, will raise AttributeError if class cannot be found

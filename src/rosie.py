@@ -10,9 +10,7 @@ class Rosie(Decal):
     def setup(self):
         super().setup()
         self.key_id = self.init.get("key_id")
-        self.text_init = self.init.get("textbox")
         self.hitmask = Decal(mask_path=self.init.get("image"))
-        self.textbox = None
         self.talking = False
         self.kill_after = False
         self.button_cue = node_from_dict(self.scene, 
@@ -35,6 +33,7 @@ and then I can use the pickle juice to make a soup!
 NOW! You listen to me Robbie Hart, you're going to be 
 a fine husband!
 """
+        self.stop_talk()
 
 
     def update(self):
@@ -65,7 +64,10 @@ a fine husband!
             ):
                 self.stop_talk()
             else:
+                # self.children.update()
+                print("updating 1")
                 self.textbox.update()
+                self.talking_head.animation.update()
  
 
     def talk_button_pressed(self):
@@ -75,11 +77,17 @@ a fine husband!
     def talk(self, alt_text:str=None):
         self.talking = True
         self.scene.paused = True
-        self.textbox = node_from_dict(self.scene, self.text_init)
         self.scene.place_node(
             self.textbox, 
             self.textbox.init.get("groups"), 
             self.textbox.init.get('start')
+        )
+        self.scene.place_node(
+            self.talking_head,
+            self.talking_head.init.get("groups")
+        )
+        self.talking_head.sprite.rect.topright = (
+            self.textbox.sprite.rect.topleft
         )
         if alt_text is not None:
             self.textbox.scroll_text(alt_text)
@@ -91,7 +99,8 @@ a fine husband!
     def stop_talk(self):
         self.textbox.sprite.kill()
         self.textbox.kill()
-        self.textbox = None
+        self.talking_head.sprite.kill()
+        self.talking_head.kill()
         self.scene.paused = False
         self.talking = False
         if self.kill_after:

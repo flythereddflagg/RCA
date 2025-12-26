@@ -43,9 +43,9 @@ nodes: # all children are nodes
      - paused
     children:
       - id: talking_head
+        groups: [hud]
         type: Decal
         children:
-          - state: 
           - id: animation
             type: Animation
             path_prefix: "./assets/actor/rosie/face.json"
@@ -57,21 +57,20 @@ nodes: # all children are nodes
                 repeat: True
               Talking:
                 repeat: True
-    textbox: 
-      id: textbox
-      groups: [hud]
-      type: TextBox
-      font_size: 22
-      text_padding: 3
-      bg_color: [0,0,0,128]
-      scroll_speed: 20
-      box_size: [390,90]
-      start: [200, 250]
-      outline: true
-      text: |-
-        I don't have any clean Tupperware!
-        ...Now, please, take a bite so I can watch you enjoy! 
-        That's my favorite part!
+      - id: textbox
+        groups: [hud]
+        type: TextBox
+        font_size: 22
+        text_padding: 3
+        bg_color: [0,0,0,128]
+        scroll_speed: 20
+        box_size: [390,90]
+        start: [200, 250]
+        outline: true
+        text: |-
+          I don't have any clean Tupperware!
+          ...Now, please, take a bite so I can watch you enjoy! 
+          That's my favorite part!
   # - id: jar of pickles
   #   type: Item
   #   image: ./assets/block/jar_of_pickles.png

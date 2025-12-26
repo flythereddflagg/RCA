@@ -6,6 +6,7 @@ import pygame as pg
 from .tools import load_json
 from .compass import Compass
 from .node import Node
+from .decal import Decal
 
 JSON = '.json'
 
@@ -39,6 +40,8 @@ class Animation(Node):
         self.require_attr('animation', 'default_state', types=[dict, str])
         # parent must have a 'state' attribute
         self.default_state = self.init["default_state"]
+        if not hasattr(self.parent, "state"):
+            self.parent.state = self.default_state
         self.previous:str = None
         self.last_state:str = None
         self.last_direction:int = Compass.DOWN 
@@ -55,7 +58,7 @@ class Animation(Node):
     def load_animation(self, animation) -> None:
         self.animation = {}
         for state, data in animation.items():
-            datafile = data['datafile']
+            datafile = data.get('datafile', "")
             if not datafile:
                 self.animation[state] = self.get_blank_reel(state)
                 continue
@@ -80,7 +83,11 @@ class Animation(Node):
 
     def update(self) -> None:
         state:str = self.parent.state
-        direction:int = self.parent.move.direction
+        direction:int = (
+            self.parent.move.direction 
+            if hasattr(self.parent, "move") else
+            0
+        )
         current:Reel = self.animation[state]
         set_reel = False
 
@@ -119,7 +126,11 @@ class Animation(Node):
         will produce the indices in the reel to run
         from direction and state data"""
         state:str = self.parent.state
-        direction:int = self.parent.move.direction
+        direction:int = (
+            self.parent.move.direction 
+            if hasattr(self.parent, "move") else
+            0
+        )
         current:Reel = self.animation[state]
         frame_tags:list[dict] = current.meta['frameTags']
         tag = {}
