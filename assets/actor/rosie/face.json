@@ -1,0 +1,56 @@
+{ "frames": {
+   "face 0.aseprite": {
+    "frame": { "x": 0, "y": 0, "w": 64, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 1000
+   },
+   "face 1.aseprite": {
+    "frame": { "x": 64, "y": 0, "w": 64, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 1000
+   },
+   "face 2.aseprite": {
+    "frame": { "x": 128, "y": 0, "w": 64, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 1000
+   }
+ },
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.3.15.5-x64",
+  "image": "face.png",
+  "format": "RGBA8888",
+  "size": { "w": 192, "h": 64 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "Resting", "from": 0, "to": 0, "direction": "forward", "color": "#000000ff" },
+   { "name": "Talking", "from": 1, "to": 2, "direction": "forward", "color": "#000000ff" },
+   { "name": "Silent", "from": 1, "to": 1, "direction": "forward", "color": "#000000ff" }
+  ],
+  "layers": [
+   { "name": "background", "opacity": 255, "blendMode": "normal" },
+   { "name": "housecoat", "opacity": 255, "blendMode": "normal" },
+   { "name": "head", "opacity": 255, "blendMode": "normal" },
+   { "name": "eyes", "opacity": 255, "blendMode": "normal" },
+   { "name": "pupils", "opacity": 255, "blendMode": "normal" },
+   { "name": "eyebrows", "opacity": 255, "blendMode": "normal" },
+   { "name": "wrinkles", "opacity": 255, "blendMode": "normal" },
+   { "name": "nose", "opacity": 255, "blendMode": "normal" },
+   { "name": "mouth", "opacity": 255, "blendMode": "normal" },
+   { "name": "measurment", "opacity": 255, "blendMode": "normal" },
+   { "name": "hair", "opacity": 255, "blendMode": "normal" },
+   { "name": "glasses", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}
