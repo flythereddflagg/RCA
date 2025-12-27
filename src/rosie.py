@@ -26,14 +26,17 @@ class Rosie(Decal):
             - vec(self.button_cue.sprite.rect.size).elementwise()
             * vec([0.5, 1])
         )
+        self.cue_text.set_text(self.cue_text.init.get("text", ""))
         self.leave_text = """
-I Just LOVE Pickles! I can snack on them before bed time
-and then I can use the pickle juice to make a soup!
+Pickles? For me? I Just LOVE Pickles! I can snack on 
+them before bed time and then I can use the pickle 
+juice to make a soup!
 ...In Fact, I am going to do that right now!
 NOW! You listen to me Robbie Hart, you're going to be 
 a fine husband!
-"""
+"""     
         self.stop_talk()
+        
 
 
     def update(self):
@@ -43,20 +46,31 @@ a fine husband!
         if (
             self.sprite.rect.colliderect(player_rect) 
             and not self.talking 
-            
         ):
-            self.scene.place_node(self.button_cue, ["hud"], self.cue_placement)
-    
+            # signal that talking is available
+            self.scene.place_node(
+                self.button_cue, ["hud"], self.cue_placement
+            )
+            self.scene.place_node(
+                self.cue_text, self.cue_text.init.get("groups")
+            )
+            self.cue_text.sprite.rect.midleft = (
+                self.button_cue.sprite.rect.midright
+            )
+
+            # start the talking
             if self.talk_button_pressed():
                 if player.inventory.contains(self.key_id):
                     assert player.inventory.remove_item(self.key_id),\
-                        "gate key was contains but did not get removed properly"
+                        "gate key was possesed but did not get removed properly"
                     self.talk(self.leave_text)
                     self.kill_after = True
                 else:
                     self.talk()
         else:
             self.button_cue.kill()
+            self.cue_text.sprite.kill()
+
         if self.textbox:
             if not self.textbox.scrolling:
                 self.talking_head.state = "Silent"
@@ -66,7 +80,6 @@ a fine husband!
             ):
                 self.stop_talk()
             else:
-                # self.children.update()
                 self.textbox.update()
                 self.talking_head.animation.update()
  
@@ -101,7 +114,6 @@ a fine husband!
     def stop_talk(self):
         self.textbox.sprite.kill()
         self.textbox.kill()
-        self.talking_head.sprite.kill()
         self.talking_head.kill()
         self.scene.paused = False
         self.talking = False

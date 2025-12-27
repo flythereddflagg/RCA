@@ -81,7 +81,7 @@ class TextBox(Node):
 
 
     def set_text(self, text:str, box_size:tuple[int, int]=None):
-        print(repr(text))
+        # print(repr(text))
         lines = text.split("\n")
         
         if box_size:

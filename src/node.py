@@ -24,8 +24,10 @@ class Node(pg.sprite.Sprite):
     ):
         super().__init__()
         self.scene = scene
-        id_ = init.get('id')
-        self.id = id_ if id_ else str(type(self)) + str(id(self))
+        parent_id = parent.id + "." if parent else ""
+        self.id = init.get(
+            'id', parent_id + str(type(self)) + str(id(self) % 10000)
+        )
         self.init = init
         self.parent = parent
         if self.parent:
@@ -33,13 +35,14 @@ class Node(pg.sprite.Sprite):
                 if val == INHERIT_KEY:
                     self.init[key] = self.parent.init.get(key)
         self.sprite = None
-        self.children = pg.sprite.Group()
+        # not a pg.sprite.Group so it is not affected by sprite.kill
+        self.children = [] 
         children:list[dict] = init.get("children")
         if children:                
             for child in children:
                 child['parent'] = self
                 node = node_from_dict(self.scene, child)
-                self.children.add(node)
+                self.children.append(node)
                 setattr(self, node.id, node)
         self.setup()
 
@@ -97,7 +100,7 @@ class Node(pg.sprite.Sprite):
         if self.children:
             child = [
                 sprite 
-                for sprite in self.children.sprites() 
+                for sprite in self.children 
                 if sprite.id == id_str
             ]
             if len(child) == 1:
@@ -113,7 +116,7 @@ class Node(pg.sprite.Sprite):
         if you kill a parent. Kill all children too.
         """
         if self.children:
-            for child in self.children.sprites():
+            for child in self.children:
                 child.kill()
 
         super().kill()

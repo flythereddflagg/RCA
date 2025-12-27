@@ -33,7 +33,6 @@ class Player(Node):
         self.apply_input()
         self.check_signals()
         self.check_collision()
-        # self.children.update()
         self.apply_physics()
         
         if self.inventory.hp <= 0:

@@ -73,6 +73,18 @@ nodes: # all children are nodes
           I don't have any clean Tupperware!
           ...Now, please, take a bite so I can watch you enjoy! 
           That's my favorite part!
+      - id: cue_text
+        groups: [hud]
+        type: TextBox
+        font_size: 22
+        text_padding: 3
+        bg_color: [0,0,0,0]
+        # scroll_speed: 20
+        # box_size: [390,96]
+        # start: [200, 250]
+        outline: true
+        text: |-
+          Talk to Rosie
   # - id: jar of pickles
   #   type: Item
   #   image: ./assets/block/jar_of_pickles.png
