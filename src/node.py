@@ -1,3 +1,5 @@
+import string
+
 import pygame as pg
 
 from .tools import class_from_str, load_yaml
@@ -24,9 +26,13 @@ class Node(pg.sprite.Sprite):
     ):
         super().__init__()
         self.scene = scene
-        parent_id = parent.id + "." if parent else ""
+        parent_id = parent.id + "_" if parent else ""
         self.id = init.get(
-            'id', parent_id + str(type(self)) + str(id(self) % 10000)
+            'id', 
+            (
+                parent_id 
+                + str(type(self)).strip("<>'\"").split('.')[-1] 
+                + str(id(self) % 10000))
         )
         self.init = init
         self.parent = parent
@@ -40,11 +46,23 @@ class Node(pg.sprite.Sprite):
         children:list[dict] = init.get("children")
         if children:                
             for child in children:
-                child['parent'] = self
-                node = node_from_dict(self.scene, child)
-                self.children.append(node)
-                setattr(self, node.id, node)
+                self.add_child_node(child)
         self.setup()
+
+
+    def add_child_node(self, child:'Node|dict'):
+        if isinstance(child, dict):
+            child['parent'] = self
+            node = node_from_dict(self.scene, child)
+        elif isinstance(child, Node):
+            child.parent = self
+        else:
+            raise Exception(
+                "Invalid child supplied. Must be existing node or node init dict"
+            )
+
+        self.children.append(node)
+        setattr(self, node.id, node)
 
 
     def require_attr(self, *names:str, types=None):
