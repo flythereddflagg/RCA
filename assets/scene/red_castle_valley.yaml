@@ -45,6 +45,7 @@ nodes: # all children are nodes
       - id: talking_head
         groups: [hud]
         type: Decal
+        scale: 1.5
         children:
           - id: animation
             type: Animation
@@ -65,7 +66,7 @@ nodes: # all children are nodes
         text_padding: 3
         bg_color: [0,0,0,128]
         scroll_speed: 20
-        box_size: [390,90]
+        box_size: [390,96]
         start: [200, 250]
         outline: true
         text: |-

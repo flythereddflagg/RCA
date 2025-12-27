@@ -134,16 +134,22 @@ class Animation(Node):
         )
         current:Reel = self.animation[state]
         frame_tags:list[dict] = current.meta['frameTags']
-        tag = {}
-        for d_tag in range(len(frame_tags)):
-            if Compass.index(frame_tags[d_tag]['name'].upper()) == direction:
-                tag = d_tag
-                break
-
+        if hasattr(self.parent, "move"):
+            l_tag = [
+                d_tag 
+                for d_tag in range(len(frame_tags)) 
+                if Compass.index(frame_tags[d_tag]['name'].upper()) == direction
+            ]
         else:
-            tag = 0
+            l_tag = [
+                d_tag 
+                for d_tag in range(len(frame_tags)) 
+                if frame_tags[d_tag]['name'] == state
+            ]
+        
+        i_tag:int = 0 if not l_tag else l_tag[0]
 
-        meta_dict = frame_tags[tag]
+        meta_dict = frame_tags[i_tag]
         counter = range(meta_dict['from'], meta_dict['to'] + 1)
         self.frame_counter = (
             itertools.cycle(counter) 

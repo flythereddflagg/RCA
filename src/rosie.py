@@ -59,7 +59,7 @@ a fine husband!
             self.button_cue.kill()
         if self.textbox:
             if not self.textbox.scrolling:
-                self.talking_head.state = "Resting"
+                self.talking_head.state = "Silent"
             if (
                 not self.textbox.scrolling
                 and self.talk_button_pressed()
