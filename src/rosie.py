@@ -58,6 +58,8 @@ a fine husband!
         else:
             self.button_cue.kill()
         if self.textbox:
+            if not self.textbox.scrolling:
+                self.talking_head.state = "Resting"
             if (
                 not self.textbox.scrolling
                 and self.talk_button_pressed()
@@ -65,7 +67,6 @@ a fine husband!
                 self.stop_talk()
             else:
                 # self.children.update()
-                print("updating 1")
                 self.textbox.update()
                 self.talking_head.animation.update()
  
@@ -89,6 +90,7 @@ a fine husband!
         self.talking_head.sprite.rect.topright = (
             self.textbox.sprite.rect.topleft
         )
+        self.talking_head.sprite.state = "Talking"
         if alt_text is not None:
             self.textbox.scroll_text(alt_text)
         else:

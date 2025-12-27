@@ -48,7 +48,8 @@ nodes: # all children are nodes
         children:
           - id: animation
             type: Animation
-            path_prefix: "./assets/actor/rosie/face.json"
+            path_prefix: "./assets/actor/rosie/"
+            datafile: face.json
             default_state: Silent
             animation:
               Silent:

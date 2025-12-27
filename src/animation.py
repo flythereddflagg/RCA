@@ -38,6 +38,7 @@ class Animation(Node):
     def setup(self):
         # force the existence of the animation
         self.require_attr('animation', 'default_state', types=[dict, str])
+        self.init_animation = self.init.get('animation')
         # parent must have a 'state' attribute
         self.default_state = self.init["default_state"]
         if not hasattr(self.parent, "state"):
@@ -52,13 +53,13 @@ class Animation(Node):
         self.frame_time = 1 # duration of the current frame
         self.path_prefix = self.init.get('path_prefix', "./") 
         self.animation = {}
-        self.load_animation(self.init.get('animation'))
+        self.load_animation(self.init_animation)
         
 
     def load_animation(self, animation) -> None:
         self.animation = {}
         for state, data in animation.items():
-            datafile = data.get('datafile', "")
+            datafile = data.get('datafile', self.init.get("datafile"))
             if not datafile:
                 self.animation[state] = self.get_blank_reel(state)
                 continue
