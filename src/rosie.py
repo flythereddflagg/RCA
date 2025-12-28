@@ -5,7 +5,6 @@ from .node import node_from_dict
 from .tools import mask_collision, vec
 
 
-
 class Rosie(Decal):
     def setup(self):
         super().setup()
@@ -13,13 +12,6 @@ class Rosie(Decal):
         self.hitmask = Decal(mask_path=self.init.get("image"))
         self.talking = False
         self.kill_after = False
-        self.button_cue = node_from_dict(self.scene, 
-            {
-                "id": "cue",
-                "type": "Decal",
-                "image": "./assets/block/glyph_B.png"
-            }
-        )
         self.cue_placement = (
             vec(self.scene.game.draw_surface.get_size()).elementwise()
             * vec([0.5, 1]) 
@@ -35,7 +27,7 @@ juice to make a soup!
 NOW! You listen to me Robbie Hart, you're going to be 
 a fine husband!
 """     
-        self.stop_talk()
+
         
 
 
@@ -52,7 +44,7 @@ a fine husband!
                 self.button_cue, ["hud"], self.cue_placement
             )
             self.scene.place_node(
-                self.cue_text, self.cue_text.init.get("groups")
+                self.cue_text, ["hud"],
             )
             self.cue_text.sprite.rect.midleft = (
                 self.button_cue.sprite.rect.midright
@@ -92,14 +84,10 @@ a fine husband!
         self.talking = True
         self.scene.paused = True
         self.scene.place_node(
-            self.textbox, 
-            self.textbox.init.get("groups"), 
+            self.textbox, ["hud"], 
             self.textbox.init.get('start')
         )
-        self.scene.place_node(
-            self.talking_head,
-            self.talking_head.init.get("groups")
-        )
+        self.scene.place_node(self.talking_head,["hud"])
         self.talking_head.sprite.rect.topright = (
             self.textbox.sprite.rect.topleft
         )

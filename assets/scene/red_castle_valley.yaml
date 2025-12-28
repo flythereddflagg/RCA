@@ -43,7 +43,6 @@ nodes: # all children are nodes
      - paused
     children:
       - id: talking_head
-        groups: [hud]
         type: Decal
         scale: 1.5
         children:
@@ -60,7 +59,6 @@ nodes: # all children are nodes
               Talking:
                 repeat: True
       - id: textbox
-        groups: [hud]
         type: TextBox
         font_size: 22
         text_padding: 3
@@ -74,7 +72,6 @@ nodes: # all children are nodes
           ...Now, please, take a bite so I can watch you enjoy! 
           That's my favorite part!
       - id: cue_text
-        groups: [hud]
         type: TextBox
         font_size: 22
         text_padding: 3
@@ -85,6 +82,9 @@ nodes: # all children are nodes
         outline: true
         text: |-
           Talk to Rosie
+      - id: button_cue
+        type: Decal
+        image: ./assets/block/glyph_B.png
   # - id: jar of pickles
   #   type: Item
   #   image: ./assets/block/jar_of_pickles.png
