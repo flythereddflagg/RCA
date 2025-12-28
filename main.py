@@ -56,7 +56,6 @@ Each item may have a priority from 1 - 5
 5: we get to it when we get to it
 ---
 TODO -2- make glyphs and keystrokes correspond to various inputs
-TODO -2- add outline to menu text
 TODO -2- include actual options menu with volume sliders and other settings
 TODO -2- add save and quit and options menu in start menu
 TODO -3- make DPAD a valid way to move the character
