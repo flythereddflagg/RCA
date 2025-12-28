@@ -12,7 +12,7 @@ BLACK = (0, 0, 0, 255)
 BLANK = (0, 0, 0, 0)
 ARROW = "->"
 FONTSIZE = 22
-# TODO -1- use markdown syntax to specify formatting of text
+
 MENU_TEXT = """
     Continue 
     New Game
@@ -92,10 +92,9 @@ class Menu(Node):
 
 
     def process_input(self):
-        actions, held = self.scene.game.input.get()
+        new_actions = self.scene.game.input.new_actions()
         select_button:bool = any([
-            command in [a[0] for a in actions] and
-            command not in held
+            command in new_actions
             for command in ["START", "BUTTON_E"]
         ])
         if (
@@ -115,9 +114,9 @@ class Menu(Node):
 
         if not self.started: return
 
-        if "UP" in [a[0] for a in actions] and "UP" not in held:
+        if "UP" in new_actions:
             self.go_up()
-        elif "DOWN" in [a[0] for a in actions] and "DOWN" not in held:
+        elif "DOWN" in new_actions:
             self.go_down()
         elif select_button:
             self.select_option()
