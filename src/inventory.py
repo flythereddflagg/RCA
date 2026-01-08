@@ -180,8 +180,14 @@ class Inventory(Node):
 
         
     def toggle(self):
+        # if something is using the pause screen and its not me then return
+        if self.scene.occupied and not self.active:
+            return
+        
         self.scene.paused = not self.scene.paused
         self.active = not self.active
+        self.scene.occupied = not self.scene.occupied
+
         toggle_state = (
             self.parent.scene.hud.add 
             if self.active else 

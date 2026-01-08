@@ -51,7 +51,7 @@ a fine husband!
             )
 
             # start the talking
-            if self.talk_button_pressed():
+            if self.talk_button_pressed() and not self.scene.occupied:
                 if player.inventory.contains(self.key_id):
                     assert player.inventory.remove_item(self.key_id),\
                         "gate key was possesed but did not get removed properly"
@@ -83,6 +83,7 @@ a fine husband!
     def talk(self, alt_text:str=None):
         self.talking = True
         self.scene.paused = True
+        self.scene.occupied = True
         self.scene.place_node(
             self.textbox, ["hud"], 
             self.textbox.init.get('start')
@@ -105,6 +106,7 @@ a fine husband!
         self.talking_head.kill()
         self.scene.paused = False
         self.talking = False
+        self.scene.occupied = False
         if self.kill_after:
             self.sprite.kill()
             self.kill()

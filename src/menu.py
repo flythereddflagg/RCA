@@ -183,7 +183,6 @@ class Menu(Node):
                 surface, (TEXT_PADDING, size[1]/len(rendered_lines) * i + TEXT_PADDING)
             )
 
-
         self.sprite.set_image(self.text_surface)
     
 

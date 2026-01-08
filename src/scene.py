@@ -75,6 +75,7 @@ class Scene():
                 node.init.get("groups"), 
                 node_init.get('start')
             )
+        self.occupied = False # is the scene occupied by an entity?
 
 
     def place_node(self, node:Node, groups=None, start=None):

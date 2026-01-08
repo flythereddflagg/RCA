@@ -40,7 +40,29 @@ children:
     hp_max: 9
     groups:
       - paused
-    
+  - id: select_menu
+    type: SelectMenu
+    groups:
+      - paused
+    children:
+      - id: selecttext
+        type: TextBox
+        font_size: 22
+        text_padding: 3
+        bg_color: [0,0,0,128]
+        # scroll_speed: 20
+        # box_size: [390,96]
+        # start: [180, 250]
+        outline: true
+        text: |-
+          Continue
+          Options
+          Save & Quit
+        children:
+          - id: indicator
+            type: Decal
+            image: ./assets/block/text_select.png
+
   - id: sprite
     type: Decal
     image: ./assets/actor/larry/larry_base.png
