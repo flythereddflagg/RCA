@@ -56,6 +56,7 @@ class Node(pg.sprite.Sprite):
             node = node_from_dict(self.scene, child)
         elif isinstance(child, Node):
             child.parent = self
+            node = child
         else:
             raise Exception(
                 "Invalid child supplied. Must be existing node or node init dict"

@@ -3,12 +3,14 @@ import pygame as py
 from .node import Node
 from .textbox import TextBox
 from .tools import vec
+from .optionsmenu import OptionsMenu
 
 INDICATOR_X_OFFSET = 0
 TEXT_PADDING = 11
 
 class SelectMenu(Node):
     def setup(self):
+        self.add_child_node(OptionsMenu(id="options_menu"))
         self.active = False
         self.selecttext.set_text(self.selecttext.text)
         self.selecttext.sprite.rect.center = self.scene.game.get_center()
@@ -21,6 +23,9 @@ class SelectMenu(Node):
         ]
 
     def update(self):
+        if self.options_menu.active:
+            self.options_menu.update()
+            return
         select_pressed = self.menu_button_pressed() 
         if select_pressed and not self.scene.occupied:
             self.scene.paused = True
@@ -54,12 +59,20 @@ class SelectMenu(Node):
         self.scene.paused = False
         self.scene.occupied = False
         self.active = False
-        self.selecttext.sprite.kill()
         self.selecttext.kill()
          
 
-    def do_options(self):pass
-    def do_save_quit(self):pass
+    def do_options(self):
+        self.options_menu.active = True
+        self.active = False
+        self.selecttext.sprite.kill()
+        self.selecttext.kill()
+        self.scene.place_node(self.options_menu)
+
+    def do_save_quit(self):
+        self.scene.game.save_game()
+        self.scene.game.running = False
+
 
     def up_pressed(self):
         return "UP" in self.scene.game.input.new_actions()
@@ -68,7 +81,8 @@ class SelectMenu(Node):
         return "DOWN" in self.scene.game.input.new_actions()
 
     def confirm_pressed(self):
-        return "BUTTON_S" in self.scene.game.input.new_actions()
+        new_actions = self.scene.game.input.new_actions()
+        return any([x in new_actions for x in ["BUTTON_S", "START"]])
     
     def menu_button_pressed(self):
         return "SELECT" in self.scene.game.input.new_actions()
