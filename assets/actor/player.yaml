@@ -62,6 +62,20 @@ children:
           - id: indicator
             type: Decal
             image: ./assets/block/text_select.png
+      - id: options_menu
+        type: OptionsMenu
+        children:
+        - id: textbox
+          type: TextBox
+          font_size: 22
+          text_padding: 3
+          bg_color: [0,0,0,128]
+          outline: true
+          children:
+          - id: indicator
+            type: Decal
+            image: ./assets/block/text_select.png
+
 
   - id: sprite
     type: Decal

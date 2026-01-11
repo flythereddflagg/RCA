@@ -10,7 +10,6 @@ TEXT_PADDING = 11
 
 class SelectMenu(Node):
     def setup(self):
-        self.add_child_node(OptionsMenu(id="options_menu"))
         self.active = False
         self.selecttext.set_text(self.selecttext.text)
         self.selecttext.sprite.rect.center = self.scene.game.get_center()
@@ -23,9 +22,11 @@ class SelectMenu(Node):
         ]
 
     def update(self):
-        if self.options_menu.active:
+        if self.options_menu.active and not self.active:
             self.options_menu.update()
             return
+        elif self.options_menu.active and self.active:
+            raise Exception("Two menus active at the same time!")
         select_pressed = self.menu_button_pressed() 
         if select_pressed and not self.scene.occupied:
             self.scene.paused = True
@@ -67,7 +68,12 @@ class SelectMenu(Node):
         self.active = False
         self.selecttext.sprite.kill()
         self.selecttext.kill()
-        self.scene.place_node(self.options_menu)
+        self.scene.place_node(self.options_menu.textbox, groups=["hud"])
+        self.scene.place_node(self.options_menu.textbox.indicator, groups=["hud"])
+        self.options_menu.textbox.indicator.sprite.rect.topright = (
+            self.options_menu.textbox.sprite.rect.topleft
+        )
+        self.options_menu.selected = 0
 
     def do_save_quit(self):
         self.scene.game.save_game()
