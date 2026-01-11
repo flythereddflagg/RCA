@@ -21,6 +21,25 @@ class SelectMenu(Node):
             self.do_save_quit
         ]
 
+    def open_menu(self):
+        self.scene.paused = True
+        self.scene.occupied = True
+        self.active = True
+        self.scene.place_node(self.selecttext, groups=["hud"])
+        self.scene.place_node(self.selecttext.indicator, groups=["hud"])
+        self.selecttext.indicator.sprite.rect.topright = (
+            self.selecttext.sprite.rect.topleft
+        )
+        self.selected = 0
+
+    def close_menu(self):
+        self.scene.paused = False
+        self.scene.occupied = False
+        self.active = False
+        self.selecttext.sprite.kill()
+        self.selecttext.kill()
+
+
     def update(self):
         if self.options_menu.active and not self.active:
             self.options_menu.update()
@@ -29,23 +48,11 @@ class SelectMenu(Node):
             raise Exception("Two menus active at the same time!")
         select_pressed = self.menu_button_pressed() 
         if select_pressed and not self.scene.occupied:
-            self.scene.paused = True
-            self.scene.occupied = True
-            self.active = True
-            self.scene.place_node(self.selecttext, groups=["hud"])
-            self.scene.place_node(self.selecttext.indicator, groups=["hud"])
-            self.selecttext.indicator.sprite.rect.topright = (
-                self.selecttext.sprite.rect.topleft
-            )
-            self.selected = 0
+            self.open_menu()
             
         
         elif select_pressed and self.active:
-            self.scene.paused = False
-            self.scene.occupied = False
-            self.active = False
-            self.selecttext.sprite.kill()
-            self.selecttext.kill()
+            self.close_menu()
         
         if self.active:
             if self.up_pressed():
@@ -57,10 +64,7 @@ class SelectMenu(Node):
 
 
     def do_continue(self):
-        self.scene.paused = False
-        self.scene.occupied = False
-        self.active = False
-        self.selecttext.kill()
+        self.close_menu()
          
 
     def do_options(self):

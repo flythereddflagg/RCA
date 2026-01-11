@@ -38,7 +38,13 @@ class OptionsMenu(Node):
             self.bindings[self.selected]()
         
         
-    
+    def close_menu(self):
+        self.scene.paused = False
+        self.scene.occupied = False
+        self.active = False
+        self.textbox.sprite.kill()
+        self.textbox.kill()
+
 
     def do_music(self):
         pass
@@ -47,7 +53,9 @@ class OptionsMenu(Node):
         pass
 
     def do_back(self):
-        pass
+        self.active = False
+        self.close_menu()
+        self.parent.open_menu()
         
 
     def up_pressed(self):
