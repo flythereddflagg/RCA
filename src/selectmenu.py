@@ -53,6 +53,7 @@ class SelectMenu(Node):
         
         elif select_pressed and self.active:
             self.close_menu()
+            # TODO -5- make it so slectpressed makes the menu dissapear regardless
         
         if self.active:
             if self.up_pressed():
