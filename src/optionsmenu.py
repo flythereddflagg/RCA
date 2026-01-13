@@ -6,8 +6,8 @@ from .tools import vec
 
 
 MENU_TEXT = """
-Music Volume: r<(){}
-SFX Volume: {}
+Music Volume: < {music_vol} >
+SFX Volume: < {sfx_vol} >
 Back
 """.strip()
 INDICATOR_X_OFFSET = 0
@@ -15,9 +15,9 @@ TEXT_PADDING = 11
 
 class OptionsMenu(Node):
     def setup(self):
-        self.textbox.set_text(MENU_TEXT)
+        self.update_text_display()
         self.textbox.sprite.rect.center = self.scene.game.get_center()
-        self.choices = MENU_TEXT.split("\n")
+        self.n_choices = len(MENU_TEXT.split("\n"))
         self.active = False
         self.selected = 0
         self.bindings = [
@@ -36,6 +36,12 @@ class OptionsMenu(Node):
             self.go_down()
         elif self.confirm_pressed():
             self.bindings[self.selected]()
+        elif self.menu_button_pressed():
+            self.do_back()
+        elif self.right_pressed():
+            self.bindings[self.selected](1)
+        elif self.left_pressed():
+            self.bindings[self.selected](-1)
         
         
     def close_menu(self):
@@ -46,13 +52,38 @@ class OptionsMenu(Node):
         self.textbox.kill()
 
 
-    def do_music(self):
-        pass
+    def update_text_display(self):
+        self.textbox.set_text(MENU_TEXT.format(
+            music_vol=self.scene.game.music_volume, 
+            sfx_vol=self.scene.game.sfx_volume
+        ))
 
-    def do_sfx(self):
-        pass
+    def do_music(self, rl_val:int=0):
+        print(f"DO MUSIC CALLED WITH {rl_val}")
+        self.scene.game.music_volume += rl_val
+        if self.scene.game.music_volume > self.scene.game.max_volume:
+            self.scene.game.music_volume = self.scene.game.max_volume
+        
+        if self.scene.game.music_volume < 0:
+            self.scene.game.music_volume = 0
+        
+        self.update_text_display()
 
-    def do_back(self):
+
+    def do_sfx(self, rl_val:int=0):
+        print(f"DO MUSIC CALLED WITH {rl_val}")
+        self.scene.game.sfx_volume += rl_val
+        if self.scene.game.sfx_volume > self.scene.game.max_volume:
+            self.scene.game.sfx_volume = self.scene.game.max_volume
+        
+        if self.scene.game.sfx_volume < 0:
+            self.scene.game.sfx_volume = 0
+        
+        self.update_text_display()
+
+    def do_back(self, rl_val:int=0):
+        if rl_val: 
+            return
         self.active = False
         self.close_menu()
         self.parent.open_menu()
@@ -70,16 +101,21 @@ class OptionsMenu(Node):
     
     def menu_button_pressed(self):
         return "SELECT" in self.scene.game.input.new_actions()
-        
+
+    def right_pressed(self):
+        return "RIGHT" in self.scene.game.input.new_actions()
+
+    def left_pressed(self):
+        return "LEFT" in self.scene.game.input.new_actions()
     
     def go_up(self):
         step_size = (
             self.textbox.sprite.rect.size[1]
-            // len(self.choices)
+            // self.n_choices
         )
         self.selected -= 1
         if self.selected < 0:
-            self.selected += len(self.choices)
+            self.selected += self.n_choices
         self.textbox.indicator.rect.midright = (
             self.textbox.sprite.rect.topleft 
             + vec([
@@ -92,11 +128,11 @@ class OptionsMenu(Node):
     def go_down(self):
         step_size = (
             self.textbox.sprite.rect.size[1]
-            // len(self.choices)
+            // self.n_choices
         )
         self.selected += 1
-        if self.selected >= len(self.choices):
-            self.selected -= len(self.choices)
+        if self.selected >= self.n_choices:
+            self.selected -= self.n_choices
         self.textbox.indicator.rect.midright = (
             self.textbox.sprite.rect.topleft 
             + vec([

@@ -45,6 +45,9 @@ class Engine():
         self.scene = None
         self.saved_scenes:dict[str, Scene] = {}
         self.REPLAY = REPLAY
+        self.max_volume = 10
+        self.music_volume = 10 # max volume
+        self.sfx_volume = 10 # max volume
         self.screen, self.draw_surface = self.init_screen()
         self.clock = pg.time.Clock()
         self.fps_counter = (
