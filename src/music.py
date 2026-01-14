@@ -39,6 +39,7 @@ class Music(Node):
             and not self.scene.game.settings["MUSIC"]
         ):
             return
+        pg.mixer.music.set_volume(self.scene.game.music_volume / 10)
         if self.sequence is None: return
         
         ms_elapsed = pg.mixer.music.get_pos()
