@@ -1,9 +1,10 @@
 import pygame as pg
+import yaml
 
-from .node import Node
+from .node import Node, node_from_dict
 from .decal import Decal
 from .tools import vec
-
+from .optionsmenu import OptionsMenu
 
 
 WHITE = (255,255,255, 255)
@@ -22,9 +23,28 @@ MENU_TEXT = """
 DEFAULT_FONT_FILE = "./assets/fonts/BoldPixels.ttf"
 INDICATOR_X_OFFSET = 0
 TEXT_PADDING = 10
+OPTIONS_MENU_INIT = """
+id: options_menu
+type: OptionsMenu
+children:
+- id: textbox
+  type: TextBox
+  font_size: 22
+  text_padding: 3
+  bg_color: [0,0,0,128]
+  outline: true
+  children:
+    - id: indicator
+      type: Decal
+      image: ./assets/block/text_select.png
+"""
+
+OPTIONS_MENU_DICT = yaml.load(OPTIONS_MENU_INIT, Loader=yaml.Loader)
 
 class Menu(Node):
     def setup(self):
+        self.add_child_node(node_from_dict(self.scene, OPTIONS_MENU_DICT))
+        self.open_menu = self.start_menu #alias
         self.font_file = self.init.get("font_file", DEFAULT_FONT_FILE)
         self.font_size = self.init.get("font_size", FONTSIZE)
         self.menu_text = self.init.get("menu_text", MENU_TEXT)
@@ -69,6 +89,16 @@ class Menu(Node):
     
     def a_options(self):
         print("\n\n\t-- See './assets/init.yaml for settings' --\n\n")
+        self.options_menu.active = True
+        self.active = False
+        self.sprite.kill()
+        self.indicator.sprite.kill()
+        self.scene.place_node(self.options_menu.textbox, groups=["hud"])
+        self.scene.place_node(self.options_menu.textbox.indicator, groups=["hud"])
+        self.options_menu.textbox.indicator.sprite.rect.topright = (
+            self.options_menu.textbox.sprite.rect.topleft
+        )
+        self.options_menu.selected = 0
     
 
     def a_quit(self):
@@ -78,6 +108,9 @@ class Menu(Node):
     def update(self):
         if not self.added and self.parent.state == "titlescreen":
             self.fade_in_text()
+        elif self.options_menu.active:
+            self.options_menu.update()
+            return
         
         self.process_input()
     
@@ -187,7 +220,7 @@ class Menu(Node):
     
 
     def start_menu(self):
-
+        self.scene.place_node(self, groups=["foreground"])
         self.set_text(self.menu_text)
         self.sprite.rect.center = (
             self.scene.game.get_center() *  vec([1, 1.5]).elementwise()
@@ -202,4 +235,3 @@ class Menu(Node):
             self.sprite.rect.topleft + 
             vec([INDICATOR_X_OFFSET, self.font_size//3 + self.font_size*self.selected + TEXT_PADDING])
         )
-        

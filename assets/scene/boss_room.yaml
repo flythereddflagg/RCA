@@ -59,3 +59,8 @@ nodes:
   type: Edge
 - id: camera
   type: Camera
+- groups:
+  - overlay
+  id: dark overlay
+  image: ./assets/scene/boss_room/boss_room_overlay.png
+  type: Decal

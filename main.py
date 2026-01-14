@@ -56,11 +56,8 @@ Each item may have a priority from 1 - 5
 5: we get to it when we get to it
 ---
 TODO -2- make glyphs and keystrokes correspond to various inputs
-TODO -2- include actual options menu with volume sliders and other settings
-TODO -2- add save and quit and options menu in start menu
 TODO -3- make DPAD a valid way to move the character
-TODO -2- tighten up music with loops USE TENACITY?
-TODO -2- add the dark overlay back into the boss room
+TODO -4- tighten up music with loops USE TENACITY?
 TODO -4- make inventory have proper labeling too!
 TODO -4- make it possible to upload feedback from the menu
 TODO -4- animate the river/waterfall
