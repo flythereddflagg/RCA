@@ -56,6 +56,7 @@ Each item may have a priority from 1 - 5
 5: we get to it when we get to it
 ---
 TODO -3- make glyphs and keystrokes correspond to various inputs
+TODO -3- add sfx and finish adding music
 TODO -3- make DPAD a valid way to move the character
 TODO -4- tighten up music with loops USE TENACITY?
 TODO -4- make inventory have proper labeling too!
