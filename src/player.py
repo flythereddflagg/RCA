@@ -20,7 +20,6 @@ LEFT_STICK_AX = ["L_"+direction for direction in Compass.strings]
 class Player(Node):
 
     def setup(self):
-        # breakpoint()
         self.move = Movement(self.sprite)
         self.speed = DEFAULT_SPEED
         self.signals = []
@@ -45,10 +44,8 @@ class Player(Node):
 
     def apply_direction(self, actions, values):
         # move in a direction
-        dirs = 0
         for direction in Compass.strings:
             if not (direction in actions): continue
-            dirs +=1
             self.move(direction, speed=self.speed)
             self.state = 'walk'
 
@@ -84,7 +81,6 @@ class Player(Node):
         actions, values = list(map(list, zip(*actions_val)))
 
         self.apply_direction(actions, values)
-        # self.apply_right_stick(actions, values)
         self.apply_buttons(actions, values)
 
 

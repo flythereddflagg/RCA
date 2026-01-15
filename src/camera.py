@@ -48,6 +48,7 @@ class Camera(Node):
         player = self.scene.get_player().sprite
         movex, movey = diff_vec(
             player.rect.center, 
+            # player.rect.topleft, 
             self.scene.game.get_center()
         )
         

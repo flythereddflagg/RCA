@@ -2,7 +2,7 @@ import pygame as pg
 
 from .node import Node
 
-# TODO -2- make music triggers for events (spagoot)
+# TODO -4- make music triggers for events (spagoot)
 
 class Music(Node):
 

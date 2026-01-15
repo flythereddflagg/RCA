@@ -17,6 +17,7 @@ from .input import Input
 from .hitmask import HitMask
 
 BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 
 RGBA_BLUE = (0,0,255,255)
 RGBA_RED = (255,0,0,255)
@@ -228,9 +229,10 @@ class Engine():
     def render_debug(self):
         if self.settings.FPS_COUNTER:
             fps = str(int(self.clock.get_fps()))
-            fps_sprite, rect = self.fps_counter.render(fps, True, (255,255,255))
-            #self.screen.blit(fps_sprite, (10,10))
-            self.draw_surface.blit(fps_sprite, (10,10))
+            fps_sprite, rect = self.fps_counter.render(
+                fps, fgcolor=WHITE, bgcolor=BLACK
+            )
+            self.draw_surface.blit(fps_sprite, (300,10))
             
         background = self.scene.background.sprites()[0]
         self.box_texts = []

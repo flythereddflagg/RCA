@@ -55,18 +55,20 @@ Each item may have a priority from 1 - 5
 4: nice to have but not necessary for MVP
 5: we get to it when we get to it
 ---
-TODO -2- make glyphs and keystrokes correspond to various inputs
+TODO -3- make glyphs and keystrokes correspond to various inputs
 TODO -3- make DPAD a valid way to move the character
 TODO -4- tighten up music with loops USE TENACITY?
 TODO -4- make inventory have proper labeling too!
 TODO -4- make it possible to upload feedback from the menu
 TODO -4- animate the river/waterfall
-TODO -3- fix player jitter when camera moves
 TODO -4- refactor the menu system to be unified
 TODO -3- make meaningful TESTS
 TODO -3- make scene transitions a la LTTP (polish)
 TODO -4- Larry AND Holly are playable with these items but both play differently and have different exits at the end (e.g. Larry has less knockback from bludgeoning but is more susceptible to piercing while Holly is the opposite.) (exits are the Original exit to the village and the exit to the mountain or something TBD)
 TODO -3- A good amount of polish so that the game is "complete"
 TODO -4- add shadow and floating animation?
-BUG -5- fix [src/libmpg123/id3.c:process_comment():587] error: No comment text / valid description?
+TODO -4- change all music formats to .ogg
+TODO -4- add controller input mappings to options menu
+TODO -4- add doc strings to all core files
+TODO -4- make a core package in src with node and scene and stuff like that
 """

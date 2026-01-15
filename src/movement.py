@@ -1,9 +1,11 @@
+import math
+
 import pygame as pg
 
 from .compass import Compass
 from .tools import list_collided
 
-BUFFER_LIMIT = 2
+BUFFER_LIMIT = 1/2
 
 class Movement():
     """
@@ -14,40 +16,42 @@ class Movement():
     def __init__(self, sprite, **init):
         self.sprite = sprite
         self.direction = Compass.DOWN
-        self.dist_buffer = 0
+        self.dist_buffer:list[float] = [0.0 for _ in Compass.indicies]
 
     def __call__(
         self, direction:int|str|tuple|pg.math.Vector2,
-        distance:int=0, speed:int|float=0,
+        distance:float=0, speed:float=0,
         reject_foreground:bool=True, change_direction=True
     ) -> None:
         """
         move the character in a direction with
         move rejection from colliding with the foreground
         if speed is given it will override distance
-        @param direction MUST be of type: int, str, or tuple
+        @param direction MUST be of type: int, str, or tuple 
         @param distance MUST be of type: int
         @param speed may be int or float
         """
-        if change_direction: self.direction = Compass.index(direction)
+        i_dir:int = Compass.index(direction)
+        if change_direction: 
+            self.direction = i_dir
         if speed:
             fps = self.sprite.scene.game.clock.get_fps()
             if not fps: return
-            distance = speed / fps
+            distance += speed / fps
         if distance < 0:
             direction = Compass.opposite(direction)
             distance *= -1
 
+        # TODO -5- figure out how to do high FPS?
         if distance < BUFFER_LIMIT:
-            self.dist_buffer += distance % 1
+            self.dist_buffer[i_dir] += distance % 1
+            distance += math.floor(self.dist_buffer[i_dir])
+            self.dist_buffer[i_dir] -= math.floor(self.dist_buffer[i_dir])
 
-            add_to_dist = int(self.dist_buffer)
-            distance += add_to_dist
-            self.dist_buffer -= add_to_dist
-        distance = int(distance)
-
+        i_distance:int = int(distance)
+        
         xunit, yunit = Compass.vector(direction)
-        addx, addy = distance * xunit, distance * yunit
+        addx, addy = i_distance * xunit, i_distance * yunit
         self.sprite.rect.move_ip(addx, addy)
         
         if reject_foreground: self.foreground_rejection(xunit, yunit)
