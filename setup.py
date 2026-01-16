@@ -1,6 +1,6 @@
 import subprocess
 
-subprocess.run("pip install -r requirements.txt".split())
+subprocess.run("pip install -r ./docs/requirements.txt".split())
 
 from tools.gather_assets import gather_assets
 print("copying assets into build dir...", end="")

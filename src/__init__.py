@@ -10,6 +10,7 @@ import pathlib
 import pprint
 
 import pygame as pg
+from pygame import freetype as pg_freetype
 
 from .scene import Scene
 from .tools import load_yaml, save_yaml, vec, diff_vec
@@ -52,7 +53,7 @@ class Engine():
         self.screen, self.draw_surface = self.init_screen()
         self.clock = pg.time.Clock()
         self.fps_counter = (
-            pg.freetype.Font(DEFAULT_FONT_FILE, FONTSIZE)
+            pg_freetype.Font(DEFAULT_FONT_FILE, FONTSIZE)
             if self.settings.FPS_COUNTER or self.settings.DEBUG
             else None
         )

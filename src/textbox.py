@@ -1,5 +1,6 @@
 import string
 import pygame as pg
+from pygame import freetype as pg_freetype
 
 from .node import Node
 from .decal import Decal
@@ -29,7 +30,7 @@ class TextBox(Node):
         self.scroll_speed = self.init.get("scroll_speed", SCROLL_SPEED)
         self.scrolling = False
 
-        self.font = pg.freetype.Font(self.font_file, self.font_size)
+        self.font = pg_freetype.Font(self.font_file, self.font_size)
         self.font_char_w = max([
             xwidth
             for _, _, _, _, xwidth, _ in self.font.get_metrics(

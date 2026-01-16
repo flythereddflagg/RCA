@@ -1,4 +1,5 @@
 import pygame as pg
+from pygame import freetype as pg_freetype
 import yaml
 
 from .node import Node, node_from_dict
@@ -48,7 +49,7 @@ class Menu(Node):
         self.font_file = self.init.get("font_file", DEFAULT_FONT_FILE)
         self.font_size = self.init.get("font_size", FONTSIZE)
         self.menu_text = self.init.get("menu_text", MENU_TEXT)
-        self.font = pg.freetype.Font(self.font_file, self.font_size)
+        self.font = pg_freetype.Font(self.font_file, self.font_size)
         # self.font.antialiased = False
         self.sprite = Decal(parent=self)
         self.text_surface = None
