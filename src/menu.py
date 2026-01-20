@@ -1,11 +1,11 @@
 import pygame as pg
-from pygame import freetype as pg_freetype
 import yaml
 
 from .node import Node, node_from_dict
 from .decal import Decal
 from .tools import vec
 from .optionsmenu import OptionsMenu
+from .textbox import TextBox
 
 
 WHITE = (255,255,255, 255)
@@ -49,14 +49,12 @@ class Menu(Node):
         self.font_file = self.init.get("font_file", DEFAULT_FONT_FILE)
         self.font_size = self.init.get("font_size", FONTSIZE)
         self.menu_text = self.init.get("menu_text", MENU_TEXT)
-        self.font = pg_freetype.Font(self.font_file, self.font_size)
-        # self.font.antialiased = False
-        self.sprite = Decal(parent=self)
-        self.text_surface = None
-        self.set_text("Press Start")
-        self.selection = []
+        self.textbox = TextBox(**self.init, outline=True)
+        self.sprite = self.textbox.sprite
+        self.textbox.set_text("Press Start")
+        self.selection = [a.strip() for a in self.menu_text.strip().split("\n")]
 
-        self.text_surface.set_alpha(0)
+        self.textbox.sprite.image.set_alpha(0)
         self.sprite.rect.center = (
             vec([1, 1.75]).elementwise() * self.scene.game.get_center()
         )
@@ -118,11 +116,11 @@ class Menu(Node):
     
     def fade_in_text(self):
         self.sprite.add(self.scene.hud)
-        if self.text_surface.get_alpha() >= 255:
+        if self.textbox.sprite.image.get_alpha() >= 255:
             self.added = True
             return
         # TODO -4- this effect sucks and depends on frame rate. Fix?
-        self.text_surface.set_alpha(self.text_surface.get_alpha() + 1)
+        self.textbox.sprite.image.set_alpha(self.textbox.sprite.image.get_alpha() + 1)
 
 
     def process_input(self):
@@ -157,7 +155,7 @@ class Menu(Node):
 
 
     def go_up(self):
-        step_size = self.text_surface.get_size()[1] // len(self.selection)
+        step_size = self.textbox.sprite.image.get_size()[1] // len(self.selection)
         self.selected -= 1
         if self.selected < 0:
             self.selected += len(self.selection)
@@ -168,7 +166,7 @@ class Menu(Node):
 
 
     def go_down(self):
-        step_size = self.text_surface.get_size()[1] // len(self.selection)
+        step_size = self.textbox.sprite.image.get_size()[1] // len(self.selection)
         self.selected += 1
         if self.selected >= len(self.selection):
             self.selected -= len(self.selection)
@@ -182,47 +180,11 @@ class Menu(Node):
         action = self.selection[self.selected]
         self.callbacks[action]()
 
-
-    def set_text(self, text:str):
-        lines = [line.strip() for line in text.split("\n") if line.strip()]
-        self.selection = lines
-        rendered_lines = [
-            self.font.render(line, fgcolor=WHITE, bgcolor=BLANK)
-            if (
-                not "Continue" in line 
-                or self.scene.game.save_file_path.exists()
-            ) else
-            self.font.render(line, fgcolor=GREY, bgcolor=BLANK)
-            for line in lines
-        ]
-        size = (
-            max([rect.size[0] for line, rect in rendered_lines])
-                + TEXT_PADDING * 2, 
-            max([rect.size[1] for line, rect in rendered_lines])
-                * len(rendered_lines) + TEXT_PADDING * 3, 
-        )
-        self.text_surface = pg.surface.Surface(size, flags=pg.SRCALPHA)
-        for i, (surface, rect) in enumerate(rendered_lines):
-            # render text outline sprite
-            for j in range(3):
-                for k in range(3):
-                    offset = vec((j - 1, k - 1))
-                    self.text_surface.blit(
-                        pg.mask.from_surface(surface).to_surface(
-                            setcolor=BLACK, unsetcolor=BLANK
-                        ), 
-                        vec((TEXT_PADDING, size[1]/len(rendered_lines) * i + TEXT_PADDING)) + offset
-                    )
-            self.text_surface.blit(
-                surface, (TEXT_PADDING, size[1]/len(rendered_lines) * i + TEXT_PADDING)
-            )
-
-        self.sprite.set_image(self.text_surface)
     
 
     def start_menu(self):
         self.scene.place_node(self, groups=["foreground"])
-        self.set_text(self.menu_text)
+        self.textbox.set_text(self.menu_text)
         self.sprite.rect.center = (
             self.scene.game.get_center() *  vec([1, 1.5]).elementwise()
         )

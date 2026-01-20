@@ -10,12 +10,12 @@ import pathlib
 import pprint
 
 import pygame as pg
-from pygame import freetype as pg_freetype
 
 from .scene import Scene
 from .tools import load_yaml, save_yaml, vec, diff_vec
 from .input import Input
 from .hitmask import HitMask
+from .textbox import TextBox
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -53,7 +53,7 @@ class Engine():
         self.screen, self.draw_surface = self.init_screen()
         self.clock = pg.time.Clock()
         self.fps_counter = (
-            pg_freetype.Font(DEFAULT_FONT_FILE, FONTSIZE)
+            TextBox(bg_color=BLACK)
             if self.settings.FPS_COUNTER or self.settings.DEBUG
             else None
         )
@@ -230,10 +230,8 @@ class Engine():
     def render_debug(self):
         if self.settings.FPS_COUNTER:
             fps = str(int(self.clock.get_fps()))
-            fps_sprite, rect = self.fps_counter.render(
-                fps, fgcolor=WHITE, bgcolor=BLACK
-            )
-            self.draw_surface.blit(fps_sprite, (300,10))
+            self.fps_counter.set_text(fps)
+            self.draw_surface.blit(self.fps_counter.sprite.image, (300,10))
             
         background = self.scene.background.sprites()[0]
         self.box_texts = []

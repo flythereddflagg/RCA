@@ -1,6 +1,5 @@
 import string
 import pygame as pg
-from pygame import freetype as pg_freetype
 
 from .node import Node
 from .decal import Decal
@@ -14,6 +13,7 @@ FONTSIZE = 15
 DEFAULT_FONT_FILE = "./assets/fonts/BoldPixels.ttf"
 TEXT_PADDING = 10
 SCROLL_SPEED = 15
+PRINTABLE_CHARS = string.printable[:-5]
 
 
 class TextBox(Node):
@@ -24,20 +24,15 @@ class TextBox(Node):
         self.outline = self.init.get("outline", False)
         self.outline_color = self.init.get("outline_color", BLACK)
         self.bg_color = self.init.get("bg_color", BLANK)
-        self.text_padding = self.init.get("text_padding", TEXT_PADDING)
+        self.text_padding = self.init.get("text_padding", 0)
         self.text = self.init.get("text", "")
         self.box_size = self.init.get("box_size")
         self.scroll_speed = self.init.get("scroll_speed", SCROLL_SPEED)
         self.scrolling = False
 
-        self.font = pg_freetype.Font(self.font_file, self.font_size)
-        self.font_char_w = max([
-            xwidth
-            for _, _, _, _, xwidth, _ in self.font.get_metrics(
-                string.printable[:-5]
-            )
-        ])
-        self.font_height = self.font.get_sized_glyph_height()
+        self.font = pg.font.Font(self.font_file, self.font_size)
+        self.font_char_w, self.font_height = self.font.size(PRINTABLE_CHARS)
+        self.font_char_w /= len(PRINTABLE_CHARS)
         self.sprite = Decal(parent=self)
         # if self.scroll:
         #     self.scroll_text(
@@ -106,13 +101,13 @@ class TextBox(Node):
                 
         rendered_lines = [
             self.font.render(
-                line, fgcolor=self.text_color, bgcolor=BLANK
+                line, True, self.text_color, None
             )
             for line in lines
         ]
 
         size = (
-            max([rect.size[0] for line, rect in rendered_lines])
+            max([line.get_size()[0] for line in rendered_lines])
                 + self.text_padding * 2, 
             self.font_height * len(rendered_lines) 
                 + self.text_padding *(len(rendered_lines)+2), 
@@ -124,7 +119,7 @@ class TextBox(Node):
             box_size, flags=pg.SRCALPHA
         )
         self.bounding_box_surface.fill(self.bg_color)
-        for i, (surface, rect) in enumerate(rendered_lines):
+        for i, surface in enumerate(rendered_lines):
             text_y_pos = (self.font_height + self.text_padding) * i + self.text_padding * 2 
             if self.outline:
                 for j in range(3):

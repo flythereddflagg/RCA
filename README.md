@@ -28,7 +28,7 @@ source ./build_env/bin/activate
 
 # set up a virtual environment on Windows
 python -m venv build_env
-./build_env/bin/activate.bat
+./build_env/Scripts/activate.bat
 
 # build command
 python setup.py build
