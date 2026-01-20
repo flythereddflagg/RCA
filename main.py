@@ -55,6 +55,10 @@ Each item may have a priority from 1 - 5
 4: nice to have but not necessary for MVP
 5: we get to it when we get to it
 ---
+TODO -2- add meatball with rosie sequence
+TODO -2- add animations and flesh out combat with fey frog
+TODO -2- add final story elements
+TODO -3- make glyphs and keystrokes correspond to various inputs
 TODO -3- make glyphs and keystrokes correspond to various inputs
 TODO -3- add sfx and finish adding music
 TODO -3- make DPAD a valid way to move the character

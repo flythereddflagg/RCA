@@ -6,8 +6,7 @@
 - ✓ Items: [ ✓sword, ✓shovel, ✓pickle, ✓gate key, ✓statue key]
 - Item mechanics completely fleshed out
 - Larry AND Holly are playable with these items but both play differently and have different exits at the end (e.g. Larry has less knockback from bludgeoning but is more susceptible to piercing while Holly is the opposite.) (exits are the Original exit to the village and the exit to the mountain or something TBD)
-- Enemies: [ snail enemy?, ✓ossifrage, augenblatt (eyeball plant), and Fey Frog]
-- Boss fight must have cheese in the form of the chandelier
+- Enemies: [ meatball, ✓ossifrage, and Fey Frog]
 - A good amount of polish so that the game is "complete"
 
 ## Ideas from Liz
@@ -33,7 +32,6 @@
   - guy blows bubbles that pop poison or damage on you
   - maniacally laughs as he attacks
   - snail slides with momentum on slime
-
 - garbage can (dented) lid opens little soda with arms and legs come out and spray (acidic?) soda[ Search Assist](https://duckduckgo.com/?q=mu+mu+day+garmet&atb=v441-1&ia=web&assist=true) on you
 - paper bag guys with arms and legs (maybe paper bag jack-o-lanterns)
 - Eyeball plant (augenblatt)
@@ -42,6 +40,16 @@
   - Restrains you with extending vines
   - Pink fart cloud is poisonous (spores or whatever)
 - NPC meatball lady from Wedding Singer that is making the meatball monsters inadvertently
+- One Dungeon is in the "Book world". Everything is in black and white Letter enemies on the paper page and page maze in the book 
+
+- Grappling hook for climbing (rope + pick axe?)
+- Combining the shovel and the sword sweeps the legs and maybe knocks the enemy down so that they're weak. It's a nice one-two punch
+- Ossifrage walks randomly then charges if it sees you in its line of sight 
+- Larry must collect and use his blacksmith tools to problem solve. Lookup such tools and think about how they can be used
+- Larry and Holly trade places in each other's worlds and must work together speaking through the cosmic void
+- there is a mirror in the boss room that breaks and pulls them into eachothers world. Need to animate this but I think it would be cool.
+
+
 
 
 ## Ideas for game
