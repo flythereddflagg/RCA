@@ -45,7 +45,8 @@
 - Grappling hook for climbing (rope + pick axe?)
 - Combining the shovel and the sword sweeps the legs and maybe knocks the enemy down so that they're weak. It's a nice one-two punch
 - Ossifrage walks randomly then charges if it sees you in its line of sight 
-- Larry must collect and use his blacksmith tools to problem solve. Lookup such tools and think about how they can be used
+- Larry must collect and use his blacksmith tools to problem solve. Lookup such tools and think about how they can be used (Hammer, shovel, tongs, bellows, anvil)
+- other possible items (rope, grapple hook, shovel, axe, pick axe)
 - Larry and Holly trade places in each other's worlds and must work together speaking through the cosmic void
 - there is a mirror in the boss room that breaks and pulls them into eachothers world. Need to animate this but I think it would be cool.
 
