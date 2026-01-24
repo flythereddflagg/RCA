@@ -34,16 +34,24 @@ class TextBox(Node):
         self.font_char_w, self.font_height = self.font.size(PRINTABLE_CHARS)
         self.font_char_w /= len(PRINTABLE_CHARS)
         self.add_child(Decal(id="sprite"))
-        # if self.scroll:
-        #     self.scroll_text(
-        #         self.text, speed=self.scroll_speed, box_size=self.box_size
-        #     )
-        # else:
-        #     self.set_text(self.text)
 
 
-    def config(self,): #TODO -1- CONTINUE HERE
-        pass
+    def config(self, **kwargs):
+        keys = vars(self).keys()
+        for key, val in kwargs.items():
+            if key in keys:
+                setattr(self, key, val)
+        
+        if (
+            "font_file" in kwargs.keys()
+            or "font_size" in kwargs.keys()
+            or "font" in kwargs.keys()
+        ):
+            if "font" not in kwargs.keys():
+                self.font = pg.font.Font(self.font_file, self.font_size)
+            self.font_char_w, self.font_height = self.font.size(PRINTABLE_CHARS)
+            self.font_char_w /= len(PRINTABLE_CHARS)
+
 
     def update(self):
         if self.scrolling:

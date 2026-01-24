@@ -7,7 +7,15 @@ nodes:
   image: ./assets/scene/boss_room/boss_room.png
   mask: ./assets/scene/boss_room/boss_room_mask.png
   type: Decal
-- groups:
-  - other
-  id: camera
+- id: camera
   type: Camera
+  groups:
+  - other
+- id: menu
+  type: GenericMenu
+  groups: [hud]
+  start: [300, 200]
+  text: |-
+    asldkf
+    lkjsdf
+    lkjsdf
