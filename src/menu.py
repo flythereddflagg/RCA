@@ -44,7 +44,7 @@ OPTIONS_MENU_DICT = yaml.load(OPTIONS_MENU_INIT, Loader=yaml.Loader)
 
 class Menu(Node):
     def setup(self):
-        self.add_child_node(node_from_dict(self.scene, OPTIONS_MENU_DICT))
+        self.add_child(node_from_dict(self.scene, OPTIONS_MENU_DICT))
         self.open_menu = self.start_menu #alias
         self.font_file = self.init.get("font_file", DEFAULT_FONT_FILE)
         self.font_size = self.init.get("font_size", FONTSIZE)

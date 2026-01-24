@@ -46,11 +46,11 @@ class Node(pg.sprite.Sprite):
         children:list[dict] = init.get("children")
         if children:                
             for child in children:
-                self.add_child_node(child)
+                self.add_child(child)
         self.setup()
 
 
-    def add_child_node(self, child:'Node|dict'):
+    def add_child(self, child:'Node|dict'):
         if isinstance(child, dict):
             child['parent'] = self
             node = node_from_dict(self.scene, child)

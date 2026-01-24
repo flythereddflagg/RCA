@@ -25,7 +25,7 @@ class HitMask(Animation):
         self.init["default_state"] = sibling_init["default_state"]
         super().setup()
         
-        self.sprite = Decal(self.scene, parent=self)
+        self.add_child(Decal(id="sprite"))
 
     def update(self):
         super().update()

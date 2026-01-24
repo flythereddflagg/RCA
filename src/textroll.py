@@ -39,7 +39,7 @@ class TextRoll(Node):
         self.text = self.init.get("text", CREDITS)
         self.scroll_speed = self.init.get("scroll_speed", 20)
         self.font = pg.font.Font(self.font_file, self.font_size)
-        self.sprite = Decal(parent=self)
+        self.add_child(Decal(id="sprite"))
         self.text_surface = None
         self.set_text(self.text)
         self.sprite.rect.midtop = ( 

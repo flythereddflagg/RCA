@@ -33,7 +33,7 @@ class TextBox(Node):
         self.font = pg.font.Font(self.font_file, self.font_size)
         self.font_char_w, self.font_height = self.font.size(PRINTABLE_CHARS)
         self.font_char_w /= len(PRINTABLE_CHARS)
-        self.sprite = Decal(parent=self)
+        self.add_child(Decal(id="sprite"))
         # if self.scroll:
         #     self.scroll_text(
         #         self.text, speed=self.scroll_speed, box_size=self.box_size
@@ -41,6 +41,9 @@ class TextBox(Node):
         # else:
         #     self.set_text(self.text)
 
+
+    def config(self,): #TODO -1- CONTINUE HERE
+        pass
 
     def update(self):
         if self.scrolling:

@@ -21,7 +21,7 @@ class Retry(Node):
         self.font_size = self.init.get("font_size", FONTSIZE)
         self.text = self.init.get("text", MENU_TEXT)
         self.font = pg.font.Font(self.font_file, self.font_size)
-        self.sprite = Decal(parent=self)
+        self.add_child(Decal(id="sprite"))
         self.text_surface = None
         # self.set_text("\n")
         self.selection = []
