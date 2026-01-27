@@ -22,6 +22,7 @@ nodes:
       type: Menu
       font_file: ./assets/fonts/BoldPixels.ttf
       font_size: 22
+      outline: true
       text: |-
         Continue
         New Game

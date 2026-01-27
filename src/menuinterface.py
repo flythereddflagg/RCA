@@ -8,10 +8,9 @@ PLACHOLDER = """
     placeholder
 """
 
-class GenericMenu(Node):
+class MenuInterface(Node):
     def setup(self):
         self.add_child(TextBox(id="textbox"))
-        print(self.init)
         self.textbox.config(**self.init)
         if self.child_by_id("indicator") is None:
             self.add_child(Decal(id="indicator"))
@@ -27,24 +26,26 @@ class GenericMenu(Node):
         self.sprite = self.textbox.sprite
         self.text = self.init.get("text", PLACHOLDER)
         self.textbox.set_text(self.text)
-        self.selection = self.text.split("\n")
+        self.selection = [a.strip() for a in self.text.split("\n")]
         self.n_choices = len(self.selection)
-        self.place_indicator()
-
         self.last_time = 0
 
-    def update(self):
-        time = pg.time.get_ticks()
-        if time - self.last_time > 1000:
-            print("doing it")
-            self.go_down()
-            self.last_time = time
+
+    # def update(self):
+    #     if self.up_pressed():
+    #         self.go_up()
+    #     elif self.down_pressed():
+    #         self.go_down()
+    #     elif self.confirm_pressed():
+    #         self.close_menu()
+    #     self.place_indicator()
+
 
     def close_menu(self):
         self.scene.paused = False
         self.scene.occupied = False
         self.active = False
-        self.textbox.kill()
+        self.kill()
 
 
     def up_pressed(self):
@@ -70,19 +71,15 @@ class GenericMenu(Node):
         self.selected -= 1
         if self.selected < 0:
             self.selected += self.n_choices
-        self.place_indicator()
 
 
     def go_down(self):
-        print(f"going down {self.selected}")
         self.selected += 1
         if self.selected >= self.n_choices:
             self.selected -= self.n_choices
-        self.place_indicator()
 
 
     def place_indicator(self):
-        print("placing indicator")
         step_size = (
             self.textbox.sprite.rect.size[1]
             // self.n_choices
@@ -94,5 +91,3 @@ class GenericMenu(Node):
                 step_size * self.selected + self.v_text_padding
             ])
         )
-        print("indicator at", self.indicator.rect.topright)
-        print("textbox at", self.textbox.sprite.rect.topleft)

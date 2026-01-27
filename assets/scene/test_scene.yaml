@@ -11,11 +11,3 @@ nodes:
   type: Camera
   groups:
   - other
-- id: menu
-  type: GenericMenu
-  groups: [hud]
-  start: [300, 200]
-  text: |-
-    asldkf
-    lkjsdf
-    lkjsdf

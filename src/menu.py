@@ -1,7 +1,8 @@
 import pygame as pg
 import yaml
 
-from .node import Node, node_from_dict
+from .node import node_from_dict
+from .menuinterface import MenuInterface
 from .decal import Decal
 from .tools import vec
 from .optionsmenu import OptionsMenu
@@ -42,19 +43,14 @@ children:
 
 OPTIONS_MENU_DICT = yaml.load(OPTIONS_MENU_INIT, Loader=yaml.Loader)
 
-class Menu(Node):
+class Menu(MenuInterface):
     def setup(self):
+        super().setup()
         self.add_child(node_from_dict(self.scene, OPTIONS_MENU_DICT))
         self.open_menu = self.start_menu #alias
-        self.font_file = self.init.get("font_file", DEFAULT_FONT_FILE)
-        self.font_size = self.init.get("font_size", FONTSIZE)
-        self.menu_text = self.init.get("menu_text", MENU_TEXT)
-        self.textbox = TextBox(**self.init, outline=True)
-        self.sprite = self.textbox.sprite
         self.textbox.set_text("Press Start")
-        self.selection = [a.strip() for a in self.menu_text.strip().split("\n")]
-
-        self.textbox.sprite.image.set_alpha(0)
+        self.textbox.config(**self.init)
+        self.sprite.image.set_alpha(0)
         self.sprite.rect.center = (
             vec([1, 1.75]).elementwise() * self.scene.game.get_center()
         )
@@ -63,11 +59,7 @@ class Menu(Node):
 
         self.callbacks = { 
             text: func for text, func in zip(
-                [
-                    line.strip() 
-                    for line in self.menu_text.split("\n") 
-                    if line.strip()
-                ],
+                self.selection,
                 [self.a_continue, self.a_new_game, self.a_options, self.a_quit]
             )
         }
@@ -152,28 +144,10 @@ class Menu(Node):
             self.go_down()
         elif select_button:
             self.select_option()
+        
+        if self.started:
+            self.place_indicator()
 
-
-    def go_up(self):
-        step_size = self.textbox.sprite.image.get_size()[1] // len(self.selection)
-        self.selected -= 1
-        if self.selected < 0:
-            self.selected += len(self.selection)
-        self.indicator.rect.midright = (
-            self.sprite.rect.topleft + 
-            vec([INDICATOR_X_OFFSET, step_size * self.selected + self.font_size//3 + TEXT_PADDING])
-        )
-
-
-    def go_down(self):
-        step_size = self.textbox.sprite.image.get_size()[1] // len(self.selection)
-        self.selected += 1
-        if self.selected >= len(self.selection):
-            self.selected -= len(self.selection)
-        self.indicator.rect.midright = (
-            self.sprite.rect.topleft + 
-            vec([INDICATOR_X_OFFSET, step_size * self.selected + self.font_size//3 + TEXT_PADDING])
-        )
 
 
     def select_option(self):
@@ -184,7 +158,7 @@ class Menu(Node):
 
     def start_menu(self):
         self.scene.place_node(self, groups=["foreground"])
-        self.textbox.set_text(self.menu_text)
+        self.textbox.set_text(self.text)
         self.sprite.rect.center = (
             self.scene.game.get_center() *  vec([1, 1.5]).elementwise()
         )
@@ -192,9 +166,5 @@ class Menu(Node):
         self.indicator.set_image(pg.image.load(
             "./assets/block/text_select.png"
         ))
-        self.indicator.add(self.scene.hud)
+        self.scene.place_node(self.indicator, groups=["hud"])
         self.selected = 0
-        self.indicator.rect.midright = (
-            self.sprite.rect.topleft + 
-            vec([INDICATOR_X_OFFSET, self.font_size//3 + self.font_size*self.selected + TEXT_PADDING])
-        )

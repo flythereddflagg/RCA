@@ -14,22 +14,25 @@ DEFAULT_FONT_FILE = "./assets/fonts/BoldPixels.ttf"
 TEXT_PADDING = 10
 SCROLL_SPEED = 15
 PRINTABLE_CHARS = string.printable[:-5]
-
+DEFAULTS = {
+    "font_file" : DEFAULT_FONT_FILE,
+    "font_size" : FONTSIZE,
+    "text_color" : WHITE,
+    "outline" : False,
+    "outline_color" : BLACK,
+    "bg_color" : BLANK,
+    "text_padding" : 0,
+    "text" :   "",
+    "box_size" :  None,
+    "scroll_speed" : SCROLL_SPEED,
+}
 
 class TextBox(Node):
     def setup(self):
-        self.font_file = self.init.get("font_file", DEFAULT_FONT_FILE)
-        self.font_size = self.init.get("font_size", FONTSIZE)
-        self.text_color = self.init.get("text_color", WHITE)
-        self.outline = self.init.get("outline", False)
-        self.outline_color = self.init.get("outline_color", BLACK)
-        self.bg_color = self.init.get("bg_color", BLANK)
-        self.text_padding = self.init.get("text_padding", 0)
-        self.text = self.init.get("text", "")
-        self.box_size = self.init.get("box_size")
-        self.scroll_speed = self.init.get("scroll_speed", SCROLL_SPEED)
+        for name, val in DEFAULTS.items():
+            setattr(self, name, self.init.get(name, val))
+        
         self.scrolling = False
-
         self.font = pg.font.Font(self.font_file, self.font_size)
         self.font_char_w, self.font_height = self.font.size(PRINTABLE_CHARS)
         self.font_char_w /= len(PRINTABLE_CHARS)
@@ -37,7 +40,7 @@ class TextBox(Node):
 
 
     def config(self, **kwargs):
-        keys = vars(self).keys()
+        keys = DEFAULTS.keys()
         for key, val in kwargs.items():
             if key in keys:
                 setattr(self, key, val)
