@@ -40,6 +40,7 @@ children:
     hp_max: 9
     groups:
       - paused
+      
   - id: select_menu
     type: SelectMenu
     groups:

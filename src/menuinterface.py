@@ -28,7 +28,6 @@ class MenuInterface(Node):
         self.textbox.set_text(self.text)
         self.selection = [a.strip() for a in self.text.split("\n")]
         self.n_choices = len(self.selection)
-        self.last_time = 0
 
 
     # def update(self):
@@ -38,7 +37,7 @@ class MenuInterface(Node):
     #         self.go_down()
     #     elif self.confirm_pressed():
     #         self.close_menu()
-    #     self.place_indicator()
+
 
     def open_menu(self):
         self.scene.place_node(self.textbox, groups=["hud"])
@@ -79,12 +78,14 @@ class MenuInterface(Node):
         self.selected -= 1
         if self.selected < 0:
             self.selected += self.n_choices
+        self.place_indicator()
 
 
     def go_down(self):
         self.selected += 1
         if self.selected >= self.n_choices:
             self.selected -= self.n_choices
+        self.place_indicator()
 
 
     def place_indicator(self):

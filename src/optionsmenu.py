@@ -59,15 +59,6 @@ class OptionsMenu(MenuInterface):
             self.bindings[self.selected](1)
         elif self.left_pressed():
             self.bindings[self.selected](-1)
-        self.place_indicator()
-        
-        
-    def close_menu(self):
-        self.scene.paused = False
-        self.scene.occupied = False
-        self.active = False
-        self.textbox.sprite.kill()
-        self.textbox.kill()
 
 
     def update_text_display(self):
@@ -77,7 +68,6 @@ class OptionsMenu(MenuInterface):
         ))
 
     def do_music(self, rl_val:int=0):
-        print(f"DO MUSIC CALLED WITH {rl_val}")
         self.scene.game.music_volume += rl_val
         if self.scene.game.music_volume > self.scene.game.max_volume:
             self.scene.game.music_volume = self.scene.game.max_volume
@@ -89,7 +79,6 @@ class OptionsMenu(MenuInterface):
 
 
     def do_sfx(self, rl_val:int=0):
-        print(f"DO MUSIC CALLED WITH {rl_val}")
         self.scene.game.sfx_volume += rl_val
         if self.scene.game.sfx_volume > self.scene.game.max_volume:
             self.scene.game.sfx_volume = self.scene.game.max_volume
@@ -99,10 +88,10 @@ class OptionsMenu(MenuInterface):
         
         self.update_text_display()
 
+
     def do_back(self, rl_val:int=0):
         if rl_val: 
             return
-        self.active = False
         self.close_menu()
         self.parent.open_menu()
 

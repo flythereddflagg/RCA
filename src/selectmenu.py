@@ -13,11 +13,9 @@ class SelectMenu(MenuInterface):
     def setup(self):
         super().setup()
         self.add_child(node_from_dict(self.scene, OPTIONS_MENU_DICT))
-        self.active = False
         self.textbox.set_text(self.text)
         self.textbox.sprite.rect.center = self.scene.game.get_center()
-        self.choices = self.textbox.text.split("\n")
-        self.selected = 0
+        self.place_indicator()
         self.bindings = [
             self.do_continue,
             self.do_options,
@@ -32,11 +30,10 @@ class SelectMenu(MenuInterface):
             return
         elif self.options_menu.active and self.active:
             raise Exception("Two menus active at the same time!")
+        
         select_pressed = self.menu_button_pressed() 
         if select_pressed and not self.scene.occupied:
             self.open_menu()
-            
-        
         elif select_pressed and self.active:
             self.close_menu()
         
@@ -48,13 +45,13 @@ class SelectMenu(MenuInterface):
             elif self.confirm_pressed():
                 self.bindings[self.selected]()
         
-        self.place_indicator()
 
     def open_menu(self):
         self.scene.paused = True
         self.scene.occupied = True
         self.active = True
         super().open_menu()
+
 
     def do_continue(self):
         self.close_menu()
@@ -63,8 +60,7 @@ class SelectMenu(MenuInterface):
     def do_options(self):
         self.options_menu.active = True
         self.active = False
-        self.textbox.sprite.kill()
-        self.textbox.kill()
+        self.kill()
         self.options_menu.open_menu()
 
 

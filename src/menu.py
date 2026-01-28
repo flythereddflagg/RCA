@@ -65,7 +65,6 @@ class Menu(MenuInterface):
     
     
     def a_options(self):
-        print("\n\n\t-- See './assets/init.yaml for settings' --\n\n")
         self.options_menu.active = True
         self.active = False
         self.sprite.kill()
@@ -126,8 +125,6 @@ class Menu(MenuInterface):
         elif select_button:
             self.select_option()
         
-        if self.started:
-            self.place_indicator()
 
 
 
@@ -138,7 +135,7 @@ class Menu(MenuInterface):
     
 
     def start_menu(self):
-        self.scene.place_node(self, groups=["foreground"])
+        self.scene.place_node(self, groups=["hud"])
         self.textbox.set_text(self.text)
         self.sprite.rect.center = (
             self.scene.game.get_center() *  vec([1, 1.5]).elementwise()
@@ -149,3 +146,4 @@ class Menu(MenuInterface):
         ))
         self.scene.place_node(self.indicator, groups=["hud"])
         self.selected = 0
+        self.place_indicator()
