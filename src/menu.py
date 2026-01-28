@@ -5,7 +5,7 @@ from .node import node_from_dict
 from .menuinterface import MenuInterface
 from .decal import Decal
 from .tools import vec
-from .optionsmenu import OptionsMenu
+from .optionsmenu import OptionsMenu, OPTIONS_MENU_DICT
 from .textbox import TextBox
 
 
@@ -25,23 +25,9 @@ MENU_TEXT = """
 DEFAULT_FONT_FILE = "./assets/fonts/BoldPixels.ttf"
 INDICATOR_X_OFFSET = 0
 TEXT_PADDING = 10
-OPTIONS_MENU_INIT = """
-id: options_menu
-type: OptionsMenu
-children:
-- id: textbox
-  type: TextBox
-  font_size: 22
-  text_padding: 3
-  bg_color: [0,0,0,128]
-  outline: true
-  children:
-    - id: indicator
-      type: Decal
-      image: ./assets/block/text_select.png
-"""
 
-OPTIONS_MENU_DICT = yaml.load(OPTIONS_MENU_INIT, Loader=yaml.Loader)
+
+
 
 class Menu(MenuInterface):
     def setup(self):
@@ -84,12 +70,7 @@ class Menu(MenuInterface):
         self.active = False
         self.sprite.kill()
         self.indicator.sprite.kill()
-        self.scene.place_node(self.options_menu.textbox, groups=["hud"])
-        self.scene.place_node(self.options_menu.textbox.indicator, groups=["hud"])
-        self.options_menu.textbox.indicator.sprite.rect.topright = (
-            self.options_menu.textbox.sprite.rect.topleft
-        )
-        self.options_menu.selected = 0
+        self.options_menu.open_menu()
     
 
     def a_quit(self):

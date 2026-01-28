@@ -1,19 +1,22 @@
 import pygame as py
 
-from .node import Node
+from .node import Node, node_from_dict
 from .textbox import TextBox
 from .tools import vec
-from .optionsmenu import OptionsMenu
+from .menuinterface import MenuInterface
+from .optionsmenu import OptionsMenu, OPTIONS_MENU_DICT
 
 INDICATOR_X_OFFSET = 0
 TEXT_PADDING = 11
 
-class SelectMenu(Node):
+class SelectMenu(MenuInterface):
     def setup(self):
+        super().setup()
+        self.add_child(node_from_dict(self.scene, OPTIONS_MENU_DICT))
         self.active = False
-        self.selecttext.set_text(self.selecttext.text)
-        self.selecttext.sprite.rect.center = self.scene.game.get_center()
-        self.choices = self.selecttext.text.split("\n")
+        self.textbox.set_text(self.text)
+        self.textbox.sprite.rect.center = self.scene.game.get_center()
+        self.choices = self.textbox.text.split("\n")
         self.selected = 0
         self.bindings = [
             self.do_continue,
@@ -21,23 +24,6 @@ class SelectMenu(Node):
             self.do_save_quit
         ]
 
-    def open_menu(self):
-        self.scene.paused = True
-        self.scene.occupied = True
-        self.active = True
-        self.scene.place_node(self.selecttext, groups=["hud"])
-        self.scene.place_node(self.selecttext.indicator, groups=["hud"])
-        self.selecttext.indicator.sprite.rect.topright = (
-            self.selecttext.sprite.rect.topleft
-        )
-        self.selected = 0
-
-    def close_menu(self):
-        self.scene.paused = False
-        self.scene.occupied = False
-        self.active = False
-        self.selecttext.sprite.kill()
-        self.selecttext.kill()
 
 
     def update(self):
@@ -61,7 +47,14 @@ class SelectMenu(Node):
                 self.go_down()
             elif self.confirm_pressed():
                 self.bindings[self.selected]()
+        
+        self.place_indicator()
 
+    def open_menu(self):
+        self.scene.paused = True
+        self.scene.occupied = True
+        self.active = True
+        super().open_menu()
 
     def do_continue(self):
         self.close_menu()
@@ -70,63 +63,12 @@ class SelectMenu(Node):
     def do_options(self):
         self.options_menu.active = True
         self.active = False
-        self.selecttext.sprite.kill()
-        self.selecttext.kill()
-        self.scene.place_node(self.options_menu.textbox, groups=["hud"])
-        self.scene.place_node(self.options_menu.textbox.indicator, groups=["hud"])
-        self.options_menu.textbox.indicator.sprite.rect.topright = (
-            self.options_menu.textbox.sprite.rect.topleft
-        )
-        self.options_menu.selected = 0
+        self.textbox.sprite.kill()
+        self.textbox.kill()
+        self.options_menu.open_menu()
+
 
     def do_save_quit(self):
         self.scene.game.save_game()
         self.scene.game.running = False
 
-
-    def up_pressed(self):
-        return "UP" in self.scene.game.input.new_actions()
-    
-    def down_pressed(self):
-        return "DOWN" in self.scene.game.input.new_actions()
-
-    def confirm_pressed(self):
-        new_actions = self.scene.game.input.new_actions()
-        return any([x in new_actions for x in ["BUTTON_S", "START"]])
-    
-    def menu_button_pressed(self):
-        return "SELECT" in self.scene.game.input.new_actions()
-    
-    
-    def go_up(self):
-        step_size = (
-            self.selecttext.sprite.rect.size[1]
-            // len(self.choices)
-        )
-        self.selected -= 1
-        if self.selected < 0:
-            self.selected += len(self.choices)
-        self.selecttext.indicator.rect.midright = (
-            self.selecttext.sprite.rect.topleft 
-            + vec([
-                INDICATOR_X_OFFSET, 
-                step_size * self.selected + TEXT_PADDING
-            ])
-        )
-
-
-    def go_down(self):
-        step_size = (
-            self.selecttext.sprite.rect.size[1]
-            // len(self.choices)
-        )
-        self.selected += 1
-        if self.selected >= len(self.choices):
-            self.selected -= len(self.choices)
-        self.selecttext.indicator.rect.midright = (
-            self.selecttext.sprite.rect.topleft 
-            + vec([
-                INDICATOR_X_OFFSET, 
-                step_size * self.selected + TEXT_PADDING
-            ])
-        )

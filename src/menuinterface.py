@@ -40,6 +40,14 @@ class MenuInterface(Node):
     #         self.close_menu()
     #     self.place_indicator()
 
+    def open_menu(self):
+        self.scene.place_node(self.textbox, groups=["hud"])
+        self.scene.place_node(self.indicator, groups=["hud"])
+        self.indicator.sprite.rect.topright = (
+            self.textbox.sprite.rect.topleft
+        )
+        self.selected = 0
+
 
     def close_menu(self):
         self.scene.paused = False

@@ -1,8 +1,9 @@
 import pygame as pg
-from .node import Node
-from .textbox import TextBox
+import yaml
+
 from .decal import Decal
 from .tools import vec
+from .menuinterface import MenuInterface
 
 
 MENU_TEXT = """
@@ -13,8 +14,24 @@ Back
 INDICATOR_X_OFFSET = 0
 TEXT_PADDING = 11
 
-class OptionsMenu(Node):
+OPTIONS_MENU_INIT = """
+id: options_menu
+type: OptionsMenu
+font_size: 22
+text_padding: 3
+bg_color: [0,0,0,128]
+outline: true
+children:
+- id: indicator
+  type: Decal
+  image: ./assets/block/text_select.png
+"""
+
+OPTIONS_MENU_DICT = yaml.load(OPTIONS_MENU_INIT, Loader=yaml.Loader)
+
+class OptionsMenu(MenuInterface):
     def setup(self):
+        super().setup()
         self.update_text_display()
         self.textbox.sprite.rect.center = self.scene.game.get_center()
         self.n_choices = len(MENU_TEXT.split("\n"))
@@ -42,6 +59,7 @@ class OptionsMenu(Node):
             self.bindings[self.selected](1)
         elif self.left_pressed():
             self.bindings[self.selected](-1)
+        self.place_indicator()
         
         
     def close_menu(self):
@@ -87,56 +105,5 @@ class OptionsMenu(Node):
         self.active = False
         self.close_menu()
         self.parent.open_menu()
-        
-
-    def up_pressed(self):
-        return "UP" in self.scene.game.input.new_actions()
-    
-    def down_pressed(self):
-        return "DOWN" in self.scene.game.input.new_actions()
-
-    def confirm_pressed(self):
-        new_actions = self.scene.game.input.new_actions()
-        return any([x in new_actions for x in ["BUTTON_S", "START"]])
-    
-    def menu_button_pressed(self):
-        return "SELECT" in self.scene.game.input.new_actions()
-
-    def right_pressed(self):
-        return "RIGHT" in self.scene.game.input.new_actions()
-
-    def left_pressed(self):
-        return "LEFT" in self.scene.game.input.new_actions()
-    
-    def go_up(self):
-        step_size = (
-            self.textbox.sprite.rect.size[1]
-            // self.n_choices
-        )
-        self.selected -= 1
-        if self.selected < 0:
-            self.selected += self.n_choices
-        self.textbox.indicator.rect.midright = (
-            self.textbox.sprite.rect.topleft 
-            + vec([
-                INDICATOR_X_OFFSET, 
-                step_size * self.selected + TEXT_PADDING
-            ])
-        )
 
 
-    def go_down(self):
-        step_size = (
-            self.textbox.sprite.rect.size[1]
-            // self.n_choices
-        )
-        self.selected += 1
-        if self.selected >= self.n_choices:
-            self.selected -= self.n_choices
-        self.textbox.indicator.rect.midright = (
-            self.textbox.sprite.rect.topleft 
-            + vec([
-                INDICATOR_X_OFFSET, 
-                step_size * self.selected + TEXT_PADDING
-            ])
-        )
