@@ -64,7 +64,7 @@ class SelectMenu(MenuInterface):
 
     def do_options(self):
         self.active = False
-        self.close_menu()
+        super().close_menu()
         self.options_menu.open_menu()
 
 
