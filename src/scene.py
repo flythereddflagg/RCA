@@ -90,6 +90,7 @@ class Scene():
             )
         sprite_instance:'.decal.Decal' = node.sprite
 
+        # groups ONLY get applied to the sprite UNLESS there is no sprite
         if sprite_instance is None: 
             if groups:
                 for group in groups:

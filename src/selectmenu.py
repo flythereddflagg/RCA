@@ -23,7 +23,6 @@ class SelectMenu(MenuInterface):
         ]
 
 
-
     def update(self):
         if self.options_menu.active and not self.active:
             self.options_menu.update()
@@ -53,14 +52,19 @@ class SelectMenu(MenuInterface):
         super().open_menu()
 
 
+    def close_menu(self):
+        self.scene.paused = False
+        self.scene.occupied = False
+        super().close_menu()
+
+
     def do_continue(self):
         self.close_menu()
          
 
     def do_options(self):
-        self.options_menu.active = True
         self.active = False
-        self.kill()
+        self.close_menu()
         self.options_menu.open_menu()
 
 

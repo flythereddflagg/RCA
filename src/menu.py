@@ -33,11 +33,10 @@ class Menu(MenuInterface):
     def setup(self):
         super().setup()
         self.add_child(node_from_dict(self.scene, OPTIONS_MENU_DICT))
-        self.open_menu = self.start_menu #alias
         self.textbox.set_text("Press Start")
         self.textbox.config(**self.init)
-        self.sprite.image.set_alpha(0)
-        self.sprite.rect.center = (
+        self.textbox.sprite.image.set_alpha(0)
+        self.textbox.sprite.rect.center = (
             vec([1, 1.75]).elementwise() * self.scene.game.get_center()
         )
         self.added = False
@@ -65,10 +64,7 @@ class Menu(MenuInterface):
     
     
     def a_options(self):
-        self.options_menu.active = True
-        self.active = False
-        self.sprite.kill()
-        self.indicator.sprite.kill()
+        self.close_menu()
         self.options_menu.open_menu()
     
 
@@ -87,7 +83,7 @@ class Menu(MenuInterface):
     
     
     def fade_in_text(self):
-        self.sprite.add(self.scene.hud)
+        self.textbox.sprite.add(self.scene.hud)
         if self.textbox.sprite.image.get_alpha() >= 255:
             self.added = True
             return
@@ -113,7 +109,7 @@ class Menu(MenuInterface):
             select_button
         ):
             self.started = True
-            self.start_menu()
+            self.open_menu()
             return
 
         if not self.started: return
@@ -134,16 +130,14 @@ class Menu(MenuInterface):
 
     
 
-    def start_menu(self):
-        self.scene.place_node(self, groups=["hud"])
+    def open_menu(self):
         self.textbox.set_text(self.text)
-        self.sprite.rect.center = (
+        self.textbox.sprite.rect.center = (
             self.scene.game.get_center() *  vec([1, 1.5]).elementwise()
         )
         self.indicator = Decal(parent=self) 
         self.indicator.set_image(pg.image.load(
             "./assets/block/text_select.png"
         ))
-        self.scene.place_node(self.indicator, groups=["hud"])
-        self.selected = 0
+        super().open_menu()
         self.place_indicator()

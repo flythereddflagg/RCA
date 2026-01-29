@@ -17,17 +17,15 @@ class MenuInterface(Node):
             self.indicator.set_image(self.textbox.font.render(
                 "-->", True, self.textbox.text_color, None 
             ))
-        for group in self.init.get("groups", []):
-            self.scene.groups[group].add(self.indicator)
         self.indicator_x_offset = self.init.get("indicator_x_offset", 0)
         self.v_text_padding = self.init.get("v_text_padding", 0)
         self.active = False
-        self.selected = 0
-        self.sprite = self.textbox.sprite
         self.text = self.init.get("text", PLACHOLDER)
         self.textbox.set_text(self.text)
         self.selection = [a.strip() for a in self.text.split("\n")]
         self.n_choices = len(self.selection)
+        self.selected = 0
+        
 
 
     # def update(self):
@@ -40,6 +38,7 @@ class MenuInterface(Node):
 
 
     def open_menu(self):
+        self.active = True
         self.scene.place_node(self.textbox, groups=["hud"])
         self.scene.place_node(self.indicator, groups=["hud"])
         self.indicator.sprite.rect.topright = (
@@ -49,10 +48,9 @@ class MenuInterface(Node):
 
 
     def close_menu(self):
-        self.scene.paused = False
-        self.scene.occupied = False
         self.active = False
-        self.kill()
+        self.textbox.kill()
+        self.indicator.kill()
 
 
     def up_pressed(self):
