@@ -7,6 +7,7 @@ from .tools import vec
 PLACHOLDER = """
     placeholder
 """
+FONTSIZE_FRACTION = 1 / 6
 
 class MenuInterface(Node):
     def setup(self):
@@ -18,7 +19,7 @@ class MenuInterface(Node):
                 "-->", True, self.textbox.text_color, None 
             ))
         self.indicator_x_offset = self.init.get("indicator_x_offset", 0)
-        self.v_text_padding = self.init.get("v_text_padding", 0)
+        self.indicator_y_offset = self.init.get("indicator_y_offset", 0)
         self.active = False
         self.text = self.init.get("text", PLACHOLDER)
         self.textbox.set_text(self.text)
@@ -41,10 +42,8 @@ class MenuInterface(Node):
         self.active = True
         self.scene.place_node(self.textbox, groups=["hud"])
         self.scene.place_node(self.indicator, groups=["hud"])
-        self.indicator.sprite.rect.topright = (
-            self.textbox.sprite.rect.topleft
-        )
         self.selected = 0
+        self.place_indicator()
 
 
     def close_menu(self):
@@ -95,6 +94,9 @@ class MenuInterface(Node):
             self.textbox.sprite.rect.topleft
             + vec([
                 self.indicator_x_offset, 
-                step_size * self.selected + self.v_text_padding
+                step_size * self.selected 
+                    + self.indicator_y_offset 
+                    + int(self.textbox.font_height * FONTSIZE_FRACTION)
+                    + self.textbox.text_padding
             ])
         )
