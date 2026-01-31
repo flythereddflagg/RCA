@@ -20,9 +20,9 @@ nodes:
           repeat: true
     - id: menu
       type: Menu
-      font_file: ./assets/fonts/BoldPixels.ttf
-      font_size: 22
       outline: true
+      text_padding: 3
+      bg_color: [0, 0, 0, 128]
       text: |-
         Continue
         New Game

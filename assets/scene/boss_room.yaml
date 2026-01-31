@@ -64,3 +64,12 @@ nodes:
   id: dark overlay
   image: ./assets/scene/boss_room/boss_room_overlay.png
   type: Decal
+- id: boss_theme
+  type: Music
+  filename: ./assets/music/boss_theme_filled.mp3
+  groups: [paused]
+  measure_time: 1
+  sequence:
+    # after 28 measures have played goto measure 30
+    - [0, goto, 23.8]
+    - [83.4, goto, 23.8]
