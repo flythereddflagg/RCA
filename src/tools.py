@@ -85,9 +85,9 @@ def vec(v_input:list|tuple|pg.math.Vector2):
 
 
 def class_from_str(class_name:str)->"python class":
-    
+    # this is the module naming convention for this code
     module_name = "." + class_name.lower()
-    # reload the code if it has been updated
+    # recompile and reimport code if it already has been imported
     if (BASE_PACKAGE+module_name) in sys.modules:
         module = importlib.import_module(module_name, package=BASE_PACKAGE)
         module = importlib.reload(module)
