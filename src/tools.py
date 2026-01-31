@@ -1,3 +1,4 @@
+import sys
 import importlib
 import json
 
@@ -5,6 +6,8 @@ import yaml
 import pygame as pg
 
 from .dict_obj import DictObj
+
+BASE_PACKAGE = "src"
 
 
 def load_yaml(yaml_path) -> DictObj:
@@ -82,8 +85,14 @@ def vec(v_input:list|tuple|pg.math.Vector2):
 
 
 def class_from_str(class_name:str)->"python class":
+    
     module_name = "." + class_name.lower()
-    module = importlib.import_module(module_name, package='src')
+    # reload the code if it has been updated
+    if (BASE_PACKAGE+module_name) in sys.modules:
+        module = importlib.import_module(module_name, package=BASE_PACKAGE)
+        module = importlib.reload(module)
+    else:
+        module = importlib.import_module(module_name, package=BASE_PACKAGE)
     # get the class, will raise AttributeError if class cannot be found
     class_ref = getattr(module, class_name)
     return class_ref

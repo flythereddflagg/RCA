@@ -128,7 +128,6 @@ class Scene():
         Reset the scene by reloading from the yaml but keep the
         player's postion
         """
-        # TODO -5- make code reaload with importlib.reload(packagename)
         player_sprite = self.get_player()
         if player_sprite:
             player = player_sprite.sprite.parent
