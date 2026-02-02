@@ -48,13 +48,8 @@
 - Larry must collect and use his blacksmith tools to problem solve. Lookup such tools and think about how they can be used (Hammer, shovel, tongs, bellows, anvil)
 - other possible items (rope, grapple hook, shovel, axe, pick axe)
 - Larry and Holly trade places in each other's worlds and must work together speaking through the cosmic void
-- there is a mirror in the boss room that breaks and pulls them into eachothers world. Need to animate this but I think it would be cool.
-
-
-
-
-## Ideas for game
-
+- there is a mirror in the boss room that breaks and pulls them into each others world. Need to animate this but I think it would be cool.
+- NPCs react to Holly different from Larry. She is more caring or whatever.
 - Use probably don't know as a forest theme
 - Use backpack on your back as an indoor theme
 - Find a way to parse and make it so one character has one large sprite sheet.
