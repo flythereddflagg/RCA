@@ -128,19 +128,26 @@ class Scene():
         Reset the scene by reloading from the yaml but keep the
         player's postion
         """
-        player_sprite = self.get_player()
-        if player_sprite:
-            player = player_sprite.sprite.parent
-            current_player_position = list(
-                vec(player.sprite.rect.topleft) - 
-                vec(self.background.sprites()[0].rect.topleft)
-            )
-            player.init["start"] = current_player_position
-            add_in = [player.init]
-        else:
-            add_in = []
-        self.game.saved_scenes.pop(self.id, None)
-        self.game.load_scene(yaml_path=self.id, add_in=add_in)
+        try:
+            player_sprite = self.get_player()
+            if player_sprite:
+                player = player_sprite.sprite.parent
+                current_player_position = list(
+                    vec(player.sprite.rect.topleft) - 
+                    vec(self.background.sprites()[0].rect.topleft)
+                )
+                player.init["start"] = current_player_position
+                add_in = [player.init]
+            else:
+                add_in = []
+            self.game.saved_scenes.pop(self.id, None)
+            self.game.load_scene(yaml_path=self.id, add_in=add_in)
+        except Exception as e:
+            print("\n\n-- ON REFRESH: EXCEPTION OCCURED -- \n\n")
+            print(type(e), e)
+            print("\n\n-- DROPPING INTO DEBUG MODE -- \n--'c' to retry -- \n\n")
+            breakpoint()
+            self.refresh()
 
 
     def deconstruct(self, save_scene=True):

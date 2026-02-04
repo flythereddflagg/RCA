@@ -160,6 +160,9 @@ class Engine():
     def run(self):
         self.running = True
 
+        if self.settings.DEBUG:
+            return self.run_debug()
+
         while self.running:
             self.input.update()
             self.logic()
@@ -170,6 +173,24 @@ class Engine():
                 self.clock.tick(self.settings.FPS)
             )
 
+
+    def run_debug(self):
+        while self.running:
+            try:
+                self.input.update()
+                self.logic()
+                self.draw_frame()
+                self.dt = (
+                    self.clock.tick() 
+                    if self.settings.FPS < -1 else 
+                    self.clock.tick(self.settings.FPS)
+                )
+            except Exception as e:
+                print("\n\n-- WHILE RUNNING: EXCEPTION OCCURED -- \n\n")
+                print(type(e), e)
+                print("\n\n-- DROPPING INTO DEBUG MODE -- \n--'c' to retry -- \n\n")
+                breakpoint()
+                self.scene.refresh()
 
     def logic(self):
         # run all game logic here
