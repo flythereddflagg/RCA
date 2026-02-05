@@ -144,6 +144,7 @@ class Scene():
             self.game.load_scene(yaml_path=self.id, add_in=add_in)
         except Exception as e:
             print("\n\n-- ON REFRESH: EXCEPTION OCCURED -- \n\n")
+            print(traceback.format_exc())
             print(type(e), e)
             print("\n\n-- DROPPING INTO DEBUG MODE -- \n--'c' to retry -- \n\n")
             breakpoint()

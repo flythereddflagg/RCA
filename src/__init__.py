@@ -7,7 +7,7 @@ the game running.
 import os
 import random
 import pathlib
-import pprint
+import traceback
 
 import pygame as pg
 
@@ -187,6 +187,7 @@ class Engine():
                 )
             except Exception as e:
                 print("\n\n-- WHILE RUNNING: EXCEPTION OCCURED -- \n\n")
+                print(traceback.format_exc())
                 print(type(e), e)
                 print("\n\n-- DROPPING INTO DEBUG MODE -- \n--'c' to retry -- \n\n")
                 breakpoint()
