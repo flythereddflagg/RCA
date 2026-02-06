@@ -41,14 +41,15 @@ class Movement():
         if distance < 0:
             direction = Compass.opposite(direction)
             distance *= -1
-
-        # TODO -5- figure out how to do high FPS?
-        if distance < BUFFER_LIMIT:
-            self.dist_buffer[i_dir] += distance % 1
-            distance += math.floor(self.dist_buffer[i_dir])
-            self.dist_buffer[i_dir] -= math.floor(self.dist_buffer[i_dir])
-
+        print(distance, end=" -> ")
+        # TODO CONTINUE HERE Need to cancel opposite directions
         i_distance:int = int(distance)
+        buff_dist = distance % 1
+        self.dist_buffer[i_dir] += buff_dist
+        i_distance += int(self.dist_buffer[i_dir])
+        self.dist_buffer[i_dir] -= int(self.dist_buffer[i_dir])
+        
+        print(i_distance)
         
         xunit, yunit = Compass.vector(direction)
         addx, addy = i_distance * xunit, i_distance * yunit

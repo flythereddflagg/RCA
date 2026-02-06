@@ -23,8 +23,12 @@ class Compass():
     @staticmethod
     def index(direction:int|str|tuple|pg.math.Vector2)->int:
         """returns the closest direction index of the direction"""
-        if isinstance(direction, int) and 0 <= direction < N_DIRECTIONS:
+        if isinstance(direction, int):
+            direction %= 4
+            if direction < 0:
+                direction += 4
             return direction
+            
         if any(map(lambda x: isinstance(direction, x), [str, tuple])):
             return Compass.i_map.get(direction)
         
