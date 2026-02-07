@@ -31,6 +31,7 @@ class MeatBall(Node):
             return
         else:
             self.move(self.cur_action, speed=25)
-            self.move(self.cur_action+random.choice([-1,1]), speed=25)
+            # self.move(self.cur_action+random.choice([-1,1]), speed=25)
+            self.move(self.cur_action+1, speed=25)
 
 

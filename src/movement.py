@@ -41,11 +41,15 @@ class Movement():
         if distance < 0:
             direction = Compass.opposite(direction)
             distance *= -1
-        print(distance, end=" -> ")
+        print(i_dir, distance, end=" -> ")
         # TODO CONTINUE HERE Need to cancel opposite directions
         i_distance:int = int(distance)
         buff_dist = distance % 1
         self.dist_buffer[i_dir] += buff_dist
+        # correct for buffer in the opposite direction
+        self.dist_buffer[i_dir] -= self.dist_buffer[i_dir-2]
+        self.dist_buffer[i_dir-2] = 0
+        
         i_distance += int(self.dist_buffer[i_dir])
         self.dist_buffer[i_dir] -= int(self.dist_buffer[i_dir])
         
