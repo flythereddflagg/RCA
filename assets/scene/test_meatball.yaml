@@ -32,6 +32,12 @@ nodes:
         wiggle:
           repeat: true
         throw:
-          repeat: False
+          repeat: 
+    
+    - id: hitmask
+      type: HitMask
+      sibling: animation
+      kind: mask
+      datafile: base_mask.json
 
   

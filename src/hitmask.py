@@ -46,6 +46,3 @@ class HitMask(Animation):
         self.frame_time = current.duration
         self.last_set_frame_time = pg.time.get_ticks()
     
-    def kill(self):
-        self.sprite.kill()
-        super().kill()

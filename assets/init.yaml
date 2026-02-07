@@ -5,8 +5,8 @@ SHOW_EVENTS: false # print input events in terminal
 FPS_COUNTER: true # show FPS on game screen
 
 DEBUG: true # debug mode? (Shows rect frames and positions)
-SHOW_MASK: false # in debug mode, shows hit masks of every entity
-SHOW_BG_MASK: false # in debug mode, show mask then show bg mask too
+SHOW_MASK: true # in debug mode, shows hit masks of every entity
+SHOW_BG_MASK: true # in debug mode, show mask then show bg mask too
 LOG_INPUT: false # for recreating bugs (See input.py)
 MUSIC: true # in debug mode, MUSIC = False silences all music.
 
@@ -40,8 +40,8 @@ new_game_add_in:
 # initial_scene: ./assets/scene/boss_room.yaml
 # initial_scene: ./assets/scene/test_scene.yaml
 # initial_scene: ./assets/scene/red_castle_valley.yaml
-initial_scene: ./assets/scene/startup.yaml
-# initial_scene: ./assets/scene/test_meatball.yaml
+# initial_scene: ./assets/scene/startup.yaml
+initial_scene: ./assets/scene/test_meatball.yaml
 
 # key bindings for keyboard input
 key_bind:
