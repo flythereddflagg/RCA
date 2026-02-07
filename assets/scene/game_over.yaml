@@ -26,9 +26,9 @@ nodes:
     groups:
     - foreground
 
-# - id: game over music
-#   type: Music
-#   filename: ./assets/music/RCA_OVERWORLD/RCA_OVERWORLD_v2.mp3
+- id: game over music
+  type: Music
+  filename: ./assets/music/RCA_OVERWORLD/RCA_game_over.mp3
   
   
 
