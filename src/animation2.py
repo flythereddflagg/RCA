@@ -45,8 +45,7 @@ class Animation2(Node):
         self.frame_index = 0 # index of the current frame
         self.frame_time = 1 # duration of the current frame
         self.path_prefix = self.init.get('path_prefix', "./") 
-        self.animation = {}
-        self.load_animation(self.init_animation)
+        self.load_animation()
         
 
     def load_animation(self, animation) -> None:
