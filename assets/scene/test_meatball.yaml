@@ -18,21 +18,10 @@ nodes:
     - id: sprite
       type: Decal
     - id: animation
-      type: Animation
+      type: Animation2
       path_prefix: ./assets/actor/meat_ball/
       datafile: base.json
       default_state: wiggle
-      animation:
-        stage1:
-          repeat: True
-        Stage2:
-          repeat: True
-        transition:
-          repeat: False
-        wiggle:
-          repeat: true
-        throw:
-          repeat: 
     
     - id: hitmask
       type: HitMask
