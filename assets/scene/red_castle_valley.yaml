@@ -156,7 +156,7 @@ nodes: # all children are nodes
 
   - id: soft_dirt
     type: SoftDirt
-    image: ./assets/block/soft_dirt.png
+    image: ./assets/block/soft_dirt2.png
     mask: ./assets/block/soft_dirt_mask.png
     start: [221,624]
     scale: 1
