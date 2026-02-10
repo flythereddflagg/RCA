@@ -25,7 +25,6 @@ class Frame:
 @dataclass
 class Reel:
     name:str
-    datafile:str
     frames:list[Frame]
     meta:dict
     repeat:bool
@@ -36,6 +35,7 @@ class Animation2(Node):
     A system for setting the parent sprite object's image.
     """
     def setup(self):
+        self.require_attr("datafile")
         self.previous:str = None
         self.last_state:str = None
         self.last_direction:int = Compass.DOWN 
@@ -48,27 +48,32 @@ class Animation2(Node):
         self.load_animation()
         
 
-    def load_animation(self, animation) -> None:
+    def load_animation(self) -> None:
         self.animation = {}
-        for state, data in animation.items():
-            datafile = data.get('datafile', self.init.get("datafile"))
-            if not datafile:
-                self.animation[state] = s
-            json_data = load_json(self.path_prefix + datafile)
+        filename = self.init["datafile"]
+        json_data = load_json(self.path_prefix + filename)
+        meta = json_data['meta']
+        frames = json_data["frames"]
+        master_image = pg.image.load(
+            self.path_prefix + meta['image']
+        ).convert_alpha()
+        for frametag in meta["frameTags"]:
+            state = frametag['name']
+            # repeat gets stored as string when you specify it
+            # so if you see repeat is a string we will assume
+            # it does not repeat
+            repeat = frametag.get("repeat", True)
+            if isinstance(repeat, str):
+                repeat = False
             self.animation[state] = Reel(
-                state, datafile, list(), json_data['meta'], data['repeat']
+                name=state,
+                frames=list(),
+                meta=frametag,
+                repeat=repeat
             )
-            master_image = pg.image.load(
-                self.path_prefix + self.animation[state].meta['image']
-            ).convert_alpha()
+        print(self.animation)
 
-            for name, frame in json_data['frames'].items():
-                frame["name"] = name
-                frame["image"] = master_image.subsurface(
-                    list(frame['frame'].values())
-                )
-                frame["mask"] = pg.mask.from_surface(frame["image"])
-                self.animation[state].frames.append(Frame(**frame))
+        raise Exception("false start")
 
 
     def update(self) -> None:
