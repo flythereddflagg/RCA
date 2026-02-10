@@ -41,8 +41,7 @@ class Movement():
         if distance < 0:
             direction = Compass.opposite(direction)
             distance *= -1
-        print(i_dir, distance, end=" -> ")
-        # TODO CONTINUE HERE Need to cancel opposite directions
+            
         i_distance:int = int(distance)
         buff_dist = distance % 1
         self.dist_buffer[i_dir] += buff_dist
@@ -53,8 +52,7 @@ class Movement():
         i_distance += int(self.dist_buffer[i_dir])
         self.dist_buffer[i_dir] -= int(self.dist_buffer[i_dir])
         
-        print(i_distance)
-        
+
         xunit, yunit = Compass.vector(direction)
         addx, addy = i_distance * xunit, i_distance * yunit
         self.sprite.rect.move_ip(addx, addy)
