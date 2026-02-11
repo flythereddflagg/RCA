@@ -25,7 +25,7 @@ class Frame:
 @dataclass
 class Reel:
     name:str
-    frames:list[Frame]
+    frames:list[int]
     meta:dict
     repeat:bool
 
@@ -67,12 +67,19 @@ class Animation2(Node):
                 repeat = False
             self.animation[state] = Reel(
                 name=state,
-                frames=list(),
+                frames=[frametag["from"], frametag["to"]],
                 meta=frametag,
                 repeat=repeat
             )
-        print(self.animation)
-
+        self.all_frames = []
+        for name, frame in frames.items():
+                frame["name"] = name
+                frame["image"] = master_image.subsurface(
+                    list(frame['frame'].values())
+                )
+                frame["mask"] = pg.mask.from_surface(frame["image"])
+                self.all_frames.append(Frame(**frame))
+        print(self.all_frames)
         raise Exception("false start")
 
 
