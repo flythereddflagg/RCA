@@ -17,7 +17,7 @@ class MeatBall(Node):
         #     ]
         #     [0]["animation"].keys()
         # )
-        self.move = Movement(self.sprite)
+        self.move = Movement(self.sprite, hitmask_sprite = self.hitmask.sprite)
         self.state = "stage1"
         self.cur_action = 4
     
@@ -30,8 +30,9 @@ class MeatBall(Node):
         if self.cur_action == 4:
             return
         else:
-            self.move(self.cur_action, speed=25)
+            # self.move(self.cur_action, speed=25)
             # self.move(self.cur_action+random.choice([-1,1]), speed=25)
-            self.move(self.cur_action+1, speed=25)
+            # self.move(self.cur_action+1, speed=25)
+            self.move(3, speed=25)
 
 

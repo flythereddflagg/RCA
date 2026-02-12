@@ -13,8 +13,9 @@ class Movement():
     independently of the camera. Also can be animated.
     """
 
-    def __init__(self, sprite, **init):
+    def __init__(self, sprite, hitmask_sprite=None, **init):
         self.sprite = sprite
+        self.hitmask_sprite = hitmask_sprite
         self.direction = Compass.DOWN
         self.dist_buffer:list[float] = [0.0 for _ in Compass.indicies]
 
@@ -56,6 +57,8 @@ class Movement():
         xunit, yunit = Compass.vector(direction)
         addx, addy = i_distance * xunit, i_distance * yunit
         self.sprite.rect.move_ip(addx, addy)
+        if self.hitmask_sprite:
+            self.hitmask_sprite.rect.move_ip(addx, addy)
         
         if reject_foreground: self.foreground_rejection(xunit, yunit)
 
@@ -65,6 +68,13 @@ class Movement():
         if 'solid' not in self.sprite.scene.groups.keys(): return
         if 0 < abs(xunit) < 1: xunit = int(xunit / abs(xunit))
         if 0 < abs(yunit) < 1: yunit = int(yunit / abs(yunit))
-        while list_collided(self.sprite, self.sprite.scene.groups['solid']):
+        hitsprite = (
+            self.sprite 
+            if self.hitmask_sprite is None else 
+            self.hitmask_sprite
+        )
+        while list_collided(hitsprite, self.sprite.scene.groups['solid']):
             self.sprite.rect.move_ip(-xunit, -yunit) # move back 1
+            if self.hitmask_sprite:
+                self.sprite.rect.move_ip(-xunit, -yunit)
 

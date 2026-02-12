@@ -67,7 +67,7 @@ class Animation2(Node):
                 repeat = False
             self.animation[state] = Reel(
                 name=state,
-                frames=[frametag["from"], frametag["to"]],
+                frames=[frametag["from"], frametag["to"] + 1],
                 meta=frametag,
                 repeat=repeat
             )
@@ -79,8 +79,6 @@ class Animation2(Node):
                 )
                 frame["mask"] = pg.mask.from_surface(frame["image"])
                 self.all_frames.append(Frame(**frame))
-        print(self.all_frames)
-        raise Exception("false start")
 
 
     def update(self) -> None:
@@ -128,30 +126,9 @@ class Animation2(Node):
         will produce the indices in the reel to run
         from direction and state data"""
         state:str = self.parent.state
-        direction:int = (
-            self.parent.move.direction 
-            if hasattr(self.parent, "move") else
-            0
-        )
         current:Reel = self.animation[state]
-        frame_tags:list[dict] = current.meta['frameTags']
-        if hasattr(self.parent, "move"):
-            l_tag = [
-                d_tag 
-                for d_tag in range(len(frame_tags)) 
-                if Compass.index(frame_tags[d_tag]['name'].upper()) == direction
-            ]
-        else:
-            l_tag = [
-                d_tag 
-                for d_tag in range(len(frame_tags)) 
-                if frame_tags[d_tag]['name'] == state
-            ]
         
-        i_tag:int = 0 if not l_tag else l_tag[0]
-
-        meta_dict = frame_tags[i_tag]
-        counter = range(meta_dict['from'], meta_dict['to'] + 1)
+        counter = range(*current.frames)
         self.frame_counter = (
             itertools.cycle(counter) 
             if current.repeat
@@ -166,7 +143,7 @@ class Animation2(Node):
         set the image from the current state and direction and frame index
         """
         current:Frame = (
-            self.animation[self.parent.state].frames[self.frame_index]
+            self.all_frames[self.frame_index]
         )
         self.parent.sprite.set_image(current.image)
         self.frame_time = current.duration
@@ -174,42 +151,10 @@ class Animation2(Node):
 
 
     def get_blank_reel(self, state:str) -> Reel:
-        meta:dict = {
-            "app": "",
-            "version": "",
-            "image": "",
-            "format": "",
-            "size": { "w": 32, "h": 32 },
-            "scale": "1",
-            "frameTags": [
-                { "name": "left", "from": 0, "to": 0, 
-                    "direction": "forward", "color": "#000000ff" },
-                { "name": "down", "from": 0, "to": 0, 
-                    "direction": "forward", "color": "#000000ff" },
-                { "name": "up", "from": 0, "to": 0, 
-                    "direction": "forward", "color": "#000000ff" },
-                { "name": "right", "from": 0, "to": 0, 
-                    "direction": "forward", "color": "#000000ff" }
-            ],
-            "layers": [
-                { "name": "hitbox", "opacity": 255, "blendMode": "normal" }
-            ],
-            "slices": []
-        }
-        blank_frame:Frame = Frame(
-                    name = "only",
-                    image = pg.surface.Surface(
-                        (32, 32), flags=pg.SRCALPHA
-                    ),
-                    mask = pg.mask.Mask(size=(32, 32), fill=False),
-                    frame = {},
-                    rotated = False,
-                    trimmed = False,
-                    spriteSourceSize = { 
-                        "x": 0, "y": 0, "w": 32, "h": 32 
-                    },
-                    sourceSize = { "w": 32, "h": 32 },
-                    duration = 100
-                )
-        return Reel(state, "", [blank_frame], meta, True)
+        return Reel(
+            name=state,
+            frames=[0],
+            meta=dict(),
+            repeat=True
+        )
 

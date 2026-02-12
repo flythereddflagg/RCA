@@ -24,7 +24,7 @@ nodes:
       default_state: wiggle
     
     - id: hitmask
-      type: HitMask
+      type: HitMask2
       sibling: animation
       kind: mask
       datafile: base_mask.json
