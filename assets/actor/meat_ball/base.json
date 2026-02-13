@@ -839,7 +839,6 @@
    { "name": "throw", "from": 74, "to": 102, "direction": "forward", "repeat": "1", "color": "#000000ff" }
   ],
   "layers": [
-   { "name": "mask", "opacity": 255, "blendMode": "normal" },
    { "name": "bottom meatball", "opacity": 255, "blendMode": "normal" },
    { "name": "bottom branch", "opacity": 255, "blendMode": "normal" },
    { "name": "top branch", "opacity": 255, "blendMode": "normal" },
