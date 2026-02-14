@@ -1,0 +1,16 @@
+id: meatball
+type: MeatBall
+children:
+  - id: sprite
+    type: Decal
+  - id: animation
+    type: Animation2
+    path_prefix: ./assets/actor/meat_ball/
+    datafile: base.json
+    default_state: wiggle
+  
+  - id: hitmask
+    type: HitMask2
+    sibling: animation
+    kind: mask
+    datafile: base_mask.json

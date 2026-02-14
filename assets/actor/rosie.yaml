@@ -1,0 +1,50 @@
+id: Rosie
+type: Rosie
+key_id: jar of pickles
+image: ./assets/actor/rosie/rosie_ref.png
+mask: ./assets/block/block.png
+scale: 1
+children:
+  - id: talking_head
+    type: Decal
+    scale: 1.5
+    children:
+      - id: animation
+        type: Animation
+        path_prefix: "./assets/actor/rosie/"
+        datafile: face.json
+        default_state: Silent
+        animation:
+          Silent:
+            repeat: True
+          Resting:
+            repeat: True
+          Talking:
+            repeat: True
+  - id: textbox
+    type: TextBox
+    font_size: 22
+    text_padding: 3
+    bg_color: [0,0,0,128]
+    scroll_speed: 20
+    box_size: [390,96]
+    start: [200, 250]
+    outline: true
+    text: |-
+      I don't have any clean Tupperware!
+      ...Now, please, take a bite so I can watch you enjoy! 
+      That's my favorite part!
+  - id: cue_text
+    type: TextBox
+    font_size: 22
+    text_padding: 3
+    bg_color: [0,0,0,0]
+    # scroll_speed: 20
+    # box_size: [390,96]
+    # start: [200, 250]
+    outline: true
+    text: |-
+      Talk to Rosie
+  - id: button_cue
+    type: Decal
+    image: ./assets/block/glyph_B.png
