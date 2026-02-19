@@ -31,7 +31,7 @@ nodes: # all children are nodes
      - foreground
 
   - yaml: ./assets/actor/rosie.yaml
-    start: [888,91]
+    start: [870,91]
     groups: [foreground, solid, paused]
   
   # - id: jar of pickles

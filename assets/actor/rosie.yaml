@@ -1,8 +1,8 @@
 id: Rosie
 type: Rosie
 key_id: jar of pickles
-image: ./assets/actor/rosie/rosie_ref.png
-mask: ./assets/block/block.png
+image: ./assets/actor/rosie/rosie_cart.png
+mask: ./assets/actor/rosie/rosie_cart_mask.png
 scale: 1
 children:
   - id: talking_head
