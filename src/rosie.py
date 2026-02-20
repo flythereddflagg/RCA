@@ -61,7 +61,7 @@ a fine husband!
                     self.talk()
         else:
             self.button_cue.kill()
-            self.cue_text.sprite.kill()
+            self.cue_text.kill()
 
         if self.textbox:
             if not self.textbox.scrolling:
@@ -101,12 +101,10 @@ a fine husband!
     
 
     def stop_talk(self):
-        self.textbox.sprite.kill()
         self.textbox.kill()
         self.talking_head.kill()
         self.scene.paused = False
         self.talking = False
         self.scene.occupied = False
         if self.kill_after:
-            self.sprite.kill()
             self.kill()

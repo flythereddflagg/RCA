@@ -44,9 +44,10 @@ class Animation2(Node):
         self.frame_counter = iter([]) # generator counter for the frame index
         self.frame_index = 0 # index of the current frame
         self.frame_time = 1 # duration of the current frame
-        self.path_prefix = self.init.get('path_prefix', "./") 
+        self.path_prefix = self.init.get('path_prefix', "./")
+        self.sequence = iter(self.init.get("sequence", []))
         self.load_animation()
-        
+
 
     def load_animation(self) -> None:
         self.animation = {}
@@ -157,4 +158,12 @@ class Animation2(Node):
             meta=dict(),
             repeat=True
         )
-
+    
+    
+    def advance(self, end=None):
+        next_state = next(self.sequence, None)
+        if next_state is None:
+            return end
+        else:
+            self.parent.state = next_state
+            return next_state

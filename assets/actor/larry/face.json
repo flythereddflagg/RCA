@@ -1,0 +1,70 @@
+{ "frames": {
+   "face 0.aseprite": {
+    "frame": { "x": 0, "y": 0, "w": 64, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 1000
+   },
+   "face 1.aseprite": {
+    "frame": { "x": 64, "y": 0, "w": 64, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 1000
+   },
+   "face 2.aseprite": {
+    "frame": { "x": 128, "y": 0, "w": 64, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 1000
+   },
+   "face 3.aseprite": {
+    "frame": { "x": 192, "y": 0, "w": 64, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 100
+   },
+   "face 4.aseprite": {
+    "frame": { "x": 256, "y": 0, "w": 64, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.3.16.1-x64",
+  "image": "face.png",
+  "format": "RGBA8888",
+  "size": { "w": 320, "h": 64 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "talking", "from": 3, "to": 4, "direction": "forward", "color": "#000000ff" },
+   { "name": "silent", "from": 3, "to": 3, "direction": "forward", "color": "#000000ff" }
+  ],
+  "layers": [
+   { "name": "measurment", "opacity": 255, "blendMode": "normal" },
+   { "name": "background", "opacity": 255, "blendMode": "normal" },
+   { "name": "shoulders", "opacity": 255, "blendMode": "normal" },
+   { "name": "head", "opacity": 255, "blendMode": "normal" },
+   { "name": "wrinkles", "opacity": 255, "blendMode": "normal" },
+   { "name": "eye whites", "opacity": 255, "blendMode": "normal" },
+   { "name": "pupils", "opacity": 255, "blendMode": "normal" },
+   { "name": "nose", "opacity": 255, "blendMode": "normal" },
+   { "name": "hair", "opacity": 255, "blendMode": "normal" },
+   { "name": "mouth", "opacity": 255, "blendMode": "normal" },
+   { "name": "eyebrows", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}
