@@ -12,6 +12,8 @@ class Rosie(Decal):
         self.hitmask = Decal(mask_path=self.init.get("image"))
         self.talking = False
         self.kill_after = False
+        self.talking_head.animation.kill()
+        self.talking_head.animation_larry.kill()
         self.cue_placement = (
             vec(self.scene.game.draw_surface.get_size()).elementwise()
             * vec([0.5, 1]) 

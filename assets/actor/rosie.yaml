@@ -14,6 +14,11 @@ children:
         path_prefix: ./assets/actor/rosie/
         datafile: face.json
         default_state: Silent
+      - id: animation_larry
+        type: Animation2
+        path_prefix: ./assets/actor/larry/
+        datafile: face.json
+        default_state: silent
   - id: textbox
     type: TextBox
     font_size: 22
