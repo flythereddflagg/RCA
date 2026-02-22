@@ -45,6 +45,8 @@ class Animation2(Node):
         self.frame_index = 0 # index of the current frame
         self.frame_time = 1 # duration of the current frame
         self.path_prefix = self.init.get('path_prefix', "./")
+        # TODO -4- evaluate if we need strict mode?
+        self.strict = self.init.get("strict", True) # set keyerror on fail
         self.sequence = iter(self.init.get("sequence", []))
         self.load_animation()
 
@@ -89,7 +91,12 @@ class Animation2(Node):
             if hasattr(self.parent, "move") else
             0
         )
-        current:Reel = self.animation[state]
+        # TODO -4- evaluate if we need strict mode?
+        if self.strict:
+            current:Reel = self.animation[state]
+        else:
+            current:Reel = self.animation.get(state, self.previous)
+            
         set_reel = False
 
         # update animation if changed
@@ -127,7 +134,11 @@ class Animation2(Node):
         will produce the indices in the reel to run
         from direction and state data"""
         state:str = self.parent.state
-        current:Reel = self.animation[state]
+        # TODO -4- evaluate if we need strict mode?
+        if self.strict:
+            current:Reel = self.animation[state]
+        else:
+            current:Reel = self.animation.get(state, self.previous)
         
         counter = range(*current.frames)
         self.frame_counter = (

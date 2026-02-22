@@ -74,20 +74,23 @@ class Scene():
             self.place_node(
                 node, 
                 node.init.get("groups"), 
-                node_init.get('start')
+                node_init.get('start'),
+                node_init.get('active', True)
             )
         self.occupied = False # is the scene occupied by an entity?
 
 
-    def place_node(self, node:Node, groups=None, start=None):
+    def place_node(self, node:Node, groups=None, start=None, active=True):
         if node.scene is not self:
             node.scene = self
-        self.all_nodes.add(node)
+        if active:
+            self.all_nodes.add(node)
         for child in node.children:
             self.place_node(
                 child, 
                 groups=child.init.get("groups"), 
-                start=child.init.get("start")
+                start=child.init.get("start"),
+                active=child.init.get('active', active)
             )
         sprite_instance:'.decal.Decal' = node.sprite
 
@@ -103,7 +106,8 @@ class Scene():
         if sprite_instance.scene is not self:
             sprite_instance.scene = self
 
-        self.all_nodes.add(sprite_instance)
+        if active:
+            self.all_nodes.add(sprite_instance)
 
         if groups:
             for group in groups:

@@ -8,6 +8,7 @@ children:
   - id: talking_head
     type: Decal
     scale: 1.5
+    active: False
     children:
       - id: animation
         type: Animation2
