@@ -12,8 +12,7 @@ class Rosie(Decal):
         self.hitmask = Decal(mask_path=self.init.get("image"))
         self.talking = False
         self.kill_after = False
-        self.talking_head.animation.kill()
-        self.talking_head.animation_larry.kill()
+        self.talking_head.animation = self.talking_head.rosie_talk
         self.cue_placement = (
             vec(self.scene.game.draw_surface.get_size()).elementwise()
             * vec([0.5, 1]) 
@@ -29,8 +28,6 @@ juice to make a soup!
 NOW! You listen to me Robbie Hart, you're going to be 
 a fine husband!
 """     
-
-        
 
 
     def update(self):
@@ -67,7 +64,7 @@ a fine husband!
 
         if self.textbox:
             if not self.textbox.scrolling:
-                self.talking_head.state = "Silent"
+                self.talking_head.state = "silent"
             if (
                 not self.textbox.scrolling
                 and self.talk_button_pressed()
@@ -77,6 +74,9 @@ a fine husband!
                 self.textbox.update()
                 self.talking_head.animation.update()
  
+
+    def advance_sequence(self):
+        pass
 
     def talk_button_pressed(self):
         return "BUTTON_E" in self.scene.game.input.new_actions()
@@ -94,7 +94,7 @@ a fine husband!
         self.talking_head.sprite.rect.topright = (
             self.textbox.sprite.rect.topleft
         )
-        self.talking_head.sprite.state = "Talking"
+        self.talking_head.state = "talking"
         if alt_text is not None:
             self.textbox.scroll_text(alt_text)
         else:

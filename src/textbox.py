@@ -96,10 +96,7 @@ class TextBox(Node):
         
         if box_size:
             # reformat lines to fit in box
-            line_len = int(
-                box_size[0] // self.font_char_w
-                + self.font_char_w // 2 # add buffer for smaller chars
-            )
+            line_len = int(box_size[0] // self.font_char_w)
             new_text = " ".join(lines)
             words = new_text.split(' ')
             lines = []
