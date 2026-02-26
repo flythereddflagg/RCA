@@ -13,6 +13,7 @@ class Rosie(Decal):
         self.talking = False
         self.kill_after = False
         self.talking_head.animation = self.talking_head.rosie_talk
+        self.seq_gen = iter([])
         self.cue_placement = (
             vec(self.scene.game.draw_surface.get_size()).elementwise()
             * vec([0.5, 1]) 
@@ -69,14 +70,20 @@ a fine husband!
                 not self.textbox.scrolling
                 and self.talk_button_pressed()
             ):
-                self.stop_talk()
+                self.advance_sequence()
             else:
                 self.textbox.update()
                 self.talking_head.animation.update()
  
 
     def advance_sequence(self):
-        pass
+        cur = next(self.seq_gen, None) # assume there is a first one
+        if cur is None:
+            self.stop_talk()
+            return
+        self.talking_head.state = "talking"
+        self.talking_head.animation = getattr(self.talking_head, cur["talking_head"])
+        self.textbox.scroll_text(cur["text"])
 
     def talk_button_pressed(self):
         return "BUTTON_E" in self.scene.game.input.new_actions()
@@ -95,6 +102,12 @@ a fine husband!
             self.textbox.sprite.rect.topleft
         )
         self.talking_head.state = "talking"
+        if self.init.get("sequence"):
+            self.seq_gen = iter(self.init.get("sequence"))
+            cur = next(self.seq_gen, None) # assume there is a first one
+            self.talking_head.animation = getattr(self.talking_head, cur["talking_head"])
+            self.textbox.scroll_text(cur["text"])
+            return
         if alt_text is not None:
             self.textbox.scroll_text(alt_text)
         else:
