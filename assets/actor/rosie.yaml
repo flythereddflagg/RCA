@@ -7,7 +7,8 @@ scale: 1
 sequence:
   - talking_head: rosie_talk
     text: |-
-      Oh hi Robbie! I got no idea where your Pop Pop went off to, but I'm making MEATBALLS! But I don't have any clean Tupperware!
+      Oh hi Robbie! I got no idea where your Pop Pop went off to, but I'm 
+      making MEATBALLS! But I don't have any clean Tupperware!
 
   - talking_head: larry_talk
     text: |-
@@ -23,7 +24,29 @@ sequence:
 
   - talking_head: rosie_talk
     text: |-
-      Now, please, take a bite so I can watch you enjoy! That's my favorite part!
+      Now, please, take a bite so I can watch you enjoy! That's my favorite 
+      part!
+
+  - talking_head: rosie_talk
+    text: |-
+      He he he! Aren't they great!? Now I just need something to put them in.
+
+  - talking_head: rosie_talk
+    text: |-
+      Do you have any clean Tupperware?
+  
+  - talking_head: rosie_talk
+    text: |-
+      Oh thanks for the Tupperware! I need to get these in the fridge now! You 
+      listen to me Robbie Hart, you're going to be a fine husband!
+  
+  - talking_head: larry_talk
+    text: |-
+      ...My name is Larry.
+
+  - talking_head: rosie_talk
+    text: |-
+      I'm fiiiiine!
 
 children:
   - id: talking_head
