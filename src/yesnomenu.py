@@ -30,11 +30,10 @@ YES_NO_MENU_DICT = yaml.load(YES_NO_MENU_INIT, Loader=yaml.Loader)
 
 class YesNoMenu(MenuInterface):
     def setup(self):
+        self.init["text"] = MENU_TEXT
         super().setup()
-        self.update_text_display()
         self.textbox.sprite.rect.center = self.scene.game.get_center()
         self.n_choices = len(MENU_TEXT.split("\n"))
-        self.active = False
         self.selected = 0
         self.bindings = [
             self.do_yes,
@@ -43,8 +42,7 @@ class YesNoMenu(MenuInterface):
 
     def update(self):
         if not self.active:
-            self.kill()
-            return
+            self.open_menu()
         if self.up_pressed():
             self.go_up()
         elif self.down_pressed():
@@ -55,10 +53,12 @@ class YesNoMenu(MenuInterface):
 
     def do_yes(self):
         print("Doing YES")
+        self.close_menu()
 
 
     def do_no(self):
         print("Doing NO")
+        self.close_menu()
 
 
 

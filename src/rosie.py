@@ -76,15 +76,6 @@ a fine husband!
                 self.talking_head.animation.update()
  
 
-    def advance_sequence(self):
-        cur = next(self.seq_gen, None) # assume there is a first one
-        if cur is None:
-            self.stop_talk()
-            return
-        self.talking_head.state = "talking"
-        self.talking_head.animation = getattr(self.talking_head, cur["talking_head"])
-        self.textbox.scroll_text(cur["text"])
-
     def talk_button_pressed(self):
         return "BUTTON_E" in self.scene.game.input.new_actions()
 
@@ -103,7 +94,7 @@ a fine husband!
         )
         self.talking_head.state = "talking"
         if self.init.get("sequence"):
-            self.seq_gen = iter(self.init.get("sequence"))
+            self.seq_gen = iter(self.init.get("sequence")[:6])
             cur = next(self.seq_gen, None) # assume there is a first one
             self.talking_head.animation = getattr(self.talking_head, cur["talking_head"])
             self.textbox.scroll_text(cur["text"])
@@ -113,7 +104,18 @@ a fine husband!
         else:
             self.textbox.scroll_text(self.textbox.init.get("text", ""))
 
-    
+
+    def advance_sequence(self):
+        cur = next(self.seq_gen, None)
+        if cur is None:
+            self.stop_talk()
+            return
+        self.talking_head.state = "talking"
+        self.talking_head.animation = getattr(
+            self.talking_head, cur["talking_head"]
+        )
+        self.textbox.scroll_text(cur["text"])
+
 
     def stop_talk(self):
         self.textbox.kill()
