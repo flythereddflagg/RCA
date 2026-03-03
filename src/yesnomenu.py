@@ -41,8 +41,11 @@ class YesNoMenu(MenuInterface):
         ]
 
     def update(self):
-        if not self.active:
+        if not self.active and not self.parent.parent.textbox.scrolling:
+            print("opening YESNO")
             self.open_menu()
+        elif self.parent.parent.textbox.scrolling:
+            return
         if self.up_pressed():
             self.go_up()
         elif self.down_pressed():
@@ -51,8 +54,15 @@ class YesNoMenu(MenuInterface):
             self.bindings[self.selected]()
 
 
+    def confirm_pressed(self):
+        new_actions = self.scene.game.input.new_actions()
+        return any([x in new_actions for x in [
+            "BUTTON_S", "BUTTON_E", "START"
+        ]])
+
     def do_yes(self):
         print("Doing YES")
+        self.parent.parent.advance_sequence()
         self.close_menu()
 
 
