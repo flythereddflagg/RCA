@@ -32,6 +32,11 @@ class Input():
             self.ctlr_setup()
 
 
+    def clear(self):
+        self.actions = []
+        self.held = []
+        self.last_actions = []
+
     def sdl2_controller_setup(self):
         self.sdl2_controller_bind = self.binds.get("SDL2 Controller Bind")
         self.sdl2_consts = {
