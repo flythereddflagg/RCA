@@ -41,6 +41,11 @@ class YesNoMenu(MenuInterface):
         ]
 
     def update(self):
+        if not self.active and not self.parent.parent.textbox.scrolling:
+            print("opening menu")
+            self.open_menu()
+        elif not self.active:
+            return
         if self.up_pressed():
             self.go_up()
         elif self.down_pressed():
