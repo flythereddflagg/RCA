@@ -40,11 +40,12 @@ class YesNoMenu(MenuInterface):
             self.do_no
         ]
 
+    def open_menu(self):
+        self.parent.parent.paused = True
+        super().open_menu()
+
     def update(self):
-        if not self.active and not self.parent.parent.textbox.scrolling:
-            print("opening menu")
-            self.open_menu()
-        elif not self.active:
+        if self.parent.parent.textbox.scrolling:
             return
         if self.up_pressed():
             self.go_up()
@@ -62,12 +63,15 @@ class YesNoMenu(MenuInterface):
 
     def do_yes(self):
         print("Doing YES")
+        self.parent.parent.paused = False
         self.parent.parent.advance_sequence()
         self.close_menu()
 
 
     def do_no(self):
         print("Doing NO")
+        self.parent.parent.paused = False
+        self.parent.parent.advance_sequence()
         self.close_menu()
 
 

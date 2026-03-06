@@ -28,6 +28,7 @@ sequence:
   #     part!
 
   - talking_head: yesno
+    prompt: yesno
     text: |-
       Will you eat the meatball?
 

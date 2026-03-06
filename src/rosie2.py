@@ -11,6 +11,7 @@ class Rosie2(Decal):
         self.key_id = self.init.get("key_id")
         self.talking = False
         self.kill_after = False
+        self.paused = False
         self.talking_head.animation = self.talking_head.rosie_talk
         self.seq_gen = iter([])
         self.cue_placement = (
@@ -35,7 +36,6 @@ class Rosie2(Decal):
 
 
     def update(self):
-        
         player = self.scene.get_player().parent
         player_rect = player.sprite.rect
         if (
@@ -44,19 +44,24 @@ class Rosie2(Decal):
         ):
             # signal that talking is available
             self.show_talk_cue()
-
-            # start the talking
-            if self.talk_button_pressed() and not self.scene.occupied:
-                if player.inventory.contains(self.key_id):
-                    assert player.inventory.remove_item(self.key_id),\
-                        "gate key was possesed but did not get removed properly"
-                    self.talk(self.leave_text)
-                    self.kill_after = True
-                else:
-                    self.talk()
         else:
             self.button_cue.kill()
             self.cue_text.kill()
+        
+        if (
+            self.sprite.rect.colliderect(player_rect) 
+            and not self.talking 
+            and self.talk_button_pressed() 
+            and not self.scene.occupied
+        ):
+            # start the dialogue sequence
+            if player.inventory.contains(self.key_id):
+                assert player.inventory.remove_item(self.key_id),\
+                    "gate key was possesed but did not get removed properly"
+                self.talk(self.leave_text)
+                self.kill_after = True
+            else:
+                self.talk()        
 
         if self.textbox:
             if not self.textbox.scrolling:
@@ -64,6 +69,7 @@ class Rosie2(Decal):
             if (
                 not self.textbox.scrolling
                 and self.talk_button_pressed()
+                and not self.paused
             ):
                 self.advance_sequence()
             else:
@@ -90,9 +96,7 @@ class Rosie2(Decal):
         self.talking_head.state = "talking"
         if self.init.get("sequence"):
             self.seq_gen = iter(self.init.get("sequence")[:6])
-            cur = next(self.seq_gen, None) # assume there is a first one
-            self.talking_head.animation = getattr(self.talking_head, cur["talking_head"])
-            self.textbox.scroll_text(cur["text"])
+            self.advance_sequence()
             return
         if alt_text is not None:
             self.textbox.scroll_text(alt_text)
@@ -110,6 +114,8 @@ class Rosie2(Decal):
             self.talking_head, cur["talking_head"]
         )
         self.textbox.scroll_text(cur["text"])
+        if cur.get("prompt") is not None:
+            self.talking_head.child_by_id(cur["prompt"]).open_menu()
 
 
     def stop_talk(self):
