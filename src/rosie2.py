@@ -95,8 +95,7 @@ class Rosie2(Decal):
         )
         self.talking_head.state = "talking"
         if self.init.get("sequence"):
-            self.seq_gen = iter(self.init.get("sequence")[:6])
-            self.advance_sequence()
+            self.advance_sequence(sequence=self.init.get("sequence")[:6])
             return
         if alt_text is not None:
             self.textbox.scroll_text(alt_text)
@@ -104,7 +103,9 @@ class Rosie2(Decal):
             self.textbox.scroll_text(self.textbox.init.get("text", ""))
 
 
-    def advance_sequence(self):
+    def advance_sequence(self, sequence=None):
+        if sequence is not None:
+            self.seq_gen = iter(sequence)
         cur = next(self.seq_gen, None)
         if cur is None:
             self.stop_talk()

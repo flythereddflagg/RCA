@@ -4,28 +4,32 @@ key_id: jar of pickles
 image: ./assets/actor/rosie/rosie_cart.png
 mask: ./assets/actor/rosie/rosie_cart_mask.png
 scale: 1
+seq_sets:
+  - [0, 5]
+  - [6, 7]
+  - [8, 10]
 sequence:
-  # - talking_head: rosie_talk
-  #   text: |-
-  #     Oh hi Robbie! I got no idea where your Pop Pop went off to, but I'm 
-  #     making MEATBALLS! But I don't have any clean Tupperware!
+  - talking_head: rosie_talk
+    text: |-
+      Oh hi Robbie! I got no idea where your Pop Pop went off to, but I'm 
+      making MEATBALLS! But I don't have any clean Tupperware!
 
-  # - talking_head: larry_talk
-  #   text: |-
-  #     Alright, well definitely next time, okay?--
+  - talking_head: larry_talk
+    text: |-
+      Alright, well definitely next time, okay?--
 
-  # - talking_head: rosie_talk
-  #   text: |-
-  #     Well--OH! Don't be silly! Now, hold out your hands!
+  - talking_head: rosie_talk
+    text: |-
+      Well--OH! Don't be silly! Now, hold out your hands!
 
-  # - talking_head: larry_talk
-  #   text: |-
-  #     Ohhhh...cool...thanks a lot!
+  - talking_head: larry_talk
+    text: |-
+      Ohhhh...cool...thanks a lot!
 
-  # - talking_head: rosie_talk
-  #   text: |-
-  #     Now, please, take a bite so I can watch you enjoy! That's my favorite 
-  #     part!
+  - talking_head: rosie_talk
+    text: |-
+      Now, please, take a bite so I can watch you enjoy! That's my favorite 
+      part!
 
   - talking_head: yesno
     prompt: yesno
