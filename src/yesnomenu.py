@@ -63,8 +63,12 @@ class YesNoMenu(MenuInterface):
 
     def do_yes(self):
         print("Doing YES")
-        self.parent.parent.paused = False
-        self.parent.parent.advance_sequence()
+        rosie = self.parent.parent
+        seq = rosie.init.get("sequence")[
+            slice(*rosie.init.get("seq_sets")["eat"])
+        ]
+        rosie.paused = False
+        rosie.advance_sequence(seq)
         self.close_menu()
 
 
