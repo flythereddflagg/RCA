@@ -32,7 +32,7 @@ class YesNoMenu(MenuInterface):
     def setup(self):
         self.init["text"] = MENU_TEXT
         super().setup()
-        self.textbox.sprite.rect.center = self.scene.game.get_center()
+        
         self.n_choices = len(MENU_TEXT.split("\n"))
         self.selected = 0
         self.bindings = [
@@ -45,8 +45,10 @@ class YesNoMenu(MenuInterface):
         super().open_menu()
 
     def update(self):
+        self.textbox.sprite.rect.midright = self.parent.parent.textbox.sprite.rect.midright
         if self.parent.parent.textbox.scrolling:
             return
+        
         if self.up_pressed():
             self.go_up()
         elif self.down_pressed():
@@ -58,17 +60,15 @@ class YesNoMenu(MenuInterface):
     def confirm_pressed(self):
         new_actions = self.scene.game.input.new_actions()
         return any([x in new_actions for x in [
-            "BUTTON_S", "BUTTON_E", "START"
+            "BUTTON_S", "BUTTON_E",
         ]])
 
     def do_yes(self):
         print("Doing YES")
         rosie = self.parent.parent
-        seq = rosie.init.get("sequence")[
-            slice(*rosie.init.get("seq_sets")["eat"])
-        ]
+
         rosie.paused = False
-        rosie.advance_sequence(seq)
+        rosie.advance_sequence("eat")
         self.close_menu()
 
 

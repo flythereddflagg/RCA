@@ -12,6 +12,7 @@ class Rosie2(Decal):
         self.talking = False
         self.kill_after = False
         self.paused = False
+        self.talk_state = "init"
         self.talking_head.animation = self.talking_head.rosie_talk
         self.seq_gen = iter([])
         self.cue_placement = (
@@ -58,7 +59,8 @@ class Rosie2(Decal):
             if player.inventory.contains(self.key_id):
                 assert player.inventory.remove_item(self.key_id),\
                     "gate key was possesed but did not get removed properly"
-                self.talk(self.leave_text)
+                self.talk_state = "tupperware"
+                self.talk()
                 self.kill_after = True
             else:
                 self.talk()        
@@ -95,10 +97,7 @@ class Rosie2(Decal):
         )
         self.talking_head.state = "talking"
         if self.init.get("sequence"):
-            seq = self.init.get("sequence")[
-                slice(*self.init.get("seq_sets")["init"])
-            ]
-            self.advance_sequence(sequence=seq)
+            self.advance_sequence(sequence=self.talk_state)
             return
         if alt_text is not None:
             self.textbox.scroll_text(alt_text)
@@ -106,11 +105,23 @@ class Rosie2(Decal):
             self.textbox.scroll_text(self.textbox.init.get("text", ""))
 
 
-    def advance_sequence(self, sequence=None):
+    def advance_sequence(self, sequence:str=None):
+        # TODO -2- This does not accomodate single values
         if sequence is not None:
-            self.seq_gen = iter(sequence)
+            seq_list = self.init.get("sequence")
+            self.talk_state = sequence
+            seq_slice = self.init.get("seq_sets")[sequence]
+            if len(seq_slice) == 1:
+                begin = seq_slice[0]
+                end = len(seq_list)-1
+            else:
+                begin, end = seq_slice
+            iter_seq = seq_list[slice(begin, end + 1)]
+            self.seq_gen = iter(iter_seq)
         cur = next(self.seq_gen, None)
         if cur is None:
+            if "after_" + self.talk_state in self.init.get("seq_sets"):
+                self.talk_state = "after_" + self.talk_state
             self.stop_talk()
             return
         self.talking_head.state = "talking"
