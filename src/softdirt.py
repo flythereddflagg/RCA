@@ -12,6 +12,7 @@ class SoftDirt(Decal):
 
     def setup(self):
         super().setup()
+        self.state = "shine"
         # list of treasures given by the dirt
         self.treasure = self.init.get("treasure") 
 

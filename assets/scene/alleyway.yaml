@@ -20,7 +20,7 @@ nodes:
 - groups:
   - foreground
   id: rubble dirt
-  image: ./assets/block/soft_dirt.png
+  # image: ./assets/block/soft_dirt.png
   mask: ./assets/block/soft_dirt_mask.png
   scale: 1
   start:
@@ -37,6 +37,11 @@ nodes:
     - 0
     type: Item
   type: SoftDirt
+  children:
+  - type: Animation2
+    path_prefix: ./assets/block/
+    datafile: soft_dirt.json
+    default_state: shine
 - exit_dir: LEFT
   groups:
   - behind

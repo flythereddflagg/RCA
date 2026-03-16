@@ -6,7 +6,7 @@ mask: ./assets/actor/rosie/rosie_cart_mask.png
 scale: 1
 seq_sets:
   # note: sets are inclusive and 0-indexed 
-  init: [4, 6]
+  init: [0, 6]
   eat: [7, 8]
   after_eat: [8, 8]
   tupperware: [9]
