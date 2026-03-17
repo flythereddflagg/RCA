@@ -5,6 +5,7 @@ from .node import node_from_dict
 from .tools import mask_collision, vec
 
 
+
 class Rosie2(Decal):
     def setup(self):
         super().setup()
@@ -77,6 +78,9 @@ class Rosie2(Decal):
             else:
                 self.textbox.update()
                 self.talking_head.animation.update()
+        
+        if not self.textbox and self.kill_after:
+
  
 
     def talk_button_pressed(self):
@@ -139,5 +143,3 @@ class Rosie2(Decal):
         self.scene.paused = False
         self.talking = False
         self.scene.occupied = False
-        if self.kill_after:
-            self.kill()
