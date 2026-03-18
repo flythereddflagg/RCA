@@ -16,6 +16,7 @@ class Rosie2(Decal):
         self.talk_state = "init"
         self.talking_head.animation = self.talking_head.rosie_talk
         self.seq_gen = iter([])
+        self.move = Movement(self.sprite)
         self.cue_placement = (
             vec(self.scene.game.draw_surface.get_size()).elementwise()
             * vec([0.5, 1]) 
@@ -23,6 +24,7 @@ class Rosie2(Decal):
             * vec([0.5, 1])
         )
         self.cue_text.set_text(self.cue_text.init.get("text", ""))
+        self.rotation = 0
  
 
     def show_talk_cue(self):
@@ -80,6 +82,16 @@ class Rosie2(Decal):
                 self.talking_head.animation.update()
         
         if not self.textbox and self.kill_after:
+            self.move(direction="RIGHT", speed=25)
+            if (
+                mask_collision(self.sprite, self.scene.background.sprite) 
+                and self.rotation < 90
+            ):
+                self.sprite.set_image(pg.transform.rotate(self.sprite.image, 1))
+                self.rotation += 1
+            else:
+                self # TODO CONTINUE HERE
+
 
  
 
