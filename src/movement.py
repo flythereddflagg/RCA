@@ -73,7 +73,11 @@ class Movement():
             if self.hitmask_sprite is None else 
             self.hitmask_sprite
         )
-        while list_collided(hitsprite, self.sprite.scene.groups['solid']):
+        while [
+            sprite for sprite in
+            list_collided(hitsprite, self.sprite.scene.groups['solid'])
+            if sprite is not self.sprite
+        ]:
             self.sprite.rect.move_ip(-xunit, -yunit) # move back 1
             if self.hitmask_sprite:
                 self.hitmask_sprite.rect.move_ip(-xunit, -yunit)

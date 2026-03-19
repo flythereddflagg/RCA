@@ -3,6 +3,7 @@ import pygame as pg
 from .decal import Decal
 from .node import node_from_dict
 from .tools import mask_collision, vec
+from .movement import Movement
 
 
 
@@ -13,6 +14,7 @@ class Rosie2(Decal):
         self.talking = False
         self.kill_after = False
         self.paused = False
+        self.exiting = False
         self.talk_state = "init"
         self.talking_head.animation = self.talking_head.rosie_talk
         self.seq_gen = iter([])
@@ -63,8 +65,8 @@ class Rosie2(Decal):
                 assert player.inventory.remove_item(self.key_id),\
                     "gate key was possesed but did not get removed properly"
                 self.talk_state = "tupperware"
+                self.exiting = True
                 self.talk()
-                self.kill_after = True
             else:
                 self.talk()        
 
@@ -80,17 +82,24 @@ class Rosie2(Decal):
             else:
                 self.textbox.update()
                 self.talking_head.animation.update()
-        
-        if not self.textbox and self.kill_after:
-            self.move(direction="RIGHT", speed=25)
+
+        if not self.talking and self.exiting and self.talk_state == "tupperware":
+            print("exiting")
+          
+            self.scene.paused = True
+            self.scene.occupied = True
+            self.move(direction="RIGHT", speed=25, reject_foreground=False)
             if (
-                mask_collision(self.sprite, self.scene.background.sprite) 
+                mask_collision(self.sprite, self.scene.background.sprites()[0].sprite) 
                 and self.rotation < 90
             ):
                 self.sprite.set_image(pg.transform.rotate(self.sprite.image, 1))
                 self.rotation += 1
+            elif self.rotation >= 90 and self.sprite.rect.colliderect(self.scene.game.draw_surface.get_rect()):
+                self.move(direction="DOWN", speed=300, reject_foreground=False)
             else:
-                self # TODO CONTINUE HERE
+                self.talk_state = "fine"
+                self.talk()
 
 
  
@@ -155,3 +164,5 @@ class Rosie2(Decal):
         self.scene.paused = False
         self.talking = False
         self.scene.occupied = False
+        if self.kill_after == True:
+            self.kill()

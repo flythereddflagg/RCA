@@ -9,7 +9,8 @@ seq_sets:
   init: [0, 6]
   eat: [7, 8]
   after_eat: [8, 8]
-  tupperware: [9]
+  tupperware: [9, 10]
+  fine: [11]
 sequence:
   - talking_head: rosie_talk
     text: |-
