@@ -5,7 +5,7 @@ from .node import node_from_dict
 from .tools import mask_collision, vec
 from .movement import Movement
 
-
+EDGE_OF_CLIFF = 970
 
 class Rosie2(Decal):
     def setup(self):
@@ -27,6 +27,7 @@ class Rosie2(Decal):
         )
         self.cue_text.set_text(self.cue_text.init.get("text", ""))
         self.rotation = 0
+        self.original_image = self.sprite.image
  
 
     def show_talk_cue(self):
@@ -83,23 +84,34 @@ class Rosie2(Decal):
                 self.textbox.update()
                 self.talking_head.animation.update()
 
-        if not self.talking and self.exiting and self.talk_state == "tupperware":
-            print("exiting")
-          
+        if (
+                not self.talking 
+                and self.exiting 
+                and self.talk_state == "tupperware"
+        ):          
             self.scene.paused = True
             self.scene.occupied = True
             self.move(direction="RIGHT", speed=25, reject_foreground=False)
-            if (
-                mask_collision(self.sprite, self.scene.background.sprites()[0].sprite) 
-                and self.rotation < 90
-            ):
-                self.sprite.set_image(pg.transform.rotate(self.sprite.image, 1))
+            bg_x = (
+                vec(self.sprite.rect.topleft)
+                - vec(self.scene.background.sprites()[0].rect.topleft)
+            )[0]
+
+            if bg_x > EDGE_OF_CLIFF and self.rotation < 90:
+                self.sprite.set_image(
+                    pg.transform.rotate(self.original_image, -self.rotation)
+                )
                 self.rotation += 1
-            elif self.rotation >= 90 and self.sprite.rect.colliderect(self.scene.game.draw_surface.get_rect()):
+            elif self.rotation >= 90:
                 self.move(direction="DOWN", speed=300, reject_foreground=False)
-            else:
+            
+            if not self.sprite.rect.colliderect(
+                    self.scene.game.draw_surface.get_rect()
+            ):
                 self.talk_state = "fine"
+                self.kill_after = True
                 self.talk()
+
 
 
  
