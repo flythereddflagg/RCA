@@ -56,6 +56,7 @@ class Scene():
         if "hud" not in self.draw_layers:
             self.draw_layers.append('hud') 
         
+        self.active_nodes = SpriteGroup()
         self.all_nodes = SpriteGroup()
         self.groups = {
             group_name: pg.sprite.Group()
@@ -83,8 +84,9 @@ class Scene():
     def place_node(self, node:Node, groups=None, start=None, active=True):
         if node.scene is not self:
             node.scene = self
+        self.all_nodes.add(node)
         if active:
-            self.all_nodes.add(node)
+            self.active_nodes.add(node)
         for child in node.children:
             self.place_node(
                 child, 
@@ -107,7 +109,7 @@ class Scene():
             sprite_instance.scene = self
 
         if active:
-            self.all_nodes.add(sprite_instance)
+            self.active_nodes.add(sprite_instance)
 
         if groups:
             for group in groups:
@@ -125,7 +127,7 @@ class Scene():
                 pause_group.update()
             return
 
-        self.all_nodes.update()
+        self.active_nodes.update()
 
 
     def refresh(self):
@@ -160,11 +162,11 @@ class Scene():
         if save_scene:
             self.game.saved_scenes[self.id] = self.serialize()
 
-        for node in self.all_nodes:
+        for node in self.active_nodes:
             node.deconstruct()
-            self.all_nodes.remove(node)
+            self.active_nodes.remove(node)
         
-        self.all_nodes.cancel_update()
+        self.active_nodes.cancel_update()
         
         for name, group in self.groups.items():
             for sprite in group:
@@ -217,16 +219,21 @@ class Scene():
         return player
     
 
-    def node_by_id(self, id_str:str) -> '.node.Node':
-        return [
+    def node_by_id(self, id_str:str) -> '.node.Node|list[.node.Node]':
+        nodes = [
             node 
             for node in self.all_nodes.sprites() 
             if node.id == id_str
         ]
+        if len(nodes) == 1:
+            return nodes[0]
+        else:
+            return nodes
     
 
     def node_ids(self) -> list['.node.Node']:
         return [node.id for node in self.all_nodes.sprites()]
+
 
     def node_in_groups(self, node:'.node.Node') -> list[str]:
         """

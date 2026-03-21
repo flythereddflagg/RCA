@@ -91,6 +91,15 @@ class Rosie2(Decal):
         ):          
             self.scene.paused = True
             self.scene.occupied = True
+            
+            if self.scene.node_by_id("meatball") not in self.scene.active_nodes:
+                print("placing meatball")
+                self.scene.place_node(
+                    self.scene.node_by_id("meatball"), 
+                    groups=["foreground", "paused"],
+                    start=vec([-50, 50]) + self.sprite.rect.topleft
+                )
+                self.scene.node_by_id("meatball").state = "stage1"
             self.move(direction="RIGHT", speed=25, reject_foreground=False)
             bg_x = (
                 vec(self.sprite.rect.topleft)
@@ -108,7 +117,6 @@ class Rosie2(Decal):
             if not self.sprite.rect.colliderect(
                     self.scene.game.draw_surface.get_rect()
             ):
-                # TODO -1- make a meatball
                 # TODO -1- make a sound effect
                 # TODO -1- make a walking animation
                 # TODO -1- make a screen shake

@@ -42,6 +42,8 @@ nodes: # all children are nodes
     action: null
     groups:
       - foreground
+  - yaml: assets/actor/meatball.yaml
+    active: false
 
   # - id: wall
   #   type: Decal

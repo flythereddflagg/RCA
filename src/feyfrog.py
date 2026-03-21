@@ -59,6 +59,7 @@ class FeyFrog(Decal):
             sprite.rect.topleft = self.scene.game.get_center()
             sprite.kill()
             sprite.init["groups"].append("foreground")
+            # TODO -1- fix this to use place node
             self.scene.groups["foreground"].add(sprite)
             self.scene.all_nodes.add(sprite)
             self.kill()

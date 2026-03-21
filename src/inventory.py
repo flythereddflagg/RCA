@@ -276,6 +276,7 @@ class Inventory(Node):
             "scale": INV_SCALE
         })
         self.slot_sprites.add(new_slot)
+        # TODO -1- fix this to use place node
         new_slot.add(self.scene.all_nodes)
         return self.slots[-1]
 
