@@ -108,6 +108,10 @@ class Rosie2(Decal):
             if not self.sprite.rect.colliderect(
                     self.scene.game.draw_surface.get_rect()
             ):
+                # TODO -1- make a meatball
+                # TODO -1- make a sound effect
+                # TODO -1- make a walking animation
+                # TODO -1- make a screen shake
                 self.talk_state = "fine"
                 self.kill_after = True
                 self.talk()
