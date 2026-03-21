@@ -15,6 +15,7 @@ class Rosie2(Decal):
         self.kill_after = False
         self.paused = False
         self.exiting = False
+        self.shaken = False
         self.talk_state = "init"
         self.talking_head.animation = self.talking_head.rosie_talk
         self.seq_gen = iter([])
@@ -28,7 +29,8 @@ class Rosie2(Decal):
         self.cue_text.set_text(self.cue_text.init.get("text", ""))
         self.rotation = 0
         self.original_image = self.sprite.image
- 
+        self.crash_sound = pg.mixer.Sound(self.init["crash_sfx"])
+
 
     def show_talk_cue(self):
         self.scene.place_node(
@@ -117,16 +119,21 @@ class Rosie2(Decal):
             if not self.sprite.rect.colliderect(
                     self.scene.game.draw_surface.get_rect()
             ):
-                # TODO -1- make a sound effect
+
                 # TODO -1- make a walking animation
-                # TODO -1- make a screen shake
-                self.talk_state = "fine"
-                self.kill_after = True
-                self.talk()
+                
+                camera = self.scene.node_by_id("camera")
+                if not camera.shaking:
+                    if not self.shaken:
+                        camera.screenshake()
+                        self.shaken = True
+                        self.crash_sound.play()
+                    elif not camera.shaking: #shaking is done
+                        # self.crash_sound.stop()
+                        self.talk_state = "fine"
+                        self.kill_after = True
+                        self.talk()
 
-
-
- 
 
     def talk_button_pressed(self):
         return "BUTTON_E" in self.scene.game.input.new_actions()

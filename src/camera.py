@@ -1,3 +1,5 @@
+import random
+
 import pygame as pg
 
 from .node import Node
@@ -14,7 +16,8 @@ class Camera(Node):
         self.cur_zoom = 1
         self.slack = self.init.get("slack", 0) 
         self.zoom_by(self.init.get("zoom", 1))
-
+        self.shaking = False
+        self.path = []
         
 
     def update(self):
@@ -27,6 +30,14 @@ class Camera(Node):
             self.pan(movex, movey)
             return
         self.follow_player()
+        if self.shaking:
+            cur_move = next(self.path, None)
+            if cur_move is None:
+                self.shaking = False
+                self.path = iter([])
+            else:
+                self.pan(*cur_move)
+            
         if not self.scene.game.settings.DEBUG: 
             self.stop_at_border()
 
@@ -41,6 +52,16 @@ class Camera(Node):
         for group in self.mobile_groups:
             for sprite in self.scene.groups[group]:
                 sprite.rect.move_ip(-movex, -movey)
+
+
+    def screenshake(self, length=1, scale=20):
+        """@length is in seconds"""
+        print("Called Screenshake")
+        self.shaking = True
+        self.path = iter([
+            [random.random()*scale-scale/2 for _ in range(2)] 
+            for _ in range(int(length * self.scene.game.clock.get_fps()))
+        ])
 
 
 

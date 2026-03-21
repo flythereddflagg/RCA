@@ -178,4 +178,5 @@ nodes: # all children are nodes
   - id: camera
     type: Camera
     slack: 100
+    groups: [paused]
     # zoom: 1.5
