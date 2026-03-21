@@ -4,7 +4,7 @@ key_id: jar of pickles
 image: ./assets/actor/rosie/rosie_cart.png
 mask: ./assets/actor/rosie/rosie_cart_mask.png
 scale: 1
-crash_sfx: /media/redd/Mass_Storage/RCA/assets/sfx/freesound_community-light-metal-crash-6765.mp3
+crash_sfx: /media/redd/Mass_Storage/RCA/assets/sfx/freesound_community-crash-6711.mp3
 seq_sets:
   # note: sets are inclusive and 0-indexed 
   init: [0, 6]
