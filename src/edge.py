@@ -22,13 +22,12 @@ class Edge(Decal):
             yaml_path=self.init["scene_path"]
         )
         # NOTE this might break things. BE AWARE
-        out_block_list = new_scene.node_by_id(self.id)
-        if not out_block_list:
+        out_block = new_scene.node_by_id(self.id)
+        if not out_block:
             player.kill()
             # breakpoint()
             return
-        out_block = out_block_list[0]
-        ###
+
         half_size = (
             vec(player.sprite.rect.size) / 2 +
             vec(out_block.sprite.rect.size) / 2

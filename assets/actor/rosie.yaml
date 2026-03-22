@@ -117,4 +117,4 @@ children:
     image: ./assets/block/glyph_B.png
   - id: crash_sound
     type: SFX
-    file: /media/redd/Mass_Storage/RCA/assets/sfx/freesound_community-crash-6711.mp3
+    file: ./assets/sfx/freesound_community-crash-6711.mp3
