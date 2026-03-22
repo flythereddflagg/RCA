@@ -29,6 +29,7 @@ class Rosie2(Decal):
         self.cue_text.set_text(self.cue_text.init.get("text", ""))
         self.rotation = 0
         self.original_image = self.sprite.image
+        self.start_time = -1
 
 
     def show_talk_cue(self):
@@ -49,6 +50,7 @@ class Rosie2(Decal):
         if (
             self.sprite.rect.colliderect(player_rect) 
             and not self.talking 
+            and not self.exiting
         ):
             # signal that talking is available
             self.show_talk_cue()
@@ -127,10 +129,13 @@ class Rosie2(Decal):
                         self.shaken = True
                         self.crash_sound.play()
                     elif not camera.shaking: #shaking is done
-                        # self.crash_sound.stop()
-                        self.talk_state = "fine"
-                        self.kill_after = True
-                        self.talk()
+                        # timing delay for comedic effect.
+                        if self.start_time == -1:
+                            self.start_time = pg.time.get_ticks()
+                        if (pg.time.get_ticks() - self.start_time) > 1000:
+                            self.talk_state = "fine"
+                            self.kill_after = True
+                            self.talk()
 
 
     def talk_button_pressed(self):
