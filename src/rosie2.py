@@ -29,7 +29,6 @@ class Rosie2(Decal):
         self.cue_text.set_text(self.cue_text.init.get("text", ""))
         self.rotation = 0
         self.original_image = self.sprite.image
-        self.crash_sound = pg.mixer.Sound(self.init["crash_sfx"])
 
 
     def show_talk_cue(self):
@@ -95,7 +94,6 @@ class Rosie2(Decal):
             self.scene.occupied = True
             
             if self.scene.node_by_id("meatball") not in self.scene.active_nodes:
-                print("placing meatball")
                 self.scene.place_node(
                     self.scene.node_by_id("meatball"), 
                     groups=["foreground", "paused"],

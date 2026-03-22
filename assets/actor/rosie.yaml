@@ -4,7 +4,6 @@ key_id: jar of pickles
 image: ./assets/actor/rosie/rosie_cart.png
 mask: ./assets/actor/rosie/rosie_cart_mask.png
 scale: 1
-crash_sfx: /media/redd/Mass_Storage/RCA/assets/sfx/freesound_community-crash-6711.mp3
 seq_sets:
   # note: sets are inclusive and 0-indexed 
   init: [0, 6]
@@ -116,3 +115,6 @@ children:
   - id: button_cue
     type: Decal
     image: ./assets/block/glyph_B.png
+  - id: crash_sound
+    type: SFX
+    file: /media/redd/Mass_Storage/RCA/assets/sfx/freesound_community-crash-6711.mp3

@@ -56,13 +56,11 @@ class Camera(Node):
 
     def screenshake(self, length=1, scale=20):
         """@length is in seconds"""
-        print("Called Screenshake")
         self.shaking = True
         self.path = iter([
             [random.random()*scale-scale/2 for _ in range(2)] 
             for _ in range(int(length * self.scene.game.clock.get_fps()))
         ])
-
 
 
     def follow_player(self):
