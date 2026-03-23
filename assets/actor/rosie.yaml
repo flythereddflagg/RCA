@@ -1,7 +1,7 @@
 id: Rosie
 type: Rosie2
 key_id: jar of pickles
-image: ./assets/actor/rosie/rosie_cart.png
+# image: ./assets/actor/rosie/rosie_cart.png
 mask: ./assets/actor/rosie/rosie_cart_mask.png
 scale: 1
 seq_sets:
@@ -54,10 +54,9 @@ sequence:
   - talking_head: rosie_talk
     text: |-
       Oh thanks for the Tupperware! 
-      
-    #I need to get these in the fridge now! You 
-    #  listen to me Robbie Hart, you're going to be a fine husband!
-  
+    # I need to get these in the fridge now! You 
+    # listen to me Robbie Hart, you're going to be a fine husband!
+
   - talking_head: larry_talk
     text: |-
       ...My name is Larry.
@@ -118,3 +117,9 @@ children:
   - id: crash_sound
     type: SFX
     file: ./assets/sfx/freesound_community-crash-6711.mp3
+  - id: animation
+    type: Animation2
+    path_prefix: ./assets/actor/rosie/
+    datafile: rosie_cart.json
+    default_state: walking
+    groups: ["paused"]

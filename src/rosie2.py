@@ -11,6 +11,7 @@ class Rosie2(Decal):
     def setup(self):
         super().setup()
         self.key_id = self.init.get("key_id")
+        self.state = "standing"
         self.talking = False
         self.kill_after = False
         self.paused = False
@@ -94,6 +95,7 @@ class Rosie2(Decal):
         ):          
             self.scene.paused = True
             self.scene.occupied = True
+            self.state = "walking"
             
             if self.scene.node_by_id("meatball") not in self.scene.active_nodes:
                 self.scene.place_node(
@@ -109,6 +111,7 @@ class Rosie2(Decal):
             )[0]
 
             if bg_x > EDGE_OF_CLIFF and self.rotation < 90:
+
                 self.sprite.set_image(
                     pg.transform.rotate(self.original_image, -self.rotation)
                 )
