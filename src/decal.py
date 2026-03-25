@@ -28,7 +28,8 @@ class Decal(Node):
     """
 
     def setup(self):
-        self.sprite = self        
+        self.sprite = self
+        self.rotation = 0      
 
         self.image_path:str = self.init.get("image")
         self.mask_path:str = self.init.get("mask")
@@ -71,11 +72,10 @@ class Decal(Node):
             for dim in self.original.mask.get_size()
         ]
         self.mask = self.original.mask.scale(new_mask_size)
-
-    
+   
 
     def set_image(
-        self, image:pg.surface.Surface=None, mask:pg.mask.Mask=None
+        self, image:pg.surface.Surface=None, mask:pg.mask.Mask=None,
     ) -> None:
         """
         Sets the image of the sprite and the mask if supplied.
@@ -84,7 +84,7 @@ class Decal(Node):
         """
         if image:
             cur_pos = self.rect.center
-            self.image = image 
+            self.image = image
             self.rect = self.image.get_rect()
         
         if mask:
@@ -111,6 +111,12 @@ class Decal(Node):
         
         if self.scale != 1:
             self.scale_by(self.scale, absolute=True)
+        
+        if self.rotation:
+            cur_pos = self.rect.center
+            self.image = pg.transform.rotate(image, self.rotation)
+            self.rect = self.image.get_rect()
+            self.rect.center = cur_pos
 
     
     def get_null(self, mask:bool=False) -> pg.surface.Surface|pg.mask.Mask:

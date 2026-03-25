@@ -28,7 +28,7 @@ class Rosie2(Decal):
             * vec([0.5, 1])
         )
         self.cue_text.set_text(self.cue_text.init.get("text", ""))
-        self.rotation = 0
+        self.sprite.rotation = 0
         self.original_image = self.sprite.image
         self.start_time = -1
 
@@ -110,13 +110,9 @@ class Rosie2(Decal):
                 - vec(self.scene.background.sprites()[0].rect.topleft)
             )[0]
 
-            if bg_x > EDGE_OF_CLIFF and self.rotation < 90:
-
-                self.sprite.set_image(
-                    pg.transform.rotate(self.original_image, -self.rotation)
-                )
-                self.rotation += 1
-            elif self.rotation >= 90:
+            if bg_x > EDGE_OF_CLIFF and self.sprite.rotation > -90:
+                self.sprite.rotation -= 1
+            elif self.sprite.rotation <= -90:
                 self.move(direction="DOWN", speed=300, reject_foreground=False)
             
             if not self.sprite.rect.colliderect(
