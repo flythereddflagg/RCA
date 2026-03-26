@@ -30,9 +30,12 @@ nodes: # all children are nodes
      - solid
      - foreground
 
-  - yaml: ./assets/actor/rosie.yaml
-    start: [870,91]
-    groups: [foreground, solid, paused]
+  # - yaml: ./assets/actor/rosie.yaml
+  #   start: [870,91]
+  #   groups: [foreground, solid, paused]
+  - yaml: ./assets/actor/meatball.yaml
+    start: [870, 150]
+    groups: [foreground]
   
   - id: jar of pickles
     type: Item
@@ -55,15 +58,15 @@ nodes: # all children are nodes
   #    - solid
   #    - foreground
 
-  # - id: shovel
-  #   type: Item
-  #   image: ./assets/actor/item/shovel.png
-  #   mask: ./assets/actor/item/shovel.png
-  #   start: [800,200]
-  #   scale: 1
-  #   action: shovel
-  #   groups:
-  #    - foreground
+  - id: shovel
+    type: Item
+    image: ./assets/actor/item/shovel.png
+    mask: ./assets/actor/item/shovel.png
+    start: [800,200]
+    scale: 1
+    action: shovel
+    groups:
+     - foreground
 
   - id: ossifrage 1
     yaml: ./assets/actor/ossifrage.yaml
@@ -71,14 +74,14 @@ nodes: # all children are nodes
     groups:
       - foreground
       - foe
-  # - id: sword
-  #   type: Item
-  #   action: sword
-  #   groups:
-  #   - foreground
-  #   image: ./assets/actor/item/sword_icon.png
-  #   mask: ./assets/actor/item/sword_icon.png
-  #   start: [500,100]
+  - id: sword
+    type: Item
+    action: sword
+    groups:
+    - foreground
+    image: ./assets/actor/item/sword_icon.png
+    mask: ./assets/actor/item/sword_icon.png
+    start: [500,100]
   - id: cactus
     type: Cactus
     image: ./assets/block/cactus.png
@@ -104,23 +107,27 @@ nodes: # all children are nodes
     groups: [foreground]
     value: 1
     start: [466, 323]
-
-  - id: soft_dirt
-    type: SoftDirt
-    image: ./assets/block/soft_dirt2.png
+  - groups: [foreground]
+    id: rubble dirt
+    # image: ./assets/block/soft_dirt.png
     mask: ./assets/block/soft_dirt_mask.png
-    start: [221,624]
     scale: 1
-    groups: 
-     - foreground
-    treasure:   
-      - id: statue key
-        type: Item
-        image: ./assets/block/silver_key.png
-        mask: ./assets/block/silver_key.png
-        scale: 1
-        start: [64,0]
-        action: null
+    start: [221,624]
+    treasure:
+    - id: statue key
+      type: Item
+      image: ./assets/block/silver_key.png
+      mask: ./assets/block/silver_key.png
+      scale: 1
+      start: [64,0]
+      action: null
+    type: SoftDirt
+    children:
+    - type: Animation2
+      path_prefix: ./assets/block/
+      datafile: soft_dirt.json
+      default_state: shine
+  
 
   - id: bridge_exit
     type: Edge

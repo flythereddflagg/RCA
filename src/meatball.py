@@ -10,22 +10,27 @@ from .node import Node
 class MeatBall(Node):
     def setup(self):
         self.last_time = 0
-        # self.state_gen = itertools.cycle(
-        #     [
-        #         child for child in self.init["children"] 
-        #         if child["id"] == "animation"
-        #     ]
-        #     [0]["animation"].keys()
-        # )
         self.move = Movement(self.sprite, hitmask_sprite = self.hitmask.sprite)
-        self.state = "stage2"
+        self.state = "stage1"
         self.cur_action = 4
     
     def update(self):
+        player = self.scene.get_player().parent
+        if player.inventory.contains("sword"):
+            self.stage3()
+            return
+        elif player.inventory.contains("shovel"):
+            self.state = "stage2"
+        self.random_movement()
+
+    def stage3(self):
+        self.state = "wiggle"
+        
+    def random_movement(self):
         cur_time = pg.time.get_ticks()
         if (cur_time - self.last_time) > 1000:
             self.last_time = cur_time
-            self.cur_action = random.choice(list(range(5)))
+            self.cur_action = random.randint(0, 4)
         
         if self.cur_action == 4:
             return
