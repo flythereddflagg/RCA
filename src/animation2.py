@@ -35,7 +35,7 @@ class Animation2(Node):
     A system for setting the parent sprite object's image.
     """
     def setup(self):
-        self.require_attr("datafile")
+        self.require_attr("datafile", "default_state")
         self.previous:str = None
         self.last_state:str = None
         self.last_direction:int = Compass.DOWN 
@@ -48,6 +48,7 @@ class Animation2(Node):
         # TODO -4- evaluate if we need strict mode?
         self.strict = self.init.get("strict", True) # set keyerror on fail
         self.sequence = iter(self.init.get("sequence", []))
+        self.default_state = self.init["default_state"]
         self.load_animation()
 
 

@@ -6,6 +6,9 @@ import random
 from .movement import Movement
 
 from .node import Node
+from .tools import vec
+
+DIST_SQR_AGRO = 100**2
 
 class MeatBall(Node):
     def setup(self):
@@ -15,6 +18,7 @@ class MeatBall(Node):
         self.cur_action = 4
     
     def update(self):
+        print(self.state, self.animation.previous, self.animation.last_state)
         player = self.scene.get_player().parent
         if player.inventory.contains("sword"):
             self.stage3()
@@ -23,8 +27,6 @@ class MeatBall(Node):
             self.state = "stage2"
         self.random_movement()
 
-    def stage3(self):
-        self.state = "wiggle"
         
     def random_movement(self):
         cur_time = pg.time.get_ticks()
@@ -40,4 +42,12 @@ class MeatBall(Node):
             self.move(self.cur_action+1, speed=25)
             # self.move(3, speed=25)
 
+    def stage3(self):
+        player_sprite = self.scene.get_player()
+        if (
+            vec(self.sprite.rect.center).distance_squared_to(
+                player_sprite.rect.center
+            ) < DIST_SQR_AGRO
+        ):
+            self.state = "throw"
 
