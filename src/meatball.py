@@ -15,16 +15,18 @@ class MeatBall(Node):
         self.last_time = 0
         self.move = Movement(self.sprite, hitmask_sprite = self.hitmask.sprite)
         self.state = "stage1"
+        self.animation.set_state(self.state)
         self.cur_action = 4
     
     def update(self):
-        print(self.state, self.animation.previous, self.animation.last_state)
+        print(self.state, self.animation.state)
         player = self.scene.get_player().parent
         if player.inventory.contains("sword"):
             self.stage3()
             return
         elif player.inventory.contains("shovel"):
             self.state = "stage2"
+            self.animation.set_state(self.state)
         self.random_movement()
 
         
@@ -49,5 +51,8 @@ class MeatBall(Node):
                 player_sprite.rect.center
             ) < DIST_SQR_AGRO
         ):
-            self.state = "throw"
+            self.animation.set_state("throw")
+        
+        else:
+            self.animation.set_state("wiggle")
 
