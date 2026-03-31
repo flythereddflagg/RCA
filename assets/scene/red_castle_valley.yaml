@@ -34,7 +34,7 @@ nodes: # all children are nodes
   #   start: [870,91]
   #   groups: [foreground, solid, paused]
   - yaml: ./assets/actor/meatball.yaml
-    start: [870, 150]
+    start: [700, 200]
     groups: [foreground]
   
   - id: jar of pickles
@@ -68,12 +68,12 @@ nodes: # all children are nodes
     groups:
      - foreground
 
-  - id: ossifrage 1
-    yaml: ./assets/actor/ossifrage.yaml
-    start: [835,506]
-    groups:
-      - foreground
-      - foe
+  # - id: ossifrage 1
+  #   yaml: ./assets/actor/ossifrage.yaml
+  #   start: [835,506]
+  #   groups:
+  #     - foreground
+  #     - foe
   - id: sword
     type: Item
     action: sword

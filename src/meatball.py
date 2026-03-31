@@ -6,7 +6,7 @@ import random
 from .movement import Movement
 
 from .node import Node
-from .tools import vec
+from .tools import vec, mask_collision, diff_vec
 
 DIST_SQR_AGRO = 100**2
 
@@ -19,7 +19,6 @@ class MeatBall(Node):
         self.cur_action = 4
     
     def update(self):
-        print(self.state, self.animation.state)
         player = self.scene.get_player().parent
         if player.inventory.contains("sword"):
             self.stage3()
@@ -55,4 +54,10 @@ class MeatBall(Node):
         
         else:
             self.animation.set_state("wiggle")
+
+        if mask_collision(self.hitmask.sprite, player_sprite):
+            damage_direction = diff_vec(
+                player_sprite.rect.center, self.sprite.rect.center
+            ).normalize()
+            player_sprite.signal(['damage', 1, damage_direction])
 

@@ -10,7 +10,7 @@ children:
     default_state: wiggle
   
   - id: hitmask
-    type: HitMask2
+    type: HitMask3
     sibling: animation
     kind: mask
     datafile: base_mask.json
