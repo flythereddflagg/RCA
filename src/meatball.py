@@ -54,10 +54,10 @@ class MeatBall(Node):
         
         else:
             self.animation.set_state("wiggle")
-
+        # TODO -1- make it so you don't continually take damage (IFRAMES)
         if mask_collision(self.hitmask.sprite, player_sprite):
             damage_direction = diff_vec(
-                player_sprite.rect.center, self.sprite.rect.center
+                player_sprite.rect.center, self.hitmask.sprite.mask.centroid()
             ).normalize()
             player_sprite.signal(['damage', 1, damage_direction])
 
