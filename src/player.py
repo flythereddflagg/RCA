@@ -95,15 +95,12 @@ class Player(Node):
         # split damage into knockback and other various states that need to be applied
 
 
-    def signal(self, signal):
-        self.signals.append(signal)
-
 
     def check_signals(self):
-        for signal in self.signals:
-            if "damage" in signal[0]:
-                self.inventory.change_health(-signal[1])
-                self.damage_direction = signal[2]
+        for name, value, other in self.signals:
+            if "damage" in name and self.state != "damage":
+                self.inventory.change_health(-value)
+                self.damage_direction = other
                 self.state = 'damage'
 
         self.signals = [] # reset signals

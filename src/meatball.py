@@ -17,7 +17,23 @@ class MeatBall(Node):
         self.state = "stage1"
         self.animation.set_state(self.state)
         self.cur_action = 4
+        self.hp = 20
     
+
+    def signal(self, signal_):
+        self.signals.append(signal_)
+
+    
+    def check_signals(self):
+        for name, value, other in self.signals:
+            if "damage" in name and self.state != "damage":
+                self.hp -= value
+                self.damage_direction = other
+                self.state = 'damage'
+
+        self.signals = [] # reset signals
+
+
     def update(self):
         player = self.scene.get_player().parent
         if player.inventory.contains("sword"):
@@ -44,6 +60,7 @@ class MeatBall(Node):
             # self.move(3, speed=25)
 
     def stage3(self):
+        self.check_signals()
         player_sprite = self.scene.get_player()
         if (
             vec(self.sprite.rect.center).distance_squared_to(
@@ -54,10 +71,13 @@ class MeatBall(Node):
         
         else:
             self.animation.set_state("wiggle")
-        # TODO -1- make it so you don't continually take damage (IFRAMES)
+
         if mask_collision(self.hitmask.sprite, player_sprite):
             damage_direction = diff_vec(
                 player_sprite.rect.center, self.hitmask.sprite.mask.centroid()
             ).normalize()
             player_sprite.signal(['damage', 1, damage_direction])
+        
+        if self.hp <= 0:
+            self.kill()
 

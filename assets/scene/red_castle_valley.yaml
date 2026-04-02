@@ -35,7 +35,7 @@ nodes: # all children are nodes
   #   groups: [foreground, solid, paused]
   - yaml: ./assets/actor/meatball.yaml
     start: [700, 200]
-    groups: [foreground]
+    groups: [foreground, foe]
   
   - id: jar of pickles
     type: Item
