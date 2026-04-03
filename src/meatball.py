@@ -18,6 +18,7 @@ class MeatBall(Node):
         self.animation.set_state(self.state)
         self.cur_action = 4
         self.hp = 20
+        self.signals = []
     
 
     def signal(self, signal_):

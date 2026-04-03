@@ -18,5 +18,5 @@ children:
   - id: hurtmask
     type: HitMask3
     sibling: animation
-    kind: mask
+    kind: hurtmask
     datafile: base_mask.json
