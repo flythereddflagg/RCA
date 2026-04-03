@@ -68,12 +68,12 @@ nodes: # all children are nodes
     groups:
      - foreground
 
-  # - id: ossifrage 1
-  #   yaml: ./assets/actor/ossifrage.yaml
-  #   start: [835,506]
-  #   groups:
-  #     - foreground
-  #     - foe
+  - id: ossifrage 1
+    yaml: ./assets/actor/ossifrage.yaml
+    start: [835,506]
+    groups:
+      - foreground
+      - foe
   - id: sword
     type: Item
     action: sword

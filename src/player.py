@@ -113,6 +113,7 @@ class Player(Node):
             getattr(sprite, "hurtmask", sprite).sprite
             for sprite in self.scene.groups['foe']
         ]
+        print([s.id for s in hurt_sprites])
         for sprite in list_collided(self.hitmask.sprite, hurt_sprites):
             if getattr(sprite, "state", "") == 'damage': continue
             damage_direction = diff_vec(
