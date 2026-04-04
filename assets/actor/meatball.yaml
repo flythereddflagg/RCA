@@ -20,3 +20,4 @@ children:
     sibling: animation
     kind: hurtmask
     datafile: base_mask.json
+    groups: [foe]

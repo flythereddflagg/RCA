@@ -7,6 +7,7 @@ from .movement import Movement
 
 from .node import Node
 from .tools import vec, mask_collision, diff_vec
+from .compass import Compass
 
 DIST_SQR_AGRO = 100**2
 
@@ -19,6 +20,7 @@ class MeatBall(Node):
         self.cur_action = 4
         self.hp = 20
         self.signals = []
+        self.agro = False
     
 
     def signal(self, signal_):
@@ -27,6 +29,7 @@ class MeatBall(Node):
     
     def check_signals(self):
         for name, value, other in self.signals:
+            print(f"{self.id} got <{[name, value, other]}>")
             if "damage" in name and self.state != "damage":
                 self.hp -= value
                 self.damage_direction = other
@@ -36,14 +39,15 @@ class MeatBall(Node):
 
 
     def update(self):
-        player = self.scene.get_player().parent
-        if player.inventory.contains("sword"):
-            self.stage3()
-            return
-        elif player.inventory.contains("shovel"):
-            self.state = "stage2"
-            self.animation.set_state(self.state)
-        self.random_movement()
+        self.stage3()
+        # player = self.scene.get_player().parent
+        # if player.inventory.contains("sword"):
+        #     self.stage3()
+        #     return
+        # elif player.inventory.contains("shovel"):
+        #     self.state = "stage2"
+        #     self.animation.set_state(self.state)
+        # self.random_movement()
 
         
     def random_movement(self):
@@ -69,6 +73,7 @@ class MeatBall(Node):
             ) < DIST_SQR_AGRO
         ):
             self.animation.set_state("throw")
+            self.agro = True
         
         else:
             self.animation.set_state("wiggle")
@@ -79,6 +84,20 @@ class MeatBall(Node):
             ).normalize()
             player_sprite.signal(['damage', 1, damage_direction])
         
+        if self.agro:
+            self.chase_player()
+
         if self.hp <= 0:
             self.kill()
 
+
+    def chase_player(self):
+        player_sprite = self.scene.get_player()
+        to_move = diff_vec(
+            player_sprite.rect.center, 
+            # self.hitmask.sprite.mask.centroid()
+            self.sprite.rect.center
+        ).normalize()
+        print(to_move)
+        # breakpoint()
+        self.move(Compass.unit_vector(to_move), speed=35)
