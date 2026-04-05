@@ -21,6 +21,7 @@ class MeatBall(Node):
         self.hp = 20
         self.signals = []
         self.agro = False
+        self.stage3 = False
     
 
     def signal(self, signal_):
@@ -80,7 +81,9 @@ class MeatBall(Node):
 
         if mask_collision(self.hitmask.sprite, player_sprite):
             damage_direction = diff_vec(
-                player_sprite.rect.center, self.hitmask.sprite.mask.centroid()
+                player_sprite.rect.center, 
+                vec(self.hitmask.sprite.mask.centroid())
+                + vec(self.sprite.rect.topleft)
             ).normalize()
             player_sprite.signal(['damage', 1, damage_direction])
         
@@ -95,9 +98,8 @@ class MeatBall(Node):
         player_sprite = self.scene.get_player()
         to_move = diff_vec(
             player_sprite.rect.center, 
-            # self.hitmask.sprite.mask.centroid()
-            self.sprite.rect.center
-        ).normalize()
-        print(to_move)
-        # breakpoint()
+            vec(self.hitmask.sprite.mask.centroid())
+            + vec(self.sprite.rect.topleft)
+            # self.sprite.rect.center
+        )
         self.move(Compass.unit_vector(to_move), speed=35)

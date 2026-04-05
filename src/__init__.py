@@ -15,6 +15,8 @@ from .scene import Scene
 from .tools import load_yaml, save_yaml, vec, diff_vec
 from .input import Input
 from .hitmask import HitMask
+from .hitmask2 import HitMask2
+from .hitmask3 import HitMask3
 from .textbox import TextBox
 
 BLACK = (0, 0, 0)
@@ -323,10 +325,14 @@ class Engine():
         color = (
             (
                 RGBA_GREEN 
-                if sprite.parent.init['kind'] == "hitmask" else
+                if sprite.parent.init.get('kind') == "hitmask" else
                 RGBA_RED
             ) 
-            if isinstance(sprite.parent, HitMask)
+            if any([
+                isinstance(sprite.parent, HitMask),
+                isinstance(sprite.parent, HitMask2),
+                isinstance(sprite.parent, HitMask3),
+            ])
             else RGBA_BLUE
         )
         self.draw_surface.blit(
