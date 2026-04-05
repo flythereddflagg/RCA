@@ -21,3 +21,10 @@ children:
     kind: hurtmask
     datafile: base_mask.json
     groups: [foe]
+  
+  - id: blockage
+    type: Decal
+    image: ./assets/block/block.png
+    mask: ./assets/block/block.png
+    start: [885,91]
+    scale: 1

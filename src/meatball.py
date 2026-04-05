@@ -21,7 +21,7 @@ class MeatBall(Node):
         self.hp = 20
         self.signals = []
         self.agro = False
-        self.stage3 = False
+        self.stage3_go = False
     
 
     def signal(self, signal_):
@@ -30,25 +30,49 @@ class MeatBall(Node):
     
     def check_signals(self):
         for name, value, other in self.signals:
-            print(f"{self.id} got <{[name, value, other]}>")
             if "damage" in name and self.state != "damage":
                 self.hp -= value
                 self.damage_direction = other
                 self.state = 'damage'
+                print(f"Meatball took damage {value}")
+                # TODO -1- damage animation made
 
         self.signals = [] # reset signals
 
 
     def update(self):
-        self.stage3()
-        # player = self.scene.get_player().parent
-        # if player.inventory.contains("sword"):
-        #     self.stage3()
-        #     return
-        # elif player.inventory.contains("shovel"):
-        #     self.state = "stage2"
-        #     self.animation.set_state(self.state)
-        # self.random_movement()
+        if self.stage3_go:
+            self.stage3()
+            return
+        player = self.scene.get_player().parent
+        if player.inventory.contains("sword"):
+            if self.animation.state == "stage1":
+                self.state = "stage2"
+                self.animation.set_state(self.state)
+            self.blockage.kill()
+            self.scene.place_node(
+                self.blockage, 
+                start=(
+                    vec(self.blockage.init['start'])
+                    + vec(self.scene.background.sprites()[0].rect.topleft)
+                ),
+                groups=["foreground", "solid"]
+            )
+            if (
+                vec(self.sprite.rect.center).distance_squared_to(
+                    player.sprite.rect.center
+                ) < DIST_SQR_AGRO
+                and self.state == "stage2"
+            ):
+                self.state = "transition"
+                self.animation.set_state(self.state)
+            elif self.animation.state == "wiggle":
+                self.stage3_go = True
+            return
+        elif player.inventory.contains("shovel"):
+            self.state = "stage2"
+            self.animation.set_state(self.state)
+        self.random_movement()
 
         
     def random_movement(self):
@@ -87,7 +111,7 @@ class MeatBall(Node):
             ).normalize()
             player_sprite.signal(['damage', 1, damage_direction])
         
-        if self.agro:
+        if self.agro and self.animation.state == "wiggle":
             self.chase_player()
 
         if self.hp <= 0:
