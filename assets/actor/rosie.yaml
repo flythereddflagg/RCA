@@ -54,8 +54,8 @@ sequence:
   - talking_head: rosie_talk
     text: |-
       Oh thanks for the Tupperware! 
-    # I need to get these in the fridge now! You 
-    # listen to me Robbie Hart, you're going to be a fine husband!
+      I need to get these in the fridge now! You 
+      listen to me Robbie Hart, you're going to be a fine husband!
 
   - talking_head: larry_talk
     text: |-
