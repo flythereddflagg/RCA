@@ -23,8 +23,13 @@ children:
     groups: [foe]
   
   - id: blockage
-    type: Decal
-    image: ./assets/block/block.png
-    mask: ./assets/block/block.png
-    start: [885,91]
+    type: Blockage
+    mask: ./assets/actor/meat_ball/blockage_mask.png
+    start: [870,80]
     scale: 1
+    children:
+      - id: animation
+        type: Animation3
+        path_prefix: ./assets/actor/meat_ball/
+        datafile: blockage.json
+        default_state: still

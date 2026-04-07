@@ -56,7 +56,7 @@ class MeatBall(Node):
                     vec(self.blockage.init['start'])
                     + vec(self.scene.background.sprites()[0].rect.topleft)
                 ),
-                groups=["foreground", "solid"]
+                groups=["foreground"]
             )
             if (
                 vec(self.sprite.rect.center).distance_squared_to(
