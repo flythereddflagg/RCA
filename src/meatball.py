@@ -35,7 +35,6 @@ class MeatBall(Node):
                 self.damage_direction = other
                 self.animation.set_state("damage")
                 print(f"Meatball took damage {value}")
-                # TODO -1- get damage direction to act like it
 
         self.signals = [] # reset signals
 
@@ -132,8 +131,9 @@ class MeatBall(Node):
 
     def apply_physics(self):
         if self.animation.state == 'damage':
+            print(f"MOVING BACK!{self.damage_direction}")
             self.move(
-                self.damage_direction, 
+                Compass.unit_vector(self.damage_direction), 
                 speed=2*BASE_SPEED, 
                 change_direction=False
             )
