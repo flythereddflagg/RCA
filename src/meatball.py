@@ -10,15 +10,15 @@ from .tools import vec, mask_collision, diff_vec
 from .compass import Compass
 
 DIST_SQR_AGRO = 100**2
+BASE_SPEED = 25
 
 class MeatBall(Node):
     def setup(self):
         self.last_time = 0
         self.move = Movement(self.sprite, hitmask_sprite = self.hitmask.sprite)
-        self.state = "stage1"
-        self.animation.set_state(self.state)
+        self.animation.set_state("stage1")
         self.cur_action = 4
-        self.hp = 20
+        self.hp = 30
         self.signals = []
         self.agro = False
         self.stage3_go = False
@@ -30,25 +30,25 @@ class MeatBall(Node):
     
     def check_signals(self):
         for name, value, other in self.signals:
-            if "damage" in name and self.state != "damage":
+            if "damage" in name and self.animation.state != "damage":
                 self.hp -= value
                 self.damage_direction = other
-                self.state = 'damage'
+                self.animation.set_state("damage")
                 print(f"Meatball took damage {value}")
-                # TODO -1- damage animation made
+                # TODO -1- get damage direction to act like it
 
         self.signals = [] # reset signals
 
 
     def update(self):
+        print(self.animation.state)
         if self.stage3_go:
             self.stage3()
             return
         player = self.scene.get_player().parent
         if player.inventory.contains("sword"):
             if self.animation.state == "stage1":
-                self.state = "stage2"
-                self.animation.set_state(self.state)
+                self.animation.set_state("stage2")
             self.blockage.kill()
             self.scene.place_node(
                 self.blockage, 
@@ -62,16 +62,14 @@ class MeatBall(Node):
                 vec(self.sprite.rect.center).distance_squared_to(
                     player.sprite.rect.center
                 ) < DIST_SQR_AGRO
-                and self.state == "stage2"
+                and self.animation.state == "stage2"
             ):
-                self.state = "transition"
-                self.animation.set_state(self.state)
+                self.animation.set_state("transition")
             elif self.animation.state == "wiggle":
                 self.stage3_go = True
             return
-        elif player.inventory.contains("shovel"):
-            self.state = "stage2"
-            self.animation.set_state(self.state)
+        elif player.inventory.contains("shovel"): 
+            self.animation.set_state("stage2")
         self.random_movement()
 
         
@@ -84,15 +82,16 @@ class MeatBall(Node):
         if self.cur_action == 4:
             return
         else:
-            self.move(self.cur_action, speed=25)
-            # self.move(self.cur_action+random.choice([-1,1]), speed=25)
-            self.move(self.cur_action+1, speed=25)
-            # self.move(3, speed=25)
+            self.move(self.cur_action, speed=BASE_SPEED)
+            # self.move(self.cur_action+random.choice([-1,1]), speed=BASE_SPEED)
+            self.move(self.cur_action+1, speed=BASE_SPEED)
+            # self.move(3, speed=BASE_SPEED)
 
     def stage3(self):
         self.check_signals()
         player_sprite = self.scene.get_player()
         if (
+            self.animation.state == "wiggle" and 
             vec(self.sprite.rect.center).distance_squared_to(
                 player_sprite.rect.center
             ) < DIST_SQR_AGRO
@@ -100,8 +99,7 @@ class MeatBall(Node):
             self.animation.set_state("throw")
             self.agro = True
         
-        else:
-            self.animation.set_state("wiggle")
+
 
         if mask_collision(self.hitmask.sprite, player_sprite):
             damage_direction = diff_vec(
@@ -116,6 +114,9 @@ class MeatBall(Node):
 
         if self.hp <= 0:
             self.kill()
+        
+        self.apply_physics()
+
 
 
     def chase_player(self):
@@ -127,3 +128,12 @@ class MeatBall(Node):
             # self.sprite.rect.center
         )
         self.move(Compass.unit_vector(to_move), speed=35)
+
+
+    def apply_physics(self):
+        if self.animation.state == 'damage':
+            self.move(
+                self.damage_direction, 
+                speed=2*BASE_SPEED, 
+                change_direction=False
+            )
