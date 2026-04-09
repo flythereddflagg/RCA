@@ -22,7 +22,10 @@ class MeatBall(Node):
         self.signals = []
         self.agro = False
         self.stage3_go = False
-    
+        self.already_throwing = False
+        self.throwtime = 1120 #ms
+        self.ball_direction = (1, 0)
+        self.ball_speed = 500
 
     def signal(self, signal_):
         self.signals.append(signal_)
@@ -89,6 +92,27 @@ class MeatBall(Node):
     def stage3(self):
         self.check_signals()
         player_sprite = self.scene.get_player()
+        if self.animation.state == "throw" and not self.already_throwing:
+            self.already_throwing = True
+            self.starttime = pg.time.get_ticks()
+        elif self.animation.state != "throw":
+            self.already_throwing = False
+        
+        if (
+            self.already_throwing 
+            and (pg.time.get_ticks() - self.starttime) > self.starttime
+        ):
+            self.scene.place_node(self.justball, groups=["foreground"], start=self.sprite.rect.midleft)
+            self.justball.animation.set_state("rollin")
+        
+        
+        if self.justball in self.scene.active_nodes:
+            self.justball.sprite.rect.move_ip(*(vec(self.ball_direction).normalize*() * (500/90)))
+
+        if not self.justball.sprite.rect.colliderect(self.scene.game.draw_surface.get_rect()):
+            self.justball.kill()
+        # TODO -1- work on meatball throw
+
         if (
             self.animation.state == "wiggle" and 
             vec(self.sprite.rect.center).distance_squared_to(
@@ -97,8 +121,6 @@ class MeatBall(Node):
         ):
             self.animation.set_state("throw")
             self.agro = True
-        
-
 
         if mask_collision(self.hitmask.sprite, player_sprite):
             damage_direction = diff_vec(
@@ -131,7 +153,6 @@ class MeatBall(Node):
 
     def apply_physics(self):
         if self.animation.state == 'damage':
-            print(f"MOVING BACK!{self.damage_direction}")
             self.move(
                 Compass.unit_vector(self.damage_direction), 
                 speed=2*BASE_SPEED, 
