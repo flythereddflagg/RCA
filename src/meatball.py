@@ -23,6 +23,7 @@ class MeatBall(Node):
         self.agro = False
         self.stage3_go = False
         self.already_throwing = False
+        self.thrown = True
         self.throwtime = 1120 #ms
         self.ball_direction = (1, 0)
         self.ball_speed = 500
@@ -43,7 +44,6 @@ class MeatBall(Node):
 
 
     def update(self):
-        print(self.animation.state)
         if self.stage3_go:
             self.stage3()
             return
@@ -92,27 +92,7 @@ class MeatBall(Node):
     def stage3(self):
         self.check_signals()
         player_sprite = self.scene.get_player()
-        if self.animation.state == "throw" and not self.already_throwing:
-            self.already_throwing = True
-            self.starttime = pg.time.get_ticks()
-        elif self.animation.state != "throw":
-            self.already_throwing = False
-        
-        if (
-            self.already_throwing 
-            and (pg.time.get_ticks() - self.starttime) > self.starttime
-        ):
-            self.scene.place_node(self.justball, groups=["foreground"], start=self.sprite.rect.midleft)
-            self.justball.animation.set_state("rollin")
-        
-        
-        if self.justball in self.scene.active_nodes:
-            self.justball.sprite.rect.move_ip(*(vec(self.ball_direction).normalize*() * (500/90)))
-
-        if not self.justball.sprite.rect.colliderect(self.scene.game.draw_surface.get_rect()):
-            self.justball.kill()
-        # TODO -1- work on meatball throw
-
+        self.throw_update()
         if (
             self.animation.state == "wiggle" and 
             vec(self.sprite.rect.center).distance_squared_to(
@@ -137,6 +117,36 @@ class MeatBall(Node):
             self.kill()
         
         self.apply_physics()
+
+
+    def throw_update(self):
+        player_sprite = self.scene.get_player()
+        if self.animation.state == "throw" and not self.already_throwing:
+            self.already_throwing = True
+            self.starttime = pg.time.get_ticks()
+            self.thrown = False
+        elif self.animation.state != "throw":
+            self.already_throwing = False
+
+        if (
+            self.already_throwing 
+            and not self.thrown
+            and (pg.time.get_ticks() - self.starttime) > self.throwtime
+        ):
+            print("throwing the ball")
+            self.scene.place_node(self.justball, groups=["foreground"], start=self.sprite.rect.midleft)
+            self.justball.animation.set_state("rollin")
+            self.ball_direction = vec(player_sprite.rect.center) - vec(self.justball.rect.center)
+            self.thrown = True
+
+        
+        
+        if self.justball in self.scene.active_nodes:
+            self.justball.sprite.rect.move_ip(*(vec(self.ball_direction).normalize() * (500/90)))
+
+        if not self.justball.sprite.rect.colliderect(self.scene.game.draw_surface.get_rect()):
+            self.justball.kill()
+
 
 
 
