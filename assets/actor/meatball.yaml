@@ -36,6 +36,7 @@ children:
   
   - id: justball
     type: Decal
+    mask: ./assets/actor/meat_ball/just_ball_mask.png
     active: false
     children:
     - id: animation

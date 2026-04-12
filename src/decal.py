@@ -128,3 +128,7 @@ class Decal(Node):
             return pg.mask.Mask(size=(32, 32), fill=False)
 
         return pg.surface.Surface((32, 32), flags=pg.SRCALPHA)
+
+    def kill(self):
+        self.rect.topleft = self.scene.background.sprites()[0].sprite.rect.topleft
+        super().kill()

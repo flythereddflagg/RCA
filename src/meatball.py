@@ -6,7 +6,7 @@ import random
 from .movement import Movement
 
 from .node import Node
-from .tools import vec, mask_collision, diff_vec
+from .tools import vec, mask_collision, diff_vec, list_collided
 from .compass import Compass
 
 DIST_SQR_AGRO = 100**2
@@ -27,6 +27,10 @@ class MeatBall(Node):
         self.throwtime = 1120 #ms
         self.ball_direction = (1, 0)
         self.ball_speed = 500
+        self.throw_timer = 0
+        self.random_throw = 500
+        self.chance_of_throw = 0.05
+        self.vunerable = False
 
     def signal(self, signal_):
         self.signals.append(signal_)
@@ -34,7 +38,11 @@ class MeatBall(Node):
     
     def check_signals(self):
         for name, value, other in self.signals:
-            if "damage" in name and self.animation.state != "damage":
+            if (
+                "damage" in name 
+                and self.animation.state != "damage" 
+                and self.vunerable
+            ):
                 self.hp -= value
                 self.damage_direction = other
                 self.animation.set_state("damage")
@@ -112,13 +120,18 @@ class MeatBall(Node):
         
         if self.agro and self.animation.state == "wiggle":
             self.chase_player()
+            if (pg.time.get_ticks() - self.throw_timer) > self.random_throw:
+                self.throw_timer = pg.time.get_ticks()
+                print("testing random throw")
+                if random.random() < self.chance_of_throw:
+                    print("throwing")
+                    self.animation.set_state("throw")
 
+        self.apply_physics()
         if self.hp <= 0:
             self.kill()
         
-        self.apply_physics()
-
-
+        
     def throw_update(self):
         player_sprite = self.scene.get_player()
         if self.animation.state == "throw" and not self.already_throwing:
@@ -127,25 +140,28 @@ class MeatBall(Node):
             self.thrown = False
         elif self.animation.state != "throw":
             self.already_throwing = False
+            self.vunerable = False
 
         if (
             self.already_throwing 
             and not self.thrown
             and (pg.time.get_ticks() - self.starttime) > self.throwtime
         ):
-            print("throwing the ball")
+            # print("throwing the ball")
             self.scene.place_node(self.justball, groups=["foreground"], start=self.sprite.rect.midleft)
             self.justball.animation.set_state("rollin")
             self.ball_direction = vec(player_sprite.rect.center) - vec(self.justball.rect.center)
             self.thrown = True
+            self.vunerable = True
 
         
         
-        if self.justball in self.scene.active_nodes:
+        if self.justball.sprite.alive:
             self.justball.sprite.rect.move_ip(*(vec(self.ball_direction).normalize() * (500/90)))
 
         if not self.justball.sprite.rect.colliderect(self.scene.game.draw_surface.get_rect()):
             self.justball.kill()
+            self.vunerable = False
 
 
 
@@ -168,3 +184,18 @@ class MeatBall(Node):
                 speed=2*BASE_SPEED, 
                 change_direction=False
             )
+        if self.justball.sprite.alive:
+            for sprite in list_collided(
+                self.justball.sprite, 
+                self.scene.groups["player"]
+            ):
+                damage_direction = diff_vec(
+                        sprite.rect.center, 
+                        self.justball.sprite.rect.center
+                ).normalize()
+                sprite.signal([
+                    'damage', 1, damage_direction
+                ])
+                self.justball.kill()
+
+
