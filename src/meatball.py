@@ -148,9 +148,16 @@ class MeatBall(Node):
             and (pg.time.get_ticks() - self.starttime) > self.throwtime
         ):
             # print("throwing the ball")
-            self.scene.place_node(self.justball, groups=["foreground"], start=self.sprite.rect.midleft)
+            self.scene.place_node(
+                self.justball, 
+                groups=["foreground"], 
+                start=self.sprite.rect.midleft
+            )
             self.justball.animation.set_state("rollin")
-            self.ball_direction = vec(player_sprite.rect.center) - vec(self.justball.rect.center)
+            self.ball_direction = (
+                vec(player_sprite.rect.center) 
+                - vec(self.justball.rect.center)
+            )
             self.thrown = True
             self.vunerable = True
 
