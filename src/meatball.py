@@ -162,7 +162,6 @@ class MeatBall(Node):
             self.vunerable = True
 
         
-        
         if self.justball.sprite.alive:
             self.justball.sprite.rect.move_ip(*(vec(self.ball_direction).normalize() * (500/90)))
 

@@ -12,13 +12,13 @@ class Music(Node):
             and not self.scene.game.settings["MUSIC"]
         ):
             return
-        self.filename = self.init.get("filename")
-        assert self.filename, "No filename given"
+        self.filename = self.init.get("filename", "")
+        # assert self.filename, "No filename given"
         self.measure_counter = 0.0
         # total measures that have played per music.get_pos
         self.last_update = 0.0 
-        self.measure_time = 1.846
         seq_list = self.init.get("sequence")
+        self.playlist = self.init.get("playlist", [])
         if seq_list is not None:
             self.sequence = iter(seq_list)
             self.cur = next(self.sequence)
@@ -28,9 +28,9 @@ class Music(Node):
             self.cur = None
             self.measure_time = None
 
-
-        pg.mixer.music.load(self.filename)
-        pg.mixer.music.play(-1, fade_ms=1000)
+        if self.filename:
+            pg.mixer.music.load(self.filename)
+            pg.mixer.music.play(-1, fade_ms=1000)
  
     
     def update(self):
@@ -64,10 +64,12 @@ class Music(Node):
             #     target * self.measure_time
             # )
             if action == "goto":
-                pg.mixer.music.rewind()
-                pg.mixer.music.set_pos(target * self.measure_time)
+                goto(target * self.measure_time)
 
 
+    def goto(time):
+        pg.mixer.music.rewind()
+        pg.mixer.music.set_pos(time)
 
     def deconstruct(self):
         self.stop()
