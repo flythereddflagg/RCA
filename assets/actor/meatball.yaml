@@ -48,6 +48,10 @@ children:
   - id: music
     type: Music
     filename: ./assets/music/dim_on_top_of_spagoot.mp3
-    sequence:
-      - [15.671, goto, 0.0]
+    tags:
+      dim: 15.671
+      terror: 39.950
+      fight: 42.142
+      fight_loop: 98.903
+      victory: 100.837
       
