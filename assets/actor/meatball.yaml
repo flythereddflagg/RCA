@@ -1,5 +1,12 @@
 id: meatball
 type: MeatBall
+music_file: ./assets/music/dim_on_top_of_spagoot.mp3
+music_tags:
+  dim: 15.671
+  terror: 39.950
+  fight: 42.142
+  fight_loop: 98.903
+  victory: 100.837
 children:
   - id: sprite
     type: Decal
@@ -44,14 +51,5 @@ children:
       path_prefix: ./assets/actor/meat_ball/
       datafile: just_ball.json
       default_state: still
-  
-  - id: music
-    type: Music
-    filename: ./assets/music/dim_on_top_of_spagoot.mp3
-    tags:
-      dim: 15.671
-      terror: 39.950
-      fight: 42.142
-      fight_loop: 98.903
-      victory: 100.837
+
       

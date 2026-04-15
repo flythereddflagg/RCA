@@ -13,25 +13,11 @@ class Music(Node):
         ):
             return
         self.filename = self.init.get("filename", "")
-        # assert self.filename, "No filename given"
-        self.measure_counter = 0.0
-        # total measures that have played per music.get_pos
-        self.last_update = 0.0 
-        seq_list = self.init.get("sequence")
-        self.playlist = self.init.get("playlist", [])
-        if seq_list is not None:
-            self.sequence = iter(seq_list)
-            self.cur = next(self.sequence)
-            self.measure_time = self.init.get("measure_time", 1.0)
-        else:
-            self.sequence = None
-            self.cur = None
-            self.measure_time = None
-
         if self.filename:
-            pg.mixer.music.load(self.filename)
-            pg.mixer.music.play(-1, fade_ms=1000)
- 
+            self.load_play()
+        
+
+
     
     def update(self):
         if (
@@ -40,41 +26,48 @@ class Music(Node):
         ):
             return
         pg.mixer.music.set_volume(self.scene.game.music_volume / 10)
-        if self.sequence is None: return
-        
-        ms_elapsed = pg.mixer.music.get_pos()
-        self.measure_counter = (
-            ms_elapsed
-            / 1000.0 
-            / self.measure_time
-        ) - self.last_update
-        # print(self.measure_counter)
-        if self.measure_counter >= self.cur[0]:
-            trigger, action, target = self.cur
-            next_ = next(self.sequence, None)
-            self.cur = self.cur if next_ is None else next_
-            self.last_update = (
-                ms_elapsed
-                / 1000.0 
-                / self.measure_time
-            )
-            # print(
-            #     trigger, action, target, 
-            #     self.measure_time, 
-            #     target * self.measure_time
-            # )
-            if action == "goto":
-                goto(target * self.measure_time)
 
+        if (
+            self.loop_after > 0 
+            and (pg.time.get_ticks() - self.start_time)/1000 > self.loop_after
+        ):
+            self.goto(self.then_goto)
+            self.start_time = pg.time.get_ticks()
+            
 
     def goto(time):
         pg.mixer.music.rewind()
         pg.mixer.music.set_pos(time)
 
+
     def deconstruct(self):
         self.stop()
+
+
+    def load_play(filename, n_times=0, fade_ms):
+        self.filename = filename
+        pg.mixer.music.load(filename)
+        pg.mixer.music.play(n_times-1, fade_ms=fade_ms)
 
 
     def stop(self):
         pg.mixer.music.stop()
         pg.mixer.music.unload()
+    
+    
+    def play_loop(self, start, end):
+        self.goto(start)
+        self.then_goto = start
+        self.loop_after = end - start
+        self.start_time = pg.time.get_ticks()
+    
+
+    def exit_loop(self):
+        self.goto(self.then_goto + self.loop_after)
+        self.loop_off()
+    
+
+    def loop_off(self):
+        self.start_time = -1
+        self.loop_after = -1
+        self.then_goto = -1
