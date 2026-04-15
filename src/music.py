@@ -14,7 +14,7 @@ class Music(Node):
             return
         self.filename = self.init.get("filename", "")
         if self.filename:
-            self.load_play()
+            self.load_play(self.filename, n_times=0, fade_ms=1000)
         
 
 
