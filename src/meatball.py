@@ -31,6 +31,7 @@ class MeatBall(Node):
         self.random_throw = 500
         self.chance_of_throw = 0.05
         self.vunerable = False
+        self.music_node = None
 
     def signal(self, signal_):
         self.signals.append(signal_)
@@ -52,6 +53,8 @@ class MeatBall(Node):
 
 
     def update(self):
+        if self.music_node is None:
+            self.music_node = self.scene.node_by_id("music")
         if self.stage3_go:
             self.stage3()
             return

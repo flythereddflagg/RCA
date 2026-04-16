@@ -16,7 +16,9 @@ class Music(Node):
         if self.filename:
             self.load_play(self.filename, n_times=0, fade_ms=1000)
         
-
+        self.primary_loop = self.init.get("primary_loop", [])
+        self.loop_off()
+        self.start_time = pg.time.get_ticks()
 
     
     def update(self):
@@ -34,8 +36,15 @@ class Music(Node):
             self.goto(self.then_goto)
             self.start_time = pg.time.get_ticks()
             
+        elif (
+            self.primary_loop 
+            and (pg.time.get_ticks() - self.start_time)/1000 
+                > self.primary_loop[1]
+        ):
+            self.play_loop(*self.primary_loop)
 
-    def goto(time):
+
+    def goto(self, time):
         pg.mixer.music.rewind()
         pg.mixer.music.set_pos(time)
 
@@ -44,8 +53,7 @@ class Music(Node):
         self.stop()
 
 
-    def load_play(filename, n_times=0, fade_ms):
-        self.filename = filename
+    def load_play(self, filename, n_times=0, fade_ms=0):
         pg.mixer.music.load(filename)
         pg.mixer.music.play(n_times-1, fade_ms=fade_ms)
 
@@ -68,6 +76,5 @@ class Music(Node):
     
 
     def loop_off(self):
-        self.start_time = -1
         self.loop_after = -1
         self.then_goto = -1
