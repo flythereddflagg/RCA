@@ -35,7 +35,7 @@ nodes: # all children are nodes
   #   groups: [foreground, solid, paused]
   - yaml: ./assets/actor/meatball.yaml
     start: [700, 200]
-    groups: [foreground, foe]
+    groups: [foreground, foe, paused]
   
   - id: jar of pickles
     type: Item
@@ -45,8 +45,8 @@ nodes: # all children are nodes
     action: null
     groups:
       - foreground
-  - yaml: assets/actor/meatball.yaml
-    active: false
+  # - yaml: assets/actor/meatball.yaml
+  #   active: false
 
   # - id: wall
   #   type: Decal
@@ -162,7 +162,7 @@ nodes: # all children are nodes
     groups: 
      - behind
   
-  - id: red castle valley theme
+  - id: music
     type: Music
     filename: ./assets/music/red_castle_valley.mp3
     groups: [paused]

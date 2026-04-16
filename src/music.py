@@ -17,8 +17,7 @@ class Music(Node):
             self.load_play(self.filename, n_times=0, fade_ms=1000)
         
         self.primary_loop = self.init.get("primary_loop", [])
-        self.loop_off()
-        self.start_time = pg.time.get_ticks()
+        self.reset()
 
     
     def update(self):
@@ -30,16 +29,21 @@ class Music(Node):
         pg.mixer.music.set_volume(self.scene.game.music_volume / 10)
 
         if (
-            self.loop_after > 0 
-            and (pg.time.get_ticks() - self.start_time)/1000 > self.loop_after
+            self.end_after 
+            and self.current_loop_time() > self.loop_after
         ):
+            pg.mixer.music.stop()
+            self.reset()
+
+        elif (
+            self.loop_after > 0 
+            and self.current_loop_time() > self.loop_after):
             self.goto(self.then_goto)
             self.start_time = pg.time.get_ticks()
             
         elif (
             self.primary_loop 
-            and (pg.time.get_ticks() - self.start_time)/1000 
-                > self.primary_loop[1]
+            and self.current_loop_time() > self.primary_loop[1]
         ):
             self.play_loop(*self.primary_loop)
 
@@ -52,10 +56,13 @@ class Music(Node):
     def deconstruct(self):
         self.stop()
 
+    def current_loop_time(self):
+        return (pg.time.get_ticks() - self.start_time)/1000
 
     def load_play(self, filename, n_times=0, fade_ms=0):
         pg.mixer.music.load(filename)
         pg.mixer.music.play(n_times-1, fade_ms=fade_ms)
+        self.start_time = pg.time.get_ticks()
 
 
     def stop(self):
@@ -70,11 +77,17 @@ class Music(Node):
         self.start_time = pg.time.get_ticks()
     
 
+    def play_then_end(self, end):
+        self.end_after = True
+        self.loop_after = end - self.start_time
+
+
     def exit_loop(self):
         self.goto(self.then_goto + self.loop_after)
-        self.loop_off()
+        self.reset()
     
 
-    def loop_off(self):
+    def reset(self):
         self.loop_after = -1
         self.then_goto = -1
+        self.end_after = False

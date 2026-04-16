@@ -32,6 +32,7 @@ class MeatBall(Node):
         self.chance_of_throw = 0.05
         self.vunerable = False
         self.music_node = None
+        self.music_data = self.init["music"]
 
     def signal(self, signal_):
         self.signals.append(signal_)
@@ -53,6 +54,15 @@ class MeatBall(Node):
 
 
     def update(self):
+        if self.scene.paused and self.animation.state != "transition":
+            return
+        elif self.scene.paused and self.animation.state == "transition":
+            if not pg.mixer.music.get_busy():
+                pg.mixer.music.play()
+                self.music_node.goto(self.music_data["tags"]["terror"])
+            else:
+                self.animation.update()
+                return
         if self.music_node is None:
             self.music_node = self.scene.node_by_id("music")
         if self.stage3_go:
@@ -60,8 +70,12 @@ class MeatBall(Node):
             return
         player = self.scene.get_player().parent
         if player.inventory.contains("sword"):
+            # self.music_node.stop()
+            self.music_node.load_play(self.music_data["filename"])
+            self.music_node.play_loop(0.0, self.music_data["tags"]["dim"])
             if self.animation.state == "stage1":
                 self.animation.set_state("stage2")
+
             self.blockage.kill()
             self.scene.place_node(
                 self.blockage, 
@@ -78,6 +92,8 @@ class MeatBall(Node):
                 and self.animation.state == "stage2"
             ):
                 self.animation.set_state("transition")
+                self.scene.paused = True
+                self.music_node.play_then_end(self.music_data['tags']['terror'])
             elif self.animation.state == "wiggle":
                 self.stage3_go = True
             return

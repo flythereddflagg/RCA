@@ -1,7 +1,7 @@
 id: meatball
 type: MeatBall
 music:
-  file: ./assets/music/dim_on_top_of_spagoot.mp3
+  filename: ./assets/music/dim_on_top_of_spagoot.mp3
   tags:
     dim: 15.671
     terror: 39.950
