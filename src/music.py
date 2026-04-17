@@ -77,9 +77,9 @@ class Music(Node):
         self.start_time = pg.time.get_ticks()
     
 
-    def play_then_end(self, end):
+    def play_then_end(self, after):
         self.end_after = True
-        self.loop_after = end - self.start_time
+        self.loop_after = after
 
 
     def exit_loop(self):

@@ -42,7 +42,7 @@ children:
       - paused
       
   - id: select_menu
-    type: SelectMenu
+    type: SelectMenu # TODO -1- apparent bug here!
     groups:
       - paused
     font_size: 22

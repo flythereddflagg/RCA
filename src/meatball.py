@@ -33,6 +33,8 @@ class MeatBall(Node):
         self.vunerable = False
         self.music_node = None
         self.music_data = self.init["music"]
+        self.set_meatball_music = False
+        self.transition_started = False
 
     def signal(self, signal_):
         self.signals.append(signal_)
@@ -54,15 +56,6 @@ class MeatBall(Node):
 
 
     def update(self):
-        if self.scene.paused and self.animation.state != "transition":
-            return
-        elif self.scene.paused and self.animation.state == "transition":
-            if not pg.mixer.music.get_busy():
-                pg.mixer.music.play()
-                self.music_node.goto(self.music_data["tags"]["terror"])
-            else:
-                self.animation.update()
-                return
         if self.music_node is None:
             self.music_node = self.scene.node_by_id("music")
         if self.stage3_go:
@@ -71,8 +64,11 @@ class MeatBall(Node):
         player = self.scene.get_player().parent
         if player.inventory.contains("sword"):
             # self.music_node.stop()
-            self.music_node.load_play(self.music_data["filename"])
-            self.music_node.play_loop(0.0, self.music_data["tags"]["dim"])
+            if not self.set_meatball_music:
+                self.music_node.load_play(self.music_data["filename"])
+                self.music_node.play_loop(0.0, self.music_data["tags"]["dim"])
+                self.set_meatball_music = True
+
             if self.animation.state == "stage1":
                 self.animation.set_state("stage2")
 
@@ -90,10 +86,31 @@ class MeatBall(Node):
                     player.sprite.rect.center
                 ) < DIST_SQR_AGRO
                 and self.animation.state == "stage2"
+                and not self.transition_started
             ):
-                self.animation.set_state("transition")
-                self.scene.paused = True
-                self.music_node.play_then_end(self.music_data['tags']['terror'])
+                print("starting the terror!")
+
+                self.music_node.goto(self.music_data['tags']['dim'])
+                self.music_node.reset()
+                self.music_node.play_then_end(
+                    self.music_data['tags']['terror'] 
+                    - self.music_data['tags']['dim']
+                )
+                self.transition_started = True
+                self.transition_start_time = pg.time.get_ticks()
+            elif self.transition_started:
+                if (pg.time.get_ticks() - self.transition_start_time) > 3000:
+                    self.animation.set_state("transition")
+                if not pg.mixer.music.get_busy():
+                    self.transition_started = False
+                    self.music_node.reset()
+                    pg.mixer.music.play(-1)
+                    self.music_node.goto(self.music_data['tags']['terror'])
+                    self.music_node.start_time = pg.time.get_ticks()
+                    self.music_node.primary_loop = [
+                        self.music_data['tags']['fight'],
+                        self.music_data['tags']['fight_loop']
+                    ]
             elif self.animation.state == "wiggle":
                 self.stage3_go = True
             return
