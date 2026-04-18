@@ -7,11 +7,15 @@ from .node import Node
 class Music(Node):
 
     def setup(self):
+        self.reset()
         if (
             self.scene.game.settings["DEBUG"] 
             and not self.scene.game.settings["MUSIC"]
         ):
+            self.active = False
             return
+        else:
+            self.active = True
         self.filename = self.init.get("filename", "")
         n_times = self.init.get("n_times", 0)
         fade_ms = self.init.get("fade_ms", 0)
@@ -19,7 +23,7 @@ class Music(Node):
             self.load_play(self.filename, n_times=n_times, fade_ms=fade_ms)
         
         self.primary_loop = self.init.get("primary_loop", [])
-        self.reset()
+        
         self.reload_primary = False
         if self.primary_loop:
             self.play_loop(*self.primary_loop)
@@ -27,10 +31,9 @@ class Music(Node):
 
     
     def update(self):
-        if (
-            self.scene.game.settings["DEBUG"] 
-            and not self.scene.game.settings["MUSIC"]
-        ):
+        if not self.active:
+            if pg.mixer.music.get_busy():
+                self.stop()
             return
         pg.mixer.music.set_volume(self.scene.game.music_volume / 10)
 
@@ -58,6 +61,7 @@ class Music(Node):
 
 
     def goto(self, time):
+        if not self.active: return
         self.start = time
         pg.mixer.music.rewind()
         pg.mixer.music.set_pos(time)
@@ -68,10 +72,18 @@ class Music(Node):
         self.stop()
 
     def current_loop_time(self):
+        if not self.active: return
         return (pg.mixer.music.get_pos() - self.start_time)/1000
 
     def load_play(self, filename, n_times=1, fade_ms=0):
+        if not self.active: return
         pg.mixer.music.load(filename)
+        pg.mixer.music.play(n_times-1, fade_ms=fade_ms)
+        self.start_time = pg.mixer.music.get_pos()
+
+
+    def play(self, filename, n_times=1, fade_ms=0):
+        if not self.active: return
         pg.mixer.music.play(n_times-1, fade_ms=fade_ms)
         self.start_time = pg.mixer.music.get_pos()
 
@@ -82,6 +94,7 @@ class Music(Node):
     
     
     def play_loop(self, start, end, then_goto=-1):
+        if not self.active: return
         assert end > start, \
             f"{type(self)} Error: invalid start and end in play_loop"
         self.goto(start)
@@ -90,11 +103,13 @@ class Music(Node):
     
 
     def play_then_end(self, end):
+        if not self.active: return
         self.end_after = True
         self.end = end
 
 
     def exit_loop(self):
+        if not self.active: return
         self.goto(self.end)
         self.reset()
     

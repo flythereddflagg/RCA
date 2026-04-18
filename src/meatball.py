@@ -103,7 +103,7 @@ class MeatBall(Node):
                 if not pg.mixer.music.get_busy():
                     self.transition_started = False
                     self.music_node.reset()
-                    pg.mixer.music.play(1)
+                    self.music_node.play(1)
                     self.music_node.play_loop(
                         self.music_data['tags']['terror'],
                         self.music_data['tags']['fight_loop'],
