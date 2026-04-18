@@ -186,9 +186,17 @@ class Scene():
                 continue
             if node.parent is not None: continue
             init = node.init
-            if not init: continue # this may caus bugs
-            if init.get("start"):
-                assert node.sprite, f"Node {node} is missing its sprite!"
+            if not init: continue # this may cause bugs
+            
+            if node in self.active_nodes:
+                init['active'] = True
+            init["groups"] = self.node_in_groups(node)
+            for child in node.children:
+                init["groups"].extend(self.node_in_groups(child))
+            init["groups"] = list(set(init["groups"]))
+            
+
+            if node.sprite:
                 init["start"] = [int(i) for i in (
                     vec(node.sprite.rect.topleft) - 
                     vec(self.background.sprites()[0].rect.topleft)

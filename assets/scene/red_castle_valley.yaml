@@ -37,14 +37,14 @@ nodes: # all children are nodes
   #   start: [700, 200]
   #   groups: [foreground, foe, paused]
   
-  - id: jar of pickles
-    type: Item
-    image: ./assets/block/tupperware.png
-    mask: ./assets/block/tupperware.png
-    start: [701,136]
-    action: null
-    groups:
-      - foreground
+  # - id: jar of pickles
+  #   type: Item
+  #   image: ./assets/block/tupperware.png
+  #   mask: ./assets/block/tupperware.png
+  #   start: [701,136]
+  #   action: null
+  #   groups:
+  #     - foreground
   - yaml: assets/actor/meatball.yaml
     active: false
 
@@ -58,15 +58,15 @@ nodes: # all children are nodes
   #    - solid
   #    - foreground
 
-  - id: shovel
-    type: Item
-    image: ./assets/actor/item/shovel.png
-    mask: ./assets/actor/item/shovel.png
-    start: [800,200]
-    scale: 1
-    action: shovel
-    groups:
-     - foreground
+  # - id: shovel
+  #   type: Item
+  #   image: ./assets/actor/item/shovel.png
+  #   mask: ./assets/actor/item/shovel.png
+  #   start: [800,200]
+  #   scale: 1
+  #   action: shovel
+  #   groups:
+  #    - foreground
 
   # - id: ossifrage 1
   #   yaml: ./assets/actor/ossifrage.yaml
@@ -74,22 +74,22 @@ nodes: # all children are nodes
   #   groups:
   #     - foreground
   #     - foe
-  - id: sword
-    type: Item
-    action: sword
-    groups:
-    - foreground
-    image: ./assets/actor/item/sword_icon.png
-    mask: ./assets/actor/item/sword_icon.png
-    start: [500,100]
-  - id: cactus
-    type: Cactus
-    image: ./assets/block/cactus.png
-    mask: ./assets/block/cactus.png
-    start: [400,400]
-    scale: 1
-    groups: 
-     - foreground
+  # - id: sword
+  #   type: Item
+  #   action: sword
+  #   groups:
+  #   - foreground
+  #   image: ./assets/actor/item/sword_icon.png
+  #   mask: ./assets/actor/item/sword_icon.png
+  #   start: [500,100]
+  # - id: cactus
+  #   type: Cactus
+  #   image: ./assets/block/cactus.png
+  #   mask: ./assets/block/cactus.png
+  #   start: [400,400]
+  #   scale: 1
+  #   groups: 
+  #    - foreground
 
   - id: backpack
     type: Backpack
@@ -100,13 +100,14 @@ nodes: # all children are nodes
     groups: 
      - foreground
   
-  - id: coin
-    type: Coin
-    image: ./assets/block/coin.png
-    mask: ./assets/block/coin.png
-    groups: [foreground]
-    value: 1
-    start: [466, 323]
+  # - id: coin
+  #   type: Coin
+  #   image: ./assets/block/coin.png
+  #   mask: ./assets/block/coin.png
+  #   groups: [foreground]
+  #   value: 1
+  #   start: [466, 323]
+
   - groups: [foreground]
     id: rubble dirt
     # image: ./assets/block/soft_dirt.png

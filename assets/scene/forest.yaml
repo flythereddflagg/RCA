@@ -48,8 +48,8 @@ nodes:
   groups:
   - foreground
   id: jar of pickles
-  image: ./assets/block/jar_of_pickles.png
-  mask: ./assets/block/jar_of_pickles.png
+  image: ./assets/block/tupperware.png
+  mask: ./assets/block/tupperware.png
   start:
   - 51
   - 580
