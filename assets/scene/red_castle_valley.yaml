@@ -166,8 +166,8 @@ nodes: # all children are nodes
     type: Music
     filename: ./assets/music/red_castle_valley.mp3
     groups: [paused]
-    # playto end then set loop with start, end
-    primary_loop: [55.512, 107.197]
+    # start at, loop at, loop_to
+    primary_loop: [0.0, 107.197, 55.512]
     
 
   - id: camera

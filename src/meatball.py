@@ -104,13 +104,12 @@ class MeatBall(Node):
                 if not pg.mixer.music.get_busy():
                     self.transition_started = False
                     self.music_node.reset()
-                    pg.mixer.music.play(-1)
-                    self.music_node.goto(self.music_data['tags']['terror'])
-                    self.music_node.start_time = pg.time.get_ticks()
-                    self.music_node.primary_loop = [
-                        self.music_data['tags']['fight'],
-                        self.music_data['tags']['fight_loop']
-                    ]
+                    pg.mixer.music.play(0)
+                    self.music_node.play_loop(
+                        self.music_data['tags']['terror'],
+                        self.music_data['tags']['fight_loop'],
+                        self.music_data['tags']['fight']
+                    )
             elif self.animation.state == "wiggle":
                 self.stage3_go = True
             return
