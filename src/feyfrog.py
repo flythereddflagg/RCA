@@ -49,7 +49,7 @@ class FeyFrog(Decal):
         
         self.apply_action(self.action)
         self.check_signals()
-        self.animation.update() # this is probably not necessary but we will fix when I get to it. 
+        self.animation.update() # TODO -1- this is probably not necessary but we will fix when I get to it. 
         self.apply_physics()
         
 

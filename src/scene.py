@@ -51,6 +51,7 @@ class Scene():
         # guarentee background exists
         add_background_blank = False
         if "background" not in self.draw_layers:
+            add_background_blank = True
             self.draw_layers.insert(0, "background")
         # guarentee hud exists and is drawn last
         if "hud" not in self.draw_layers:
@@ -67,10 +68,14 @@ class Scene():
         self.hud = self.groups["hud"]
         
         # guarentee a blank background sprite if none exists.
-        self.place_node(Decal(self, id = BG_REF), ["background"])
-        self.bg_ref = self.background.sprites()[0]
+
+        if add_background_blank:
+            self.place_node(Decal(self, id = BG_REF), ["background"])
+        self.bg_ref = None
 
         for node_init in self.init.get("nodes"):
+            if not self.bg_ref and len(self.background.sprites()) > 0:
+                self.bg_ref = self.background.sprites()[0]
             node = node_from_dict(self, node_init)
             self.place_node(
                 node, 

@@ -105,10 +105,7 @@ class Rosie2(Decal):
                 )
                 self.scene.node_by_id("meatball").state = "stage1"
             self.move(direction="RIGHT", speed=25, reject_foreground=False)
-            bg_x = (
-                vec(self.sprite.rect.topleft)
-                - vec(self.scene.bg_ref.rect.topleft)
-            )[0]
+            bg_x = self.scene.get_bg_pos(self.sprite.rect.topleft)[0]
 
             if bg_x > EDGE_OF_CLIFF and self.sprite.rotation > -90:
                 self.sprite.rotation -= 1
