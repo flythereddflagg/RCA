@@ -38,7 +38,7 @@ class Edge(Decal):
             Compass.unit_vector(out_block.init["exit_dir"])
         )
         bg_pos = vec(
-            new_scene.background.sprites()[0].sprite.rect.topleft
+            new_scene.bg_ref.sprite.rect.topleft
         )
         new_scene.place_node(
             player, 

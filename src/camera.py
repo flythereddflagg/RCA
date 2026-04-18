@@ -25,8 +25,7 @@ class Camera(Node):
         if not player:
             # if there is no player, 
             # move the camera to put the background topleft at 0,0
-            background = self.scene.background.sprites()[0]
-            movex, movey = background.sprite.rect.topleft
+            movex, movey = self.scene.bg_ref.sprite.rect.topleft
             self.pan(movex, movey)
             return
         self.follow_player()
@@ -96,14 +95,12 @@ class Camera(Node):
 
     def stop_at_border(self):
         screen_w, screen_h = self.scene.game.draw_surface.get_size()
-        background = self.scene.background.sprites()[0]
 
         # if background is too small then just return without modifying
-        background_w, background_h = background.rect.size
+        background_w, background_h = self.scene.bg_ref.rect.size
         if background_w < screen_w or background_h < screen_h:
-            background = self.scene.background.sprites()[0]
             movex, movey = diff_vec(
-                background.sprite.rect.center,
+                self.scene.bg_ref.sprite.rect.center,
                 self.scene.game.get_center()
             )
             self.pan(movex, movey)
@@ -111,15 +108,15 @@ class Camera(Node):
     
 
         backx, backy = 0, 0
-        if background.rect.left > 0:
-            backx = background.rect.left
-        elif background.rect.right < screen_w:
-            backx = background.rect.right - screen_w
+        if self.scene.bg_ref.rect.left > 0:
+            backx = self.scene.bg_ref.rect.left
+        elif self.scene.bg_ref.rect.right < screen_w:
+            backx = self.scene.bg_ref.rect.right - screen_w
 
-        if background.rect.top > 0:
-            backy = background.rect.top
-        elif background.rect.bottom< screen_h:
-            backy = background.rect.bottom - screen_h
+        if self.scene.bg_ref.rect.top > 0:
+            backy = self.scene.bg_ref.rect.top
+        elif self.scene.bg_ref.rect.bottom< screen_h:
+            backy = self.scene.bg_ref.rect.bottom - screen_h
 
         self.pan(backx, backy)
 
@@ -135,17 +132,17 @@ class Camera(Node):
         if factor is None: return
         self.cur_zoom *= factor
         if self.cur_zoom == 0: self.cur_zoom = 1 # 0 resets scale
-        background = self.scene.background.sprites()[0]
+        background = self.scene.bg_ref
         screen_data = pg.display.Info()
         centerx = screen_data.current_w // 2
         centery = screen_data.current_h // 2
-        bg_w, bg_h = background.rect.size
-        bg_x, bg_y = background.rect.topleft
-        background.scale_by(factor)
-        bg_w_new, bg_h_new = background.rect.size
+        bg_w, bg_h = self.scene.bg_ref.rect.size
+        bg_x, bg_y = self.scene.bg_ref.rect.topleft
+        self.scene.bg_ref.scale_by(factor)
+        bg_w_new, bg_h_new = self.scene.bg_ref.rect.size
         bg_x_new = centerx - bg_w_new * (centerx - bg_x) / bg_w
         bg_y_new = centery - bg_h_new * (centery - bg_y) / bg_h
-        background.rect.topleft = (bg_x_new, bg_y_new)
+        self.scene.bg_ref.rect.topleft = (bg_x_new, bg_y_new)
 
         for group in self.mobile_groups:
             if group == 'background': continue

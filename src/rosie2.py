@@ -107,7 +107,7 @@ class Rosie2(Decal):
             self.move(direction="RIGHT", speed=25, reject_foreground=False)
             bg_x = (
                 vec(self.sprite.rect.topleft)
-                - vec(self.scene.background.sprites()[0].rect.topleft)
+                - vec(self.scene.bg_ref.rect.topleft)
             )[0]
 
             if bg_x > EDGE_OF_CLIFF and self.sprite.rotation > -90:

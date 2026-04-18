@@ -76,9 +76,8 @@ class MeatBall(Node):
             self.blockage.kill()
             self.scene.place_node(
                 self.blockage, 
-                start=(
-                    vec(self.blockage.init['start'])
-                    + vec(self.scene.background.sprites()[0].rect.topleft)
+                start=self.scene.set_bg_pos(
+                    self.blockage.init['start']
                 ),
                 groups=["foreground"]
             )

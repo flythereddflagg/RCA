@@ -7,6 +7,7 @@ from .tools import load_yaml, save_yaml, vec
 from .node import Node, node_from_dict
 from .decal import Decal
 
+BG_REF = "bg_ref"
 
 class SpriteGroup(pg.sprite.Group):
 
@@ -50,7 +51,6 @@ class Scene():
         # guarentee background exists
         add_background_blank = False
         if "background" not in self.draw_layers:
-            add_background_blank = True
             self.draw_layers.insert(0, "background")
         # guarentee hud exists and is drawn last
         if "hud" not in self.draw_layers:
@@ -67,8 +67,8 @@ class Scene():
         self.hud = self.groups["hud"]
         
         # guarentee a blank background sprite if none exists.
-        if add_background_blank:
-            self.place_node(Decal(self), ["background"])
+        self.place_node(Decal(self, id = BG_REF), ["background"])
+        self.bg_ref = self.background.sprites()[0]
 
         for node_init in self.init.get("nodes"):
             node = node_from_dict(self, node_init)
@@ -79,7 +79,7 @@ class Scene():
                 node_init.get('active', True)
             )
         self.occupied = False # is the scene occupied by an entity?
-
+        
 
     def place_node(self, node:Node, groups=None, start=None, active=True):
         if node.scene is not self:
@@ -139,11 +139,9 @@ class Scene():
             player_sprite = self.get_player()
             if player_sprite:
                 player = player_sprite.sprite.parent
-                current_player_position = list(
-                    vec(player.sprite.rect.topleft) - 
-                    vec(self.background.sprites()[0].rect.topleft)
+                player.init["start"] = self.get_bg_pos(
+                    player.sprite.rect.topleft
                 )
-                player.init["start"] = current_player_position
                 add_in = [player.init]
             else:
                 add_in = []
@@ -182,6 +180,7 @@ class Scene():
             if (
                 "player" in self.groups and 
                 node in [n.parent for n in self.groups["player"]]
+                or node.id == BG_REF
             ):
                 continue
             if node.parent is not None: continue
@@ -197,10 +196,9 @@ class Scene():
             
 
             if node.sprite:
-                init["start"] = [int(i) for i in (
-                    vec(node.sprite.rect.topleft) - 
-                    vec(self.background.sprites()[0].rect.topleft)
-                )]
+                init["start"] = [int(i) for i in 
+                    self.get_bg_pos(node.sprite.rect.topleft)
+                ]
             nodes.append(init)
             draw_layers = self.draw_layers.copy()
             draw_layers.remove("hud")
@@ -248,4 +246,16 @@ class Scene():
         returns the names of the groups in this scene which contain the node.
         """
         return [name for name, group in self.groups.items() if node in group]
+    
+    
+    def get_bg_pos(self, pos) -> pg.math.Vector2:
+        return (
+            vec(pos) 
+            - vec(self.bg_ref.rect.topleft)
+        )
 
+    def set_bg_pos(self, pos) -> pg.math.Vector2:
+        return (
+            vec(pos)
+            + vec(self.bg_ref.rect.topleft)
+        )

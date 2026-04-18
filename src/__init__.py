@@ -126,10 +126,9 @@ class Engine():
         player_node = self.scene.get_player().parent
         player_init = player_node.init
 
-        player_init["start"] = [int(x) for x in diff_vec(
-            player_node.sprite.rect.topleft,
-            self.scene.background.sprites()[0].rect.topleft            
-        )]
+        player_init["start"] = [int(x) for x in 
+            self.scene.get_bg_pos(player_node.sprite.rect.topleft)
+        ]
         # get inventory state
         inv_index = [
             item['id'] for item in player_init["children"]
@@ -257,14 +256,13 @@ class Engine():
             self.fps_counter.set_text(fps)
             self.draw_surface.blit(self.fps_counter.sprite.image, (300,10))
             
-        background = self.scene.background.sprites()[0]
         self.box_texts = []
         for group_name in self.scene.draw_layers:
             sprites = self.scene.groups[group_name].sprites()
             
             for sprite in sprites:
                 if not isinstance(sprite.parent, HitMask):
-                    self.render_sprite_box(sprite, background)
+                    self.render_sprite_box(sprite)
                 if self.settings.SHOW_MASK and sprite.mask:
                     if (
                         sprite in self.scene.background and
@@ -278,7 +276,7 @@ class Engine():
         return vec(self.draw_surface.get_size()) / 2
 
 
-    def render_sprite_box(self, sprite, background):
+    def render_sprite_box(self, sprite):
         if not vars(sprite).get('pos'):
             sprite.pos = pg.font.SysFont("Sans", 10)
         pg.draw.rect(
@@ -286,7 +284,7 @@ class Engine():
         )
         pos1, pos2 = (
             str(vec(sprite.rect.topleft)), 
-            str(diff_vec( sprite.rect.topleft, background.rect.topleft))
+            str(self.scene.get_bg_pos(sprite.rect.topleft))
         )
         sprite_id = sprite.id if sprite.id != "sprite" else sprite.parent.id
         pos_sprite = sprite.pos.render(

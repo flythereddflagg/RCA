@@ -11,7 +11,7 @@ def node_from_dict(scene:'.scene.Scene', node_init:dict) -> 'Node':
     if yaml: # overwrite the data in yaml with the node_init 
         node_init = load_yaml(yaml) | node_init
     parent = node_init.pop("parent", None)
-    class_str = node_init.get('type')
+    class_str = node_init.get('type', "<MISSING TYPE>")
     node = class_from_str(class_str)(scene=scene, parent=parent, **node_init)
     return node
 
