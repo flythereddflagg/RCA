@@ -11,6 +11,7 @@ from .compass import Compass
 
 DIST_SQR_AGRO = 100**2
 BASE_SPEED = 25
+TRANSITION_TIME = 3.50 # sec
 
 class MeatBall(Node):
     def setup(self):
@@ -50,7 +51,7 @@ class MeatBall(Node):
                 self.hp -= value
                 self.damage_direction = other
                 self.animation.set_state("damage")
-                print(f"Meatball took damage {value}")
+                # print(f"Meatball took damage {value}")
 
         self.signals = [] # reset signals
 
@@ -88,23 +89,22 @@ class MeatBall(Node):
                 and self.animation.state == "stage2"
                 and not self.transition_started
             ):
-                print("starting the terror!")
-
                 self.music_node.goto(self.music_data['tags']['dim'])
-                self.music_node.reset()
                 self.music_node.play_then_end(
-                    self.music_data['tags']['terror'] 
-                    - self.music_data['tags']['dim']
+                    self.music_data['tags']['terror']
                 )
                 self.transition_started = True
                 self.transition_start_time = pg.time.get_ticks()
             elif self.transition_started:
-                if (pg.time.get_ticks() - self.transition_start_time) > 3000:
+                if (pg.time.get_ticks() - self.transition_start_time)/1000 > (
+                    self.music_node.end - self.music_node.start 
+                    - TRANSITION_TIME
+                ):
                     self.animation.set_state("transition")
                 if not pg.mixer.music.get_busy():
                     self.transition_started = False
                     self.music_node.reset()
-                    pg.mixer.music.play(0)
+                    pg.mixer.music.play(1)
                     self.music_node.play_loop(
                         self.music_data['tags']['terror'],
                         self.music_data['tags']['fight_loop'],
@@ -157,14 +157,18 @@ class MeatBall(Node):
             self.chase_player()
             if (pg.time.get_ticks() - self.throw_timer) > self.random_throw:
                 self.throw_timer = pg.time.get_ticks()
-                print("testing random throw")
+                # print("testing random throw")
                 if random.random() < self.chance_of_throw:
-                    print("throwing")
+                    # print("throwing")
                     self.animation.set_state("throw")
 
         self.apply_physics()
         if self.hp <= 0:
             self.kill()
+            self.music_node.reset()
+            self.music_node.goto(self.music_data['tags']['victory'])
+            self.music_node.reload_primary = True
+
         
         
     def throw_update(self):

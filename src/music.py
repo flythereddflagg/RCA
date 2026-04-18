@@ -20,8 +20,9 @@ class Music(Node):
         
         self.primary_loop = self.init.get("primary_loop", [])
         self.reset()
+        self.reload_primary = False
         if self.primary_loop:
-            self.play_loop(*primary_loop)
+            self.play_loop(*self.primary_loop)
         
 
     
@@ -45,6 +46,15 @@ class Music(Node):
             and self.current_loop_time() > (self.end - self.start)
         ):
             self.goto(self.then_goto)
+        elif (
+            self.reload_primary 
+            and not pg.mixer.music.get_busy() 
+            and self.primary_loop
+        ):
+            self.reload_primary = False
+            self.reset()
+            self.load_play(self.filename, 1)
+            self.play_loop(*self.primary_loop)
 
 
     def goto(self, time):

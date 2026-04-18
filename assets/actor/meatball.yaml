@@ -21,7 +21,7 @@ children:
     type: HitMask3
     sibling: animation
     kind: mask
-    datafile: base_mask.json
+    datafile: base_mask.json # TODO -3- polish this hitmask
 
   - id: hurtmask
     type: HitMask3
@@ -33,7 +33,7 @@ children:
   - id: blockage
     type: Blockage
     mask: ./assets/actor/meat_ball/blockage_mask.png
-    start: [870,80]
+    start: [870,80] # TODO fix this as this is very specific to the scene
     scale: 1
     children:
       - id: animation

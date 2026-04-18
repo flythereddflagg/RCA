@@ -118,8 +118,6 @@ class Rosie2(Decal):
             if not self.sprite.rect.colliderect(
                     self.scene.game.draw_surface.get_rect()
             ):
-
-                # TODO -1- make a walking animation
                 
                 camera = self.scene.node_by_id("camera")
                 if not camera.shaking:

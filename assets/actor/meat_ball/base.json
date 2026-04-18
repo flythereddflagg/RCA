@@ -621,7 +621,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 217, "h": 144 },
     "sourceSize": { "w": 217, "h": 144 },
-    "duration": 500
+    "duration": 2000
    },
    "base 78.aseprite": {
     "frame": { "x": 434, "y": 1008, "w": 217, "h": 144 },
@@ -904,7 +904,6 @@
    { "name": "throw", "from": 82, "to": 110, "direction": "forward", "repeat": "1", "color": "#000000ff" }
   ],
   "layers": [
-   { "name": "mask", "opacity": 255, "blendMode": "normal" },
    { "name": "bottom meatball", "opacity": 255, "blendMode": "normal" },
    { "name": "bottom branch", "opacity": 255, "blendMode": "normal" },
    { "name": "top branch", "opacity": 255, "blendMode": "normal" },
