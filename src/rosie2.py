@@ -46,6 +46,13 @@ class Rosie2(Decal):
 
 
     def update(self):
+        # if (
+        #     self.scene.get_bg_pos(self.sprite.rect.topleft) 
+        #     != self.init['start']
+        # ):
+        #     print("MOVING ROSIE BACK!")
+        #     self.sprite.topleft = self.scene.set_bg_pos(self.init['start'])
+        
         player = self.scene.get_player().parent
         player_rect = player.sprite.rect
         if (

@@ -23,7 +23,6 @@ class SpriteGroup(pg.sprite.Group):
         were passed to this method are passed to the Sprite update function.
 
         """
-        # print("new frame")
         self.cancel = False
         for sprite in self.sprites():
             if self.cancel:
