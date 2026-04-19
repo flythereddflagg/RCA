@@ -108,8 +108,8 @@ class Rosie2(Decal):
                 self.scene.place_node(
                     self.scene.node_by_id("meatball"), 
                     groups=["foreground", "paused"],
-                    start=vec([-50, 50]) + self.sprite.rect.topleft
-                )
+                    start=vec([-100, 50]) + self.sprite.rect.topleft
+                ) # TODO -1- GET RID OF MAGIC NUMBERS IN THIS CODE!
                 self.scene.node_by_id("meatball").state = "stage1"
             self.move(direction="RIGHT", speed=25, reject_foreground=False)
             bg_x = self.scene.get_bg_pos(self.sprite.rect.topleft)[0]

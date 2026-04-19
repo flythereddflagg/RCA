@@ -1,7 +1,7 @@
 id: Rosie
 type: Rosie2
 key_id: jar of pickles
-# image: ./assets/actor/rosie/rosie_cart.png
+image: ./assets/actor/rosie/rosie_cart_ref.png
 mask: ./assets/actor/rosie/rosie_cart_mask.png
 scale: 1
 seq_sets:
