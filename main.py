@@ -79,7 +79,6 @@ TODO -2- add animations and flesh out combat with fey frog
 TODO -2- add final story elements
 TODO -3- make glyphs and keystrokes correspond to various inputs
 TODO -3- make glyphs and keystrokes correspond to various inputs
-TODO -3- add sfx and finish adding music
 TODO -3- make DPAD a valid way to move the character
 TODO -4- tighten up music with loops USE TENACITY?
 TODO -4- make inventory have proper labeling too!
