@@ -55,7 +55,26 @@ Each item may have a priority from 1 - 5
 4: nice to have but not necessary for MVP
 5: we get to it when we get to it
 ---
-TODO -2- add meatball with rosie sequence
+TODO -1- allow A or other button on menu screen
+TODO -1- disallow talking to rosie with other menus open
+TODO -1- picked up item sound
+TODO -1- items do not initally show up in inventory for some reason.
+TODO -1- make cave/forest exit bigger
+TODO -1- fix glyphs! in inventory or otherwise!
+TODO -1- shovel noise
+TODO -1- fix the statue issue
+TODO -1- add alley way theme and mansion yard theme
+TODO -1- sword swing noise
+TODO -1- sword hit noise
+TODO -1- hit pause animation
+TODO -1- meatball death animation
+TODO -1- fix all the music loop issues!
+TODO -1- statue animation and sound
+TODO -1- gate animation and sound
+TODO -1- Music loop for FeyFrog
+TODO -1- Shorten Game Over music
+TODO -1- Make a proper end sequence
+
 TODO -2- add animations and flesh out combat with fey frog
 TODO -2- add final story elements
 TODO -3- make glyphs and keystrokes correspond to various inputs

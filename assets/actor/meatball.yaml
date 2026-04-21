@@ -33,7 +33,7 @@ children:
   - id: blockage
     type: Blockage
     mask: ./assets/actor/meat_ball/blockage_mask.png
-    start: [870,80] # TODO fix this as this is very specific to the scene
+    start: [870,80] # TODO -4- fix this as this is very specific to the scene
     scale: 1
     children:
       - id: animation
