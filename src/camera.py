@@ -21,6 +21,13 @@ class Camera(Node):
         
 
     def update(self):
+        id_1 = "statue block"
+        key_sprite = self.scene.node_by_id(id_1)
+        if key_sprite:
+            pos = self.scene.get_bg_pos(key_sprite.sprite.rect.topleft)
+            print(pos)
+
+
         player = self.scene.get_player()
         if not player:
             # if there is no player, 
@@ -28,7 +35,11 @@ class Camera(Node):
             movex, movey = self.scene.bg_ref.sprite.rect.topleft
             self.pan(movex, movey)
             return
-        self.follow_player()
+         
+        self.follow_player() # TODO ISSUE IS HERE!
+        if key_sprite:
+            new_pos = self.scene.get_bg_pos(key_sprite.sprite.rect.topleft)
+            assert pos == new_pos, f"pos does not match {pos}, {new_pos}"  
         if self.shaking:
             cur_move = next(self.path, None)
             if cur_move is None:
@@ -36,10 +47,11 @@ class Camera(Node):
                 self.path = iter([])
             else:
                 self.pan(*cur_move)
-            
+
+         
         if not self.scene.game.settings.DEBUG: 
             self.stop_at_border()
-
+        
 
     def pan(self, movex, movey):
         """

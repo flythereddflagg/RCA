@@ -8,6 +8,7 @@ from .node import Node, node_from_dict
 from .decal import Decal
 
 BG_REF = "bg_ref"
+TRIAGE = False
 
 class SpriteGroup(pg.sprite.Group):
 
@@ -23,11 +24,24 @@ class SpriteGroup(pg.sprite.Group):
         were passed to this method are passed to the Sprite update function.
 
         """
-        self.cancel = False
-        for sprite in self.sprites():
-            if self.cancel:
-                break
-            sprite.update(*args, **kwargs)
+        if not TRIAGE:
+            self.cancel = False
+            for sprite in self.sprites():
+                if self.cancel:
+                    break
+                sprite.update(*args, **kwargs)
+        else:
+        ### CUSTOM DEBUG CODE HERE
+            id_1 = "statue block"
+            key_sprite = self.sprites()[0].scene.node_by_id(id_1)
+            self.cancel = False
+            for sprite in self.sprites():
+                if self.cancel:
+                    break
+                if key_sprite:
+                    print(sprite.id)
+                    print(sprite.scene.get_bg_pos(key_sprite.sprite.rect.topleft))
+                sprite.update(*args, **kwargs)
 
 
 
