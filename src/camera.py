@@ -13,6 +13,7 @@ class Camera(Node):
     def setup(self):
         self.mobile_groups = self.scene.draw_layers.copy()
         self.mobile_groups.remove('hud')
+        print(self.mobile_groups)
         self.cur_zoom = 1
         self.slack = self.init.get("slack", 0) 
         self.zoom_by(self.init.get("zoom", 1))
@@ -21,13 +22,6 @@ class Camera(Node):
         
 
     def update(self):
-        id_1 = "statue block"
-        key_sprite = self.scene.node_by_id(id_1)
-        if key_sprite:
-            pos = self.scene.get_bg_pos(key_sprite.sprite.rect.topleft)
-            print(pos)
-
-
         player = self.scene.get_player()
         if not player:
             # if there is no player, 
@@ -37,9 +31,6 @@ class Camera(Node):
             return
          
         self.follow_player() # TODO ISSUE IS HERE!
-        if key_sprite:
-            new_pos = self.scene.get_bg_pos(key_sprite.sprite.rect.topleft)
-            assert pos == new_pos, f"pos does not match {pos}, {new_pos}"  
         if self.shaking:
             cur_move = next(self.path, None)
             if cur_move is None:

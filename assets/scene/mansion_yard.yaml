@@ -3,7 +3,6 @@ layers:
 - background
 - foreground
 - overlay
-- hud
 nodes:
 - groups:
   - solid
