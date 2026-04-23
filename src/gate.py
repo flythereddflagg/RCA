@@ -11,8 +11,11 @@ class Gate(Decal):
         self.key_id = self.init.get("key_id")
 
     def update(self):
-        if self.child_by_id("hitmask"):
-            self.hitmask.rect.topleft = self.rect.topleft
+        # tack all sprite to self
+        # for child in self.children:
+        #     if not child.sprite:
+        #         continue
+        #     child.sprite.rect.topleft = self.rect.topleft
         player_sprite = self.scene.get_player()
         if not player_sprite:
             return

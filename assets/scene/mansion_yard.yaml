@@ -2,6 +2,7 @@ layers:
 - behind
 - background
 - foreground
+- more_fg
 - overlay
 nodes:
 - groups:
@@ -21,7 +22,7 @@ nodes:
   type: Gate
   groups:
   - solid
-  - foreground
+  - background
   image: ./assets/scene/mansion_yard/statue.png
   key_id: statue key
   mask: ./assets/scene/mansion_yard/statue_mask.png
@@ -30,13 +31,15 @@ nodes:
     - id: hitmask
       type: Decal
       mask: ./assets/scene/mansion_yard/statue_unlock_mask.png
-      groups: [foreground]
+      groups: [background]
       start: _inherit_
-    - id: overlay
+  
+    - id: statue_overlay
       type: Decal
       image: ./assets/scene/mansion_yard/statue_overlay.png
-      groups: [overlay]
+      groups: [background]
       start: _inherit_
+# TODO BUG is because children are not in the same group as parent. WHYYY?
  
 - action: shovel
   groups:
@@ -90,14 +93,14 @@ nodes:
   id: camera
   slack: 100
   type: Camera
-# - id: statue key
-#   type: Item
-#   image: ./assets/block/silver_key.png
-#   mask: ./assets/block/silver_key.png
-#   scale: 1
-#   start: [876,524]
-#   action: null
-#   groups: ["foreground"]
+- id: statue key
+  type: Item
+  image: ./assets/block/silver_key.png
+  mask: ./assets/block/silver_key.png
+  scale: 1
+  start: [876,524]
+  action: null
+  groups: ["foreground"]
 - id: ambiance
   type: Music
   filename: ./assets/music/CC0_birds-singing-03.mp3
