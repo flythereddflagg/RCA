@@ -22,7 +22,7 @@ nodes:
   type: Gate
   groups:
   - solid
-  - background
+  - overlay
   image: ./assets/scene/mansion_yard/statue.png
   key_id: statue key
   mask: ./assets/scene/mansion_yard/statue_mask.png
@@ -31,13 +31,13 @@ nodes:
     - id: hitmask
       type: Decal
       mask: ./assets/scene/mansion_yard/statue_unlock_mask.png
-      groups: [background]
+      groups: [overlay]
       start: _inherit_
   
     - id: statue_overlay
       type: Decal
       image: ./assets/scene/mansion_yard/statue_overlay.png
-      groups: [background]
+      groups: [overlay, background]
       start: _inherit_
 # TODO BUG is because children are not in the same group as parent. WHYYY?
  
