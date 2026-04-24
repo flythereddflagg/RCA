@@ -62,7 +62,6 @@ TODO -1- items do not initally show up in inventory for some reason.
 TODO -1- make cave/forest exit bigger
 TODO -1- fix glyphs! in inventory or otherwise!
 TODO -1- shovel noise
-TODO -1- fix the statue issue
 TODO -1- add alley way theme and mansion yard theme
 TODO -1- sword swing noise
 TODO -1- sword hit noise
