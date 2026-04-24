@@ -187,7 +187,26 @@ class Scene():
         for name, group in self.groups.items():
             for sprite in group:
                 group.remove(sprite)
-        
+
+
+    def update_init(self, node):
+        # NOTE function is recursive
+        init = {**node.init}
+        init['active'] = node in self.active_nodes
+        init["groups"] = self.node_in_groups(node)
+        init["groups"] = list(set(init["groups"]))
+        if node.sprite:
+            init["start"] = [int(i) for i in 
+                self.get_bg_pos(node.sprite.rect.topleft)
+            ]
+        if node.children:
+            # rewrite children fully
+            init["children"] = []
+            for child in node.children:
+                init["children"].append(self.update_init(child))
+        return init
+
+
 
     def serialize(self) -> dict:
         """
@@ -202,22 +221,9 @@ class Scene():
             ):
                 continue
             if node.parent is not None: continue
-            init = node.init
-            if not init: continue # this may cause bugs
+            if not node.init: continue # this may cause bugs
             
-            if node in self.active_nodes:
-                init['active'] = True
-            init["groups"] = self.node_in_groups(node)
-            for child in node.children:
-                init["groups"].extend(self.node_in_groups(child))
-            init["groups"] = list(set(init["groups"]))
-            
-
-            if node.sprite:
-                init["start"] = [int(i) for i in 
-                    self.get_bg_pos(node.sprite.rect.topleft)
-                ]
-            nodes.append(init)
+            nodes.append(self.update_init(node))
             draw_layers = self.draw_layers.copy()
             draw_layers.remove("hud")
 
