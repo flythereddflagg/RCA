@@ -40,7 +40,8 @@
   - Restrains you with extending vines
   - Pink fart cloud is poisonous (spores or whatever)
 - NPC meatball lady from Wedding Singer that is making the meatball monsters inadvertently
-- One Dungeon is in the "Book world". Everything is in black and white Letter enemies on the paper page and page maze in the book 
+- One Dungeon is in the "Book world". Everything is in black and white Letter enemies on the paper page and page maze in the book
+- mountain goat that butts people off a cliff
 
 - Grappling hook for climbing (rope + pick axe?)
 - Combining the shovel and the sword sweeps the legs and maybe knocks the enemy down so that they're weak. It's a nice one-two punch

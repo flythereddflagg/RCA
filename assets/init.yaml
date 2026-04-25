@@ -4,11 +4,11 @@ FPS: 90
 SHOW_EVENTS: false # print input events in terminal
 FPS_COUNTER: true # show FPS on game screen
 
-DEBUG: false # debug mode? (Shows rect frames and positions)
+DEBUG: true # debug mode? (Shows rect frames and positions)
 SHOW_MASK: false # in debug mode, shows hit masks of every entity
 SHOW_BG_MASK: false # in debug mode, show mask then show bg mask too
 LOG_INPUT: false # for recreating bugs (See input.py)
-MUSIC: false # in debug mode, MUSIC = False silences all music.
+MUSIC: true # in debug mode, MUSIC = False silences all music.
 
 ### SCREEN/GAME WINDOW CONSTANTS ###
 RESOLUTION: 360
@@ -19,12 +19,12 @@ title: pygame - Red Castle Avenger
 
 ### GAME INIT ###
 init_add_in:
-  # - yaml: ./assets/actor/player.yaml
-  #   start: [704,230] # red castle valley
-  #   # start: [200,200] # boss roosm?
-  #   groups:
-  #     - foreground
-  #     - player
+  - yaml: ./assets/actor/player.yaml
+    start: [704,230] # red castle valley
+    # start: [200,200] # boss roosm?
+    groups:
+      - foreground
+      - player
 
 new_game_scene: ./assets/scene/red_castle_valley.yaml
 new_game_add_in:
@@ -39,8 +39,8 @@ new_game_add_in:
 # initial_scene: ./assets/scene/mansion_yard.yaml
 # initial_scene: ./assets/scene/boss_room.yaml
 # initial_scene: ./assets/scene/test_scene.yaml
-# initial_scene: ./assets/scene/red_castle_valley.yaml
-initial_scene: ./assets/scene/startup.yaml
+initial_scene: ./assets/scene/red_castle_valley.yaml
+# initial_scene: ./assets/scene/startup.yaml
 # initial_scene: ./assets/scene/test_meatball.yaml
 
 # key bindings for keyboard input
