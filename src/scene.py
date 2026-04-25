@@ -192,6 +192,7 @@ class Scene():
     def update_init(self, node):
         # NOTE function is recursive
         init = {**node.init}
+        init["type"] = type(node).__name__
         init['active'] = node in self.active_nodes
         init["groups"] = self.node_in_groups(node)
         init["groups"] = list(set(init["groups"]))
