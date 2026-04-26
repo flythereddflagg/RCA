@@ -43,6 +43,8 @@ children:
       
   - id: select_menu
     type: SelectMenu # TODO -1- apparent bug here!
+    # TODO -1- continual bug in how we save places! I need to figure out why things
+    # keep shifting.
     groups:
       - paused
     font_size: 22
