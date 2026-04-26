@@ -30,13 +30,31 @@ nodes: # all children are nodes
      - solid
      - foreground
 
-  # - yaml: ./assets/actor/rosie.yaml
-  #   start: [870,91]
-  #   groups: [foreground, solid, paused]
+  - yaml: ./assets/actor/rosie.yaml
+    start: [870,91]
+    groups: [foreground, solid, paused]
   - yaml: ./assets/actor/meatball.yaml
     start: [700, 200]
-    groups: [foreground, foe, paused]
+    # groups: [foreground, foe, paused]
+    active: False
   
+  # - id: shovel
+  #   type: Item
+  #   image: ./assets/actor/item/shovel.png
+  #   mask: ./assets/actor/item/shovel.png
+  #   start: [800,200]
+  #   scale: 1
+  #   action: shovel
+  #   groups:
+  #    - foreground
+  # - id: sword
+  #   type: Item
+  #   action: sword
+  #   groups:
+  #   - foreground
+  #   image: ./assets/actor/item/sword_icon.png
+  #   mask: ./assets/actor/item/sword_icon.png
+  #   start: [500,100]
   # - id: jar of pickles
   #   type: Item
   #   image: ./assets/block/tupperware.png
@@ -45,8 +63,6 @@ nodes: # all children are nodes
   #   action: null
   #   groups:
   #     - foreground
-  - yaml: assets/actor/meatball.yaml
-    active: false
 
   # - id: wall
   #   type: Decal
@@ -58,30 +74,13 @@ nodes: # all children are nodes
   #    - solid
   #    - foreground
 
-  - id: shovel
-    type: Item
-    image: ./assets/actor/item/shovel.png
-    mask: ./assets/actor/item/shovel.png
-    start: [800,200]
-    scale: 1
-    action: shovel
-    groups:
-     - foreground
-
   # - id: ossifrage 1
   #   yaml: ./assets/actor/ossifrage.yaml
   #   start: [835,506]
   #   groups:
   #     - foreground
   #     - foe
-  - id: sword
-    type: Item
-    action: sword
-    groups:
-    - foreground
-    image: ./assets/actor/item/sword_icon.png
-    mask: ./assets/actor/item/sword_icon.png
-    start: [500,100]
+
   # - id: cactus
   #   type: Cactus
   #   image: ./assets/block/cactus.png

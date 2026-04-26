@@ -92,9 +92,9 @@ class Scene():
             node = node_from_dict(self, node_init)
             self.place_node(
                 node, 
-                node.init.get("groups"), 
-                node_init.get('start'),
-                node_init.get('active', True)
+                groups=node.init.get("groups"), 
+                start=node_init.get('start'),
+                active=node_init.get('active', True)
             )
         self.occupied = False # is the scene occupied by an entity?
         
@@ -105,6 +105,8 @@ class Scene():
         self.all_nodes.add(node)
         if active:
             self.active_nodes.add(node)
+        else:
+            return
         for child in node.children:
             self.place_node(
                 child, 
@@ -266,10 +268,12 @@ class Scene():
         return [node.id for node in self.all_nodes.sprites()]
 
 
-    def node_in_groups(self, node:'.node.Node') -> list[str]:
+    def node_in_groups(self, node:'str|.node.Node') -> list[str]:
         """
         returns the names of the groups in this scene which contain the node.
         """
+        if isinstance(node, str):
+            node = self.node_by_id(node)
         return [name for name, group in self.groups.items() if node in group]
     
     

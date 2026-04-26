@@ -13,7 +13,6 @@ class Camera(Node):
     def setup(self):
         self.mobile_groups = self.scene.draw_layers.copy()
         self.mobile_groups.remove('hud')
-        print(self.mobile_groups)
         self.cur_zoom = 1
         self.slack = self.init.get("slack", 0) 
         self.zoom_by(self.init.get("zoom", 1))

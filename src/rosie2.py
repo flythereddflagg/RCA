@@ -6,6 +6,8 @@ from .tools import mask_collision, vec
 from .movement import Movement
 
 EDGE_OF_CLIFF = 970
+FALL_SPEED = 300
+RIGHT_ANGLE = 90
 
 class Rosie2(Decal):
     def setup(self):
@@ -105,19 +107,21 @@ class Rosie2(Decal):
             self.state = "walking"
             
             if self.scene.node_by_id("meatball") not in self.scene.active_nodes:
+                node = self.scene.node_by_id("meatball")
                 self.scene.place_node(
-                    self.scene.node_by_id("meatball"), 
-                    groups=["foreground", "paused"],
-                    start=vec([-100, 50]) + self.sprite.rect.topleft
-                ) # TODO -1- GET RID OF MAGIC NUMBERS IN THIS CODE!
-                self.scene.node_by_id("meatball").state = "stage1"
+                    node, 
+                    groups=["foreground", "foe", "paused"],
+                    start=self.scene.set_bg_pos(node.init.get("start")),
+                    active=True
+                )
+                node.animation.set_state("stage1")
             self.move(direction="RIGHT", speed=25, reject_foreground=False)
             bg_x = self.scene.get_bg_pos(self.sprite.rect.topleft)[0]
 
-            if bg_x > EDGE_OF_CLIFF and self.sprite.rotation > -90:
+            if bg_x > EDGE_OF_CLIFF and self.sprite.rotation > -RIGHT_ANGLE:
                 self.sprite.rotation -= 1
-            elif self.sprite.rotation <= -90:
-                self.move(direction="DOWN", speed=300, reject_foreground=False)
+            elif self.sprite.rotation <= -RIGHT_ANGLE:
+                self.move(direction="DOWN", speed=FALL_SPEED, reject_foreground=False)
             
             if not self.sprite.rect.colliderect(
                     self.scene.game.draw_surface.get_rect()

@@ -54,14 +54,15 @@ class FeyFrog(Decal):
         
 
         if self.hp <= 0:
-            sprite = [sprite for sprite in self.scene.all_nodes.sprites() if sprite.id == "grate exit"][0]
+            sprite = self.scene.node_by_id("grate exit")
             sprite.set_image(pg.image.load("./assets/block/block.png").convert_alpha())
-            sprite.rect.topleft = self.scene.game.get_center()
             sprite.kill()
-            sprite.init["groups"].append("foreground")
-            # TODO -1- fix this to use place node
-            self.scene.groups["foreground"].add(sprite)
-            self.scene.all_nodes.add(sprite)
+            self.scene.place_node(
+                sprite,
+                groups=["foreground"],
+                start=self.scene.set_bg_pos(self.scene.game.get_center()),
+                active=True
+            )
             self.kill()
 
 
