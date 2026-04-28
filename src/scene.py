@@ -138,6 +138,13 @@ class Scene():
                 self.groups[group].add(sprite_instance)
         if start:
             sprite_instance.rect.topleft = vec(start)
+        
+        assert (len([
+                group 
+                for group in self.draw_layers 
+                if sprite_instance in self.groups[group]
+            ]) <= 1
+        ), f"{sprite_instance} hAS TOO MANY GROUPS"
 
 
     def update(self):
