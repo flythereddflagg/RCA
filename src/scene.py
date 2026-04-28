@@ -100,8 +100,10 @@ class Scene():
         
 
     def place_node(self, node:Node, groups=None, start=None, active=True):
+        # TODO -1- children are not dependent on parent groups. Change this
         if node.scene is not self:
             node.scene = self
+        print(node, id(node), id(node.scene))
         self.all_nodes.add(node)
         if active:
             self.active_nodes.add(node)
@@ -198,25 +200,6 @@ class Scene():
                 group.remove(sprite)
 
 
-    def update_init(self, node):
-        # NOTE function is recursive
-        init = {**node.init}
-        init["type"] = type(node).__name__
-        init['active'] = node in self.active_nodes
-        init["groups"] = self.node_in_groups(node)
-        init["groups"] = list(set(init["groups"]))
-        if node.sprite:
-            init["start"] = [int(i) for i in 
-                self.get_bg_pos(node.sprite.rect.topleft)
-            ]
-        if node.children:
-            # rewrite children fully
-            init["children"] = []
-            for child in node.children:
-                init["children"].append(self.update_init(child))
-        return init
-
-
 
     def serialize(self) -> dict:
         """
@@ -233,7 +216,7 @@ class Scene():
             if node.parent is not None: continue
             if not node.init: continue # this may cause bugs
             
-            nodes.append(self.update_init(node))
+            nodes.append(node.get_init())
             draw_layers = self.draw_layers.copy()
             draw_layers.remove("hud")
 

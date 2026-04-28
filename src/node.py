@@ -67,6 +67,8 @@ class Node(pg.sprite.Sprite):
 
         self.children.append(node)
         setattr(self, node.id, node)
+        if node.scene is not self.scene:
+            node.scene = self.scene
 
 
     def require_attr(self, *names:str, types=None):
@@ -145,3 +147,26 @@ class Node(pg.sprite.Sprite):
 
     def __repr__(self):
         return f"<{str(str(type(self)).split('\'')[1])} - {self.id}>"
+
+    
+    def get_init(self):
+        # NOTE function is recursive
+        """returns the current init data to recreate the sprite from scratch"""
+        init = {**self.init}
+        init["type"] = type(self).__name__
+        if not self.scene:
+            breakpoint()
+        init['active'] = self in self.scene.active_nodes
+        init["groups"] = self.scene.node_in_groups(self)
+        init["groups"] = list(set(init["groups"]))
+        if self.sprite:
+            if self.sprite in self.scene.hud:
+                init["start"] = list(self.sprite.rect.topleft)
+            else:
+                init["start"] = list(self.scene.get_bg_pos(self.sprite.rect.topleft))
+        if self.children:
+            # rewrite children fully
+            init["children"] = []
+            for child in self.children:
+                init["children"].append(child.get_init())
+        return init
