@@ -49,6 +49,8 @@ class SelectMenu(MenuInterface):
         self.scene.paused = True
         self.scene.occupied = True
         self.active = True
+        self.textbox.sprite.rect.center = self.scene.game.get_center() # TODO -4- this feels uncecssary
+        self.place_indicator() # TODO -4- this feels uncecssary
         super().open_menu()
 
 
