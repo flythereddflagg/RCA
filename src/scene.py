@@ -101,14 +101,10 @@ class Scene():
 
     def place_node(self, node:Node, groups=None, start=None, active=True):
         # TODO -1- children are not dependent on parent groups. Change this
-        if node.scene is not self:
-            node.scene = self
-        print(node, id(node), id(node.scene))
+        node.scene = self
         self.all_nodes.add(node)
         if active:
             self.active_nodes.add(node)
-        else:
-            return
         for child in node.children:
             self.place_node(
                 child, 
@@ -146,7 +142,7 @@ class Scene():
                 for group in self.draw_layers 
                 if sprite_instance in self.groups[group]
             ]) <= 1
-        ), f"{sprite_instance} hAS TOO MANY GROUPS"
+        ), f"{sprite_instance} is in multiple draw layers"
 
 
     def update(self):
@@ -210,7 +206,7 @@ class Scene():
             if (
                 "player" in self.groups and 
                 node in [n.parent for n in self.groups["player"]]
-                or node.id == BG_REF
+                or node.id == BG_REF # don't include blank bg
             ):
                 continue
             if node.parent is not None: continue
