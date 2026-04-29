@@ -49,7 +49,7 @@ class YesNoMenu(MenuInterface):
         if self.parent.parent.textbox.scrolling:
             return
         else:
-            self.place_indicator()
+            self.place_indicator() # TODO -4- this feels unecessary
         
         if self.up_pressed():
             self.go_up()
