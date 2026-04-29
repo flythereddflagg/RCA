@@ -48,6 +48,8 @@ class YesNoMenu(MenuInterface):
         self.textbox.sprite.rect.midright = self.parent.parent.textbox.sprite.rect.midright
         if self.parent.parent.textbox.scrolling:
             return
+        else:
+            self.place_indicator()
         
         if self.up_pressed():
             self.go_up()
