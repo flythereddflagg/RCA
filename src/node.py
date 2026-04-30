@@ -153,7 +153,8 @@ class Node(pg.sprite.Sprite):
         """returns the current init data to recreate the sprite from scratch"""
         init = {**self.init}
         init["type"] = type(self).__name__
-        init['active'] = self in self.scene.active_nodes
+        if "active" in init.keys():
+            init["active"] = self in self.scene.active_nodes
         init["groups"] = self.scene.node_in_groups(self)
         init["groups"] = list(set(init["groups"]))
         if self.sprite:
