@@ -153,7 +153,7 @@ class Node(pg.sprite.Sprite):
         """returns the current init data to recreate the sprite from scratch"""
         init = {**self.init}
         init["type"] = type(self).__name__
-        if "active" in init.keys():
+        if "active" in init.keys(): # TODO -2- decide how this should work. Is default behavior to inherit active from parent?
             init["active"] = self in self.scene.active_nodes
         init["groups"] = self.scene.node_in_groups(self)
         init["groups"] = list(set(init["groups"]))
