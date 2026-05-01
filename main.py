@@ -58,7 +58,6 @@ Each item may have a priority from 1 - 5
 TODO -1- allow A or other button on menu screen
 TODO -1- disallow talking to rosie with other menus open
 TODO -1- picked up item sound
-TODO -1- items do not initally show up in inventory for some reason.
 TODO -1- make cave/forest exit bigger
 TODO -1- fix glyphs! in inventory or otherwise!
 TODO -1- shovel noise

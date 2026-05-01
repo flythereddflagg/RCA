@@ -213,14 +213,18 @@ class Inventory(Node):
                     self.inventory_sprite.image.get_height()
                 ).rotate(i / n_slots * 360)
             )
-        # then the sprites over the slots
+        # then the item sprites over the slots
         for slot_sprite, item in zip(self.slot_sprites.sprites(), self.slots):
             toggle_state(item)
             item.rect.center = slot_sprite.rect.center
 
         # finally the hand items and the marker goes LAST
-        for sprite in [self.left_item, self.right_item, self.marker]:
+        for sprite, under in zip(
+            [self.left_item, self.right_item, self.marker],
+            [self.left_hand, self.right_hand, self.inventory_sprite]
+        ):
             toggle_state(sprite)
+            sprite.rect.center = under.rect.center
         
         if not self.active:
             self.marker.rect.center = self.inventory_sprite.rect.center
