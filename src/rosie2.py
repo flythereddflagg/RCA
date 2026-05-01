@@ -109,6 +109,7 @@ class Rosie2(Decal):
             
             if self.scene.node_by_id("meatball") not in self.scene.active_nodes:
                 node = self.scene.node_by_id("meatball")
+                node.kill() # TODO -3- understand: why did this fix meatball placement?
                 self.scene.place_node(
                     node, 
                     groups=["foreground", "foe", "paused"],

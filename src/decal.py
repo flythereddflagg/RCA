@@ -16,10 +16,10 @@ class Original:
     mask:pg.mask.Mask
     size:tuple
 
-
+# TODO -3- merge Decal into Node code as they overlap too much to ignore.
 class Decal(Node):
     """
-    Decal will the "Sprite" class in that
+    Decal is the "Sprite" class in that
     it is guarenteed to contain 3 child objects
     namely a pg.surface.Surface (image), 
     pg.mask.Mask (mask) and a pg.Rect (rect)
