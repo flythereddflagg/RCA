@@ -61,6 +61,7 @@ class Rosie2(Decal):
             self.sprite.rect.colliderect(player_rect) 
             and not self.talking 
             and not self.exiting
+            and not self.scene.occupied
         ):
             # signal that talking is available
             self.show_talk_cue()
