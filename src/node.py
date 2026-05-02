@@ -64,10 +64,26 @@ class Node(pg.sprite.Sprite):
             raise Exception(
                 "Invalid child supplied. Must be existing node or node init dict"
             )
+        id_list = [n.id for n in self.children]
+        if node.id in id_list:
+            # if you try to add an already-existing new child just return
+            return
 
         self.children.append(node)
         node.scene = self.scene
         setattr(self, node.id, node)
+
+
+    def remove_child(self, child:'Node|str'):
+        if isinstance(child, Node):
+            name = child.id
+        else:
+            name = child
+        id_list = [n.id for n in self.children]
+        if name in id_list:
+            idx = id_list.index(name)
+            old_node = self.children.pop(idx)
+            return old_node
 
 
     def require_attr(self, *names:str, types=None):

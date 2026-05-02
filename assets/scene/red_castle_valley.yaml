@@ -49,23 +49,23 @@ nodes: # all children are nodes
   #   groups:
   #    - foreground
   
-  - id: sword
-    type: Item
-    action: sword
-    groups:
-    - foreground
-    image: ./assets/actor/item/sword_icon.png
-    mask: ./assets/actor/item/sword_icon.png
-    start: [500,100]
+  # - id: sword
+  #   type: Item
+  #   action: sword
+  #   groups:
+  #   - foreground
+  #   image: ./assets/actor/item/sword_icon.png
+  #   mask: ./assets/actor/item/sword_icon.png
+  #   start: [500,100]
 
-  - id: jar of pickles
-    type: Item
-    image: ./assets/block/tupperware.png
-    mask: ./assets/block/tupperware.png
-    start: [701,136]
-    action: null
-    groups:
-      - foreground
+  # - id: jar of pickles
+  #   type: Item
+  #   image: ./assets/block/tupperware.png
+  #   mask: ./assets/block/tupperware.png
+  #   start: [701,136]
+  #   action: null
+  #   groups:
+  #     - foreground
 
   # - id: wall
   #   type: Decal
