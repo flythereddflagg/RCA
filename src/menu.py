@@ -95,7 +95,13 @@ class Menu(MenuInterface):
         new_actions = self.scene.game.input.new_actions()
         select_button:bool = any([
             command in new_actions
-            for command in ["START", "BUTTON_E"]
+            for command in [
+                "START", 
+                "BUTTON_N",
+                "BUTTON_S",
+                "BUTTON_E",
+                "BUTTON_W",
+            ]
         ])
         if (
             self.parent.state != "titlescreen" and 

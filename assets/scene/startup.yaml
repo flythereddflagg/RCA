@@ -32,11 +32,11 @@ nodes:
 - filename: ./assets/music/RCA_OVERWORLD/RCA_titlescreen.mp3
   id: startup music
   type: Music
-- groups:
-  - other
-  id: camera
-  slack: 100
-  type: Camera
-  zoom: 1
+# - groups:
+#   - other
+#   id: camera
+#   slack: 100
+#   type: Camera
+#   zoom: 1
 
 

@@ -55,10 +55,10 @@ Each item may have a priority from 1 - 5
 4: nice to have but not necessary for MVP
 5: we get to it when we get to it
 ---
-TODO -1- allow A or other button on menu screen
+
 TODO -1- picked up item sound
 TODO -1- make cave/forest exit bigger
-TODO -1- fix glyphs! in inventory or otherwise!
+
 TODO -1- shovel noise
 TODO -1- add alley way theme and mansion yard theme
 TODO -1- sword swing noise
@@ -91,4 +91,5 @@ TODO -4- change all music formats to .ogg
 TODO -4- add controller input mappings to options menu
 TODO -4- add doc strings to all core files
 TODO -4- make a core package in src with node and scene and stuff like that
+TODO -3- add a drop item mechanic in inventory
 """

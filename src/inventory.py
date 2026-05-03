@@ -39,11 +39,11 @@ class Inventory(Node):
         )
         self.left_glyph = Decal(**{
             "id": f"inventory_glyph_A",
-            "image": "./assets/block/glyph_A.png",
+            "image": "./assets/block/glyph_X.png",
         })
         self.right_glyph = Decal(**{
             "id": f"inventory_glyph_B",
-            "image": "./assets/block/glyph_B.png",
+            "image": "./assets/block/glyph_A.png",
         })
         self.money_decal = Decal(id="money_decal")
         self.coin_decal = Decal(id="coin", image="./assets/block/coin.png")

@@ -282,6 +282,8 @@ class Engine():
         pg.draw.rect(
             self.draw_surface, (255,255,255), sprite.rect, width=2
         )
+        if self.scene.bg_ref is None:
+            breakpoint()
         pos1, pos2 = (
             str(vec(sprite.rect.topleft)), 
             str(self.scene.get_bg_pos(sprite.rect.topleft))
