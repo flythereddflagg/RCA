@@ -58,7 +58,6 @@ Each item may have a priority from 1 - 5
 
 TODO -1- picked up item sound
 TODO -1- make cave/forest exit bigger
-
 TODO -1- shovel noise
 TODO -1- add alley way theme and mansion yard theme
 TODO -1- sword swing noise

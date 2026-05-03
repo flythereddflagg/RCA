@@ -29,7 +29,7 @@ class Camera(Node):
             self.pan(movex, movey)
             return
          
-        self.follow_player() # TODO ISSUE IS HERE!
+        self.follow_player()
         if self.shaking:
             cur_move = next(self.path, None)
             if cur_move is None:
