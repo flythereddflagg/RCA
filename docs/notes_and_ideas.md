@@ -15,6 +15,7 @@
   - Meatball enemy
   - Grandma with dialogue and "rappers delight" and SUNGLASSES and sideways baseball cap
   - Frog sticking his tongue out to eat player! HOW?
+- Home base is the blacksmith shop! Come back to upgrade stuff or build new things!
 
 - Meatball enemy: may be eaten for a small amount of damage
   - Eating the meatball drops you to 1 hp

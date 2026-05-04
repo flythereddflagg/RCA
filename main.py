@@ -57,19 +57,20 @@ Each item may have a priority from 1 - 5
 ---
 
 TODO -1- picked up item sound
-TODO -1- make cave/forest exit bigger
+TODO -3- make cave/forest exit bigger
 TODO -1- shovel noise
 TODO -1- add alley way theme and mansion yard theme
 TODO -1- sword swing noise
 TODO -1- sword hit noise
-TODO -1- hit pause animation
+TODO -3- weapon hit pause animation
 TODO -1- meatball death animation
 TODO -1- fix all the music loop issues!
 TODO -1- statue animation and sound
+TODO -1- rosie crash/splash sound
 TODO -1- gate animation and sound
 TODO -1- Music loop for FeyFrog
 TODO -1- Shorten Game Over music
-TODO -1- Make a proper end sequence
+TODO -1- Make a proper end sequence with Neverending story reference, crack and wooshing wind sound
 
 TODO -2- add animations and flesh out combat with fey frog
 TODO -2- add final story elements
