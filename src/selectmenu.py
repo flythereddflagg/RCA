@@ -72,5 +72,13 @@ class SelectMenu(MenuInterface):
 
     def do_save_quit(self):
         self.scene.game.save_game()
-        self.scene.game.running = False
+        self.scene.deconstruct()
+
+        # effectvely soft reset the entire game
+        self.scene.game.saved_scenes = {} 
+                
+        self.scene.game.load_scene(
+            yaml_path=self.scene.game.settings.initial_scene,
+            add_in=self.scene.game.settings.init_add_in
+        )
 

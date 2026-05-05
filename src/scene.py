@@ -182,6 +182,7 @@ class Scene():
 
 
     def deconstruct(self, save_scene=True):
+        # TODO -4- deconstruct scene can probably be simplified; use ALL nodes?
         if save_scene:
             self.game.saved_scenes[self.id] = self.serialize()
 
