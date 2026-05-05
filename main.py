@@ -64,7 +64,6 @@ TODO -1- sword swing noise
 TODO -1- sword hit noise
 TODO -3- weapon hit pause animation
 TODO -1- meatball death animation
-TODO -1- fix all the music loop issues!
 TODO -1- statue animation and sound
 TODO -1- rosie crash/splash sound
 TODO -1- gate animation and sound
