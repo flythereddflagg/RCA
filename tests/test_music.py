@@ -13,6 +13,7 @@ filename: ./assets/music/red_castle_valley.mp3
 groups: [paused]
 # start at, loop at, loop_to
 primary_loop: [0.0, 107.197, 55.512]
+# primary_loop: [0.0, 10, 5]
     
 """
 class Fake_Game:
@@ -29,9 +30,16 @@ def main():
     running = True
     init_dict = load(INIT, Loader=Loader)
     node = Music(scene=Fake_Scene(), parent=None, **init_dict)
+    start_time = 0
     while running:
-        node.update()
-        clock.tick(90)
+        try:
+            node.update()
+            if pg.time.get_ticks() - start_time > 250:
+                print(node.current_loop_time())
+                start_time = pg.time.get_ticks()
+            clock.tick(90)
+        except KeyboardInterrupt:
+            running = False
     pg.quit()
 
 

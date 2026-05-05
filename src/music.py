@@ -49,6 +49,7 @@ class Music(Node):
             and self.current_loop_time() > (self.end - self.start)
         ):
             self.goto(self.then_goto)
+
         elif (
             self.reload_primary 
             and not pg.mixer.music.get_busy() 
@@ -98,7 +99,7 @@ class Music(Node):
         assert end > start, \
             f"{type(self)} Error: invalid start and end in play_loop"
         self.goto(start)
-        self.then_goto = start if then_goto >= 0 else then_goto
+        self.then_goto = then_goto if then_goto >= 0 else start
         self.end = end
     
 
