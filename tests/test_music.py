@@ -12,8 +12,8 @@ type: Music
 filename: ./assets/music/red_castle_valley.mp3
 groups: [paused]
 # start at, loop at, loop_to
-primary_loop: [0.0, 107.197, 55.512]
-# primary_loop: [0.0, 10, 5]
+# primary_loop: [0.0, 107.197, 55.512]
+primary_loop: [100, 107.197, 55.6]
     
 """
 class Fake_Game:
