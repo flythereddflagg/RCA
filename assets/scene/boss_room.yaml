@@ -69,7 +69,4 @@ nodes:
   filename: ./assets/music/boss_theme_filled.mp3
   groups: [paused]
   measure_time: 1
-  sequence:
-    # after 28 measures have played goto measure 30
-    - [0, goto, 23.8]
-    - [83.4, goto, 23.8]
+  primary_loop: [24.043, 88.586, 25.875]
