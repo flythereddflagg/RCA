@@ -102,7 +102,8 @@ class FeyFrog(Decal):
             return
 
         for player in list_collided(
-            self.hitmask.sprite, self.scene.groups['player']
+            self.hitmask.sprite, 
+            self.scene.groups.get('player', pg.sprite.Group())
         ):
             animation = player.parent.animation
             if (animation and

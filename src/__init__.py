@@ -161,10 +161,29 @@ class Engine():
     def run(self):
         self.running = True
 
-        if self.settings.DEBUG:
-            return self.run_debug()
+        if ALLOW_DEBUG:
+            while self.running:
+                if self.settings.DEBUG:
+                    self.run_debug()
+                else:
+                    self.run_prod()
+        else:
+            while self.running:
+                self.run_prod()
 
-        while self.running:
+
+    def run_prod(self):
+        self.input.update()
+        self.logic()
+        self.draw_frame()
+        self.dt = (
+            self.clock.tick() 
+            if self.settings.FPS < -1 else 
+            self.clock.tick(self.settings.FPS)
+        )
+
+    def run_debug(self):
+        try:
             self.input.update()
             self.logic()
             self.draw_frame()
@@ -173,26 +192,13 @@ class Engine():
                 if self.settings.FPS < -1 else 
                 self.clock.tick(self.settings.FPS)
             )
-
-
-    def run_debug(self):
-        while self.running:
-            try:
-                self.input.update()
-                self.logic()
-                self.draw_frame()
-                self.dt = (
-                    self.clock.tick() 
-                    if self.settings.FPS < -1 else 
-                    self.clock.tick(self.settings.FPS)
-                )
-            except Exception as e:
-                print("\n\n-- WHILE RUNNING: EXCEPTION OCCURED -- \n\n")
-                print(traceback.format_exc())
-                print(type(e), e)
-                print("\n\n-- DROPPING INTO DEBUG MODE -- \n--'c' to retry -- \n\n")
-                breakpoint()
-                self.scene.refresh()
+        except Exception as e:
+            print("\n\n-- WHILE RUNNING: EXCEPTION OCCURED -- \n\n")
+            print(traceback.format_exc())
+            print(type(e), e)
+            print("\n\n-- DROPPING INTO DEBUG MODE -- \n--'c' to retry -- \n\n")
+            breakpoint()
+            self.scene.refresh()
 
     def logic(self):
         # run all game logic here
@@ -212,11 +218,18 @@ class Engine():
 
         # make a breakpoint and open debugger at any time
         if (
-            self.settings.DEBUG and 
             "BREAKPOINT" in new_actions
+            and self.settings.DEBUG
+            
         ):
             print("\n\n---\nDEBUG: Entering the Python debugger...\n---\n\n")
             breakpoint()
+        
+        if (
+            "DEBUG" in new_actions
+            and ALLOW_DEBUG
+        ):
+            self.settings.DEBUG = not self.settings.DEBUG
         
         # update everything in the scene
         if self.scene and not self.paused:

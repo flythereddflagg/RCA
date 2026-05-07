@@ -1,0 +1,23 @@
+layers: [foreground]
+nodes:
+- groups:
+  - solid
+  - background
+  id: boss room
+  image: ./assets/scene/boss_room/boss_room.png
+  mask: ./assets/scene/boss_room/boss_room_mask.png
+  type: Decal
+- id: camera
+  type: Camera
+
+
+- id: fey_frog
+  start:
+  - 84
+  - 55
+  yaml: ./assets/actor/fey_frog.yaml
+  groups:
+  - foe
+  - foreground
+
+  
