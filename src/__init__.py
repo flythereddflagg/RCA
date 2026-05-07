@@ -26,13 +26,10 @@ RGBA_BLUE = (0,0,255,255)
 RGBA_RED = (255,0,0,255)
 RGBA_GREEN = (0,255,0,255)
 
-ALLOW_DEBUG = True
+ALLOW_DEBUG = True # allow debug to be enabled?
 
 SAVE_PATH = pathlib.Path(os.path.expanduser("~/.local/share/rca/saves"))
 SAVE_FILE = SAVE_PATH / "save_file.yaml"
-
-FONTSIZE = 22
-DEFAULT_FONT_FILE = "./assets/fonts/BoldPixels.ttf"
 
 class Engine():
     """
