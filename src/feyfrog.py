@@ -27,7 +27,7 @@ class FeyFrog(Decal):
         self.damage_direction = vec((0,1))
         self.state = DEFAULT_STATE
         self.defualt_state = DEFAULT_STATE
-        random.seed(2343414142) # to make it determineistic
+        # random.seed(2343414142) # to make it determineistic
 
 
     def apply_physics(self):
