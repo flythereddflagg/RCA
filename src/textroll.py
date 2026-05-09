@@ -16,8 +16,10 @@ CREDITS = f"""
 
 
 Thank you so much for playing this demo!
-If you would like to leave feedback 
-please follow the link in the README.
+If you would like to leave feedback
+press Y on your controller or 'x' on your
+keyboard to go to the feedback page or email
+me directly at < redddogjr@gmail.com >.
 
                                          
 {credit_text}
