@@ -181,6 +181,13 @@ class Input():
                 if abs(norm) >= DEAD_ZONE:
                     actions.append((action, abs(norm)))
         
+        # TODO -4- this is a hackey solution but will allow Dpad to be read as if it is joystick
+        actions = [
+            (action[2:], val) if action.startswith("D_")
+            else (action, val)
+            for action, val in actions
+        ]
+        ###
         return actions
 
 

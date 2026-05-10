@@ -14,8 +14,12 @@ class SelectMenu(MenuInterface):
         super().setup()
         self.add_child(node_from_dict(self.scene, OPTIONS_MENU_DICT))
         self.textbox.set_text(self.text)
-        self.textbox.sprite.rect.center = self.scene.game.get_center()
+        self.textbox.sprite.rect.center = (
+            vec(self.scene.game.get_center())
+            + vec([-40, -50])
+        )
         self.place_indicator()
+        self.keyboard.set_text(self.keyboard.init['text'])
         self.bindings = [
             self.do_continue,
             self.do_options,
@@ -49,15 +53,24 @@ class SelectMenu(MenuInterface):
         self.scene.paused = True
         self.scene.occupied = True
         self.active = True
-        self.textbox.sprite.rect.center = self.scene.game.get_center() # TODO -4- this feels uncecssary
+        self.textbox.sprite.rect.center = (
+            vec(self.scene.game.get_center())
+            + vec([-60, -50])
+        )# self.textbox.sprite.rect.center = self.scene.game.get_center() 
+        # TODO -4- this feels uncecssary
         self.place_indicator() # TODO -4- this feels uncecssary
         super().open_menu()
+        self.scene.place_node(self.controls, groups=["hud"], start=self.controls.init['start'])
+        self.scene.place_node(self.keyboard, groups=["hud"], start=self.keyboard.init['start'])
+
 
 
     def close_menu(self):
         self.scene.paused = False
         self.scene.occupied = False
         super().close_menu()
+        self.controls.kill()
+        self.keyboard.kill()
 
 
     def do_continue(self):

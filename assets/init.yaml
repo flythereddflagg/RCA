@@ -41,8 +41,8 @@ new_game_add_in:
 # initial_scene: ./assets/scene/test_scene.yaml
 # initial_scene: ./assets/scene/red_castle_valley.yaml
 # initial_scene: ./assets/scene/startup.yaml
-initial_scene: ./assets/scene/credits.yaml
-# initial_scene: ./assets/scene/prototype_room.yaml
+# initial_scene: ./assets/scene/credits.yaml
+initial_scene: ./assets/scene/prototype_room.yaml
 
 # key bindings for keyboard input
 key_bind:

@@ -60,6 +60,22 @@ children:
       - id: indicator
         type: Decal
         image: ./assets/block/text_select.png
+      - id: controls
+        start: [290, 120]
+        type: Decal
+        image: ./assets/block/controls.png
+      - id: keyboard
+        type: TextBox
+        start: [20, 200]
+        bg_color: [0,0,0,128]
+        text: |-
+          Keyboard controls:
+          move: <arrow keys>
+          left item: c
+          right item: v
+          interact: <Space Bar>
+          inventory: <Enter>
+          pause menu: p
   - id: sprite
     type: Decal
     image: ./assets/actor/larry/larry_base.png
