@@ -49,13 +49,14 @@ class FeyFrog(Decal):
         
         self.apply_action(self.action)
         self.check_signals()
-        self.animation.update() # TODO -1- this is probably not necessary but we will fix when I get to it. 
         self.apply_physics()
         
 
         if self.hp <= 0:
             sprite = self.scene.node_by_id("grate exit")
-            sprite.set_image(pg.image.load("./assets/block/block.png").convert_alpha())
+            sprite.set_image(
+                pg.image.load("./assets/block/block.png").convert_alpha()
+            )
             sprite.kill()
             self.scene.place_node(
                 sprite,
