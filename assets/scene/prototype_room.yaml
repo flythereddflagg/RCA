@@ -17,7 +17,7 @@ nodes:
   start:
   - 84
   - 55
-  yaml: ./assets/actor/fey_frog.yaml
+  yaml: ./assets/actor/fey_frog2.yaml
   groups:
   - foe
   - foreground
