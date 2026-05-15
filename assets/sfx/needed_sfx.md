@@ -1,5 +1,4 @@
 ```python
-# TODO -1- add SFX for menu select noise
 # TODO -1- add SFX for larry walking
 # TODO -1- add SFX for rosie crashing
 # TODO -1- add SFX for noodles moving
