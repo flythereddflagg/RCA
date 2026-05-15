@@ -57,12 +57,22 @@ class MeatBall(Node):
 
 
     def update(self):
+        player = self.scene.get_player().parent
+        if (
+            vec(self.sprite.rect.center).distance_squared_to(
+                player.sprite.rect.center
+            ) < DIST_SQR_AGRO
+        ):
+            if self.moving_fx.sound.get_num_channels() == 0:
+                self.moving_fx.play(-1)
+        else:
+            self.moving_fx.stop()
+
         if self.music_node is None:
             self.music_node = self.scene.node_by_id("music")
         if self.stage3_go:
             self.stage3()
             return
-        player = self.scene.get_player().parent
         if player.inventory.contains("sword"):
             # self.music_node.stop()
             if not self.set_meatball_music:

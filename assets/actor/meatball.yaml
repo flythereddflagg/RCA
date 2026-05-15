@@ -52,5 +52,9 @@ children:
       path_prefix: ./assets/actor/meat_ball/
       datafile: just_ball.json
       default_state: still
+  
+  - id: moving_fx
+    type: SFX
+    file: ./assets/sfx/noodles.mp3
 
       
