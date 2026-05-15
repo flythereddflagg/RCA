@@ -1,4 +1,5 @@
 ```python
+# TODO -1- add a brief intro screen
 # TODO -1- add SFX for birds chirping/ambiance for mansion yard
 # TODO -1- add SFX for shovel swing
 # TODO -1- add SFX for shovel dig
