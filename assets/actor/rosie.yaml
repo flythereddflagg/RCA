@@ -116,7 +116,8 @@ children:
     image: ./assets/block/glyph_B.png
   - id: crash_sound
     type: SFX
-    file: ./assets/sfx/freesound_community-crash-6711.mp3
+    file: ./assets/sfx/crash 2.mp3
+    # file: ./assets/sfx/freesound_community-crash-6711.mp3
   - id: animation
     type: Animation2
     path_prefix: ./assets/actor/rosie/
