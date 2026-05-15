@@ -33,7 +33,14 @@ class Player(Node):
         self.check_signals()
         self.check_collision()
         self.apply_physics()
-        
+        # if (
+        #     self.state == "walk" 
+        #     and self.walking_fx.sound.get_num_channels() == 0
+        # ):
+        #     self.walking_fx.play(-1)
+        # elif self.state != "walk":
+        #     self.walking_fx.stop()
+
         if self.inventory.hp <= 0:
             self.sprite.kill()
 

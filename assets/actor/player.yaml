@@ -40,6 +40,10 @@ children:
     hp_max: 9
     groups:
       - paused
+  
+  # - id: walking_fx
+  #   type: SFX
+  #   file: ./assets/sfx/walking.mp3
       
   - id: select_menu
     type: SelectMenu 
