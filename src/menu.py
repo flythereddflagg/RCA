@@ -125,6 +125,7 @@ class Menu(MenuInterface):
         elif "DOWN" in new_actions:
             self.go_down()
         elif select_button:
+            self.selected_sfx.play()
             self.select_option()
         
 

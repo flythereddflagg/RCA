@@ -26,6 +26,9 @@ class MenuInterface(Node):
         self.selection = [a.strip() for a in self.text.split("\n")]
         self.n_choices = len(self.selection)
         self.selected = 0
+        # TODO -1- these should be a node each
+        self.select_sfx = pg.mixer.Sound("./assets/sfx/select.mp3")
+        self.selected_sfx = pg.mixer.Sound("./assets/sfx/selected.mp3")
         
 
 
@@ -72,6 +75,7 @@ class MenuInterface(Node):
         return "LEFT" in self.scene.game.input.new_actions()
     
     def go_up(self):
+        self.select_sfx.play()
         self.selected -= 1
         if self.selected < 0:
             self.selected += self.n_choices
@@ -79,6 +83,7 @@ class MenuInterface(Node):
 
 
     def go_down(self):
+        self.select_sfx.play()
         self.selected += 1
         if self.selected >= self.n_choices:
             self.selected -= self.n_choices
