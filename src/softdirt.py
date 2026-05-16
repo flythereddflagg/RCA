@@ -7,6 +7,7 @@ from .tools import list_collided, vec
 from .node import node_from_dict
 
 throw_dist = 32 # pixels
+DUG_SND_PATH = "./assets/sfx/shovel_dug.mp3"
 
 class SoftDirt(Decal):
 
@@ -15,11 +16,13 @@ class SoftDirt(Decal):
         self.state = "shine"
         # list of treasures given by the dirt
         self.treasure = self.init.get("treasure") 
+        self.dig_sfx = pg.mixer.Sound(DUG_SND_PATH)
 
     def update(self):
         for sprite in list_collided(self, self.scene.groups["player"]):
             state = sprite.parent.state if sprite.parent else sprite.state
             if state == "shovel":
+                self.dig_sfx.play()
                 return self.be_dug(sprite)
 
 
