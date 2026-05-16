@@ -103,6 +103,6 @@ nodes:
 #   groups: ["foreground"]
 - id: ambiance
   type: Music
-  filename: ./assets/music/CC0_birds-singing-03.mp3
+  filename: ./assets/sfx/bird_ambiance_arizona.mp3
   groups: [paused]
 
