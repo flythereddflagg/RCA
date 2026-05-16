@@ -29,6 +29,10 @@ class Player(Node):
 
 
     def update(self):
+        # TODO -1- make this more permanant
+        if self.state == "shovel":
+            if self.shovel_fx.sound.get_num_channels() == 0:
+                self.shovel_fx.play()
         self.apply_input()
         self.check_signals()
         self.check_collision()

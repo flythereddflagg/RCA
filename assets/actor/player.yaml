@@ -44,7 +44,10 @@ children:
   # - id: walking_fx
   #   type: SFX
   #   file: ./assets/sfx/walking.mp3
-      
+  - id: shovel_fx
+    type: SFX
+    file: ./assets/sfx/shovel.mp3
+  
   - id: select_menu
     type: SelectMenu 
     groups:
