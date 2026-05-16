@@ -32,6 +32,8 @@ class FeyFrog(Decal):
 
     def apply_physics(self):
         if self.state == 'damage' and self.animation.active:
+            if self.ouch_fx.sound.get_num_channels() == 0:
+                self.ouch_fx.play()
             self.move(self.damage_direction, speed=1*self.speed)
 
 

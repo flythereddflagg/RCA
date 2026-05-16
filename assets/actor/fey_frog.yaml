@@ -32,3 +32,7 @@ children:
   sibling: animation
   kind: hurtmask
   groups: [foreground]
+  
+- id: ouch_fx
+  type: SFX
+  file: ./assets/sfx/frog_ow.mp3
