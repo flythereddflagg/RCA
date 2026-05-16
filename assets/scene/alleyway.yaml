@@ -58,3 +58,6 @@ nodes:
     - other
   id: camera
   type: Camera
+- id: music
+  type: Music
+  filename: ./assets/sfx/ambiance_cave.mp3
