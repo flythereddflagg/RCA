@@ -70,7 +70,7 @@ children:
         image: ./assets/block/controls.png
       - id: keyboard
         type: TextBox
-        start: [20, 200]
+        start: [20, 180]
         bg_color: [0,0,0,128]
         text: |-
           Keyboard controls:
@@ -80,6 +80,7 @@ children:
           interact: <Space Bar>
           inventory: <Enter>
           pause menu: p
+          force quit: <backspace>
   - id: sprite
     type: Decal
     image: ./assets/actor/larry/larry_base.png
