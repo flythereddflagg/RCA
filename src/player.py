@@ -101,6 +101,8 @@ class Player(Node):
 
     def apply_physics(self):
         if self.state == 'damage':
+            if self.oof_fx.sound.get_num_channels() == 0:
+                self.oof_fx.play()
             self.move(
                 self.damage_direction, 
                 speed=3*self.speed, 

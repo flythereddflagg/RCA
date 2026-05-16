@@ -174,6 +174,7 @@ class MeatBall(Node):
         self.apply_physics()
         if self.hp <= 0:
             self.kill()
+            self.moving_fx.stop()
             self.music_node.reset()
             self.music_node.goto(self.music_data['tags']['victory'])
             self.music_node.reload_primary = True

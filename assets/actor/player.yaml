@@ -50,6 +50,9 @@ children:
   - id: sword_fx
     type: SFX
     file: ./assets/sfx/sword_swing.mp3
+  - id: oof_fx
+    type: SFX
+    file: ./assets/sfx/larry_oof.mp3
   - id: select_menu
     type: SelectMenu 
     groups:
