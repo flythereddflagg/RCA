@@ -33,6 +33,10 @@ class Player(Node):
         if self.state == "shovel":
             if self.shovel_fx.sound.get_num_channels() == 0:
                 self.shovel_fx.play()
+        if self.state == "sword":
+            if self.sword_fx.sound.get_num_channels() == 0:
+                self.sword_fx.play()
+                # TODO -4- add SFX for sword hit?
         self.apply_input()
         self.check_signals()
         self.check_collision()
