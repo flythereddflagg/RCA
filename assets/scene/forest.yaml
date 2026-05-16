@@ -44,6 +44,10 @@ nodes:
   - 78
   - 540
   type: Gate
+  children:
+  - id: gate_fx
+    type: SFX
+    file: ./assets/sfx/gate falling.mp3
 - action: null
   groups:
   - foreground

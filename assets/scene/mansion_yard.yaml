@@ -40,6 +40,10 @@ nodes:
       groups: [overlay]
       start: _inherit_
 
+    - id: gate_fx
+      type: SFX
+      file: ./assets/sfx/statue_move.mp3
+
  
 - action: shovel
   groups:
