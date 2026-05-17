@@ -52,6 +52,13 @@ class FeyFrog(Decal):
         self.apply_action(self.action)
         self.check_signals()
         self.apply_physics()
+        if (
+            not self.sprite.rect.colliderect(
+            self.scene.background.sprites()[0].sprite.rect)
+        ): 
+            self.sprite.rect.center = self.scene.background.sprites()[0].sprite.rect.center
+            if self.ouch_fx.sound.get_num_channels() == 0:
+                self.ouch_fx.play()
         
 
         if self.hp <= 0:

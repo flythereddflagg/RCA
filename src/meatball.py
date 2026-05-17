@@ -234,6 +234,8 @@ class MeatBall(Node):
 
     def apply_physics(self):
         if self.animation.state == 'damage':
+            if self.ouch_fx.sound.get_num_channels() == 0:
+                self.ouch_fx.play()
             self.move(
                 Compass.unit_vector(self.damage_direction), 
                 speed=2*BASE_SPEED, 

@@ -56,5 +56,8 @@ children:
   - id: moving_fx
     type: SFX
     file: ./assets/sfx/noodles.mp3
+  - id: ouch_fx
+    type: SFX
+    file: ./assets/sfx/meatball_ow.mp3
 
       
