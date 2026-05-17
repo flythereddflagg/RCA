@@ -58,9 +58,13 @@ class Menu(MenuInterface):
         self.scene.game.saved_scenes = {}
         self.scene.deconstruct()
         self.scene.game.load_scene(
-            yaml_path=self.scene.game.settings.new_game_scene,
-            add_in=self.scene.game.settings.new_game_add_in
+            yaml_path=self.scene.game.settings.intro_scene
         )
+        
+        # self.scene.game.load_scene(
+        #     yaml_path=self.scene.game.settings.new_game_scene,
+        #     add_in=self.scene.game.settings.new_game_add_in
+        # )
     
     
     def a_options(self):

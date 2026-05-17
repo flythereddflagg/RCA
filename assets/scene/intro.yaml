@@ -1,0 +1,26 @@
+layers:
+- foreground
+nodes:
+- id: intro_text
+  type: TextBox
+  scrolling: True
+  groups: [foreground]
+  # box_size: [390,96]
+  start: [150, 75]
+  text: |-
+    We can't find Grandpa anywhere!
+
+    Has he gone up to the mountain again!?
+         
+        
+    Larry... 
+    
+    
+    ...can you go see if Grandpa is up
+    there and bring him home?
+
+- id: cue
+  type: Trigger
+  # groups: [foreground]
+  image: ./assets/block/glyph_B.png
+  start: [350, 290]

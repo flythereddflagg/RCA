@@ -37,6 +37,7 @@ class TextBox(Node):
         self.font_char_w, self.font_height = self.font.size(PRINTABLE_CHARS)
         self.font_char_w /= len(PRINTABLE_CHARS)
         self.add_child(Decal(id="sprite"))
+        self.text = ""
 
 
     def config(self, **kwargs):
