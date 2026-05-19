@@ -25,6 +25,7 @@ build_options = {
     'excludes'      : ['cx_freeze'],
     'include_files' : [
         ("./build/tmp_assets/assets", "assets"),
+        ("./assets/ASSETS_LICENSE", "./assets/ASSETS_LICENSE"),
         "VERSION",
         "README.md",
         "LICENSE",

@@ -10,7 +10,7 @@ def gather_assets():
     non_matches = ["http", "#"]
     tmp_path = "./build/tmp_assets"
     src_path = "./assets"
-    file_types = [".png", ".yaml", ".json", ".ttf", ".mp3", ".ogg"]
+    file_types = [".png", ".yaml", ".json", ".ttf", ".mp3", ".ogg", ".txt"]
 
     # Make the asset directory
     os.makedirs(tmp_path, exist_ok=True)
