@@ -27,7 +27,8 @@ build_options = {
         ("./build/tmp_assets/assets", "assets"),
         "VERSION",
         "README.md",
-        "LICENSE"
+        "LICENSE",
+        "CREDITS"
     ]
 }
 

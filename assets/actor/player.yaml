@@ -8,7 +8,7 @@ type: Player
 children:
   - id: animation
     type: Animation
-    path_prefix: "./assets/actor/larry/"
+    path_prefix: ./assets/actor/larry/
     default_state: stand
     animation:
       stand:

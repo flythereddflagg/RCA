@@ -1,12 +1,12 @@
 
-image: "./assets/actor/ossifrage/bird_character_base.png"
-mask: "./assets/actor/dragon/hitmask.png"
+image: ./assets/actor/ossifrage/bird_character_base.png
+mask: ./assets/actor/dragon/hitmask.png
 type: FeyFrog
 
 children:
 - id: animation
   type: Animation
-  path_prefix: "./assets/actor/fey_frog/"
+  path_prefix: ./assets/actor/fey_frog/
   default_state: stand
   animation:
     stand:
@@ -14,12 +14,12 @@ children:
       hurtmask: sitting.json
       repeat: True
     walk:
-      datafile: "jumps.json"
+      datafile: jumps.json
       hitmask: hitmask.json
       hurtmask: hurtmask.json
       repeat: True
     damage:
-      datafile: "damage.json"
+      datafile: damage.json
       repeat: false
 
 - id: hitmask
