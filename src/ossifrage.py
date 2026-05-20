@@ -5,28 +5,23 @@ import pygame as pg
 from .decal import Decal
 from .compass import Compass
 from .movement import Movement
-from .animation import Animation
-from .tools import list_collided
+from .tools import list_collided, vec, diff_vec
 
 
 MOVEMENTS = Compass.strings + ['STOP', 'STOP', "STOP"]
 ACTION_TIME_RANGE = [200, 1000]
 
 class Ossifrage(Decal):
-    def __init__(self, **options):
-        super().__init__(**options)
-        self.sprite = self
-        self.move = Movement(self, **self.options)
-        self.animation = Animation(
-            self, self.options['animations'], self.options["path_prefix"]
-        )
+    def setup(self):
+        super().setup()
+        self.move = Movement(self, **self.init)
         self.action_time = 0
         self.last_action_time = 0
         self.action = None
         self.speed = 200 # pixels per second
         self.signals = []
         self.hp = 20
-        self.damage_direction = pg.math.Vector2(0,1)
+        self.damage_direction = vec((0,1))
         self.state = "stand"
 
     def apply_physics(self):
@@ -47,7 +42,7 @@ class Ossifrage(Decal):
         
         self.apply_action(self.action)
         self.check_signals()
-        self.animation.update()
+        # self.animation.update()
         self.apply_physics()
         
 
@@ -56,7 +51,6 @@ class Ossifrage(Decal):
 
 
     def check_signals(self):
-        if self.signals: print(f"[{self.id}] OSSIFRAGE got signals:\n{self.signals}")
         for signal in self.signals:
             if "damage" in signal[0]:
                 self.hp -= signal[1]
@@ -65,10 +59,12 @@ class Ossifrage(Decal):
 
         self.signals = [] # reset signals
 
+
     def signal(self, signal):
         self.signals.append(signal)
 
-    def apply_action(self, action):
+
+    def apply_action(self, action):   
         if self.animation.active: return
 
         if action in Compass.strings: 
@@ -90,16 +86,16 @@ class Ossifrage(Decal):
             return
 
         for player in list_collided(self, self.scene.groups['player']):
-            if (player.animation and\
-                player.animation.current['id'] == 'damage' and\
-                player.animation.active
+            animation = player.parent.animation
+            if (animation and 
+                animation.active and
+                player.parent.state == 'damage'
             ): continue
 
-            damage_direction = (
-                pg.math.Vector2(player.rect.center) -
-                pg.math.Vector2(self.rect.center)
+            damage_direction = diff_vec(
+                 player.rect.center, self.rect.center
             ).normalize()
             player.signal([
-                'damage', 10, damage_direction
+                'damage', 1, damage_direction
             ])
             

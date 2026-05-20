@@ -1,21 +1,21 @@
 
 
 # this is the default asset path
-image: "./assets/actor/ossifrage/bird_character_base.png"
-mask: "./assets/actor/dragon/hitmask.png"
+image: ./assets/actor/ossifrage/bird_character_base.png
+mask: ./assets/actor/dragon/hitmask.png
 groups:
   - foe
 
-path_prefix: "./assets/actor/dragon/"
+path_prefix: ./assets/actor/dragon/
 
 
-animations:
+animation:
   stand:
-    datafile: "internet_dragon.json"
+    datafile: internet_dragon.json
     repeat: True
   walk:
-    datafile: "internet_dragon.json"
+    datafile: internet_dragon.json
     repeat: True
   damage:
-    datafile: "internet_dragon.json"
+    datafile: internet_dragon.json
     repeat: false

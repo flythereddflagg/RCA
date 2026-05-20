@@ -2,30 +2,95 @@
 # this yaml file should have the settings specific to the
 # character but not any one scene
 
-id: PLAYER
+id: player_node
 type: Player
-image: ./assets/actor/larry/larry_base.png
-mask: ./assets/actor/larry/larry_base_mask.png
-groups:
-  - player
 
-path_prefix: "./assets/actor/larry/"
+children:
+  - id: animation
+    type: Animation
+    path_prefix: ./assets/actor/larry/
+    default_state: stand
+    animation:
+      stand:
+        datafile: larry_emote.json
+        repeat: True
+      walk:
+        datafile: larry_walk.json
+        repeat: True
+      sword:
+        datafile: larry_sword_swing.json
+        hitmask: larry_sword_swing_mask.json
+        repeat: False
+      damage:
+        repeat: False
+        datafile: larry_damage.json
+      shovel:
+        repeat: False
+        datafile: larry_shovel.json
 
+  - id: hitmask
+    type: HitMask
+    sibling: animation
+    kind: hitmask
 
-animations:
-  stand:
-    datafile: "larry_emote.json"
-    repeat: True
-  walk:
-    datafile: "larry_walk.json"
-    repeat: True
-  sword:
-    datafile: larry_sword_swing.json
-    hitmask: larry_sword_swing_mask.json
-    repeat: False
-  damage:
-    repeat: False
-    datafile: larry_damage.json
-  shovel:
-    repeat: False
-    datafile: larry_shovel.json
+  - id: inventory
+    type: Inventory
+    money: 0
+    hp: 9
+    hp_max: 9
+    groups:
+      - paused
+  
+  # - id: walking_fx
+  #   type: SFX
+  #   file: ./assets/sfx/walking.mp3
+  - id: shovel_fx
+    type: SFX
+    file: ./assets/sfx/shovel.mp3
+  - id: sword_fx
+    type: SFX
+    file: ./assets/sfx/sword_swing.mp3
+  - id: oof_fx
+    type: SFX
+    file: ./assets/sfx/larry_oof.mp3
+  - id: select_menu
+    type: SelectMenu 
+    groups:
+      - paused
+    font_size: 22
+    text_padding: 3
+    bg_color: [0,0,0,128]
+    # scroll_speed: 20
+    # box_size: [390,96]
+    # start: [180, 250]
+    outline: true
+    text: |-
+      Continue
+      Options
+      Save & Quit
+    children:
+      - id: indicator
+        type: Decal
+        image: ./assets/block/text_select.png
+      - id: controls
+        start: [290, 120]
+        type: Decal
+        image: ./assets/block/controls.png
+      - id: keyboard
+        type: TextBox
+        start: [20, 180]
+        bg_color: [0,0,0,128]
+        text: |-
+          Keyboard controls:
+          move: <arrow keys>
+          left item: c
+          right item: v
+          interact: <Space Bar>
+          inventory: <Enter>
+          pause menu: p
+          force quit: <backspace>
+  - id: sprite
+    type: Decal
+    image: ./assets/actor/larry/larry_base.png
+    mask: ./assets/actor/larry/larry_base_mask.png
+

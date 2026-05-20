@@ -1,0 +1,136 @@
+### DEBUG SETTINGS ###
+# Frame rate (in Frames / second) FPS: 0 -> do not limit FPS
+FPS: 90
+SHOW_EVENTS: false # print input events in terminal
+FPS_COUNTER: true # show FPS on game screen
+
+DEBUG: false # debug mode? (Shows rect frames and positions)
+SHOW_MASK: false # in debug mode, shows hit masks of every entity
+SHOW_BG_MASK: false # in debug mode, show mask then show bg mask too
+LOG_INPUT: true # for recreating bugs (See input.py)
+MUSIC: true # in debug mode, MUSIC = False silences all music.
+
+### SCREEN/GAME WINDOW CONSTANTS ###
+RESOLUTION: 360
+ASPECT_RATIO: [16,9]
+SCALE: 2
+icon: ./assets/block/game_icon_rev1.png
+title: pygame - Red Castle Avenger
+
+### GAME INIT ###
+init_add_in:
+  # - yaml: ./assets/actor/player.yaml
+  #   start: [704,230] # red castle valley
+  #   # start: [200,200] # boss roosm?
+  #   groups:
+  #     - foreground
+  #     - player
+
+intro_scene: ./assets/scene/intro.yaml
+new_game_scene: ./assets/scene/red_castle_valley.yaml
+new_game_add_in:
+  - yaml: ./assets/actor/player.yaml
+    # start: [338,450] # red castle valley
+    # start: [892,150] # red castle valley
+    start: [548,684] # red castle valley
+
+    groups:
+      - foreground
+      - player
+
+# initial_scene: ./assets/scene/mansion_yard.yaml
+# initial_scene: ./assets/scene/boss_room.yaml
+# initial_scene: ./assets/scene/test_scene.yaml
+# initial_scene: ./assets/scene/red_castle_valley.yaml
+initial_scene: ./assets/scene/startup.yaml
+# initial_scene: ./assets/scene/intro.yaml
+# initial_scene: ./assets/scene/credits.yaml
+# initial_scene: ./assets/scene/prototype_room.yaml
+
+# key bindings for keyboard input
+key_bind:
+  REFRESH: u
+  BREAKPOINT: 'y'
+  DEBUG: '7'
+  QUIT: backspace
+  UP: up
+  DOWN: down
+  LEFT: left
+  RIGHT: right
+  BUTTON_S: v
+  BUTTON_E: ' '
+  BUTTON_W: c
+  START: return
+  # not currently used
+  R_UP: w
+  R_DOWN: s
+  R_LEFT: a
+  R_RIGHT: d
+  BUTTON_N: x
+  SELECT: p
+
+# Controller key: 
+#   LS/RS: Left/Right Stick
+#   LT/RT: Left/Right Trigger
+#   LB/RB: Left/Right Bumper
+#   X/Y: X/Y button
+#   x/y: x/y axes (gives a continuous value as opposed to discrete)
+#   Dx/Dy: Dpad x/Dpad y 
+#   HM: Home/Xbox button
+#   PS: Screenshot button
+#   !: No button assigned/used
+
+8BitDo Ultimate 2C Wireless: 
+# LSx LSy RSx RSy RTa LTa A B L4 X Y R4 LB RB LT RT - + HM LS RS ! Dx Dy
+  LSx LSy RSx RSy !   !   S E !  W N !  LB RB LT RT - + HM LS RS ! Dx Dy
+BDA Core (Plus) Wired Controller:
+# LSx LSy RSx RSy Y B A X L  R  ZL ZR - + LS RS HM PS Dx Dy
+  LSx LSy RSx RSy W S E N LB RB LT RT - + LS RS HM PS Dx Dy
+
+Generic:
+  LSx LSy RSx RSy S E W N LB RB LT RT - + LS RS HM PS Dx Dy
+
+ctlr_bind: 
+  UP: LSy-
+  DOWN: LSy+
+  LEFT: LSx-
+  RIGHT: LSx+
+  BUTTON_S: S
+  BUTTON_E: E
+  START: +
+  SELECT: '-'
+  # not currently used
+  BUTTON_W: W
+  BUTTON_N: 'N'
+  R_UP: RSy-
+  R_DOWN: RSy+
+  R_LEFT: RSx-
+  R_RIGHT: RSx+
+
+
+# Uses XBOX config
+SDL2 Controller Bind:
+  UP: CONTROLLER_AXIS_LEFTY-
+  DOWN: CONTROLLER_AXIS_LEFTY+
+  LEFT: CONTROLLER_AXIS_LEFTX-
+  RIGHT: CONTROLLER_AXIS_LEFTX+
+  R_UP: CONTROLLER_AXIS_RIGHTY-
+  R_DOWN: CONTROLLER_AXIS_RIGHTY+
+  R_LEFT: CONTROLLER_AXIS_RIGHTX-
+  R_RIGHT: CONTROLLER_AXIS_RIGHTX+
+  D_UP: CONTROLLER_BUTTON_DPAD_UP
+  D_DOWN: CONTROLLER_BUTTON_DPAD_DOWN
+  D_LEFT: CONTROLLER_BUTTON_DPAD_LEFT
+  D_RIGHT: CONTROLLER_BUTTON_DPAD_RIGHT
+  BUTTON_S: CONTROLLER_BUTTON_A
+  BUTTON_E: CONTROLLER_BUTTON_B
+  BUTTON_W: CONTROLLER_BUTTON_X
+  BUTTON_N: CONTROLLER_BUTTON_Y
+  BUTTON_L: CONTROLLER_BUTTON_LEFTSHOULDER
+  BUTTON_R: CONTROLLER_BUTTON_RIGHTSHOULDER
+  STICK_L: CONTROLLER_BUTTON_LEFTSTICK
+  STICK_R: CONTROLLER_BUTTON_RIGHTSTICK
+  START: CONTROLLER_BUTTON_START
+  SELECT: CONTROLLER_BUTTON_BACK
+  HOME: CONTROLLER_BUTTON_GUIDE
+

@@ -1,11 +1,11 @@
 ####
-#### COPIED FROM ./assets/__init__.yaml
+#### COPIED FROM ./assets/init.yaml
 ####
 
 SHOW_EVENTS: false # print events in terminal
 
 # key bindings for keyboard input
-KEY_BIND:
+key_bind:
   REFRESH: u
   QUIT: backspace
   START: return
@@ -14,17 +14,17 @@ KEY_BIND:
   DOWN: down
   LEFT: left
   RIGHT: right
-  BUTTON_1: n
-  BUTTON_2: m
-  BUTTON_3: ','
-  BUTTON_4: '.'
+  BUTTON_S: n
+  BUTTON_E: m
+  BUTTON_E: ','
+  BUTTON_N: '.'
   R_UP: i
   R_DOWN: k
   R_LEFT: j
   R_RIGHT: l
 
 # Controller bindings
-CTLR_BIND:
+ctlr_bind:
   REFRESH: 'PrtScn'
   QUIT: '-'
   START: '+'
@@ -33,10 +33,10 @@ CTLR_BIND:
   DOWN: LSY+
   LEFT: LSX-
   RIGHT: LSX+
-  BUTTON_1: LT
-  BUTTON_2: RT
-  BUTTON_3: A 
-  BUTTON_4: B
+  BUTTON_S: LT
+  BUTTON_E: RT
+  BUTTON_W: A 
+  BUTTON_N: B
   R_UP: RSY-
   R_DOWN: RSY+
   R_LEFT: RSX-

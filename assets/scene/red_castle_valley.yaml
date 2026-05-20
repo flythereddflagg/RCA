@@ -1,36 +1,25 @@
-# Set up all sprite groups
-id: red castle valley
-DRAW_LAYERS:
+# layers specifies draw order
+layers:
   - behind
   - background
   - foreground
   - overlay
-# amount to scale everything
-INIT_ZOOM: 1
-# pixels before camera moves instead of player
-CAMERASLACK: 100
 
-background:
-  # - id: BACKGROUND
-  #   type: Decal
-  #   image: ./assets/scene/red_castle_valley/background.png
-  #   mask: ./assets/scene/red_castle_valley/foreground.png
-  #   groups: 
-  #    - solid
-
+nodes: # all children are nodes
   - id: BACKGROUND
     type: Decal
     image: ./assets/scene/red_castle_valley/red_castle_valley_bg.png
     mask: assets/scene/red_castle_valley/red_castle_valley_mask.png
     groups:
       - solid
+      - background
 
-overlay:
   - id: foreground
     type: Decal
     image: ./assets/scene/red_castle_valley/red_castle_valley_overlay.png
+    groups:
+      - overlay
 
-foreground:
   - id: big ol rock
     type: Decal
     image: ./assets/block/big_ol_rock.png
@@ -39,16 +28,44 @@ foreground:
     scale: 2
     groups: 
      - solid
+     - foreground
 
-  - id: guard
-    type: Gate
-    key_id: jar of pickles
-    image: ./assets/actor/other/guard_npc.png
-    mask: ./assets/block/block.png
-    start: [888,91]
-    scale: 1
-    groups: 
-     - solid
+  - yaml: ./assets/actor/rosie.yaml
+    start: [870,91]
+    groups: [foreground, solid, paused]
+
+  - yaml: ./assets/actor/meatball.yaml
+    start: [700, 200]
+    # groups: [foreground, foe, paused]
+    active: False
+  
+  # - id: shovel
+  #   type: Item
+  #   image: ./assets/actor/item/shovel.png
+  #   mask: ./assets/actor/item/shovel.png
+  #   start: [800,200]
+  #   scale: 1
+  #   action: shovel
+  #   groups:
+  #    - foreground
+  
+  # - id: sword
+  #   type: Item
+  #   action: sword
+  #   groups:
+  #   - foreground
+  #   image: ./assets/actor/item/sword_icon.png
+  #   mask: ./assets/actor/item/sword_icon.png
+  #   start: [500,100]
+
+  # - id: jar of pickles
+  #   type: Item
+  #   image: ./assets/block/tupperware.png
+  #   mask: ./assets/block/tupperware.png
+  #   start: [701,136]
+  #   action: null
+  #   groups:
+  #     - foreground
 
   # - id: wall
   #   type: Decal
@@ -58,26 +75,23 @@ foreground:
   #   scale: 0.75
   #   groups: 
   #    - solid
+  #    - foreground
 
-  # - id: shovel
-  #   type: Item
-  #   image: ./assets/actor/item/shovel.png
-  #   mask: ./assets/actor/item/shovel.png
-  #   start: [800,200]
+  # - id: ossifrage 1
+  #   yaml: ./assets/actor/ossifrage.yaml
+  #   start: [835,506]
+  #   groups:
+  #     - foreground
+  #     - foe
+
+  # - id: cactus
+  #   type: Cactus
+  #   image: ./assets/block/cactus.png
+  #   mask: ./assets/block/cactus.png
+  #   start: [400,400]
   #   scale: 1
-  #   action: shovel
-
-  - id: ossifrage 1
-    type: Ossifrage
-    yaml: ./assets/actor/ossifrage.yaml
-    start: [835,506]
-
-  - id: cactus
-    type: Cactus
-    image: ./assets/block/cactus.png
-    mask: ./assets/block/cactus.png
-    start: [956,337]
-    scale: 1
+  #   groups: 
+  #    - foreground
 
   - id: backpack
     type: Backpack
@@ -85,23 +99,39 @@ foreground:
     mask: ./assets/block/backpack.png
     start: [358,531]
     scale: 1
+    groups: 
+     - foreground
+  
+  # - id: coin
+  #   type: Coin
+  #   image: ./assets/block/coin.png
+  #   mask: ./assets/block/coin.png
+  #   groups: [foreground]
+  #   value: 1
+  #   start: [466, 323]
 
-  - id: soft_dirt
-    type: SoftDirt
-    image: ./assets/block/soft_dirt.png
+  - groups: [foreground]
+    id: rubble dirt
+    # image: ./assets/block/soft_dirt.png
     mask: ./assets/block/soft_dirt_mask.png
-    start: [221,624]
     scale: 1
-    treasure:   
-      - id: statue key
-        type: Item
-        image: ./assets/block/silver_key.png
-        mask: ./assets/block/silver_key.png
-        scale: 1
-        start: [64,0]
-        action: null
+    start: [221,624]
+    treasure:
+    - id: statue key
+      type: Item
+      image: ./assets/block/silver_key.png
+      mask: ./assets/block/silver_key.png
+      scale: 1
+      start: [64,0]
+      action: null
+    type: SoftDirt
+    children:
+    - type: Animation2
+      path_prefix: ./assets/block/
+      datafile: soft_dirt.json
+      default_state: shine
+  
 
-behind:
   - id: bridge_exit
     type: Edge
     image: ./assets/block/block.png
@@ -110,6 +140,8 @@ behind:
     scale: 2
     scene_path: ./assets/scene/mansion_yard.yaml
     exit_dir: DOWN
+    groups: 
+     - behind
 
   - id: forest_red_castle_valley_connection
     type: Edge
@@ -119,6 +151,8 @@ behind:
     scale: 1
     scene_path: ./assets/scene/forest.yaml
     exit_dir: RIGHT
+    groups: 
+     - behind
 
   - id: mountain trail exit
     type: Edge
@@ -128,3 +162,19 @@ behind:
     scale: 2.5
     scene_path: ./assets/scene/placeholder.yaml
     exit_dir: UP
+    groups: 
+     - behind
+  
+  - id: music
+    type: Music
+    filename: ./assets/music/red_castle_valley.mp3
+    groups: [paused]
+    # start at, loop at, loop_to
+    primary_loop: [0.0, 107.197, 55.512]
+    
+
+  - id: camera
+    type: Camera
+    slack: 100
+    groups: [paused]
+    # zoom: 1.5

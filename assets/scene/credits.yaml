@@ -1,0 +1,41 @@
+layers: [foreground]
+nodes:
+- id: credits
+  type: CutScene
+  groups:
+    - background  
+  children:
+    - id: animation
+      type: Animation
+      path_prefix: ./assets/scene/credits/
+      default_state: titlescreen
+      animation:
+        intro:
+          datafile: credits.json
+          repeat: true
+- id: credits
+  type: TextRoll
+  groups:
+  - foreground
+
+- id: credit music
+  type: Music
+  filename: ./assets/music/RCA_OVERWORLD/RCA_OVERWORLD_v2.mp3
+
+- id: feedback
+  type: OpenUrlTrigger
+  groups: [foreground]
+  font_size: 22
+  text_padding: 3
+  bg_color: [0,0,0,128]
+  start: [475, 300]
+  outline: true
+  text: |-
+    Leave Feedback!
+  url: https://docs.google.com/forms/d/e/1FAIpQLSderlCWcMT3Gautv6mrwIdU-W572MYuIz5tmgwpKpN1ikAwwA/viewform?usp=dialog
+  children:
+  - id: glyph
+    type: Decal
+    image: ./assets/block/glyph_Y.png
+    groups: _inherit_
+  

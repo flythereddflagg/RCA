@@ -1,15 +1,18 @@
 from .decal import Decal
 from .tools import list_collided
+from .node import node_from_dict
 
 EMPTY = 'empty'
 
 class Item(Decal):
-    def __init__(self, **options):
-        super().__init__(**options)
-        self.action = options["action"]
-    
-    def __repr__(self):
-        return f"<Item - {self.id}>"
+    def setup(self):
+        super().setup()
+        self.action = self.init.get("action")
+        self.add_child(node_from_dict(self.scene, {
+            "id": "pickup_sfx",
+            "type": "SFX",
+            "file": "./assets/music/item_jingle.mp3"
+        }))
     
     def update(self):
         self.check_collision()
@@ -22,4 +25,5 @@ class Item(Decal):
                 new_slot = player.inventory.add_item(self)
                 if new_slot is None: return # no more slots can be added
                 self.kill()
+                self.pickup_sfx.play()
             break

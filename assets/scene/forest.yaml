@@ -1,62 +1,81 @@
-id: forest
-DRAW_LAYERS:
-  - behind
+layers:
+- behind
+- background
+- foreground
+- overlay
+nodes:
+- groups:
+  - solid
   - background
-  - foreground
+  id: dungeon_tile
+  image: ./assets/scene/forest/west_forest_bg.png
+  mask: ./assets/scene/forest/west_forest_mask.png
+  type: Decal
+- groups:
   - overlay
-
-# amount to scale everything
-INIT_ZOOM: 1
-# pixels before camera moves instead of player
-CAMERASLACK: 100
-
-background:
-  - id: dungeon_tile
-    type: Decal
-    image: ./assets/scene/forest/west_forest_bg.png
-    mask: ./assets/scene/forest/west_forest_mask.png
-    groups: 
-     - solid
-
-overlay:
-  - id: foreground2
-    type: Decal
-    image: ./assets/scene/forest/cave_overlay.png
-  - id: foreground
-    type: Decal
-    image: ./assets/scene/forest/west_forest_overlay.png
-
-
-foreground:
-  - id: sword
-    type: Item
-    image: ./assets/actor/item/sword_icon.png
-    mask: ./assets/actor/item/sword_icon.png
-    start: [114,393]
-    scale: 1
-    action: sword
-  - id: le_gate
-    type: Gate
-    key_id: gate key
-    image: ./assets/scene/forest/gate.png
-    mask: ./assets/scene/forest/gate_mask.png
-    start: [78,540]
-    scale: 1
-    groups: 
-     - solid
-  - id: jar of pickles
-    type: Item
-    image: ./assets/block/jar_of_pickles.png
-    mask: ./assets/block/jar_of_pickles.png
-    start: [51,580]
-    action: null
-
-behind:
-  - id: forest_red_castle_valley_connection
-    type: Edge
-    image: ./assets/block/block.png
-    mask: ./assets/block/block.png
-    start: [409,234]
-    scale: 1
-    scene_path: ./assets/scene/red_castle_valley.yaml
-    exit_dir: LEFT
+  id: foreground2
+  image: ./assets/scene/forest/cave_overlay.png
+  type: Decal
+- groups:
+  - overlay
+  id: foreground
+  image: ./assets/scene/forest/west_forest_overlay.png
+  type: Decal
+- action: sword
+  groups:
+  - foreground
+  id: sword
+  image: ./assets/actor/item/sword_icon.png
+  mask: ./assets/actor/item/sword_icon.png
+  scale: 1
+  start:
+  - 114
+  - 393
+  type: Item
+- groups:
+  - solid
+  - foreground
+  id: le_gate
+  image: ./assets/scene/forest/gate.png
+  key_id: gate key
+  mask: ./assets/scene/forest/gate_mask.png
+  scale: 1
+  start:
+  - 78
+  - 540
+  type: Gate
+  children:
+  - id: gate_fx
+    type: SFX
+    file: ./assets/sfx/gate falling.mp3
+- action: null
+  groups:
+  - foreground
+  id: jar of pickles
+  image: ./assets/block/tupperware.png
+  mask: ./assets/block/tupperware.png
+  start:
+  - 51
+  - 580
+  type: Item
+- exit_dir: LEFT
+  groups:
+  - behind
+  id: forest_red_castle_valley_connection
+  image: ./assets/block/block.png
+  mask: ./assets/block/block.png
+  scale: 1
+  scene_path: ./assets/scene/red_castle_valley.yaml
+  start:
+  - 409
+  - 234
+  type: Edge
+- groups:
+  - other
+  id: camera
+  slack: 100
+  type: Camera
+- id: forest theme
+  type: Music
+  filename: ./assets/music/slow_theme_loop.mp3
+  groups: [paused]

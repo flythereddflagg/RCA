@@ -3,20 +3,26 @@ import random
 import pygame as pg
 
 from .decal import Decal
-from .tools import list_collided
+from .tools import list_collided, vec
+from .node import node_from_dict
 
 throw_dist = 32 # pixels
+DUG_SND_PATH = "./assets/sfx/shovel_dug.mp3"
 
 class SoftDirt(Decal):
 
-    def __init__(self, treasure=None, **kwargs):
-        super().__init__(**kwargs)
-        self.treasure = treasure # list of treasures given by the dirt
+    def setup(self):
+        super().setup()
+        self.state = "shine"
+        # list of treasures given by the dirt
+        self.treasure = self.init.get("treasure") 
+        self.dig_sfx = pg.mixer.Sound(DUG_SND_PATH)
 
     def update(self):
         for sprite in list_collided(self, self.scene.groups["player"]):
             state = sprite.parent.state if sprite.parent else sprite.state
             if state == "shovel":
+                self.dig_sfx.play()
                 return self.be_dug(sprite)
 
 
@@ -24,20 +30,18 @@ class SoftDirt(Decal):
     def be_dug(self, sprite):
         # I assume that any sprite that has a "shovel" state 
         # should probably have a parent. Maybe not though?
-        layer = [layer for key, layer in self.scene.layers.items() if self in layer][0]
+        layer = [layer for key, layer in self.scene.groups.items() if self in layer][0]
         for item in self.treasure:
             start_vector = (
-                pg.math.Vector2(item["start"])
-                # pg.math.Vector2([random.random(), random.random()]) * 
+                vec(item["start"])
+                # vec([random.random(), random.random()]) * 
                 # throw_dist + 
                 # # throw it up and to the left 32 pixels
-                # pg.math.Vector2([-throw_dist,-throw_dist]) 
+                # vec([-throw_dist,-throw_dist]) 
             ) + self.rect.topleft
-            node = self.scene.node_from_dict(self.scene, item)
-            groups = self.options.get("groups")
-            self.scene.place_node(
-                node, layer, groups=groups, start=start_vector
-            )
+            node = node_from_dict(self, item)
+            groups = self.init.get("groups")
+            self.scene.place_node(node, groups=groups, start=start_vector)
         self.kill()
 
 

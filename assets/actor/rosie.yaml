@@ -1,0 +1,126 @@
+id: Rosie
+type: Rosie2
+key_id: jar of pickles
+image: ./assets/actor/rosie/rosie_cart_ref.png
+mask: ./assets/actor/rosie/rosie_cart_mask.png
+scale: 1
+seq_sets:
+  # note: sets are inclusive and 0-indexed 
+  init: [0, 6]
+  eat: [7, 8]
+  after_eat: [8, 8]
+  tupperware: [9, 10]
+  fine: [11]
+sequence:
+  - talking_head: rosie_talk
+    text: |-
+      Oh hi Robbie! I got no idea where your Pop Pop went off to, but I'm 
+      making MEATBALLS! But I don't have any clean Tupperware!
+
+  - talking_head: larry_talk
+    text: |-
+      Alright, well definitely next time, okay?--
+
+  - talking_head: rosie_talk
+    text: |-
+      Well--OH! Don't be silly! Now, hold out your hands!
+
+  - talking_head: larry_talk
+    text: |-
+      Ohhhh...cool...thanks a lot!
+
+  - talking_head: rosie_talk
+    text: |-
+      Now, please, take a bite so I can watch you enjoy! That's my favorite 
+      part!
+
+  - talking_head: yesno
+    prompt: yesno
+    text: |-
+      Will you eat the meatball?
+
+  - talking_head: rosie_talk
+    text: |-
+      No? Come back later when you have your big boy appitite! He he he!
+
+  - talking_head: rosie_talk
+    text: |-
+      He he he! Aren't they great!? Now I just need something to put them in.
+
+  - talking_head: rosie_talk
+    text: |-
+      Do you have any clean Tupperware?
+  
+  - talking_head: rosie_talk
+    text: |-
+      Oh thanks for the Tupperware! 
+      I need to get these in the fridge now! You 
+      listen to me Robbie Hart, you're going to be a fine husband!
+
+  - talking_head: larry_talk
+    text: |-
+      ...My name is Larry.
+
+  - talking_head: rosie_talk
+    text: |-
+      I'm fiiiiine!
+
+children:
+  - id: talking_head
+    type: Decal
+    scale: 1.5
+    active: False
+    children:
+      - id: rosie_talk
+        type: Animation2
+        path_prefix: ./assets/actor/rosie/
+        datafile: face.json
+        default_state: Silent
+      - id: larry_talk
+        type: Animation2
+        path_prefix: ./assets/actor/larry/
+        datafile: face.json
+        default_state: silent
+      - id: yesno
+        type: YesNoMenu
+        font_size: 22
+        text_padding: 3
+        bg_color: [0,0,0,0]
+        outline: true
+        children:
+        - id: indicator
+          type: Decal
+          image: ./assets/block/text_select.png
+  - id: textbox
+    type: TextBox
+    font_size: 22
+    text_padding: 3
+    bg_color: [0,0,0,128]
+    scroll_speed: 20
+    box_size: [390,96]
+    start: [200, 250]
+    outline: true
+  - id: cue_text
+    type: TextBox
+    font_size: 22
+    text_padding: 3
+    bg_color: [0,0,0,0]
+    # scroll_speed: 20
+    # box_size: [390,96]
+    # start: [200, 250]
+    outline: true
+    text: |-
+      Talk to Rosie
+  - id: button_cue
+    type: Decal
+    image: ./assets/block/glyph_B.png
+  - id: crash_sound
+    type: SFX
+    file: ./assets/sfx/crash 2.mp3
+    # file: ./assets/sfx/freesound_community-crash-6711.mp3
+  - id: animation
+    type: Animation2
+    path_prefix: ./assets/actor/rosie/
+    datafile: rosie_cart.json
+    default_state: walking
+    groups: ["paused"]

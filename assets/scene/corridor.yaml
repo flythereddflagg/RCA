@@ -1,44 +1,53 @@
-id: <scene name>
-INIT_ZOOM: 1 # amount to scale everything
-CAMERASLACK: 100 # pixels from center screen before the camera moves
-
-DRAW_LAYERS: # layers will be drawn in this order
-  - behind
+layers:
+- behind
+- background
+- foreground
+- overlay
+- hud
+nodes:
+- groups:
+  - solid
   - background
-  - foreground
+  id: corridor map
+  image: ./assets/scene/corridor/corridor.png
+  mask: ./assets/scene/corridor/corridor_mask.png
+  type: Decal
+- groups:
   - overlay
-  - hud
-
-
-# sprites in each drawing layer
-background:
-  - id: corridor map
-    type: Decal
-    image: ./assets/scene/corridor/corridor.png
-    mask: ./assets/scene/corridor/corridor_mask.png
-    groups: 
-     - solid
-
-overlay:
-  - id: corridor map
-    type: Decal
-    image: ./assets/scene/corridor/corridor_overlay.png
-
-
-behind:
-  - id: doorway exit 
-    type: Edge
-    image: ./assets/block/null.png
-    mask: ./assets/block/block.png
-    start: [-25,80]
-    scale: 1
-    scene_path: ./assets/scene/boss_room.yaml
-    exit_dir: RIGHT
-  - id: statue_exit 
-    type: Edge
-    image: ./assets/block/null.png
-    mask: ./assets/block/block.png
-    start: [625,82]
-    scale: 1
-    scene_path: ./assets/scene/mansion_yard.yaml
-    exit_dir: LEFT
+  id: corridor map
+  image: ./assets/scene/corridor/corridor_overlay.png
+  type: Decal
+- exit_dir: RIGHT
+  groups:
+  - behind
+  id: doorway exit
+  image: ./assets/block/null.png
+  mask: ./assets/block/block.png
+  scale: 1
+  scene_path: ./assets/scene/boss_room.yaml
+  start:
+  - 25
+  - 80
+  type: Edge
+- exit_dir: LEFT
+  groups:
+  - behind
+  id: statue_exit
+  image: ./assets/block/null.png
+  mask: ./assets/block/block.png
+  scale: 1
+  scene_path: ./assets/scene/mansion_yard.yaml
+  start:
+  - 580
+  - 82
+  type: Edge
+- groups:
+    - other
+  id: camera
+  type: Camera
+- id: boss_theme
+  type: Music
+  filename: ./assets/music/boss_theme_filled.mp3
+  groups: [paused]
+  measure_time: 1
+  primary_loop: [0.0, 25.875]

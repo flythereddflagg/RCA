@@ -1,3 +1,4 @@
+import sys
 import importlib
 import json
 
@@ -6,41 +7,24 @@ import pygame as pg
 
 from .dict_obj import DictObj
 
-def filter_serializable(structure:dict|list):
-    
-    if isinstance(structure, dict):
-        generator = structure.items()
-        is_dict = True
-        output = {}
-    elif isinstance(structure, list):
-        generator = enumerate(structure)
-        is_dict = False
-        output = []
-    else:
-        return None
-    
-    for key, item in generator:
-        if isinstance(item, (str, int, float, bool)) or item is None:
-            pass
-        elif isinstance(item, (dict, list)):
-            # recurse
-            item = filter_serializable(item)
-        else:
-            item = None
-
-        if is_dict:
-            output[key] = item
-        else:
-            output.append(item)
-        
-    return output
+BASE_PACKAGE = "src"
 
 
-
-def load_yaml(yaml_path):
+def load_yaml(yaml_path) -> DictObj:
     with open(yaml_path) as f:
         yaml_data = yaml.load(f.read(), Loader=yaml.Loader)
     return DictObj(**yaml_data)
+
+
+def save_yaml(data:dict|list, yaml_path:str):
+    yaml_str = yaml.dump(
+        data, 
+        Dumper=yaml.Dumper, 
+        default_flow_style=False, 
+        sort_keys=False
+    )
+    with open(yaml_path, 'w') as f:
+        f.write(yaml_str)
 
 
 def load_json(json_path):
@@ -49,39 +33,36 @@ def load_json(json_path):
     return DictObj(**json_data)
 
 
-def mask_collision(self, other):
+def mask_collision(self:".decal.Decal", other:".decal.Decal"):
     """
-    Tests that everyone has a valid mask before
-    using spritecollideany.
+    Tests that both have a valid mask before .
     """
     assert isinstance(self.mask, pg.mask.Mask), \
         f"{self.id} has invlaid mask: {self.mask}"
-    for sprite in other.sprites():
-        assert isinstance(sprite.mask, pg.mask.Mask), \
-            f"{sprite.id} has invalid mask: {sprite.mask}"
+    assert isinstance(other.mask, pg.mask.Mask), \
+        f"{other.id} has invalid mask: {other.mask}"
     
-    if pg.sprite.spritecollideany(self, other, pg.sprite.collide_mask):
-        return True
-    return False
+    return pg.sprite.collide_mask(self, other)
 
 
-def list_collided(self, other) -> list:
+def list_collided(
+    self:".decal.Decal", other:list[pg.sprite.Sprite]
+) -> list[pg.sprite.Sprite]:
     """
     Tests that everyone has a valid mask before
     using returning the collided others.
     """
     assert isinstance(self.mask, pg.mask.Mask), \
         f"{self.id} has invlaid mask: {self.mask}"
-    for sprite in other.sprites():
+    
+    for sprite in other:
         assert isinstance(sprite.mask, pg.mask.Mask), \
             f"{sprite.id} has invalid mask: {sprite.mask}"
-
-    collided_others = pg.sprite.spritecollide(
-        self, other, False, pg.sprite.collide_mask
-    )
-    if collided_others is None: return []
-    
-    return collided_others
+    return [
+        sprite 
+        for sprite in other
+        if pg.sprite.collide_mask(self, sprite)
+    ]
 
 
 def get_center_screen():
@@ -90,10 +71,28 @@ def get_center_screen():
         centery = screen_h // 2
         return (centerx, centery)
 
+def diff_vec(v_a, v_b) -> pg.math.Vector2:
+    """
+    returns the 2d vector between any two points
+    """
+    a, b = v_a[0], v_a[1]
+    x, y = v_b[0], v_b[1]
+    return pg.math.Vector2((a, b)) - pg.math.Vector2((x, y))
 
-def class_from_str(class_name):
+def vec(v_input:list|tuple|pg.math.Vector2):
+    """convenience function to convert to vector for vector math"""
+    return pg.math.Vector2((v_input[0], v_input[1]))
+
+
+def class_from_str(class_name:str)->"python class":
+    # this is the module naming convention for this code
     module_name = "." + class_name.lower()
-    module = importlib.import_module(module_name, package='src')
+    # recompile and reimport code if it already has been imported
+    if (BASE_PACKAGE+module_name) in sys.modules:
+        module = importlib.import_module(module_name, package=BASE_PACKAGE)
+        module = importlib.reload(module)
+    else:
+        module = importlib.import_module(module_name, package=BASE_PACKAGE)
     # get the class, will raise AttributeError if class cannot be found
     class_ref = getattr(module, class_name)
     return class_ref

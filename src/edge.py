@@ -2,38 +2,46 @@ import pygame as pg
 
 from .decal import Decal
 from .compass import Compass
-from .tools import mask_collision
+from .tools import list_collided, vec
 
 
 class Edge(Decal):
     """an edge is a sprite that connects two scenes in the map graph"""
-    def __init__(self, **options):
-        super().__init__(**options)
 
     def update(self):
-        self.check_collision()
-    
-
-    def check_collision(self):
-        if mask_collision(self, self.scene.groups['player']):
+        if list_collided(self, self.scene.groups['player']):
             self.exec_trigger()
-    
+        
 
     def exec_trigger(self):
-        old_scene = self.scene
+        player_sprite = self.scene.get_player()
+        player = player_sprite.parent
         game = self.scene.game
-        player = self.scene.game.player
-        old_scene.deconstruct() 
-        # print("loading", self.options['scene_path'])
+        self.scene.deconstruct()
         new_scene = game.load_scene(
-            yaml_path=self.options['scene_path'], player=player
+            yaml_path=self.init["scene_path"]
         )
+        # NOTE this might break things. BE AWARE
+        out_block = new_scene.node_by_id(self.id)
+        if not out_block:
+            player.kill()
+            # breakpoint()
+            return
 
-        sprites = new_scene.all_sprites.sprites()
-        block = list(filter(lambda x: x.id == self.id, sprites))[0]
-        player.sprite.rect.center = block.rect.center
-        dx, dy = Compass.unit_vector(block.options['exit_dir'])
-        player.sprite.rect.x += dx*(player.sprite.rect.w/2 + block.rect.w/2)
-        player.sprite.rect.y += dy*(player.sprite.rect.h/2 + block.rect.h/2)
-        new_scene.camera.center_player()
-        
+        half_size = (
+            vec(player.sprite.rect.size) / 2 +
+            vec(out_block.sprite.rect.size) / 2
+        )
+        start_pos = (
+            vec(out_block.sprite.rect.topleft) + 
+            half_size.elementwise() * 
+            Compass.unit_vector(out_block.init["exit_dir"])
+        )
+        bg_pos = vec(
+            new_scene.bg_ref.sprite.rect.topleft
+        )
+        new_scene.place_node(
+            player, 
+            player.init.get("groups"), start=start_pos
+        )
+        game.save_game()

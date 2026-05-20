@@ -1,0 +1,63 @@
+id: meatball
+type: MeatBall
+music:
+  filename: ./assets/music/dim_on_top_of_spagoot.mp3
+  tags:
+    dim: 15.671
+    terror: 39.950
+    fight: 42.142
+    fight_loop: 98.903
+    victory: 100.837
+children:
+  - id: sprite
+    type: Decal
+  - id: animation
+    type: Animation3
+    path_prefix: ./assets/actor/meat_ball/
+    datafile: base.json
+    default_state: wiggle
+  
+  - id: hitmask
+    type: HitMask3
+    sibling: animation
+    kind: mask
+    datafile: base_mask.json # TODO -3- polish this hitmask
+
+  - id: hurtmask
+    type: HitMask3
+    sibling: animation
+    kind: hurtmask
+    datafile: base_mask.json
+    groups: [foe]
+  
+  - id: blockage
+    type: Blockage
+    mask: ./assets/actor/meat_ball/blockage_mask.png
+    start: [870,80] # TODO -4- fix this as this is very specific to the scene
+    scale: 1
+    children:
+      - id: animation
+        type: Animation3
+        path_prefix: ./assets/actor/meat_ball/
+        datafile: blockage.json
+        default_state: still
+  
+  - id: justball
+    type: Decal
+    mask: ./assets/actor/meat_ball/just_ball_mask.png
+    active: false
+    children:
+    - id: animation
+      type: Animation3
+      path_prefix: ./assets/actor/meat_ball/
+      datafile: just_ball.json
+      default_state: still
+  
+  - id: moving_fx
+    type: SFX
+    file: ./assets/sfx/noodles.mp3
+  - id: ouch_fx
+    type: SFX
+    file: ./assets/sfx/meatball_ow.mp3
+
+      

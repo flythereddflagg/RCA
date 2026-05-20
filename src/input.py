@@ -2,183 +2,249 @@
 file: src/input.py
 """
 from dataclasses import dataclass
+import re
 
 import pygame as pg
+import pygame._sdl2.controller as pg_sdl2_controller
 from .compass import Compass
 
+
+SDL2_MIN, SDL2_MAX = -32768, 32768
 DEAD_ZONE = 0.5
 BUFFER_TIME = 250 # ms
+USE_SDL2_CTLR = True
 
 
 class Input():
 
-    def __init__(self, game):
-        self.game = game
-        self.KEY_BIND = self.game.KEY_BIND
-        self.CTLR_BIND = self.game.CTLR_BIND
-        self.CTLR_BUTTON = self.game.CTLR_BUTTON
-        self.CTLR_AXES = self.game.CTLR_AXES
-        self.SHOW_EVENTS = self.game.SHOW_EVENTS
-        self.LOG_INPUT = self.game.LOG_INPUT
-        self.REPLAY = self.game.REPLAY
-        if self.REPLAY is not None:
-            with open(self.REPLAY) as f:
-                self.lines = iter(f.readlines())
-        else:
-            self.lines = None
-        self.input_record = []
-        self.buffer:dict = {}
-        self.last_update_time = 0
-        self.held = {
-            **{key:False for key in self.KEY_BIND.keys()},
-            **{key:False for key in self.CTLR_BIND.keys()}
-        }
-        self.controller_buttons = {
-            name: index 
-            for index, name in enumerate(self.game.CTLR_BUTTON.split(','))
-        }
-        self.controller_axes = {
-            name: index 
-            for index, name in enumerate(self.game.CTLR_AXES.split(','))
-        }
-        
-        # detect and load controllers
-        # TODO controller support must be better streamlined. Work on cleaning
-        # this up once we have the main game under control
+    def __init__(self, parent, binds, *args, **kwargs):
+        self.parent = parent
+        self.binds = binds
+        self.key_bind = self.binds.get("key_bind")
+        self.log_input = self.binds.get("LOG_INPUT", False)
+        self.actions = []
+        self.held = []
+        self.last_actions = []
         self.controllers = []
-        for i in range(0, pg.joystick.get_count()):
-            self.controllers.append(pg.joystick.Joystick(i))
-            self.controllers[-1].init()
-            controllers  = self.controllers
-            print (f"Detected controller: {controllers[-1].get_name()}")
-            print(f"{controllers[-1].get_numbuttons()} buttons detected")
-            print(f"{controllers[-1].get_numaxes()} axes detected")
-        print(f"{len(self.controllers) + 1} input devices detected")
-        print(f"\t- 1 keyboard + {len(self.controllers)} controllers")
-        self.controller_state = (
-            None 
-            if not self.controllers 
-            else 
-            [0 for i in range(self.controllers[0].get_numbuttons())] + 
-            [0 for i in range(self.controllers[0].get_numaxes())]
+        self.sdl2_controllers = []
+        self.input_log = []
+        if USE_SDL2_CTLR:
+            self.sdl2_controller_setup()
+        else:
+            self.ctlr_setup()
+
+
+    def clear(self):
+        self.actions = []
+        self.held = []
+        self.last_actions = []
+
+
+    def sdl2_controller_setup(self):
+        self.sdl2_controller_bind = self.binds.get("SDL2 Controller Bind")
+        self.sdl2_consts = {
+            key: val
+            for key, val in vars(pg).items()
+            if "CONTROLLER_" in key
+        }
+        self.sdl2_controllers = []
+        if not pg_sdl2_controller.get_init():
+            pg_sdl2_controller.init()
+
+        print("Controllers connected:")
+        for i in range(pg_sdl2_controller.get_count()):
+            print(
+                # commented out because name_forindex is missing.
+                # f"\t Name: {pg_sdl2_controller.name_forindex(i)};",
+                f"Valid = {pg_sdl2_controller.is_controller(i)}"
+            )
+            self.sdl2_controllers.append(pg_sdl2_controller.Controller(i))
+
+
+    def ctlr_setup(self):
+        self.ctlr_bind = self.binds.get("ctlr_bind")
+        self.inv_ctlr_bind = (
+            {val:key for key, val in self.ctlr_bind.items()} 
+            if self.ctlr_bind else None
         )
+
+        self.controllers = [
+            pg.joystick.Joystick(i)
+            for i in range(pg.joystick.get_count())
+        ]
+        controller_names = [
+            ctlr.get_name()
+            for ctlr in self.controllers
+        ]
+        mapping_str = [
+            self.binds[name] 
+            if name in self.binds 
+            else self.binds["Generic"]
+            for name in controller_names
+        ]
+        self.controller_mappings = [
+            re.split(r"[\s]+", map_string.strip())
+            for map_string in mapping_str
+        ]
+
+    def hot_plug_check(self):
+        if USE_SDL2_CTLR:
+            current = self.sdl2_controllers
+            check = pg_sdl2_controller.get_count
+            setup = self.sdl2_controller_setup
+        else:
+            current = self.controllers
+            check = pg.joystick.get_count
+            setup = self.ctlr_setup
+        
+        if len(current) != check():
+            setup()
 
 
     def update(self):
+        # TODO -3- add more player controls player one only for now
+        self.hot_plug_check()
+        player_number = 0
+        events = pg.event.get()
+        if self.parent.settings.SHOW_EVENTS and events:
+            print(events)
+        for event in events:
+            if event.type == pg.QUIT:
+                self.actions = [("QUIT", 1.0)]
+                return
 
-        # INFO: this only allows for one player currently
-        keyboard_input = self.keyboard_input()
-        event_input = self.event_input()
-        # mouse_input = [] # no mouse input for RCA
-        # player = 0 # player index 0
-        player = -1
-        ctlr_input = self.ctlr_input(player)
-
-        # set to erase duplicate inputs
-        all_input = list(set(ctlr_input + keyboard_input + event_input))
-
-        if self.SHOW_EVENTS and all_input: 
-            print("input:", all_input, end=';')
-            print("held:", [key for key, held in self.held.items() if held])
-
-        # update input buffer
-        cur_time = pg.time.get_ticks()
-        delta_time = cur_time - self.last_update_time
-        self.buffer = {
-            action: time_left - delta_time 
-            for action, time_left in self.buffer.items()
-        }
-        self.buffer.update({action: BUFFER_TIME for action in all_input})
-        self.buffer = {
-            action: time_left - delta_time 
-            for action, time_left in self.buffer.items()
-            if time_left > 0
-        }
+        self.actions:list[tuple[str, float]] = list(set(
+            self.keyboard_input() 
+            + self.sdl2_controller_input(player_number)
+            + self.ctlr_input(player_number)
+            # + self.event_input(player_number)
+        ))
+        self.held = [
+            action
+            for action, val in self.actions 
+            if action in [a for a, _ in self.last_actions]
+        ]
+        self.last_actions = self.actions.copy()
+        if self.parent.settings.SHOW_EVENTS and self.actions:
+            print(self.actions, self.held)
+        if self.log_input:
+            self.input_log.append(self.actions.copy())
         
     
+    def new_actions(self):
+        actions, held = self.get()
+        return [action for action, _ in actions if action not in held]
+
+
     def get(self):
-        # return [action for action in self.buffer.keys()]
-        inputs = list(self.buffer.keys())
-
-        if self.REPLAY is None:
-            if self.LOG_INPUT:
-                self.input_record.append(inputs)
-            return inputs
-        else:
-            if 'QUIT' in inputs:
-                return inputs
-            inputs = [
-                thing 
-                for thing in next(self.lines).strip().split('|') 
-                if thing
-            ]
-            return inputs
+        return self.actions.copy(), self.held.copy()
 
 
-    def update_held(self, all_input):
-        self.held = {key:False for key in self.held.keys()}
-        # breakpoint()
-        for held_action in all_input:
-            if isinstance(held_action, tuple):
-                held_action, _ = held_action
-            assert held_action in self.held, f"Invalid action: '{held_action}'"
-            self.held[held_action] = True
-
-
-    def ctlr_input(self, player):
-        if not self.controllers: return []
-        axes = [
-            self.controllers[player].get_axis(i) 
-            for i in range(self.controllers[player].get_numaxes())
-        ]
-        
-        button_states = [
-            self.controllers[player].get_button(i) 
-            for i in range(self.controllers[player].get_numbuttons())
-        ]
-        
-        self.controller_state = button_states + [round(val, 3) for val in axes]
-        button_input = [
-            key for key, bind in self.CTLR_BIND.items()
-            if bind in self.controller_buttons and
-            button_states[self.controller_buttons[bind]]
-        ]
-        axes_input = []
-        for key, bind in self.CTLR_BIND.items():
-            ax, sign = bind[:-1], bind[-1]
-            if ax in self.controller_axes:
-                one = int(sign + '1')
-                ax_value = round(axes[self.controller_axes[ax]], 1)
-                ax_value = ax_value if abs(ax_value) > DEAD_ZONE else 0.0
-                # ax_value is not 0 and one and ax_value are the same sign
-                if (ax_value * one) > 0:
-                    axes_input.append((key, ax_value))
-
-        if self.SHOW_EVENTS and axes_input: print(axes_input)
-        
-
-        return button_input + axes_input
-
-
-    def keyboard_input(self):
+    def keyboard_input(self) -> list[tuple[str, float]]:
         pressed_keys = pg.key.get_pressed()
         game_input = [
-            key for key, bind in self.KEY_BIND.items()
+            (key, 1.0) for key, bind in self.key_bind.items()
             if pressed_keys[pg.key.key_code(bind)]
         ]
         return game_input
     
 
-    def event_input(self):
-        # if you want to pass events you need to translate them
-        # into game commands
-        events = pg.event.get()
-        event_inputs = []
+    # def event_input(self):
+    #     # if you want to pass events you need to translate them
+    #     # into game commands
+    #     events = pg.event.get()
+    #     event_inputs = []
 
-        if self.SHOW_EVENTS:
-            for event in events:
-                print(event.type, event)
-        if pg.QUIT in [event.type for event in events]: return ["QUIT"]
+    #     if self.SHOW_EVENTS:
+    #         for event in events:
+    #             print(event.type, event)
+    #     if pg.QUIT in [event.type for event in events]: return ["QUIT"]
 
-        return event_inputs
+    #     # return event_inputs
+    #     return []
 
+
+    def sdl2_controller_input(self, player:int):
+        if not self.sdl2_controllers: return []
+        controller = self.sdl2_controllers[player]
+        actions = []
+        for action, bind in self.sdl2_controller_bind.items():
+            if (
+                "BUTTON" in bind and 
+                controller.get_button(self.sdl2_consts[bind])
+            ):
+                actions.append((action, 1.0))
+            elif "AXIS" in bind:
+                axis_val = controller.get_axis(self.sdl2_consts[bind[:-1]])
+                if axis_val < 0 and bind[-1] == "-":
+                    norm = axis_val/SDL2_MIN
+                elif axis_val >= 0 and bind[-1] == "+":
+                    norm = axis_val/SDL2_MAX
+                else: 
+                    continue
+                if abs(norm) >= DEAD_ZONE:
+                    actions.append((action, abs(norm)))
+        
+        # TODO -4- this is a hackey solution but will allow Dpad to be read as if it is joystick
+        actions = [
+            (action[2:], val) if action.startswith("D_")
+            else (action, val)
+            for action, val in actions
+        ]
+        ###
+        return actions
+
+
+    def ctlr_input(self, player:int) -> list[float]:
+
+        if not self.controllers: return []
+        axes_state = [
+            self.controllers[player].get_axis(i) 
+            for i in range(self.controllers[player].get_numaxes())
+        ]
+        
+        button_state = [
+            self.controllers[player].get_button(i) 
+            for i in range(self.controllers[player].get_numbuttons())
+        ]
+        hat_state = [
+            hatval
+            for i in range(self.controllers[player].get_numhats())
+            for hatval in self.controllers[player].get_hat(i)
+        ]
+        all_ctrl_inputs = (
+            [round(val, 2) for val in axes_state] +
+            button_state +  
+            hat_state
+        )
+    
+        return self.map_ctlr_input(
+            [float(val) for val in all_ctrl_inputs], 
+            player
+        )
+
+
+    def map_ctlr_input(
+        self, 
+        inputs:list[float], 
+        player:int
+    ) -> list[tuple[str, float]]:
+
+        if not inputs: return []
+        
+        mapping = [
+            list(item) 
+            for item in zip(self.controller_mappings[player], inputs)
+        ]
+        for i, inps in enumerate(mapping):
+            inp, val = inps
+            if 'x' in inp or 'y' in inp:
+                inp = inp + "-" if val < 0.0 else inp + "+"
+                mapping[i] = [inp, val]
+
+        actions = [
+            (self.inv_ctlr_bind.get(action), value) 
+            for action, value in mapping 
+            if abs(value) > DEAD_ZONE and action in self.inv_ctlr_bind
+        ]
+        return actions

@@ -1,0 +1,42 @@
+layers:
+- foreground
+nodes:
+
+- id: startup_animation
+  type: CutScene
+  groups:
+    - foreground  
+  children:
+    - id: animation
+      type: Animation
+      path_prefix: ./assets/scene/startup/
+      default_state: titlescreen
+      animation:
+        intro:
+          datafile: startup.json
+          repeat: false
+        titlescreen:
+          datafile: mountain_rev2.json
+          repeat: true
+    - id: menu
+      type: Menu
+      outline: true
+      text_padding: 3
+      bg_color: [0, 0, 0, 128]
+      text: |-
+        Continue
+        New Game
+        Options
+        Quit
+        
+- filename: ./assets/music/RCA_OVERWORLD/RCA_titlescreen.mp3
+  id: startup music
+  type: Music
+# - groups:
+#   - other
+#   id: camera
+#   slack: 100
+#   type: Camera
+#   zoom: 1
+
+

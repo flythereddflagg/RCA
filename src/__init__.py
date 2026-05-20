@@ -4,165 +4,350 @@ about:
 this file is the engine and runs everything needed to keep 
 the game running.
 """
+import os
+import random
+import pathlib
+import traceback
 
 import pygame as pg
-import collections
 
-from .dict_obj import DictObj
 from .scene import Scene
-from .tools import load_yaml
+from .tools import load_yaml, save_yaml, vec, diff_vec
 from .input import Input
+from .hitmask import HitMask
+from .hitmask2 import HitMask2
+from .hitmask3 import HitMask3
+from .textbox import TextBox
 
 BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 
+RGBA_BLUE = (0,0,255,255)
+RGBA_RED = (255,0,0,255)
+RGBA_GREEN = (0,255,0,255)
 
-class GameState(DictObj):
+ALLOW_DEBUG = True # allow debug to be enabled?
+
+SAVE_PATH = pathlib.Path(os.path.expanduser("~/.local/share/rca/saves"))
+SAVE_FILE = SAVE_PATH / "save_file.yaml"
+
+class Engine():
     """
     connects the hardware to game logic and holds the game state
     including the scenes
     """
     def __init__(self, data_path, REPLAY=None):
-        init_data = load_yaml(data_path)
-        super().__init__(**init_data)
+        self.settings:'.dictobj.DictObj' = load_yaml(data_path)
+        if not ALLOW_DEBUG: 
+            self.settings.DEBUG = False
         self.dt = 1
         self.running = False
         self.paused = False
         self.scene = None
-        self.player = None
+        self.saved_scenes:dict[str, Scene] = {}
         self.REPLAY = REPLAY
-        self.input = Input(self)
-        # TODO make a scene manager that loads a bunch of scenes here and then loads them into the game and remembers them.
-        self.saved_scenes = {}
-        w, h = self.ASPECT_RATIO
-        float_aspect_ratio = w / h
+        self.max_volume = 10
+        self.music_volume = 5
+        self.sfx_volume = 5
+        self.screen, self.draw_surface = self.init_screen()
+        self.clock = pg.time.Clock()
+        self.fps_counter = (
+            TextBox(bg_color=BLACK)
+            if self.settings.FPS_COUNTER or self.settings.DEBUG
+            else None
+        )
+        self.input = Input(self, self.settings)
+        self.save_file_path = pathlib.Path(
+            self.settings.get("save_file", SAVE_FILE)
+        )
+        
+        self.load_scene(
+            yaml_path=self.settings.initial_scene,
+            add_in=self.settings.init_add_in
+        )
 
-        self.SCREENWIDTH, self.SCREENHEIGHT = (
-            int(self.RESOLUTION * float_aspect_ratio) *
-            self.SCALE,
-            self.RESOLUTION * self.SCALE
+
+    def init_screen(self):
+        icon_path = self.settings.get("icon")
+        title = self.settings.get("title")
+        if icon_path:
+            pygame_icon = pg.image.load(icon_path)
+            pg.display.set_icon(pygame_icon)
+        if title:
+            pg.display.set_caption(title)
+
+        w, h = self.settings.ASPECT_RATIO
+        float_aspect_ratio = w / h
+        draw_surface_w, draw_surface_h = (
+            int(self.settings.RESOLUTION * float_aspect_ratio),
+            self.settings.RESOLUTION
         )        
 
-        self.screen = pg.display.set_mode(
-            [self.SCREENWIDTH, self.SCREENHEIGHT], pg.RESIZABLE
-        )
-        self.clock = pg.time.Clock()
+        self.screenwidth, self.screenheight = (
+            int(self.settings.RESOLUTION * float_aspect_ratio) *
+            self.settings.SCALE,
+            self.settings.RESOLUTION * self.settings.SCALE
+        )        
 
-        player_data = load_yaml(self.PLAYER)
-        player_data['game'] = self
-        self.load_scene(
-            yaml_path=self.INITAL_SCENE, 
-            player=Scene.node_from_dict(None, player_data)
-        )
-        
-        self.player.sprite.rect.center = self.PLAYER_START_POSITION
-        
-        if self.FPS_COUNTER or self.DEBUG:
-            self.fps_counter = pg.font.SysFont("Sans", 22)
-        
+        return (
+            pg.display.set_mode(
+                [self.screenwidth, self.screenheight], pg.RESIZABLE
+            ),
+            pg.Surface((draw_surface_w, draw_surface_h))
+        )        
 
-    def load_scene(self, player=None, **options) -> Scene:
-        self.player = player
+    def load_scene(self, yaml_path, add_in=None) -> Scene:
+        yaml_data = self.saved_scenes.get(yaml_path)
+            
         self.scene = Scene(
-            game=self,  groups=self.SPRITE_GROUPS, **options
+            game=self, 
+            yaml_path=yaml_path, 
+            yaml_data=yaml_data,
+            add_in=add_in
         )
-        if player:
-            self.scene.place_node(self.player, self.scene.layers['foreground'],
-                groups=self.player.options.get("groups")  
-            )
-        return self.scene
 
+        return self.scene # return reference to scene if needed
+
+
+    def save_game(self):
+        # breakpoint()
+        # ensure save_path exists
+        pathlib.Path(self.save_file_path.parents[0]).mkdir(
+            parents=True, exist_ok=True
+        )
+        filename = str(self.save_file_path)
+        # get state of current scene
+        self.saved_scenes[self.scene.id] = self.scene.serialize()
+        # build save file
+        # get player state
+        player_node = self.scene.get_player().parent
+        player_init = player_node.init
+
+        player_init["start"] = [int(x) for x in 
+            self.scene.get_bg_pos(player_node.sprite.rect.topleft)
+        ]
+        # get inventory state
+        inv_index = [
+            item['id'] for item in player_init["children"]
+        ].index("inventory")
+        player_init["children"][inv_index] = (
+            player_node.inventory.serialize()
+        )
+        save_file = {
+            "add_in" : [player_init],
+            "cur_scene" : self.scene.id,
+            "scenes" : self.saved_scenes
+        }
+ 
+        save_yaml(save_file, filename)
+        print(f"Saved game data to '{filename}'...")
+
+
+    def load_game(self):
+        if not self.save_file_path.exists(): return
+
+        save_data = load_yaml(str(self.save_file_path))
+
+        self.saved_scenes = save_data["scenes"]
+        self.scene.deconstruct()
+        self.load_scene(
+            yaml_path=save_data["cur_scene"],
+            add_in=save_data["add_in"]
+        )
 
     def run(self):
         self.running = True
 
-        while self.running:
+        if ALLOW_DEBUG:
+            while self.running:
+                if self.settings.DEBUG:
+                    self.run_debug()
+                else:
+                    self.run_prod()
+        else:
+            while self.running:
+                self.run_prod()
+
+
+    def run_prod(self):
+        self.input.update()
+        self.logic()
+        self.draw_frame()
+        self.dt = (
+            self.clock.tick() 
+            if self.settings.FPS < -1 else 
+            self.clock.tick(self.settings.FPS)
+        )
+
+    def run_debug(self):
+        try:
             self.input.update()
-            game_input = self.input.get()
-            self.logic(game_input)
-            self.input.update_held(game_input)
+            self.logic()
             self.draw_frame()
             self.dt = (
                 self.clock.tick() 
-                if self.FPS < -1 else 
-                self.clock.tick(self.FPS)
+                if self.settings.FPS < -1 else 
+                self.clock.tick(self.settings.FPS)
             )
+        except Exception as e:
+            print("\n\n-- WHILE RUNNING: EXCEPTION OCCURED -- \n\n")
+            print(traceback.format_exc())
+            print(type(e), e)
+            print("\n\n-- DROPPING INTO DEBUG MODE -- \n--'c' to retry -- \n\n")
+            breakpoint()
+            self.scene.refresh()
 
-
-    def logic(self, game_input):
+    def logic(self):
         # run all game logic here
         # quit overrides everything else
-        if "QUIT" in game_input:
+        new_actions = self.input.new_actions()
+        if "QUIT" in new_actions:
             self.running = False
             return
 
         # key to refresh scene
         if (
-            "REFRESH" in game_input and 
-            not self.input.held["REFRESH"] and 
-            self.DEBUG and 
+            "REFRESH" in new_actions and
+            self.settings.DEBUG and 
             self.scene
         ):
             self.scene.refresh()
 
-        # apply all the input
-        if self.player:
-            self.player.apply(game_input)
-
+        # make a breakpoint and open debugger at any time
+        if (
+            "BREAKPOINT" in new_actions
+            and self.settings.DEBUG
+            
+        ):
+            print("\n\n---\nDEBUG: Entering the Python debugger...\n---\n\n")
+            breakpoint()
+        
+        if (
+            "DEBUG" in new_actions
+            and ALLOW_DEBUG
+        ):
+            self.settings.DEBUG = not self.settings.DEBUG
+        
         # update everything in the scene
-        if self.scene and not self.paused: 
+        if self.scene and not self.paused:
             self.scene.update()
 
 
     def draw_frame(self):
-
-        self.screen.fill(BLACK)
+        self.draw_surface.fill(BLACK)
         for group_name in self.scene.draw_layers:
-            self.scene.layers[group_name].draw(self.screen) 
+            self.scene.groups[group_name].draw(self.draw_surface) 
         
-        if self.DEBUG:
+        if self.settings.DEBUG:
             self.render_debug()
         
+        scn_w, scn_h = self.screen.get_size()
+        w, h = self.settings.ASPECT_RATIO
+        aspect_ratio = w / h
+        scn_aspect_ratio = scn_w / scn_h
+        new_size = (
+            (scn_w, scn_w / aspect_ratio)
+            if scn_aspect_ratio < aspect_ratio else
+            (scn_h * aspect_ratio, scn_h)
+        )
+        self.screen.fill(BLACK)
+        self.screen.blit(
+            pg.transform.scale(
+                self.draw_surface, new_size
+            ),
+            (vec([scn_w, scn_h]) - new_size)/2
+        )
         pg.display.flip()
 
 
-
     def render_debug(self):
-        if self.FPS_COUNTER:
+        if self.settings.FPS_COUNTER:
             fps = str(int(self.clock.get_fps()))
-            fps_sprite = self.fps_counter.render(fps, True, (255,255,255))
-            self.screen.blit(fps_sprite, (10,10))
+            self.fps_counter.set_text(fps)
+            self.draw_surface.blit(self.fps_counter.sprite.image, (300,10))
             
-        background = self.scene.layers['background'].sprites()[0]
-        for group_name in self.scene.data.DRAW_LAYERS:
-            sprites = self.scene.layers[group_name].sprites()
+        self.box_texts = []
+        for group_name in self.scene.draw_layers:
+            sprites = self.scene.groups[group_name].sprites()
+            
             for sprite in sprites:
-                if not vars(sprite).get('pos'):
-                    sprite.pos = pg.font.SysFont("Sans", 10)
-                pg.draw.rect(
-                    self.screen, (255,255,255), sprite.rect, width=2
-                )
-                pos1, pos2 = (
-                    str(pg.math.Vector2(sprite.rect.topleft)//self.SCALE), 
-                    str((
-                        pg.math.Vector2(sprite.rect.topleft) - 
-                        pg.math.Vector2(background.rect.topleft)
-                    )//self.SCALE)
-                )
-                pos_sprite = sprite.pos.render(
-                    f"{pos1} ; {pos2}", 
-                    True, (255,255,255)
-                )
-                self.screen.blit(
-                    pos_sprite, 
-                    pg.math.Vector2(sprite.rect.topleft) - (0, 15)
-                )
-                if self.SHOW_MASK and sprite.mask:
+                if not isinstance(sprite.parent, HitMask):
+                    self.render_sprite_box(sprite)
+                if self.settings.SHOW_MASK and sprite.mask:
                     if (
-                        not self.SHOW_BG_MASK and 
-                        sprite in self.scene.layers['background']
+                        sprite in self.scene.background and
+                        not self.settings.SHOW_BG_MASK
                     ): continue
-                    self.screen.blit(
-                        sprite.mask.to_surface(setcolor = (0,0,255,255), unsetcolor = None),
-                        sprite.rect.topleft
-                    )
-                    
+
+                    self.render_mask(sprite)
+
+
+    def get_center(self):
+        return vec(self.draw_surface.get_size()) / 2
+
+
+    def render_sprite_box(self, sprite):
+        if not vars(sprite).get('pos'):
+            sprite.pos = pg.font.SysFont("Sans", 10)
+        pg.draw.rect(
+            self.draw_surface, (255,255,255), sprite.rect, width=2
+        )
+        if self.scene.bg_ref is None:
+            breakpoint()
+        pos1, pos2 = (
+            str(vec(sprite.rect.topleft)), 
+            str(self.scene.get_bg_pos(sprite.rect.topleft))
+        )
+        sprite_id = sprite.id if sprite.id != "sprite" else sprite.parent.id
+        pos_sprite = sprite.pos.render(
+            f"<{sprite_id}> {pos1} ; {pos2}", 
+            True, (255,255,255)
+        )
+        pos_rect = pos_sprite.get_rect()
+        screen_rect = self.draw_surface.get_rect()
+        # keep it inside the screen.
+        text_pos = diff_vec(sprite.rect.topleft, (0, 15))
+        x, y = text_pos
+        x = 0 if x < 0 else x
+        x = (
+            screen_rect.right - pos_rect.size[0] 
+            if x > screen_rect.right - pos_rect.size[0] 
+            else x
+        )
+        y = 0 if y < 0 else y
+        y = (
+            screen_rect.bottom - pos_rect.size[1] 
+            if y > screen_rect.bottom - pos_rect.size[1] 
+            else y
+        )
+        # test if it collides with another rect and move it down if it does
+        text_pos = (x, y)
+        test_rect = pg.Rect(x, y, pos_rect.size[0], pos_rect.size[1])
+
+        while test_rect.collidelistall(self.box_texts):
+            test_rect.top += 1
+        self.box_texts.append(test_rect)
+
+        self.draw_surface.blit(pos_sprite, test_rect.topleft)
+
+
+    def render_mask(self, sprite):
+        color = (
+            (
+                RGBA_GREEN 
+                if sprite.parent.init.get('kind') == "hitmask" else
+                RGBA_RED
+            ) 
+            if any([
+                isinstance(sprite.parent, HitMask),
+                isinstance(sprite.parent, HitMask2),
+                isinstance(sprite.parent, HitMask3),
+            ])
+            else RGBA_BLUE
+        )
+        self.draw_surface.blit(
+            sprite.mask.to_surface(
+                setcolor = color, unsetcolor = None
+            ),
+            sprite.rect.topleft
+        )                  

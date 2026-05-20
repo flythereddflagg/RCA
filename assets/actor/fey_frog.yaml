@@ -1,0 +1,38 @@
+
+image: ./assets/actor/ossifrage/bird_character_base.png
+mask: ./assets/actor/dragon/hitmask.png
+type: FeyFrog
+
+children:
+- id: animation
+  type: Animation
+  path_prefix: ./assets/actor/fey_frog/
+  default_state: stand
+  animation:
+    stand:
+      datafile: sitting.json
+      hurtmask: sitting.json
+      repeat: True
+    walk:
+      datafile: jumps.json
+      hitmask: hitmask.json
+      hurtmask: hurtmask.json
+      repeat: True
+    damage:
+      datafile: damage.json
+      repeat: false
+
+- id: hitmask
+  type: HitMask
+  sibling: animation
+  kind: hitmask
+  groups: [foreground]
+- id: hurtmask
+  type: HitMask
+  sibling: animation
+  kind: hurtmask
+  groups: [foreground]
+  
+- id: ouch_fx
+  type: SFX
+  file: ./assets/sfx/frog_ow.mp3

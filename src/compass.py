@@ -23,10 +23,14 @@ class Compass():
     @staticmethod
     def index(direction:int|str|tuple|pg.math.Vector2)->int:
         """returns the closest direction index of the direction"""
-        if isinstance(direction, int) and 0 <= direction < N_DIRECTIONS:
+        if isinstance(direction, int):
+            direction %= 4
+            if direction < 0:
+                direction += 4
             return direction
+            
         if any(map(lambda x: isinstance(direction, x), [str, tuple])):
-            return Compass.i_map[direction]
+            return Compass.i_map.get(direction)
         
         if not isinstance(direction, pg.math.Vector2): raise ValueError(
             "Given direction must be of type: int|str|tuple|pg.math."\
@@ -50,7 +54,9 @@ class Compass():
         return Compass.vec_map[Compass.index(direction)]
     
     @staticmethod
-    def vector(direction:int|str|tuple|pg.math.Vector2)->pg.math.Vector2:
+    def vector(
+        direction:int|str|tuple[int, int]|tuple[float, float]|pg.math.Vector2
+    )->pg.math.Vector2:
         """Returns the normalized vector in the given direction"""
         if any(map(lambda x: isinstance(direction, x), [int, str, tuple])):
             return pg.math.Vector2(Compass.unit_vector(direction))

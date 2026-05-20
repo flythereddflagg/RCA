@@ -1,3 +1,12 @@
+import subprocess
+
+subprocess.run("pip install -r ./docs/requirements.txt".split())
+
+from tools.gather_assets import gather_assets
+print("copying assets into build dir...", end="")
+gather_assets()
+print("DONE")
+
 import sys
 from cx_Freeze import setup, Executable
 
@@ -5,6 +14,7 @@ from cx_Freeze import setup, Executable
 # INCREMENT VERSION AFTER EVERY RELEASE
 with open("./VERSION") as f:
     VERSION = f.read().strip()
+
 
 game_description = """Red Castle Avenger - The Game"""
 
@@ -14,10 +24,12 @@ build_options = {
     'packages'      : ['src'], 
     'excludes'      : ['cx_freeze'],
     'include_files' : [
-        ("assets", "assets"),
+        ("./build/tmp_assets/assets", "assets"),
+        ("./assets/ASSETS_LICENSE", "./assets/ASSETS_LICENSE"),
         "VERSION",
         "README.md",
-        "LICENSE"
+        "LICENSE",
+        "CREDITS"
     ]
 }
 
@@ -36,9 +48,6 @@ setup_options = {
 }
 
 
+
 setup(**setup_options)
-# to build:
-# conda install pyyaml pygame cx_freeze
-# OR
-# pip install pyyaml pygame cx_freeze
-# python setup.py build
+

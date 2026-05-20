@@ -1,0 +1,31 @@
+layers: [background, foreground]
+nodes:
+- groups:
+  - solid
+  - background
+  id: boss room
+  image: ./assets/scene/boss_room/boss_room.png
+  mask: ./assets/scene/boss_room/boss_room_mask.png
+  type: Decal
+- groups:
+  - other
+  id: camera
+  type: Camera
+- id: test text
+  groups: [foreground]
+  type: TextBox
+  font_size: 22
+  text_padding: 3
+  bg_color: [0,0,0,128]
+  scroll: true
+  box_size: [390,90]
+  start: [200, 250]
+  outline: true
+  text: |-
+    The quick brown fox jumped over the lazy dog!
+    What a crazy thing to happen. This is no mere
+    coincidence.
+
+  
+
+

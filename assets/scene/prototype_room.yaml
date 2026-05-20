@@ -1,0 +1,38 @@
+layers: [foreground]
+nodes:
+- groups:
+  - solid
+  - background
+  id: boss room
+  image: ./assets/scene/boss_room/boss_room.png
+  mask: ./assets/scene/boss_room/boss_room_mask.png
+  type: Decal
+
+# - id: camera
+#   type: Camera
+#   slack: 100
+
+
+- id: fey_frog
+  start:
+  - 84
+  - 55
+  yaml: ./assets/actor/fey_frog2.yaml
+  groups:
+  - foe
+  - foreground
+
+- yaml: ./assets/actor/player.yaml
+  # start: [704,230] # red castle valley
+  start: [614,155] # boss room?
+  groups:
+    - foreground
+    - player
+- id: sword
+  type: Item
+  action: sword
+  groups:
+  - foreground
+  image: ./assets/actor/item/sword_icon.png
+  mask: ./assets/actor/item/sword_icon.png
+  start: [500,100]
