@@ -7,7 +7,7 @@ FPS_COUNTER: true # show FPS on game screen
 DEBUG: false # debug mode? (Shows rect frames and positions)
 SHOW_MASK: false # in debug mode, shows hit masks of every entity
 SHOW_BG_MASK: false # in debug mode, show mask then show bg mask too
-LOG_INPUT: false # for recreating bugs (See input.py)
+LOG_INPUT: true # for recreating bugs (See input.py)
 MUSIC: true # in debug mode, MUSIC = False silences all music.
 
 ### SCREEN/GAME WINDOW CONSTANTS ###

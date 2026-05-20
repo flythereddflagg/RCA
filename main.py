@@ -26,6 +26,7 @@ def main():
 
 
 def write_log(game):
+    import datetime
     with open("./VERSION") as f:
         VERSION = f.read().strip()
     filename = (
@@ -35,7 +36,7 @@ def write_log(game):
     with open(filename, 'w') as f:
         output = "\n".join([
             "|".join([str(i) for i in line]) 
-            for line in game.input.input_record
+            for line in game.input.input_log
         ])
         f.write(output)
 

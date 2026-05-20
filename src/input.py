@@ -21,11 +21,13 @@ class Input():
         self.parent = parent
         self.binds = binds
         self.key_bind = self.binds.get("key_bind")
+        self.log_input = self.binds.get("LOG_INPUT", False)
         self.actions = []
         self.held = []
         self.last_actions = []
         self.controllers = []
         self.sdl2_controllers = []
+        self.input_log = []
         if USE_SDL2_CTLR:
             self.sdl2_controller_setup()
         else:
@@ -125,6 +127,8 @@ class Input():
         self.last_actions = self.actions.copy()
         if self.parent.settings.SHOW_EVENTS and self.actions:
             print(self.actions, self.held)
+        if self.log_input:
+            self.input_log.append(self.actions.copy())
         
     
     def new_actions(self):
