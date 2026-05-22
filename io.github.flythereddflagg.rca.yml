@@ -8,7 +8,7 @@ modules:
   - name: RCA
     buildsystem: simple
     build-commands:
-      - echo "Obligatory build command"
+      - install -Dm755 . /app/bin/
     sources:
       - type: dir
-        path: ./build/app
+        path: ./build/exe.linux-x86_64-3.12/
