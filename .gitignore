@@ -12,4 +12,6 @@ dist/
 .pytest_cache/
 install/
 .ipynb_checkpoints/
+.flatpak-builder/
+*.egg-info/
 
