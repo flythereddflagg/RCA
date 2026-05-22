@@ -1,0 +1,14 @@
+id: io.github.flythereddflagg.rca
+runtime: org.freedesktop.Platform
+runtime-version: '25.08'
+sdk: org.freedesktop.Sdk
+command: RCA
+modules:
+  - python3-requirements.json
+  - name: RCA
+    buildsystem: simple
+    build-commands:
+      - python ./setup.py build
+    sources:
+      - type: dir
+        path: .
