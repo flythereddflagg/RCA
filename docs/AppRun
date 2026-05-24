@@ -1,0 +1,3 @@
+#!/bin/bash
+cp -r -u $APPDIR/assets .
+exec $APPDIR/RCA
