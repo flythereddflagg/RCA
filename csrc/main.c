@@ -3,6 +3,7 @@
 int main(void)
 {
     InitWindow(800, 450, "raylib [core] example - basic window");
+    SetTargetFPS(90);
 
     while (!WindowShouldClose())
     {

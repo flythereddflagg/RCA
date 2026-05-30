@@ -6,7 +6,20 @@ OUT = main
 LIBS = -lraylib -L./lib -lm -lX11
 INCLUDES = -I./include
 
-.PHONY: all clean help python flatpak appimage
+.PHONY: all clean clean_all build run get_raylib help python flatpak appimage
+
+all:help
+
+help:
+	@echo "Usage: make [build|run|clean|clean_all|get_raylib|help|python|flatpak|appimage]"
+
+get_raylib: clean_all
+	mkdir -p ./lib
+	git clone --depth 1 https://github.com/raysan5/raylib.git .raylib
+	cd .raylib/src/&& $(MAKE) PLATFORM=PLATFORM_DESKTOP
+	cd ../..
+	cp .raylib/LICENSE ./lib
+	cp .raylib/src/libraylib.a ./lib
 
 build:
 	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LIBS) $(INCLUDES)
@@ -14,24 +27,9 @@ build:
 run: build
 	./$(OUT)
 
-clean:
-	rm -rf ./build
-	rm -f a.out
-	rm -f main
-
-
-help:
-	@echo "Usage: make"
-
-
-
-all: python flatpak appimage
-# 	python ./docs/flatpak-pip-generator.py \
-# 		--requirements-file=./docs/requirements.txt
 python:
 	python setup.py build
-# 	mkdir -p ./build/app
-# 	mv * ./build/app
+
 flatpak:
 	flatpak-builder --force-clean ./dist io.github.flythereddflagg.rca.yml
 	flatpak build-import-bundle ./dist io.github.flythereddflagg.rca
@@ -51,3 +49,7 @@ clean:
 	rm -rf ./.flatpak-builder
 	rm -f *.AppImage
 	rm -f $(OUT)
+
+clean_all: clean
+	rm -rf ./lib
+	rm -rf ./.raylib
