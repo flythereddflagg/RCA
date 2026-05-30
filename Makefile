@@ -16,7 +16,7 @@ help:
 get_raylib: clean_all
 	mkdir -p ./lib
 	git clone --depth 1 https://github.com/raysan5/raylib.git .raylib
-	cd .raylib/src/&& $(MAKE) PLATFORM=PLATFORM_DESKTOP
+	cd .raylib/src/ && $(MAKE) PLATFORM=PLATFORM_DESKTOP
 	cd ../..
 	cp .raylib/LICENSE ./lib
 	cp .raylib/src/libraylib.a ./lib
