@@ -1,5 +1,29 @@
 
-.PHONY: python flatpak appimage
+CC = gcc
+CFLAGS = -g -Wall -fanalyzer
+SRC = ./csrc/main.c
+OUT = main
+LIBS = -lraylib -L./lib -lm -lX11
+INCLUDES = -I./include
+
+.PHONY: all clean help python flatpak appimage
+
+build:
+	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LIBS) $(INCLUDES)
+
+run: build
+	./$(OUT)
+
+clean:
+	rm -rf ./build
+	rm -f a.out
+	rm -f main
+
+
+help:
+	@echo "Usage: make"
+
+
 
 all: python flatpak appimage
 # 	python ./docs/flatpak-pip-generator.py \
@@ -26,3 +50,4 @@ clean:
 	rm -rf ./dist
 	rm -rf ./.flatpak-builder
 	rm -f *.AppImage
+	rm -f $(OUT)
