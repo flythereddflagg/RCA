@@ -1,22 +1,28 @@
-## World 1: In the shadow of the mountain
+## Ideas
 
-**Scope** W1 must have the following: 
-
-- ✓ Basic story and story beats from the first game
-- ✓ Items: [ ✓sword, ✓shovel, ✓pickle, ✓gate key, ✓statue key]
-- Item mechanics completely fleshed out
-- Larry AND Holly are playable with these items but both play differently and have different exits at the end (e.g. Larry has less knockback from bludgeoning but is more susceptible to piercing while Holly is the opposite.) (exits are the Original exit to the village and the exit to the mountain or something TBD)
-- Enemies: [ meatball, ✓ossifrage, and Fey Frog]
-- A good amount of polish so that the game is "complete"
-
-## Ideas from Liz
-
+- Internal arcade game to play ala pico-8 or like Space Quest IV (pong? or World 1 inside the game?)
+- Rewrite in C with Raylib
+- More detail?
+- Wizard of Oz like idea where the detail increases when you go through the mirror
+- <u>Keep moving forward!</u> (i.e. with the story)
+- More detailed everything as we go.
+- 8 chapters
+  1. World 1 - Fey Frog
+  2. d
+  3. Meatball
+  4. Book boss
+  5. Water Boss
+  6. Fey world
+  7. z
+  8. z
 - NEXT THINGS TO DO:
+  - From the Fey world do all the dungeons "in reverse" to finish the game
+  - Take the map (cliff here, but now there is a different obstacle in the fey world)
+  - Bubbles in a waterfall
   - Meatball enemy
   - Grandma with dialogue and "rappers delight" and SUNGLASSES and sideways baseball cap
   - Frog sticking his tongue out to eat player! HOW?
 - Home base is the blacksmith shop! Come back to upgrade stuff or build new things!
-
 - Meatball enemy: may be eaten for a small amount of damage
   - Eating the meatball drops you to 1 hp
   - if you do not eat the meatball, it will grow into a Meatball Tree that can walk around and throw other meatball
@@ -43,7 +49,6 @@
 - NPC meatball lady from Wedding Singer that is making the meatball monsters inadvertently
 - One Dungeon is in the "Book world". Everything is in black and white Letter enemies on the paper page and page maze in the book
 - mountain goat that butts people off a cliff
-
 - Grappling hook for climbing (rope + pick axe?)
 - Combining the shovel and the sword sweeps the legs and maybe knocks the enemy down so that they're weak. It's a nice one-two punch
 - Ossifrage walks randomly then charges if it sees you in its line of sight 
