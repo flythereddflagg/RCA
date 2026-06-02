@@ -8,18 +8,19 @@ int main(void) {
     InitWindow((int)RESOLUTION * ASPECT_RATIO, RESOLUTION,
                "Raylib - Red Castle Avenger");
     SetTargetFPS(90);
-    Image image =
-        LoadImage("./assets/scene/red_castle_valley/red_castle_valley_bg.png");
-    Texture2D background = LoadTextureFromImage(image);
+    Texture2D background = LoadTexture(
+        "./assets/scene/red_castle_valley/red_castle_valley_bg.png");
+    Texture2D larry = LoadTexture("assets/actor/larry/larry_base.png");
 
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
         DrawTexture(background, 0, 0, WHITE);
+        DrawTexture(larry, 300, 300, WHITE);
         EndDrawing();
     }
     UnloadTexture(background);
-    UnloadImage(image);
+    UnloadTexture(larry);
     CloseWindow();
 
     return 0;

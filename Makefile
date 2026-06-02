@@ -1,9 +1,14 @@
-
 CC = gcc
 CFLAGS = -g -Wall -fanalyzer
 SRC = ./csrc/main.c
-OUT = main
-LIBS = -lraylib -L./lib -lm -lX11
+LIBS = -lraylib -L./lib -lm
+ifeq ($(OS),Windows_NT)
+	LIBS += -lgdi32 -lwinmm
+	OUT = main.exe
+else
+	LIBS += -lX11
+	OUT = main
+endif
 INCLUDES = -I./include
 
 .PHONY: all clean clean_all build run get_raylib help python flatpak appimage
