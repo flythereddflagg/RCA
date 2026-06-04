@@ -1,6 +1,6 @@
-#include <stdbool.h>
-#include "raylib.h"
 #include "dbg.h"
+#include "raylib.h"
+#include <stdbool.h>
 
 #define INIT_PATH "./assets/init.yaml"
 #define ASPECT_RATIO (16.0 / 9.0)
@@ -19,63 +19,61 @@ typedef struct {
     Sprite *arr;
 } SpriteArray;
 
-typedef enum {NONE, UP, RIGHT, DOWN, LEFT} Direction;
+typedef enum { NONE, UP, RIGHT, DOWN, LEFT } Direction;
 
-void add_sprite(SpriteArray *sprites, Sprite sprite){
+void add_sprite(SpriteArray *sprites, Sprite sprite) {
     if (sprites->len >= MAX_SPRITES)
         return;
     sprites->arr[sprites->len] = sprite;
     sprites->len += 1;
 }
 
-void input(Direction *inputs){
-    if (IsKeyDown(KEY_UP)) inputs[0] = UP;
-    if (IsKeyDown(KEY_DOWN)) inputs[1] = DOWN;
-    if (IsKeyDown(KEY_LEFT)) inputs[2] = LEFT;
-    if (IsKeyDown(KEY_RIGHT)) inputs[3] = RIGHT;
+void input(Direction *inputs) {
+    if (IsKeyDown(KEY_UP))
+        inputs[0] = UP;
+    if (IsKeyDown(KEY_DOWN))
+        inputs[1] = DOWN;
+    if (IsKeyDown(KEY_LEFT))
+        inputs[2] = LEFT;
+    if (IsKeyDown(KEY_RIGHT))
+        inputs[3] = RIGHT;
 }
 
-void logic(Direction *inputs, SpriteArray *sprites){
+void logic(Direction *inputs, SpriteArray *sprites) {
     Sprite *larry = &(sprites->arr[1]);
-    int dist = (int) SPEED * GetFrameTime();
-    for (int i = 0; i < MAX_INPUTS; i++){
-        switch (inputs[i]){
-            case UP:
-                larry->position.y -= dist;
-                break;
+    int dist = (int)SPEED * GetFrameTime();
+    for (int i = 0; i < MAX_INPUTS; i++) {
+        switch (inputs[i]) {
+        case UP:
+            larry->position.y -= dist;
+            break;
 
-            case DOWN:
-                larry->position.y += dist;
-                break;
+        case DOWN:
+            larry->position.y += dist;
+            break;
 
-            case RIGHT:
-                larry->position.x += dist;
-                break;
+        case RIGHT:
+            larry->position.x += dist;
+            break;
 
-            case LEFT:
-                larry->position.x -= dist;
-                break;
-            
-            default:
-                ;
+        case LEFT:
+            larry->position.x -= dist;
+            break;
+
+        default:;
         }
         inputs[i] = 0;
     }
 }
 
-void draw(SpriteArray *sprites){
+void draw(SpriteArray *sprites) {
     BeginDrawing();
     ClearBackground(BLACK);
     for (int i = 0; i < sprites->len; i++)
-        DrawTexture(
-            sprites->arr[i].image, 
-            sprites->arr[i].position.x, 
-            sprites->arr[i].position.y, 
-            WHITE
-        );
+        DrawTexture(sprites->arr[i].image, sprites->arr[i].position.x,
+                    sprites->arr[i].position.y, WHITE);
     EndDrawing();
 }
-
 
 int main(void) {
     // init
@@ -83,20 +81,16 @@ int main(void) {
                "Raylib - Red Castle Avenger");
     SetTargetFPS(90);
     Sprite mem[MAX_SPRITES];
-    SpriteArray sprites = 
-        (SpriteArray)
-        {
-            .len=0,
-            .arr=&(mem[0])
-    };
-    add_sprite(&sprites, (Sprite){
-        .image=LoadTexture(
-            "./assets/scene/red_castle_valley/red_castle_valley_bg.png"),
-        .position=(Vector2){0, 0}
+    SpriteArray sprites = (SpriteArray){.len = 0, .arr = &(mem[0])};
+    add_sprite(&sprites,(Sprite){
+        .image = LoadTexture(
+                "./assets/scene/red_castle_valley/red_castle_valley_bg.png"
+        ),
+        .position = (Vector2){0, 0}
     });
     add_sprite(&sprites, (Sprite){
-        .image=LoadTexture("assets/actor/larry/larry_base.png"),
-        .position=(Vector2){300, 300}   
+        .image = LoadTexture("assets/actor/larry/larry_base.png"),
+        .position = (Vector2){300, 300}
     });
     Direction input_array[MAX_INPUTS] = {0};
     Direction *inputs = &(input_array[0]);
@@ -110,8 +104,8 @@ int main(void) {
         input(inputs);
         logic(inputs, &sprites);
         draw(&sprites);
-
     }
+
     // cleanup
     for (int i = 0; i < sprites.len; i++)
         UnloadTexture(sprites.arr[i].image);

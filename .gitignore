@@ -5,6 +5,7 @@
 **.mscbackup
 **.bkp
 **.icl
+**.exe
 # IGNORE THE FOLLOWING FOLDERS
 build_env/
 build/
