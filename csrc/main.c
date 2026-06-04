@@ -41,7 +41,7 @@ void input(Direction *inputs) {
 
 void logic(Direction *inputs, SpriteArray *sprites) {
     Sprite *larry = &(sprites->arr[1]);
-    int dist = (int)SPEED * GetFrameTime();
+    double dist = SPEED * GetFrameTime();
     for (int i = 0; i < MAX_INPUTS; i++) {
         switch (inputs[i]) {
         case UP:
