@@ -9,7 +9,7 @@ else
 	LIBS += -lX11
 	OUT = main
 endif
-INCLUDES = -I./include
+INCLUDES = -I./include -I./csrc
 
 .PHONY: all clean clean_all build run get_raylib help python flatpak appimage
 
@@ -25,6 +25,12 @@ get_raylib: clean_all
 	cd ../..
 	cp .raylib/LICENSE ./lib
 	cp .raylib/src/libraylib.a ./lib
+
+preprocess:
+	$(CC) $(CFLAGS) -E $(SRC) -o $(OUT).o $(INCLUDES)
+
+obj:
+	$(CC) $(CFLAGS) -c $(SRC) -o $(OUT).o $(INCLUDES)
 
 build:
 	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LIBS) $(INCLUDES)

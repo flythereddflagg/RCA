@@ -1,5 +1,6 @@
 #include "dbg.h"
 #include "raylib.h"
+#include "node.h"
 #include <stdbool.h>
 
 #define INIT_PATH "./assets/init.yaml"

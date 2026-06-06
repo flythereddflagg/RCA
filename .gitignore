@@ -6,6 +6,7 @@
 **.bkp
 **.icl
 **.exe
+**.o
 # IGNORE THE FOLLOWING FOLDERS
 build_env/
 build/
