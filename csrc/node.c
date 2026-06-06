@@ -8,7 +8,11 @@
 #define MAX_NODES 256
 #define ID_SIZE 32
 #define ID_MAX 255
-
+/*
+TODO Node still needs the following:
+children
+groups
+*/
 typedef struct NodeData* Node;
 typedef struct {
     unsigned char len;
