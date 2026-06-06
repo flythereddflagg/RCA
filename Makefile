@@ -54,6 +54,7 @@ clean:
 	rm -rf ./.flatpak-builder
 	rm -f *.AppImage
 	rm -f $(OUT)
+	rm -f *.o
 
 clean_all: clean
 	rm -rf ./lib

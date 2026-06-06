@@ -1,0 +1,46 @@
+#include <stdlib.h>
+
+typedef struct NodeData* Node;
+
+struct NodeData{
+    void (*update)(const void* self);
+    void (*delete)(void* self);
+};
+
+void Node_update(const void* self){
+    Node node = (Node) self;
+    // statements...
+}
+
+void Node_delete(void* self){
+    free(self);
+}
+
+Node Node_new(){
+    Node self = (Node) malloc (sizeof(struct NodeData));
+
+    self->update = &Node_update;
+    self->delete = &Node_delete;
+
+    return self;
+}
+
+// -------- CHILD CLASS -------- //
+typedef struct ChildData* Child;
+
+struct ChildData {
+    Node base;
+
+    void (*do_a_thing)(const void* self);
+}
+
+Child Child_new(){
+    Child self = (Child) malloc(sizeof(struct ChildData));
+    self->base = Node_new();
+    self->update = self->base->update;
+    self->do_a_thing = &Child_do_a_thing
+}
+
+void Child_do_a_thing(const void* self){
+    ;
+}
