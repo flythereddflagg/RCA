@@ -11,13 +11,10 @@
 build_env/
 build/
 dist/
-.pytest_cache/
 install/
-.ipynb_checkpoints/
-.flatpak-builder/
-*.egg-info/
-.raylib/
 lib/
+*.egg-info/
+.*/
 # IGNORE THE FOLLOWING FILES
 main
 
