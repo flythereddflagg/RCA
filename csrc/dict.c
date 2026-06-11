@@ -1,4 +1,5 @@
 #include <math.h>
+#include <string.h>
 #include "dbg.h"
 #define DICTKEYLENGTH 256
 #define DICTSIZE 255
@@ -43,6 +44,9 @@ error:
 
 int Dict_set(Dict self, DictKey key, DictType type, DictVal val){
     int index = Dict_hash(key);
+    if ((*self->keys[index]) && strncmp(key, self->keys[index], DICTKEYLENGTH)){
+        
+    }
     check(index >= 0 && index < DICTSIZE, "invalid index detected");
     self->keys[index] = key;
     self->types[index] = type;
@@ -93,7 +97,7 @@ error:
 
 int main() {
     log_info("\n compile successful\n");
-    DictKey dkeys[DICTSIZE] = {0};
+    DictKey dkeys[DICTSIZE] = {""};
     DictType dtypes[DICTSIZE] = {NONE};
     DictVal dvals[DICTSIZE] = {0};
     int dnext[DICTSIZE] = {-1};    
