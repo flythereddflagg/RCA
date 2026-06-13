@@ -1,7 +1,7 @@
 #include <string.h>
 #include "dbg.h"
 #define DICTKEYLENGTH 256
-#define DICTSIZE 3
+#define DICTSIZE 255
 #define HASHPRIME 31
 #define NO_NEXT -1
 #define EMPTYVAL (DictVal){.obj=NULL}
@@ -171,22 +171,58 @@ error:
     return;
 }
 
+Dict Dict_new(){
+    Dict dict = (Dict) malloc(sizeof(Dict));
+    memcheck(dict);
+
+    dict->keys = (DictKey*) malloc(sizeof(DictKey) * DICTSIZE);
+    memcheck(dict->keys);
+    dict->types = (DictType*) malloc(sizeof(DictType) * DICTSIZE);
+    memcheck(dict->types);
+    dict->vals = (DictVal*) malloc(sizeof(DictVal) * DICTSIZE);
+    memcheck(dict->vals);
+    dict->next = (int*) malloc(sizeof(int) * DICTSIZE);
+    memcheck(dict->next);
+
+    for (int i = 0; i < DICTSIZE; i++)
+        dict->keys[i] = NULL;
+        dict->types[i] = 0;
+        dict->vals[i] = 0;
+        dict->next[i] = NO_NEXT;
+    
+    return dict;
+error:
+    return NULL;
+}
+
+Dict Dict_delete(Dict dict){
+    if (dict){
+        if (dict->keys) free(dict->keys);
+        if (dict->types) free(dict->types);
+        if (dict->vals) free(dict->vals);
+        if (dict->next) free(dict->next);
+        free(dict);
+    }
+    return NULL;
+}
+
 int main() {
     log_info("compile successful");
-    DictKey dkeys[DICTSIZE] = {0};
-    DictType dtypes[DICTSIZE] = {0};
-    DictVal dvals[DICTSIZE] = {0};
-    int dnext[DICTSIZE] = {0};
-    for (int i = 0; i < DICTSIZE; i++)
-        dnext[i] = NO_NEXT;
-    struct DictData ddict = 
-        (struct DictData) {
-            .keys = &dkeys[0],
-            .types = &dtypes[0],
-            .vals = &dvals[0],
-            .next = &dnext[0]
-    };
-    Dict dict = &ddict;
+    // DictKey dkeys[DICTSIZE] = {0};
+    // DictType dtypes[DICTSIZE] = {0};
+    // DictVal dvals[DICTSIZE] = {0};
+    // int dnext[DICTSIZE] = {0};
+    // for (int i = 0; i < DICTSIZE; i++)
+    //     dnext[i] = NO_NEXT;
+    // struct DictData ddict = 
+    //     (struct DictData) {
+    //         .keys = &dkeys[0],
+    //         .types = &dtypes[0],
+    //         .vals = &dvals[0],
+    //         .next = &dnext[0]
+    // };
+    // Dict dict = &ddict;
+    Dict dict = Dict_new();
     Dict_set(dict, (DictKey)"pickle", INT, (DictVal){.num=25});
     Dict_set(dict, (DictKey)"cheese", STR, (DictVal){.str="23"});
     Dict_set(dict, (DictKey)"crackers", STR, (DictVal){.str="holy guacamole"});
@@ -203,11 +239,9 @@ int main() {
     Dict_set(dict, (DictKey)"cheese", OBJ, (DictVal){.obj=dict});
     Dict_printrepr(dict);
     Dict_delete(dict, (DictKey) "pickle");
-    
     Dict_delete(dict, (DictKey) "cheese");
-    debug("here");
     Dict_delete(dict, (DictKey) "crackers");
-    
     Dict_printrepr(dict);
+    Dict_delete();
     return 0;
 }
