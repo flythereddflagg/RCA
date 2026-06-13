@@ -7,6 +7,7 @@
 **.icl
 **.exe
 **.o
+**.so*
 # IGNORE THE FOLLOWING FOLDERS
 build_env/
 build/
