@@ -1,8 +1,8 @@
+#include "cyaml.h"
 #include "dbg.h"
+#include "node.c"
 #include "raylib.h"
 #include "tools.c"
-#include "node.c"
-#include "cyaml.h"
 #include <stdbool.h>
 
 #define INIT_PATH "./assets/init.yaml"
@@ -11,11 +11,7 @@
 #define MAX_INPUTS 6
 #define SPEED 200
 
-
-
 typedef enum { NONE, UP, RIGHT, DOWN, LEFT } Direction;
-
-
 
 void input(Direction *inputs) {
     if (IsKeyDown(KEY_UP))
@@ -60,11 +56,9 @@ void draw(NodeArray *nodes) {
     BeginDrawing();
     ClearBackground(BLACK);
     for (int i = 0; i < nodes->len; i++)
-        DrawTexture(
-            nodes->arr[i]->decal->image, 
-            nodes->arr[i]->decal->position.x,
-            nodes->arr[i]->decal->position.y, 
-            WHITE);
+        DrawTexture(nodes->arr[i]->decal->image,
+                    nodes->arr[i]->decal->position.x,
+                    nodes->arr[i]->decal->position.y, WHITE);
     EndDrawing();
 }
 
@@ -78,20 +72,17 @@ int main(void) {
     Direction input_array[MAX_INPUTS] = {0};
     Direction *inputs = &(input_array[0]);
     SetExitKey(KEY_BACKSPACE);
-    
+
     Node mem[MAX_NODES];
     NodeArray nodes = (NodeArray){.len = 0, .arr = &(mem[0])};
-    
-    NodeArray_add_node(&nodes, Node_new(
-        Decal_new(
-            "./assets/scene/red_castle_valley/red_castle_valley_bg.png",
-            (Vector2){0, 0}
-    )));
-    NodeArray_add_node(&nodes, Node_new(
-        Decal_new(
-            "./assets/actor/larry/larry_base.png", 
-            (Vector2){300, 300}
-    )));
+
+    NodeArray_add_node(
+        &nodes, Node_new(Decal_new(
+                    "./assets/scene/red_castle_valley/red_castle_valley_bg.png",
+                    (Vector2){0, 0})));
+    NodeArray_add_node(&nodes,
+                       Node_new(Decal_new("./assets/actor/larry/larry_base.png",
+                                          (Vector2){300, 300})));
 
     // mainloop
     bool running = true;
@@ -105,7 +96,7 @@ int main(void) {
 
     // cleanup
     for (int i = 0; i < nodes.len; i++)
-        nodes.arr[i]->delete(nodes.arr[i]);
+        nodes.arr[i]->delete (nodes.arr[i]);
     cyaml_free(settings);
     CloseWindow();
 
