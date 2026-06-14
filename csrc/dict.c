@@ -1,4 +1,5 @@
-#include <string.h>
+#include <string.h>'
+#include <stdbool.h>
 #include "dbg.h"
 #define DICTKEYLENGTH 256
 #define DICTSIZE 255
@@ -17,7 +18,7 @@ union DictValData {
     char *str;
     long long num;
     double fnum;
-    unsigned char _bool;
+    bool _bool;
     void *obj;
     //NULL none;
 };
