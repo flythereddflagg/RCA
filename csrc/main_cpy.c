@@ -1,8 +1,6 @@
 #include "dbg.h"
 #include "raylib.h"
-#include "tools.c"
 #include "node.c"
-#include "cyaml.h"
 #include <stdbool.h>
 
 #define INIT_PATH "./assets/init.yaml"
@@ -70,15 +68,9 @@ void draw(NodeArray *nodes) {
 
 int main(void) {
     // init
-    Yaml settings = load_yaml(INIT_PATH);
     InitWindow((int)(RESOLUTION * ASPECT_RATIO), RESOLUTION,
                "Raylib - Red Castle Avenger");
     SetTargetFPS(90);
-
-    Direction input_array[MAX_INPUTS] = {0};
-    Direction *inputs = &(input_array[0]);
-    SetExitKey(KEY_BACKSPACE);
-    
     Node mem[MAX_NODES];
     NodeArray nodes = (NodeArray){.len = 0, .arr = &(mem[0])};
     
@@ -93,6 +85,10 @@ int main(void) {
             (Vector2){300, 300}
     )));
 
+    Direction input_array[MAX_INPUTS] = {0};
+    Direction *inputs = &(input_array[0]);
+    SetExitKey(KEY_BACKSPACE);
+
     // mainloop
     bool running = true;
     while (running) {
@@ -106,7 +102,6 @@ int main(void) {
     // cleanup
     for (int i = 0; i < nodes.len; i++)
         nodes.arr[i]->delete(nodes.arr[i]);
-    cyaml_free(settings);
     CloseWindow();
 
     return 0;

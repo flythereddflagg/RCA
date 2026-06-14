@@ -1,3 +1,5 @@
+#ifndef __TOOLS_C__
+#define __TOOLS_C__
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -5,26 +7,21 @@
 #include "cyaml.h"
 #include "raylib.h"
 
-int main(){
-    const char *yaml = LoadFileText("./assets/init.yaml");
+typedef cyaml_doc_t* Yaml;
+
+Yaml load_yaml(const char *yaml_path){
+    char *yaml = LoadFileText(yaml_path);
     cyaml_error_t err;
     cyaml_doc_t *doc = cyaml_parse(yaml, strlen(yaml), NULL, &err);
-
+    UnloadFileText(yaml);
     check(
         doc, 
         "Parse error at line %u: %s\n", 
         err.span.start_line, err.msg
-    ); 
-
-    cyaml_node_t *root = cyaml_root(doc);
-
-    char *value = cyaml_scalar_str(doc, cyaml_get(doc, root, "icon"));
-    printf("icon: %s\n", value);
-    free(value);
-
-    cyaml_free(doc);
-    return 0;
+    );
+    return doc;
 
 error:
-    return 1;
+    return NULL;
 }
+#endif
