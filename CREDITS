@@ -3,7 +3,7 @@
 
             -- Dedication --
         To Kyle, who gave me a pair of wings,
-        to Adriaan who showed me the sky
+        to Adriaan, who showed me the sky
         and to Leeland, who kicked me out of the nest
         and made me fly.
 
@@ -22,7 +22,8 @@
             Python      VSCodium
             pygame      Aseprite
             PyYAML      MuseScore
-                 Tenacity
+            raylib      Audacity
+                  cyaml
             
        -- Creation and Direction -- 
                 Mark Redd
