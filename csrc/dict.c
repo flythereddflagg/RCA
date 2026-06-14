@@ -207,7 +207,7 @@ Dict Dict_delete(Dict dict){
     return NULL;
 }
 
-int main() {
+int test_dict() {
     log_info("compile successful");
     // DictKey dkeys[DICTSIZE] = {0};
     // DictType dtypes[DICTSIZE] = {0};
