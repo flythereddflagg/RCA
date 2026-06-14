@@ -38,6 +38,7 @@ build:
 	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LIBS) $(INCLUDES)
 
 run: build
+	@echo "-- BUILD COMMAND COMPLETE --"
 	./$(OUT)
 
 python:

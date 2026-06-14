@@ -62,9 +62,15 @@ void draw(NodeArray *nodes) {
     EndDrawing();
 }
 
+RenderTexture2D init_screen(Yaml settings){
+
+}
+
 int main(void) {
     // init
     Yaml settings = load_yaml(INIT_PATH);
+    void *scene = NULL;
+    void *saved_scenes = NULL;
     InitWindow((int)(RESOLUTION * ASPECT_RATIO), RESOLUTION,
                "Raylib - Red Castle Avenger");
     SetTargetFPS(90);

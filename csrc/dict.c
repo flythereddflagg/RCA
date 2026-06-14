@@ -1,3 +1,5 @@
+#ifndef __DICT_C__
+#define __DICT_C__
 #include "dbg.h"
 #include <stdbool.h>
 #include <string.h>'
@@ -253,3 +255,4 @@ int test_dict() {
     Dict_delete();
     return 0;
 }
+#endif
