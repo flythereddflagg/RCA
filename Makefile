@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -g -Wall -fanalyzer
+CFLAGS = -g -Wall #-fanalyzer
 SRC = ./csrc/main.c
 LIBS = -lraylib -L./lib -lm -lcyaml
 ifeq ($(OS),Windows_NT)

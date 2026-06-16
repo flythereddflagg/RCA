@@ -1,6 +1,9 @@
 ## Ideas
 
 - Internal arcade game to play ala pico-8 or like Space Quest IV (pong? or World 1 inside the game?)
+- Go to the end of the game (with Larry) and then have to go back to the beginning (different story but the whole map backwards)
+- Last boss is first boss amped up
+- You think you're at the end but you're not
 - Rewrite in C with Raylib
 - More detail?
 - Wizard of Oz like idea where the detail increases when you go through the mirror

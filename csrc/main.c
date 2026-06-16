@@ -63,24 +63,31 @@ void draw(NodeArray *nodes) {
 }
 
 RenderTexture2D init_screen(Yaml settings){
-
+    RenderTexture2D val;
+    InitWindow((int)(RESOLUTION * ASPECT_RATIO), RESOLUTION,
+               "Raylib - Red Castle Avenger");
+    SetTargetFPS(90);
+    return val;
 }
 
 int main(void) {
     // init
+    Node mem[MAX_NODES];
+    NodeArray nodes = (NodeArray){.len = 0, .arr = &(mem[0])};
+    
     Yaml settings = load_yaml(INIT_PATH);
+    check(settings, "Settings could not load");
+    
     void *scene = NULL;
     void *saved_scenes = NULL;
-    InitWindow((int)(RESOLUTION * ASPECT_RATIO), RESOLUTION,
-               "Raylib - Red Castle Avenger");
-    SetTargetFPS(90);
+
+
 
     Direction input_array[MAX_INPUTS] = {0};
     Direction *inputs = &(input_array[0]);
     SetExitKey(KEY_BACKSPACE);
 
-    Node mem[MAX_NODES];
-    NodeArray nodes = (NodeArray){.len = 0, .arr = &(mem[0])};
+   
 
     NodeArray_add_node(
         &nodes, Node_new(Decal_new(
@@ -99,12 +106,18 @@ int main(void) {
         logic(inputs, &nodes);
         draw(&nodes);
     }
-
     // cleanup
     for (int i = 0; i < nodes.len; i++)
         nodes.arr[i]->delete (nodes.arr[i]);
     cyaml_free(settings);
     CloseWindow();
-
     return 0;
+
+error:
+    // cleanup
+    for (int i = 0; i < nodes.len; i++)
+        nodes.arr[i]->delete(nodes.arr[i]);
+    cyaml_free(settings);
+    CloseWindow();
+    return 1;
 }
