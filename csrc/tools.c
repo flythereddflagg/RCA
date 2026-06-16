@@ -3,13 +3,12 @@
 #include "cyaml.h"
 #include "dbg.h"
 #include "raylib.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 typedef cyaml_doc_t *Yaml;
 
-Yaml load_yaml(const char *yaml_path) {
+Yaml Yaml_load(const char *yaml_path) {
     char *yaml = LoadFileText(yaml_path);
     cyaml_error_t err;
     cyaml_doc_t *doc = cyaml_parse(yaml, strlen(yaml), NULL, &err);

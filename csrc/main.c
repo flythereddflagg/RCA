@@ -64,30 +64,36 @@ void draw(NodeArray *nodes) {
 
 RenderTexture2D init_screen(Yaml settings){
     RenderTexture2D val;
-    InitWindow((int)(RESOLUTION * ASPECT_RATIO), RESOLUTION,
+    int resolution;
+    cyaml_as_int(
+        settings, 
+        cyaml_get(settings, cyaml_root(settings), "RESOLUTION"),
+        &resolution
+    );
+    InitWindow((int)(resolution * ASPECT_RATIO), RESOLUTION,
                "Raylib - Red Castle Avenger");
     SetTargetFPS(90);
+    SetExitKey(KEY_BACKSPACE);
     return val;
 }
+
+
 
 int main(void) {
     // init
     Node mem[MAX_NODES];
     NodeArray nodes = (NodeArray){.len = 0, .arr = &(mem[0])};
     
-    Yaml settings = load_yaml(INIT_PATH);
+    Yaml settings = Yaml_load(INIT_PATH);
     check(settings, "Settings could not load");
     
     void *scene = NULL;
     void *saved_scenes = NULL;
 
-
+    RenderTexture2D screen = init_screen(settings);
 
     Direction input_array[MAX_INPUTS] = {0};
     Direction *inputs = &(input_array[0]);
-    SetExitKey(KEY_BACKSPACE);
-
-   
 
     NodeArray_add_node(
         &nodes, Node_new(Decal_new(
