@@ -89,12 +89,14 @@ int main(void) {
     // void *scene = NULL;
     // void *saved_scenes = NULL;
 
+    // TODO use virtual screen
     // RenderTexture2D screen = 
     init_screen(settings);
 
     Direction input_array[MAX_INPUTS] = {0};
     Direction *inputs = &(input_array[0]);
-
+    
+    // TODO implment scene structure
     NodeArray_add_node(
         &nodes, Node_new(Decal_new(
                     "./assets/scene/red_castle_valley/red_castle_valley_bg.png",
