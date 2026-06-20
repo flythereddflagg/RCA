@@ -1,8 +1,8 @@
 #ifndef __DICT_C__
 #define __DICT_C__
-#include "dbg.h"
 #include <stdbool.h>
-#include <string.h>'
+#include <string.h>
+#include "dbg.h"
 #define DICTKEYLENGTH 256
 #define DICTSIZE 255
 #define HASHPRIME 31
@@ -91,7 +91,7 @@ error:
 int Dict_delkey(Dict self, DictKey key) {
     check(self, "invalid dict supplied");
     check(key[0], "invalid key supplied");
-    int prev = Dict_hash(key), index = prev, i = 0;
+    int prev = Dict_hash(key), index = prev;
     debug("%s", key);
     debug("%d", index);
     // TODO figure out how to represent this

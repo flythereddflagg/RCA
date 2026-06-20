@@ -1,6 +1,5 @@
 #include <stdbool.h>
 #include "raylib.h"
-#include "cyaml.h"
 #include "dbg.h"
 
 #include "node.c"
@@ -65,10 +64,14 @@ void draw(NodeArray *nodes) {
 
 RenderTexture2D init_screen(Yaml settings){
     RenderTexture2D val;
-    int resolution = Yaml_get(settings, INT, "RESOLUTION").num;
-    char *title = Yaml_get(settings, STR, "title").str;
-    InitWindow((int)(resolution * ASPECT_RATIO), resolution, title);
-    SetTargetFPS(90);
+    int resolution = Yaml_get(settings, "RESOLUTION").num;
+    char *title = Yaml_get(settings, "title").str;
+    double aspect_ratio = (
+        1.0f * Yaml_get(settings, "/ASPECT_RATIO[0]").num
+        / Yaml_get(settings, "/ASPECT_RATIO[1]").num
+    );
+    InitWindow((int)(resolution * aspect_ratio), resolution, title);
+    SetTargetFPS(Yaml_get(settings, "FPS").num);
     SetExitKey(KEY_BACKSPACE);
     return val;
 }
@@ -83,10 +86,11 @@ int main(void) {
     Yaml settings = Yaml_load(INIT_PATH);
     check(settings, "Settings could not load");
     
-    void *scene = NULL;
-    void *saved_scenes = NULL;
+    // void *scene = NULL;
+    // void *saved_scenes = NULL;
 
-    RenderTexture2D screen = init_screen(settings);
+    // RenderTexture2D screen = 
+    init_screen(settings);
 
     Direction input_array[MAX_INPUTS] = {0};
     Direction *inputs = &(input_array[0]);
@@ -111,7 +115,7 @@ int main(void) {
     // cleanup
     for (int i = 0; i < nodes.len; i++)
         nodes.arr[i]->delete (nodes.arr[i]);
-    cyaml_free(settings);
+    Yaml_delete(settings);
     CloseWindow();
     return 0;
 
@@ -119,7 +123,7 @@ error:
     // cleanup
     for (int i = 0; i < nodes.len; i++)
         nodes.arr[i]->delete(nodes.arr[i]);
-    cyaml_free(settings);
+    Yaml_delete(settings);
     CloseWindow();
     return 1;
 }

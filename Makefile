@@ -1,7 +1,8 @@
 CC = gcc
 CFLAGS = -g -Wall #-fanalyzer
 SRC = ./csrc/main.c
-LIBS = -lraylib -L./lib -lm -lcyaml '-Wl,-rpath,$$ORIGIN/lib'
+LIBS = -lraylib -L./lib -lm -lcyaml 
+LIBS += '-Wl,-rpath,$$ORIGIN/lib' # needed to point to .so files
 ifeq ($(OS),Windows_NT)
 	LIBS += -lgdi32 -lwinmm
 	OUT = main.exe
