@@ -21,8 +21,10 @@ error:
     return NULL;
 }
 DictVal Yaml_get(Yaml doc, DictType type, const char *name){
+    // TODO make it so type is unecessary (cyaml_scalar_kind)
     cyaml_node_t* node = cyaml_get(doc, cyaml_root(doc), name);
     check(!cyaml_is_null_val(doc, node), "value is null");
+
     switch (type) {
         case NONE:
             return (DictVal) {.obj=NULL};

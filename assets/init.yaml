@@ -15,7 +15,7 @@ RESOLUTION: 360
 ASPECT_RATIO: [16,9]
 SCALE: 2
 icon: ./assets/block/game_icon_rev1.png
-title: pygame - Red Castle Avenger
+title: Red Castle Avenger
 
 ### GAME INIT ###
 init_add_in:

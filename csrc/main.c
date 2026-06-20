@@ -1,13 +1,14 @@
+#include <stdbool.h>
+#include "raylib.h"
 #include "cyaml.h"
 #include "dbg.h"
+
 #include "node.c"
-#include "raylib.h"
 #include "tools.c"
-#include <stdbool.h>
+
 
 #define INIT_PATH "./assets/init.yaml"
 #define ASPECT_RATIO (16.0 / 9.0)
-#define RESOLUTION 360
 #define MAX_INPUTS 6
 #define SPEED 200
 
@@ -64,14 +65,9 @@ void draw(NodeArray *nodes) {
 
 RenderTexture2D init_screen(Yaml settings){
     RenderTexture2D val;
-    int resolution;
-    cyaml_as_int(
-        settings, 
-        cyaml_get(settings, cyaml_root(settings), "RESOLUTION"),
-        &resolution
-    );
-    InitWindow((int)(resolution * ASPECT_RATIO), RESOLUTION,
-               "Raylib - Red Castle Avenger");
+    int resolution = Yaml_get(settings, INT, "RESOLUTION").num;
+    char *title = Yaml_get(settings, STR, "title").str;
+    InitWindow((int)(resolution * ASPECT_RATIO), resolution, title);
     SetTargetFPS(90);
     SetExitKey(KEY_BACKSPACE);
     return val;
