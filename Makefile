@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -g -Wall #-fanalyzer
 SRC = ./csrc/main.c
-LIBS = -lraylib -L./lib -lm -lcyaml
+LIBS = -lraylib -L./lib -lm -lcyaml '-Wl,-rpath,$$ORIGIN/lib'
 ifeq ($(OS),Windows_NT)
 	LIBS += -lgdi32 -lwinmm
 	OUT = main.exe

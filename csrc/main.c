@@ -11,7 +11,7 @@
 #define MAX_INPUTS 6
 #define SPEED 200
 
-typedef enum { NONE, UP, RIGHT, DOWN, LEFT } Direction;
+typedef enum {NO_DIR, UP, RIGHT, DOWN, LEFT } Direction;
 
 void input(Direction *inputs) {
     if (IsKeyDown(KEY_UP))

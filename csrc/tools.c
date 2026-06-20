@@ -20,45 +20,45 @@ Yaml Yaml_load(const char *yaml_path) {
 error:
     return NULL;
 }
-DictVal Yaml_get(DictType type, const char *name){
-    cyaml_as_int(
-        settings, 
-        cyaml_get(settings, cyaml_root(settings), "RESOLUTION"),
-        &resolution
-    
-    );
-    switch (dict->types[i]) {
+DictVal Yaml_get(Yaml doc, DictType type, const char *name){
+    cyaml_node_t* node = cyaml_get(doc, cyaml_root(doc), name);
+    check(!cyaml_is_null_val(doc, node), "value is null");
+    switch (type) {
         case NONE:
-            printf(" none %20s", "null");
+            return (DictVal) {.obj=NULL};
             break;
         case DICT:
-            Dict_printrepr(dict->vals[i].dict);
+            sentinel("DICT not yet implemented");
             break;
         case ARR:
+            sentinel("ARR not yet implemented");
+            break;
         case STR:
-            printf("  str %20s", dict->vals[i].str);
+            char* get_str = cyaml_scalar_str(doc, node);
+            return (DictVal) {.str=get_str};
             break;
         case INT:
-            printf("  int %20lld", dict->vals[i].num);
+            long get_int;
+            cyaml_as_int(doc, node, &get_int);
+            return (DictVal) {.num=get_int};
             break;
         case FLOAT:
-            printf("float %20f", dict->vals[i].fnum);
+            double get_float;
+            cyaml_as_int(doc, node, &get_float);
+            return (DictVal) {.fnum=get_float};
             break;
         case BOOL:
-            printf(" bool %20d", dict->vals[i]._bool);
+            bool get_bool;
+            cyaml_as_int(doc, node, &get_bool);
+            return (DictVal) {._bool=get_bool};
             break;
         case OBJ:
-            printf("  obj %20p", dict->vals[i].obj);
+            sentinel("OBJ not yet implemented");
             break;
         default:
             sentinel("invalid type") break;
         }
-        if (dict->next[i] == NO_NEXT)
-            printf(" | null\n");
-        else
-            printf(" | %d\n", dict->next[i]);
-    }
 error:
-    return (DictVal) {.num=0};
+    return (DictVal) {.obj=NULL};
 }
 #endif

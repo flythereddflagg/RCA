@@ -88,7 +88,7 @@ error:
     return -1;
 }
 
-int Dict_delete(Dict self, DictKey key) {
+int Dict_delkey(Dict self, DictKey key) {
     check(self, "invalid dict supplied");
     check(key[0], "invalid key supplied");
     int prev = Dict_hash(key), index = prev, i = 0;
@@ -177,22 +177,23 @@ error:
 
 Dict Dict_new() {
     Dict dict = (Dict)malloc(sizeof(Dict));
-    memcheck(dict);
+    check_mem(dict);
 
     dict->keys = (DictKey *)malloc(sizeof(DictKey) * DICTSIZE);
-    memcheck(dict->keys);
+    check_mem(dict->keys);
     dict->types = (DictType *)malloc(sizeof(DictType) * DICTSIZE);
-    memcheck(dict->types);
+    check_mem(dict->types);
     dict->vals = (DictVal *)malloc(sizeof(DictVal) * DICTSIZE);
-    memcheck(dict->vals);
+    check_mem(dict->vals);
     dict->next = (int *)malloc(sizeof(int) * DICTSIZE);
-    memcheck(dict->next);
+    check_mem(dict->next);
 
-    for (int i = 0; i < DICTSIZE; i++)
+    for (int i = 0; i < DICTSIZE; i++){
         dict->keys[i] = NULL;
-    dict->types[i] = 0;
-    dict->vals[i] = 0;
-    dict->next[i] = NO_NEXT;
+        dict->types[i] = 0;
+        dict->vals[i] = (DictVal){.obj=NULL};
+        dict->next[i] = NO_NEXT;
+    }
 
     return dict;
 error:
@@ -238,21 +239,21 @@ int test_dict() {
     Dict_set(dict, (DictKey) "crackers2", STR,
              (DictVal){.str = "holy guacamole"});
     Dict_printrepr(dict);
-    Dict_delete(dict, (DictKey) "pickle");
+    Dict_delkey(dict, (DictKey) "pickle");
     Dict_printrepr(dict);
     Dict_set(dict, (DictKey) "pickle", INT, (DictVal){.num = 26});
     Dict_set(dict, (DictKey) "cheese", STR, (DictVal){.str = "24"});
     Dict_printrepr(dict);
-    Dict_delete(dict, (DictKey) "pickl");
+    Dict_delkey(dict, (DictKey) "pickl");
     debug("getting value of pickle as %lld",
           Dict_get(dict, "pickle", EMPTYVAL).num);
     Dict_set(dict, (DictKey) "cheese", OBJ, (DictVal){.obj = dict});
     Dict_printrepr(dict);
-    Dict_delete(dict, (DictKey) "pickle");
-    Dict_delete(dict, (DictKey) "cheese");
-    Dict_delete(dict, (DictKey) "crackers");
+    Dict_delkey(dict, (DictKey) "pickle");
+    Dict_delkey(dict, (DictKey) "cheese");
+    Dict_delkey(dict, (DictKey) "crackers");
     Dict_printrepr(dict);
-    Dict_delete();
+    Dict_delete(dict);
     return 0;
 }
 #endif
