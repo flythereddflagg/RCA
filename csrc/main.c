@@ -124,6 +124,7 @@ int main(void) {
     // cleanup
     for (int i = 0; i < nodes.len; i++)
         nodes.arr[i]->delete (nodes.arr[i]);
+    UnloadRenderTexture(v_screen);
     Yaml_delete(settings);
     CloseWindow();
     return 0;
@@ -132,6 +133,7 @@ error:
     // cleanup
     for (int i = 0; i < nodes.len; i++)
         nodes.arr[i]->delete (nodes.arr[i]);
+    UnloadRenderTexture(v_screen);
     Yaml_delete(settings);
     CloseWindow();
     return 1;
