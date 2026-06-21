@@ -1,8 +1,8 @@
 #ifndef __DICT_C__
 #define __DICT_C__
+#include "dbg.h"
 #include <stdbool.h>
 #include <string.h>
-#include "dbg.h"
 #define DICTKEYLENGTH 256
 #define DICTSIZE 255
 #define HASHPRIME 31
@@ -188,10 +188,10 @@ Dict Dict_new() {
     dict->next = (int *)malloc(sizeof(int) * DICTSIZE);
     check_mem(dict->next);
 
-    for (int i = 0; i < DICTSIZE; i++){
+    for (int i = 0; i < DICTSIZE; i++) {
         dict->keys[i] = NULL;
         dict->types[i] = 0;
-        dict->vals[i] = (DictVal){.obj=NULL};
+        dict->vals[i] = (DictVal){.obj = NULL};
         dict->next[i] = NO_NEXT;
     }
 

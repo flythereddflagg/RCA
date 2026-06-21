@@ -1,6 +1,7 @@
 CC = gcc
 CFLAGS = -g -Wall #-fanalyzer
 SRC = ./csrc/main.c
+TEST_SRC = csrc_test/draw_texture_pro.c
 LIBS = -lraylib -L./lib -lm -lcyaml 
 LIBS += '-Wl,-rpath,$$ORIGIN/lib' # needed to point to .so files
 ifeq ($(OS),Windows_NT)
@@ -37,6 +38,11 @@ obj:
 
 build:
 	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LIBS) $(INCLUDES)
+
+test:
+	$(CC) $(CFLAGS) $(TEST_SRC) -o $(OUT) $(LIBS) $(INCLUDES)
+	@echo "-- BUILD COMMAND COMPLETE --"
+	./$(OUT)
 
 run: build
 	@echo "-- BUILD COMMAND COMPLETE --"
