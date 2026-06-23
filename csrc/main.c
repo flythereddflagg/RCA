@@ -51,41 +51,59 @@ void logic(Direction *inputs, NodeArray *nodes) {
     }
 }
 
-void draw(NodeArray *nodes, RenderTexture2D v_screen) {
+void draw_frame(NodeArray *nodes, RenderTexture2D v_screen) {
     BeginTextureMode(v_screen);
-        for (int i = 0; i < nodes->len; i++)
-            DrawTexture(nodes->arr[i]->decal->image,
-                        nodes->arr[i]->decal->position.x,
-                        nodes->arr[i]->decal->position.y, WHITE);
+    ClearBackground(BLACK);
+    for (int i = 0; i < nodes->len; i++)
+        DrawTexture(nodes->arr[i]->decal->image,
+                    nodes->arr[i]->decal->position.x,
+                    nodes->arr[i]->decal->position.y, WHITE);
     EndTextureMode();
+    double window_aspect_ratio = 1.0f * GetScreenWidth() / GetScreenHeight();
+    double virtual_aspect_ratio =
+        1.0f * v_screen.texture.width / v_screen.texture.height;
+    float new_width = (window_aspect_ratio < virtual_aspect_ratio
+                           ? GetScreenWidth()
+                           : GetScreenHeight() * virtual_aspect_ratio);
+    float new_height = (window_aspect_ratio < virtual_aspect_ratio
+                            ? GetScreenWidth() / virtual_aspect_ratio
+                            : GetScreenHeight());
     BeginDrawing();
-        ClearBackground(BLACK);
-        DrawTexturePro(
-            v_screen.texture, 
-            (Rectangle){0.0f, 0.0f, 
-                (float)v_screen.texture.width, 
-                (float)-v_screen.texture.height},
-            (Rectangle){0.0f, 0.0f,
-                GetScreenWidth(), GetScreenHeight()}, 
-            (Vector2){ 0, 0 }, 
-            0.0f, // rotation
-            WHITE);
+    ClearBackground(BLACK);
+    DrawTexturePro(v_screen.texture,
+                   (Rectangle){0.0f, 0.0f, (float)v_screen.texture.width,
+                               (float)-v_screen.texture.height},
+                   (Rectangle){(GetScreenWidth() - new_width) / 2.0,
+                               (GetScreenHeight() - new_height) / 2.0,
+                               new_width, new_height},
+                   (Vector2){0, 0},
+                   0.0f, // rotation
+                   WHITE);
     EndDrawing();
 }
 
 RenderTexture2D init_screen(Yaml settings) {
-    int resolution = Yaml_get(settings, "RESOLUTION").num;
-    char *title = Yaml_get(settings, "title").str;
-    double aspect_ratio = (1.0f * Yaml_get(settings, "/ASPECT_RATIO[0]").num /
-                           Yaml_get(settings, "/ASPECT_RATIO[1]").num);
+    int resolution = Yaml_get(settings, "RESOLUTION")._int_;
+    int scale = Yaml_get(settings, "SCALE")._int_;
+    char *title = Yaml_get(settings, "title")._str_;
+    double aspect_ratio = (1.0f * Yaml_get(settings, "/ASPECT_RATIO[0]")._int_ /
+                           Yaml_get(settings, "/ASPECT_RATIO[1]")._int_);
+
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT);
+    InitWindow((int)(resolution * aspect_ratio * scale), resolution * scale,
+               title);
+    SetTargetFPS(Yaml_get(settings, "FPS")._int_);
+    SetExitKey(KEY_BACKSPACE);
     RenderTexture2D v_screen =
         LoadRenderTexture((int)(resolution * aspect_ratio), resolution);
-    SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT);
-    InitWindow((int)(resolution * aspect_ratio), resolution, title);
-    SetTargetFPS(Yaml_get(settings, "FPS").num);
-    SetExitKey(KEY_BACKSPACE);
+    check(IsRenderTextureValid(v_screen), "render texture not loaded");
+    // SetTextureFilter(v_screen.texture, TEXTURE_FILTER_BILINEAR); // todo
+    // figure out what this does.
+
+error:
     return v_screen;
 }
+
 int main(void) {
     // init
     Node mem[MAX_NODES];
@@ -97,8 +115,10 @@ int main(void) {
     // void *scene = NULL;
     // void *saved_scenes = NULL;
 
-    // TODO use virtual screen
     RenderTexture2D v_screen = init_screen(settings);
+    check(IsRenderTextureValid(v_screen), "render texture not loaded");
+    Image icon = LoadImage(Yaml_get(settings, "icon")._str_);
+    SetWindowIcon(icon);
 
     Direction input_array[MAX_INPUTS] = {0};
     Direction *inputs = &(input_array[0]);
@@ -119,7 +139,7 @@ int main(void) {
             running = false;
         input(inputs);
         logic(inputs, &nodes);
-        draw(&nodes, v_screen);
+        draw_frame(&nodes, v_screen);
     }
     // cleanup
     for (int i = 0; i < nodes.len; i++)
@@ -127,6 +147,7 @@ int main(void) {
     UnloadRenderTexture(v_screen);
     Yaml_delete(settings);
     CloseWindow();
+    UnloadImage(icon);
     return 0;
 
 error:
@@ -136,5 +157,6 @@ error:
     UnloadRenderTexture(v_screen);
     Yaml_delete(settings);
     CloseWindow();
+    UnloadImage(icon);
     return 1;
 }

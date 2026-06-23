@@ -8,7 +8,7 @@
 #define HASHPRIME 31
 #define NO_NEXT -1
 #define EMPTYVAL                                                               \
-    (DictVal) { .obj = NULL }
+    (DictVal) { ._obj_ = NULL }
 
 typedef struct DictData *Dict;
 typedef union DictValData DictVal;
@@ -16,13 +16,13 @@ typedef char *DictKey;
 typedef enum { NONE, DICT, ARR, STR, INT, FLOAT, BOOL, OBJ } DictType;
 
 union DictValData {
-    Dict dict;
-    DictVal *arr;
-    char *str;
-    long long num;
-    double fnum;
-    bool _bool;
-    void *obj;
+    Dict _dict_;
+    DictVal *_arr_;
+    char *_str_;
+    long long _int_;
+    double _float_;
+    bool _bool_;
+    void *_obj_;
     // NULL none;
 };
 
@@ -144,23 +144,23 @@ void Dict_printrepr(Dict dict) {
             printf(" none %20s", "null");
             break;
         case DICT:
-            Dict_printrepr(dict->vals[i].dict);
+            Dict_printrepr(dict->vals[i]._dict_);
             break;
         case ARR:
         case STR:
-            printf("  str %20s", dict->vals[i].str);
+            printf("  str %20s", dict->vals[i]._str_);
             break;
         case INT:
-            printf("  int %20lld", dict->vals[i].num);
+            printf("  int %20lld", dict->vals[i]._int_);
             break;
         case FLOAT:
-            printf("float %20f", dict->vals[i].fnum);
+            printf("float %20f", dict->vals[i]._float_);
             break;
         case BOOL:
-            printf(" bool %20d", dict->vals[i]._bool);
+            printf(" bool %20d", dict->vals[i]._bool_);
             break;
         case OBJ:
-            printf("  obj %20p", dict->vals[i].obj);
+            printf("  obj %20p", dict->vals[i]._obj_);
             break;
         default:
             sentinel("invalid type") break;
@@ -191,7 +191,7 @@ Dict Dict_new() {
     for (int i = 0; i < DICTSIZE; i++) {
         dict->keys[i] = NULL;
         dict->types[i] = 0;
-        dict->vals[i] = (DictVal){.obj = NULL};
+        dict->vals[i] = (DictVal){._obj_ = NULL};
         dict->next[i] = NO_NEXT;
     }
 
@@ -232,22 +232,22 @@ int test_dict() {
     // };
     // Dict dict = &ddict;
     Dict dict = Dict_new();
-    Dict_set(dict, (DictKey) "pickle", INT, (DictVal){.num = 25});
-    Dict_set(dict, (DictKey) "cheese", STR, (DictVal){.str = "23"});
+    Dict_set(dict, (DictKey) "pickle", INT, (DictVal){._int_ = 25});
+    Dict_set(dict, (DictKey) "cheese", STR, (DictVal){._str_ = "23"});
     Dict_set(dict, (DictKey) "crackers", STR,
-             (DictVal){.str = "holy guacamole"});
+             (DictVal){._str_ = "holy guacamole"});
     Dict_set(dict, (DictKey) "crackers2", STR,
-             (DictVal){.str = "holy guacamole"});
+             (DictVal){._str_ = "holy guacamole"});
     Dict_printrepr(dict);
     Dict_delkey(dict, (DictKey) "pickle");
     Dict_printrepr(dict);
-    Dict_set(dict, (DictKey) "pickle", INT, (DictVal){.num = 26});
-    Dict_set(dict, (DictKey) "cheese", STR, (DictVal){.str = "24"});
+    Dict_set(dict, (DictKey) "pickle", INT, (DictVal){._int_ = 26});
+    Dict_set(dict, (DictKey) "cheese", STR, (DictVal){._str_ = "24"});
     Dict_printrepr(dict);
     Dict_delkey(dict, (DictKey) "pickl");
     debug("getting value of pickle as %lld",
-          Dict_get(dict, "pickle", EMPTYVAL).num);
-    Dict_set(dict, (DictKey) "cheese", OBJ, (DictVal){.obj = dict});
+          Dict_get(dict, "pickle", EMPTYVAL)._int_);
+    Dict_set(dict, (DictKey) "cheese", OBJ, (DictVal){._obj_ = dict});
     Dict_printrepr(dict);
     Dict_delkey(dict, (DictKey) "pickle");
     Dict_delkey(dict, (DictKey) "cheese");

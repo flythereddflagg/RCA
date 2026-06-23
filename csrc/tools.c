@@ -35,31 +35,31 @@ DictVal Yaml_get(Yaml doc, const char *name) {
 
     switch (type) {
     case CYAML_KIND_NULL:
-        return (DictVal){.obj = NULL};
+        return (DictVal){._obj_ = NULL};
         break;
     case CYAML_KIND_STRING:
         char *get_str = cyaml_scalar_str(doc, node);
-        return (DictVal){.str = get_str};
+        return (DictVal){._str_ = get_str};
         break;
     case CYAML_KIND_INT:
         long get_int;
         cyaml_as_int(doc, node, &get_int);
-        return (DictVal){.num = get_int};
+        return (DictVal){._int_ = get_int};
         break;
     case CYAML_KIND_FLOAT:
         double get_float;
         cyaml_as_float(doc, node, &get_float);
-        return (DictVal){.fnum = get_float};
+        return (DictVal){._float_ = get_float};
         break;
     case CYAML_KIND_BOOL:
         bool get_bool;
         cyaml_as_bool(doc, node, &get_bool);
-        return (DictVal){._bool = get_bool};
+        return (DictVal){._bool_ = get_bool};
         break;
     default:
         sentinel("invalid type") break;
     }
 error:
-    return (DictVal){.obj = NULL};
+    return (DictVal){._obj_ = NULL};
 }
 #endif
