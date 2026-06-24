@@ -9,7 +9,7 @@
 #define ASPECT_RATIO (16.0 / 9.0)
 #define MAX_INPUTS 6
 #define SPEED 200
-
+// TODO make an engine module
 typedef enum { NO_DIR, UP, RIGHT, DOWN, LEFT } Direction;
 
 void input(Direction *inputs) {
@@ -123,7 +123,6 @@ int main(void) {
     Direction input_array[MAX_INPUTS] = {0};
     Direction *inputs = &(input_array[0]);
 
-    // TODO implment scene structure
     NodeArray_add_node(
         &nodes, Node_new(Decal_new(
                     "./assets/scene/red_castle_valley/red_castle_valley_bg.png",
