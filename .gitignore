@@ -8,6 +8,7 @@
 **.exe
 **.o
 **.so*
+**.tar*
 # IGNORE THE FOLLOWING FOLDERS
 build_env/
 build/
