@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -g -Wall #-fanalyzer
 SRC = ./csrc/main.c
-TEST_SRC = csrc_test/draw_texture_pro.c
+TEST_SRC = csrc/bitmask.c
 LIBS = -lraylib -L./lib -lm -lcyaml 
 LIBS += '-Wl,-rpath,$$ORIGIN/lib' # needed to point to .so files
 ifeq ($(OS),Windows_NT)
@@ -38,7 +38,6 @@ get_cyaml:
 
 get_deps: clean_all get_raylib get_cyaml
 
-# https://github.com/andrewmd5/cyaml.git .cyaml
 
 preprocess:
 	$(CC) $(CFLAGS) -E $(SRC) -o $(OUT).o $(INCLUDES)
@@ -48,14 +47,14 @@ obj:
 
 build:
 	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LIBS) $(INCLUDES)
+	@echo "-- BUILD COMMAND COMPLETE --"
 
 test:
-	$(CC) $(CFLAGS) $(TEST_SRC) -o $(OUT) $(LIBS) $(INCLUDES)
+	$(CC) $(CFLAGS) $(TEST_SRC) -o $(OUT) $(LIBS) $(INCLUDES) -DTEST_MAIN
 	@echo "-- BUILD COMMAND COMPLETE --"
 	./$(OUT)
 
 run: build
-	@echo "-- BUILD COMMAND COMPLETE --"
 	./$(OUT)
 
 python:
