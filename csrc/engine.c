@@ -5,8 +5,8 @@
 #include <stdbool.h>
 
 #include "node.c"
-#include "tools.c"
 #include "scene.c"
+#include "tools.c"
 
 #define INIT_PATH "./assets/init.yaml" // this is NOT supposed to be here
 #define MAX_INPUTS 6
@@ -14,9 +14,9 @@
 // TODO make an engine module
 typedef enum { NO_DIR, UP, RIGHT, DOWN, LEFT } Direction;
 
-typedef struct GameData *Game; 
+typedef struct GameData *Game;
 
-struct GameData{
+struct GameData {
     Yaml settings;
     bool debug;
     bool running;
@@ -25,8 +25,6 @@ struct GameData{
     Scene *saved_scenes;
     RenderTexture2D draw_surface;
     void *input;
-
-    
 };
 
 void input(Direction *inputs) {
@@ -120,16 +118,14 @@ RenderTexture2D init_screen(Yaml settings) {
 error:
     return v_screen;
 }
-Game Game_new(const char *init_path){
-    return NULL;
-}
-void Game_delete(Game game){}
+Game Game_new(const char *init_path) { return NULL; }
+void Game_delete(Game game) {}
 
 int Game_run(Game game) {
     // init
     Node mem[MAX_NODES];
     NodeArray nodes = (NodeArray){.len = 0, .arr = &(mem[0])};
-    
+
     // Yaml settings = Yaml_load(init_path);
     Yaml settings = Yaml_load(INIT_PATH);
     check(settings, "Settings could not load");

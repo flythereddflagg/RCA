@@ -40,7 +40,7 @@ void Node_update(const void *self) { ; }
 void Node_delete(Node self) {
     check(self, "'self' is NULL");
     if (self->decal)
-        self->decal->delete(self->decal);
+        self->decal->delete (self->decal);
     free(self);
 error:;
 }

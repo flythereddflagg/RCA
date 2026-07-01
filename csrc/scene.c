@@ -1,8 +1,8 @@
 #ifndef __SCENE_C__
 #define __SCENE_C__
-#include <stdbool.h>
-#include "tools.c"
 #include "node.c"
+#include "tools.c"
+#include <stdbool.h>
 
 // TODO implement Scene logic
 
@@ -19,7 +19,6 @@ struct SceneData {
     NodeArray active_nodes;
     Node bg_ref;
     Yaml init;
-    
 };
 void Scene_new(void);
 void Scene_delete(void);

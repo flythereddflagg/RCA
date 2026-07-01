@@ -2,8 +2,8 @@
 #define __INPUT_C__
 #include "dbg.h"
 #include "raylib.h"
-#include <stdlib.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include <string.h>
 #define MAX_INPUTS 6
 #define MAX_CONTROLLERS 4
@@ -18,7 +18,7 @@ struct InputData {
     void (*delete)(Input self);
     char actions[MAX_INPUTS];
     char held[MAX_INPUTS];
-    char last_actions[MAX_INPUTS]; 
+    char last_actions[MAX_INPUTS];
     void *controllers[MAX_CONTROLLERS];
     void *input_log;
 };
@@ -39,7 +39,7 @@ Input Input_new(void *parent, void *binds) {
     memset(self->actions, 0, sizeof(self->actions));
     memset(self->held, 0, sizeof(self->held));
     memset(self->last_actions, 0, sizeof(self->last_actions));
-    memset(self->controllers, 0, sizeof(self->controllers));   
+    memset(self->controllers, 0, sizeof(self->controllers));
 
 error:
     return self;

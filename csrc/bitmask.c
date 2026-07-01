@@ -1,104 +1,125 @@
 #ifndef __BITMASK_C__
 #define __BITMASK_C__
 #include "dbg.h"
-#include <stdlib.h>
+#include "raylib.h"
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdlib.h>
+
+#define DEFAULT_THRESHOLD 128
 
 typedef struct BitMaskData *BitMask;
 
 struct BitMaskData {
-    uint64_t width;
-    uint64_t height;
+    uint32_t width;
+    uint32_t height;
     uint8_t *data;
 };
 
-void BitMask_delete(BitMask self) {
+BitMask BitMask_delete(BitMask self) {
     check(self, "'self' is NULL");
     if (self->data)
         free(self->data);
     free(self);
-error:;
+error:
+    return NULL;
 }
 
-BitMask BitMask_new(uint64_t width, uint64_t height) {
-    BitMask self = (BitMask) malloc(sizeof(struct BitMaskData));
+BitMask BitMask_new(uint32_t width, uint32_t height) {
+    BitMask self = NULL;
+    self = (BitMask)malloc(sizeof(struct BitMaskData));
     check_mem(self);
-    self->data = (uint8_t*) malloc(
-        ((width * height) / sizeof(uint8_t) + 1) * sizeof(uint8_t));
+    uint32_t data_size =
+        ((width * height) / sizeof(uint8_t) + 1) * sizeof(uint8_t);
+    self->data = (uint8_t *)malloc(data_size);
+    check_mem(self->data);
     self->width = width;
     self->height = height;
-    memset(self->data, 0, (width * height) / 8 + 1);
+    memset(self->data, 0, data_size);
 error:
     return self;
 }
 
-bool BitMask_get(BitMask self, uint64_t i, uint64_t j){
-    uint64_t index = i * self->height + j;
+bool BitMask_get(BitMask self, uint32_t x, uint32_t y) {
+    uint32_t index = y * self->width + x;
+    uint32_t byte_index = index / sizeof(uint8_t);
     uint8_t bitnum = index % sizeof(uint8_t);
     uint8_t byte = 0;
-    check(
-        index < (self->width * self->height), 
-        "i = %lu, j = %lu out of range", i, j);
-    byte = self->data[index / sizeof(uint8_t)];
+    check(index < (self->width * self->height), "x = %u, y = %u out of range",
+          x, y);
+    byte = self->data[byte_index];
     byte >>= bitnum;
     byte &= 1;
 
 error:
-    return (bool) byte;
+    return (bool)byte;
 }
 
-void BitMask_set(BitMask self, uint64_t i, uint64_t j, bool val){
-    uint64_t index = i * self->height + j;
+void BitMask_set(BitMask self, uint32_t x, uint32_t y, bool val) {
+    uint32_t index = y * self->width + x;
+    uint32_t byte_index = index / sizeof(uint8_t);
     uint8_t bitnum = index % sizeof(uint8_t);
     uint8_t byte = 0;
-    check(
-        index < (self->width * self->height), 
-        "i = %lu, j = %lu out of range", i, j);
-    // debug("i = %lu, j = %lu", i, j);
-    byte = self->data[index / sizeof(uint8_t)];
+    check(index < (self->width * self->height), "x = %u, y = %u out of range",
+          x, y);
+    // debug("x = %lu, y = %lu", x, y);
+    byte = self->data[byte_index];
     if (val)
-        self->data[index] = byte | (1 << bitnum);
+        byte = byte | (1 << bitnum);
     else
-        self->data[index] = byte & ~(1 << bitnum);
+        byte = byte & ~(1 << bitnum);
+    self->data[byte_index] = byte;
 error:;
 }
 
-BitMask BitMask_from_image(Image img, int threshold){
+BitMask BitMask_from_image(Image img, int threshold) {
     BitMask mask = BitMask_new(img.width, img.height);
-    
-    for(int j = 0; j < img.height; j++)
-        for(int i = 0; i < img.width; i++)
-            if (GetImageColor(img, i, j)[3] > threshold)
+
+    for (int j = 0; j < img.height; j++)
+        for (int i = 0; i < img.width; i++)
+            if (GetImageColor(img, i, j).a >= threshold)
                 BitMask_set(mask, i, j, true);
-    
-    return mask;// TODO Test this
+            else
+                BitMask_set(mask, i, j, false);
+
+    return mask; // TODO Test this
+}
+
+void BitMask_print(BitMask self) {
+    for (int y = 0; y < self->height; y++) {
+        for (int x = 0; x < self->width; x++) {
+            printf(" %u", BitMask_get(self, x, y));
+        }
+        printf("\n");
+    }
 }
 
 #endif
 #ifdef TEST_MAIN
 #include <stdio.h>
 
-int main(){
+int main() {
     Image img = LoadImage("./assets/actor/larry/larry_base.png");
-    int width = img.width, height = img.height;
+    // int width = img.width, height = img.height;
+    int width = 32, height = 32;
 
+    BitMask mask = BitMask_from_image(img, DEFAULT_THRESHOLD);
+    BitMask_print(mask);
+    mask = BitMask_delete(mask);
+    printf("\n");
+    mask = BitMask_new(width, height);
+    BitMask_print(mask);
+    printf("\n");
 
-    BitMask mask = BitMask_new(width, height);
-    for (int j = 0; j < height; j++){
-        for (int i = 0; i < width; i++){
-            if ((i % 2 && j % 2) || (!(i % 2) && !(j % 2)))
+    for (int j = 0; j < height; j++) {
+        for (int i = 0; i < width; i++) {
+            if ((i % 2 == 1 && j % 2 == 1) || (i % 2 == 0 && j % 2 == 0))
                 BitMask_set(mask, i, j, true);
         }
     }
-    for (int j = 0; j < height; j++){
-        for (int i = 0; i < width; i++){
-            printf("%u", BitMask_get(mask, i, j));
-        }
-        printf("\n");
-    }
-    BitMask_delete(mask);
-    ImageUnload(img);
+    BitMask_print(mask);
+    mask = BitMask_delete(mask);
+    UnloadImage(img);
     return 0;
 }
 #endif
