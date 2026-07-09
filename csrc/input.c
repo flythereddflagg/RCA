@@ -25,10 +25,11 @@ struct InputData {
 
 void Input_update(const void *self) { ; }
 
-void Input_delete(Input self) {
+Input Input_delete(Input self) {
     check(self, "'self' is NULL");
     free(self);
-error:;
+error:
+    return NULL;
 }
 
 Input Input_new(void *parent, void *binds) {
