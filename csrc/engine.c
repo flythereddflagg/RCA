@@ -6,7 +6,7 @@
 
 #include "node.c"
 #include "scene.c"
-#include "tools.c"
+#include "yaml.c"
 
 #define INIT_PATH "./assets/init.yaml" // this is NOT supposed to be here
 #define MAX_INPUTS 6

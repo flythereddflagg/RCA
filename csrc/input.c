@@ -23,6 +23,7 @@ struct InputData {
     void *input_log;
 };
 
+void Input_hot_plug_check(const void *self) { ; }
 void Input_update(const void *self) { ; }
 
 Input Input_delete(Input self) {
@@ -46,4 +47,9 @@ error:
     return self;
 }
 
+#endif
+#ifdef TEST_MAIN
+int main(){
+    return 0;
+}
 #endif

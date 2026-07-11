@@ -1,5 +1,5 @@
-#ifndef __TOOLS_C__
-#define __TOOLS_C__
+#ifndef __YAML_C__
+#define __YAML_C__
 #include "cyaml.h"
 #include "dbg.h"
 #include "dict.c"

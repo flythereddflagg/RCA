@@ -1,7 +1,7 @@
 #ifndef __SCENE_C__
 #define __SCENE_C__
 #include "node.c"
-#include "tools.c"
+#include "yaml.c"
 #include <stdbool.h>
 
 // TODO implement Scene logic
