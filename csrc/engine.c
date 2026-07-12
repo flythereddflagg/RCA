@@ -67,6 +67,7 @@ void logic(Direction *inputs, NodeArray *nodes) {
 }
 
 void draw_frame(NodeArray *nodes, RenderTexture2D v_screen) {
+    // draw everyting to the virtual screen
     BeginTextureMode(v_screen);
     ClearBackground(BLACK);
     for (int i = 0; i < nodes->len; i++)
@@ -74,6 +75,8 @@ void draw_frame(NodeArray *nodes, RenderTexture2D v_screen) {
                     nodes->arr[i]->decal->position.x,
                     nodes->arr[i]->decal->position.y, WHITE);
     EndTextureMode();
+
+    // then scale virtual screen to fit and then draw to the actual screen
     double window_aspect_ratio = 1.0f * GetScreenWidth() / GetScreenHeight();
     double virtual_aspect_ratio =
         1.0f * v_screen.texture.width / v_screen.texture.height;

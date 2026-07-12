@@ -2,6 +2,7 @@
 #define __DICT_C__
 #include "dbg.h"
 #include <stdbool.h>
+#include <stdlib.h>
 #include <string.h>
 #define DICTKEYLENGTH 256
 #define DICTSIZE 255

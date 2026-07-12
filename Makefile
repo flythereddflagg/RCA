@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -g -Wall #-fanalyzer
 SRC = ./csrc/main.c
-TEST_SRC = csrc/bitmask.c
+# TEST_SRC = csrc/bitmask.c
 LIBS = -lraylib -L./lib -lm -lcyaml 
 LIBS += '-Wl,-rpath,$$ORIGIN/lib' # needed to point to .so files
 ifeq ($(OS),Windows_NT)

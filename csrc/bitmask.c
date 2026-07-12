@@ -85,7 +85,7 @@ BitMask BitMask_from_image(Image img, int threshold) {
     return mask; // TODO Test this
 }
 
-Image BitMask_to_image(BitMask mask, Color set_color, Color unset_color){
+Image BitMask_to_image(BitMask mask, Color set_color, Color unset_color) {
     // start with all zeros
     Image img = GenImageColor(mask->width, mask->height, unset_color);
     for (int j = 0; j < img.height; j++)
@@ -104,9 +104,7 @@ void BitMask_print(BitMask self) {
     }
 }
 
-bool BitMask_collide(BitMask self, BitMask other){
-    return false;
-}
+bool BitMask_collide(BitMask self, BitMask other) { return false; }
 
 #endif
 #ifdef TEST_MAIN
@@ -120,11 +118,11 @@ int main() {
     BitMask mask = BitMask_from_image(img, DEFAULT_THRESHOLD);
     BitMask_print(mask);
     UnloadImage(img);
-    
+
     img = BitMask_to_image(mask, WHITE, BLANK);
     mask = BitMask_delete(mask);
     printf("\n");
-    
+
     mask = BitMask_from_image(img, DEFAULT_THRESHOLD);
     BitMask_print(mask);
     mask = BitMask_delete(mask);
