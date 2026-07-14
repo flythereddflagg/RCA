@@ -17,9 +17,17 @@ typedef struct {
 } Action;
 
 typedef enum {
-    UP=KEY_UP, DOWN=KEY_DOWN, LEFT=KEY_LEFT, RIGHT=KEY_RIGHT, 
-    BUTTON_S=KEY_V, BUTTON_E=KEY_SPACE, BUTTON_W=KEY_C, BUTTON_N=KEY_X,
-    START=KEY_ENTER, SELECT=KEY_P} Action_name;
+    UP = KEY_UP,
+    DOWN = KEY_DOWN,
+    LEFT = KEY_LEFT,
+    RIGHT = KEY_RIGHT,
+    BUTTON_S = KEY_V,
+    BUTTON_E = KEY_SPACE,
+    BUTTON_W = KEY_C,
+    BUTTON_N = KEY_X,
+    START = KEY_ENTER,
+    SELECT = KEY_P
+} Action_name;
 
 typedef struct InputData *Input;
 
@@ -39,14 +47,14 @@ struct InputData {
 
 void Input_hot_plug_check(Input self) { ; }
 
-bool Input_in_last_actions(Input self, Action a){
+bool Input_in_last_actions(Input self, Action a) {
     for (int i = 0; i < MAX_INPUTS; i++)
         if (self->last_actions[i].id == a.id)
             return true;
     return false;
 }
 
-bool Input_in_held(Input self, Action a){
+bool Input_in_held(Input self, Action a) {
     for (int i = 0; i < MAX_INPUTS; i++)
         if (self->held[i].id == a.id)
             return true;
@@ -59,29 +67,26 @@ void Input_update(Input self) {
     // int player_number = 0;
     int key1 = 0;
     // TODO need to figure out controller input. rn only keyboard
-    for (int i = 0; i < MAX_INPUTS; i++){
+    for (int i = 0; i < MAX_INPUTS; i++) {
         key1 = GetKeyPressed();
-        self->actions[i] = (Action){.id=key1, .val=key1 ? 1.0f : 0.0f};
+        self->actions[i] = (Action){.id = key1, .val = key1 ? 1.0f : 0.0f};
     }
     // update held
     for (int i = 0; i < MAX_INPUTS; i++)
         if (Input_in_last_actions(self, self->actions[i]))
             self->held[i] = self->actions[i];
         else
-            self->held[i] = (Action){.id=KEY_NULL, .val=0.0f};
+            self->held[i] = (Action){.id = KEY_NULL, .val = 0.0f};
     // update last actions
     for (int i = 0; i < MAX_INPUTS; i++)
         self->last_actions[i] = self->actions[i];
     // update new actions
     for (int i = 0; i < MAX_INPUTS; i++)
         if (Input_in_held(self, self->actions[i]))
-            self->new_actions[i] = (Action){.id=KEY_NULL, .val=0.0f};
+            self->new_actions[i] = (Action){.id = KEY_NULL, .val = 0.0f};
         else
             self->new_actions[i] = self->actions[i];
-
 }
-
-
 
 Input Input_delete(Input self) {
     check(self, "'self' is NULL");
@@ -90,13 +95,12 @@ error:
     return NULL;
 }
 
-void Input_clear(Input self){
+void Input_clear(Input self) {
     memset(self->actions, 0, sizeof(self->actions));
     memset(self->held, 0, sizeof(self->held));
     memset(self->last_actions, 0, sizeof(self->last_actions));
     memset(self->new_actions, 0, sizeof(self->new_actions));
 }
-
 
 Input Input_new(void *parent) {
     Input self = (Input)malloc(sizeof(struct InputData));
@@ -117,9 +121,7 @@ error:
 #define XBOX_ALIAS_2 "x-box"
 #define PS_ALIAS_1 "playstation"
 #define PS_ALIAS_2 "sony"
-int main() {
-    return 0;
-}
+int main() { return 0; }
 int raylib_main(void) {
 
     const int screenWidth = 800;
@@ -145,10 +147,10 @@ int raylib_main(void) {
     Rectangle vibrateButton = {0};
 
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
-    
+
     int gamepad = 0; // which gamepad to display
     // TODO look into this. Controller does not seem to be recognized by raylib
-    for (int i = 0; i < 100; i++){
+    for (int i = 0; i < 100; i++) {
         if (IsGamepadAvailable(i))
             log_info("GP %d: %s", i, GetGamepadName(i));
     }
@@ -168,9 +170,9 @@ int raylib_main(void) {
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) &&
             CheckCollisionPointRec(mousePosition, vibrateButton))
             SetGamepadVibration(gamepad, 1.0, 1.0, 1.0);
-        
+
         // Draw
-                BeginDrawing();
+        BeginDrawing();
 
         ClearBackground(RAYWHITE);
 
@@ -478,14 +480,14 @@ int raylib_main(void) {
         }
 
         EndDrawing();
-            }
+    }
 
     // De-Initialization
-        UnloadTexture(texPs3Pad);
+    UnloadTexture(texPs3Pad);
     UnloadTexture(texXboxPad);
 
     CloseWindow(); // Close window and OpenGL context
-    
+
     return 0;
 }
 #endif
