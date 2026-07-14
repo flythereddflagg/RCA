@@ -19,9 +19,10 @@ error:
     return doc;
 }
 
-void Yaml_delete(Yaml doc) {
+Yaml Yaml_delete(Yaml doc) {
     if (doc)
         cyaml_free(doc);
+    return NULL;
 }
 
 DictVal Yaml_get(Yaml doc, const char *name) {
