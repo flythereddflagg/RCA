@@ -8,12 +8,18 @@
 #include <string.h>
 #define MAX_INPUTS 6
 #define MAX_CONTROLLERS 4
-#define ACTION_NAME_LEN 8
+// #define ACTION_NAME_LEN 8
 
 typedef struct {
-    char name[ACTION_NAME_LEN];
+    // char name[ACTION_NAME_LEN];
+    int id;
     double val;
 } Action;
+
+typedef enum {
+    UP=KEY_UP, DOWN=KEY_DOWN, LEFT=KEY_LEFT, RIGHT=KEY_RIGHT, 
+    BUTTON_S=KEY_V, BUTTON_E=KEY_SPACE, BUTTON_W=KEY_C, BUTTON_N=KEY_X,
+    START=KEY_ENTER, SELECT=KEY_P} Action_name;
 
 typedef struct InputData *Input;
 
@@ -26,16 +32,56 @@ struct InputData {
     Action actions[MAX_INPUTS];
     Action held[MAX_INPUTS];
     Action last_actions[MAX_INPUTS];
+    Action new_actions[MAX_INPUTS];
     void *controllers[MAX_CONTROLLERS];
     void *input_log;
 };
 
 void Input_hot_plug_check(Input self) { ; }
+
+bool Input_in_last_actions(Input self, Action a){
+    for (int i = 0; i < MAX_INPUTS; i++)
+        if (self->last_actions[i].id == a.id)
+            return true;
+    return false;
+}
+
+bool Input_in_held(Input self, Action a){
+    for (int i = 0; i < MAX_INPUTS; i++)
+        if (self->held[i].id == a.id)
+            return true;
+    return false;
+}
+
 void Input_update(Input self) {
     Input_hot_plug_check(self);
     // TODO -3- add more player controls player one only for now
-    int player_number = 0;
+    // int player_number = 0;
+    int key1 = 0;
+    // TODO need to figure out controller input. rn only keyboard
+    for (int i = 0; i < MAX_INPUTS; i++){
+        key1 = GetKeyPressed();
+        self->actions[i] = (Action){.id=key1, .val=key1 ? 1.0f : 0.0f};
+    }
+    // update held
+    for (int i = 0; i < MAX_INPUTS; i++)
+        if (Input_in_last_actions(self, self->actions[i]))
+            self->held[i] = self->actions[i];
+        else
+            self->held[i] = (Action){.id=KEY_NULL, .val=0.0f};
+    // update last actions
+    for (int i = 0; i < MAX_INPUTS; i++)
+        self->last_actions[i] = self->actions[i];
+    // update new actions
+    for (int i = 0; i < MAX_INPUTS; i++)
+        if (Input_in_held(self, self->actions[i]))
+            self->new_actions[i] = (Action){.id=KEY_NULL, .val=0.0f};
+        else
+            self->new_actions[i] = self->actions[i];
+
 }
+
+
 
 Input Input_delete(Input self) {
     check(self, "'self' is NULL");
@@ -44,15 +90,21 @@ error:
     return NULL;
 }
 
+void Input_clear(Input self){
+    memset(self->actions, 0, sizeof(self->actions));
+    memset(self->held, 0, sizeof(self->held));
+    memset(self->last_actions, 0, sizeof(self->last_actions));
+    memset(self->new_actions, 0, sizeof(self->new_actions));
+}
+
+
 Input Input_new(void *parent) {
     Input self = (Input)malloc(sizeof(struct InputData));
     check_mem(self);
     self->update = &Input_update;
     self->delete = &Input_delete;
-    memset(self->actions, 0, sizeof(self->actions));
-    memset(self->held, 0, sizeof(self->held));
-    memset(self->last_actions, 0, sizeof(self->last_actions));
     memset(self->controllers, 0, sizeof(self->controllers));
+    Input_clear(self);
 
 error:
     return self;
