@@ -9,11 +9,8 @@
 #include "yaml.c"
 #include "input.c"
 
-// #define INIT_PATH "./assets/init.yaml" // this is NOT supposed to be here
 #define MAX_INPUTS 6
 #define SPEED 200
-// TODO make an engine module
-// typedef enum { NO_DIR, UP, RIGHT, DOWN, LEFT } Direction;
 
 typedef struct GameData *Game;
 
@@ -129,13 +126,9 @@ int Game_run(Game game) {
         Game_logic(game);
         Game_draw_frame(game);
     }
-    // cleanup
-    game = Game_delete(game);
     return 0;
 
 error:
-    // cleanup
-    game = Game_delete(game);
     return 1;
 }
 #endif
