@@ -4,10 +4,10 @@
 #include "raylib.h"
 #include <stdbool.h>
 
+#include "input.c"
 #include "node.c"
 #include "scene.c"
 #include "yaml.c"
-#include "input.c"
 
 #define MAX_INPUTS 6
 #define SPEED 200
@@ -42,7 +42,7 @@ RenderTexture2D Game_init_screen(Yaml settings) {
         LoadRenderTexture((int)(resolution * aspect_ratio), resolution);
     check(IsRenderTextureValid(v_screen), "render texture not loaded");
     // TODO figure out what this does.
-    // SetTextureFilter(v_screen.texture, TEXTURE_FILTER_BILINEAR); 
+    // SetTextureFilter(v_screen.texture, TEXTURE_FILTER_BILINEAR);
 
 error:
     return v_screen;
@@ -83,9 +83,8 @@ void Game_draw_frame(Game self) {
     EndDrawing();
 }
 
-
 Game Game_new(const char *init_path) {
-    Game game = (Game) malloc(sizeof(struct GameData));
+    Game game = (Game)malloc(sizeof(struct GameData));
     check_mem(game);
     game->settings = Yaml_load(init_path);
     check(game->settings, "Settings could not load");
@@ -99,7 +98,7 @@ Game Game_new(const char *init_path) {
     game->saved_scenes = NULL;
     SetWindowIcon(game->icon);
 error:
-    return game; 
+    return game;
 }
 Game Game_delete(Game game) {
     UnloadImage(game->icon);
@@ -107,14 +106,14 @@ Game Game_delete(Game game) {
     game->input = Input_delete(game->input);
     game->settings = Yaml_delete(game->settings);
     CloseWindow();
-    
+
     if (game)
         free(game);
 
     return NULL;
 }
 
-void Game_logic(Game game){;}
+void Game_logic(Game game) { ; }
 
 int Game_run(Game game) {
     // mainloop
