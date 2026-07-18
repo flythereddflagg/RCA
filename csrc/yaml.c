@@ -31,7 +31,7 @@ DictVal Yaml_get(Yaml doc, const char *name) {
         node = cyaml_path(doc, name);
     else
         node = cyaml_get(doc, cyaml_root(doc), name);
-    check(!cyaml_is_null_val(doc, node), "value is null");
+    // check(!cyaml_is_null_val(doc, node), "key: %s; value is null", name);
     cyaml_scalar_kind_t type = cyaml_scalar_kind(doc, node);
 
     switch (type) {
@@ -62,5 +62,20 @@ DictVal Yaml_get(Yaml doc, const char *name) {
     }
 error:
     return (DictVal){._obj_ = NULL};
+}
+#endif
+#ifdef TEST_MAIN
+int main(){
+    Yaml settings = Yaml_load("./assets/init.yaml");
+    check(settings, "yaml could not load");
+    log_info("%d", Yaml_get(settings, "FPS")._int_);
+    log_info("%d", Yaml_get(settings, "SHOW_EVENTS")._bool_);
+    log_info("%d", Yaml_get(settings, "/ASPECT_RATIO[1]")._int_);
+    log_info("%s", Yaml_get(settings, "icon")._str_);
+    log_info("%s", Yaml_get(settings, "icon")._str_);
+
+    return 0;
+error:
+    return 1;
 }
 #endif

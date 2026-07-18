@@ -27,6 +27,7 @@ struct GameData {
 };
 
 RenderTexture2D Game_init_screen(Yaml settings) {
+    SetTraceLogLevel(LOG_WARNING); 
     int resolution = Yaml_get(settings, "RESOLUTION")._int_;
     int scale = Yaml_get(settings, "SCALE")._int_;
     char *title = Yaml_get(settings, "title")._str_;
@@ -37,6 +38,7 @@ RenderTexture2D Game_init_screen(Yaml settings) {
     InitWindow((int)(resolution * aspect_ratio * scale), resolution * scale,
                title);
     SetTargetFPS(Yaml_get(settings, "FPS")._int_);
+    log_info("FPS %d", Yaml_get(settings, "FPS")._int_);
     SetExitKey(KEY_BACKSPACE);
     RenderTexture2D v_screen =
         LoadRenderTexture((int)(resolution * aspect_ratio), resolution);
@@ -94,6 +96,8 @@ Game Game_new(const char *init_path) {
     game->paused = false;
     game->input = Input_new(game);
     game->draw_surface = Game_init_screen(game->settings);
+    log_info("icon %s", Yaml_get(game->settings, "icon")._str_);
+
     game->icon = LoadImage(Yaml_get(game->settings, "icon")._str_);
     game->scene = NULL;
     game->saved_scenes = NULL;

@@ -20,8 +20,8 @@ union DictValData {
     Dict _dict_;
     DictVal *_arr_;
     char *_str_;
-    long long _int_;
-    double _float_;
+    int _int_;
+    float _float_;
     bool _bool_;
     void *_obj_;
     // NULL none;
@@ -152,7 +152,7 @@ void Dict_printrepr(Dict dict) {
             printf("  str %20s", dict->vals[i]._str_);
             break;
         case INT:
-            printf("  int %20lld", dict->vals[i]._int_);
+            printf("  int %20d", dict->vals[i]._int_);
             break;
         case FLOAT:
             printf("float %20f", dict->vals[i]._float_);
@@ -246,7 +246,7 @@ int test_dict() {
     Dict_set(dict, (DictKey) "cheese", STR, (DictVal){._str_ = "24"});
     Dict_printrepr(dict);
     Dict_delkey(dict, (DictKey) "pickl");
-    debug("getting value of pickle as %lld",
+    debug("getting value of pickle as %d",
           Dict_get(dict, "pickle", EMPTYVAL)._int_);
     Dict_set(dict, (DictKey) "cheese", OBJ, (DictVal){._obj_ = dict});
     Dict_printrepr(dict);
