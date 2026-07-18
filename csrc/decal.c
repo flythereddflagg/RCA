@@ -31,3 +31,8 @@ error:
     return self;
 }
 #endif
+#ifdef TEST_MAIN
+int main(){
+    return 0;
+}
+#endif

@@ -24,3 +24,9 @@ Vector2 unit(Compass dir) {
 }
 
 #endif
+
+#ifdef TEST_MAIN
+int main(){
+    return 0;
+}
+#endif

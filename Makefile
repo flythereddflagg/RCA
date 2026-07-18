@@ -1,6 +1,7 @@
 CC = gcc
 CFLAGS = -g -Wall #-fanalyzer
 SRC = ./csrc/main.c
+SRC_DIR = ./csrc
 # TEST_SRC = csrc/bitmask.c
 LIBS = -lraylib -L./lib -lm -lcyaml 
 LIBS += '-Wl,-rpath,$$ORIGIN/lib' # needed to point to .so files
@@ -48,6 +49,13 @@ obj:
 build:
 	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LIBS) $(INCLUDES)
 	@echo "-- BUILD COMMAND COMPLETE --"
+
+test_all: $(SRC_DIR)/*.c
+	for file in $^; do\
+		$(CC) $(CFLAGS) $$file -o $(OUT) $(LIBS) $(INCLUDES) -DTEST_MAIN;\
+		./$(OUT);\
+	done
+
 
 test:
 	$(CC) $(CFLAGS) $(TEST_SRC) -o $(OUT) $(LIBS) $(INCLUDES) -DTEST_MAIN
