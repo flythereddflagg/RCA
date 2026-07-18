@@ -105,21 +105,15 @@ void BitMask_print(BitMask self) {
 }
 
 bool BitMask_collide(BitMask self, BitMask other, Vector2 offset) {
-  for (int y = 0; y < self->height; y++) 
-    for (int x = 0; x < self->width; x++)
-      if (
-        x + offset.x >= 0
-        && y + offset.y >= 0
-        && x + offset.x < other->width 
-        && y + offset.y < other->height 
-        && BitMask_get(self, x, y) 
-        && BitMask_get(
-          other, x + offset.x, 
-          y + offset.y)
-      )
-        return true;
-  return false; 
-}// TODO optimize this
+    for (int y = 0; y < self->height; y++)
+        for (int x = 0; x < self->width; x++)
+            if (x + offset.x >= 0 && y + offset.y >= 0 &&
+                x + offset.x < other->width && y + offset.y < other->height &&
+                BitMask_get(self, x, y) &&
+                BitMask_get(other, x + offset.x, y + offset.y))
+                return true;
+    return false;
+} // TODO optimize this
 
 #endif
 #ifdef TEST_MAIN
@@ -149,13 +143,8 @@ int main() {
 
     for (int j = 0; j < height; j++) {
         for (int i = 0; i < width; i++) {
-            if (
-              (i % 2 == 1 
-                && j % 2 == 1)
-              || (i % 2 == 0 
-                && j % 2 == 0)
-            )
-              BitMask_set(mask, i, j, true);
+            if ((i % 2 == 1 && j % 2 == 1) || (i % 2 == 0 && j % 2 == 0))
+                BitMask_set(mask, i, j, true);
         }
     }
     BitMask_print(mask);
