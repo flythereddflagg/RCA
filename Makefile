@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -g -Wall #-fanalyzer
-SRC = ./csrc/main.c
+SRC ?= ./csrc/main.c
 SRC_DIR = ./csrc
 # TEST_SRC = csrc/bitmask.c
 LIBS = -lraylib -L./lib -lm -lcyaml 
@@ -58,7 +58,7 @@ test_all: $(SRC_DIR)/*.c
 
 
 test:
-	$(CC) $(CFLAGS) $(TEST_SRC) -o $(OUT) $(LIBS) $(INCLUDES) -DTEST_MAIN
+	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LIBS) $(INCLUDES) -DTEST_MAIN
 	@echo "-- BUILD COMMAND COMPLETE --"
 	./$(OUT)
 

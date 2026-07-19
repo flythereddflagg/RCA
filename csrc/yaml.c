@@ -72,7 +72,9 @@ int main(){
     log_info("%d", Yaml_get(settings, "SHOW_EVENTS")._bool_);
     log_info("%d", Yaml_get(settings, "/ASPECT_RATIO[1]")._int_);
     log_info("%s", Yaml_get(settings, "icon")._str_);
-    log_info("%s", Yaml_get(settings, "icon")._str_);
+    log_info("%s", Yaml_get(settings, "title")._str_);    
+    log_info("%p", Yaml_get(settings, "/new_game_add_in[0]/groups")._obj_);    
+
 
     return 0;
 error:

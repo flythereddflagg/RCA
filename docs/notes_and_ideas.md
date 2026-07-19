@@ -91,3 +91,8 @@ Or is he? Not knowing and not wanting to find out, Larry stomps Ruoken a good on
 Falling to his certain demise, Larry supposes that, while he couldn't save his village, he would avenge it if he had just one more chance...
 
 ... And you know what? It would seem fate is giving him that chance. Waking up bruised and sore but miraculously unharmed in the meadows of red Castle valley, Larry begins his quest to become the legendary Red Castle Avenger!
+
+# Ideas from Maija Bessey
+- Joke battle/puzzle
+- army of pickles that you fight but they eventually end up on your side
+- 
