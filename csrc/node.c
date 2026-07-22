@@ -1,5 +1,9 @@
 #ifndef __NODE_C__
 #define __NODE_C__
+#ifndef __MAIN__
+#define __MAIN__
+#define __NODE_MAIN__
+#endif
 #include "dbg.h"
 #include "decal.c"
 #include "raylib.h"
@@ -60,4 +64,7 @@ error:
     return self;
 }
 
+#endif
+#ifdef __NODE_MAIN__
+int main(){return 0;}
 #endif

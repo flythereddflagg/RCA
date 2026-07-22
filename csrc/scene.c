@@ -1,5 +1,9 @@
 #ifndef __SCENE_C__
 #define __SCENE_C__
+#ifndef __MAIN__
+#define __MAIN__
+#define __SCENE_MAIN__
+#endif
 #include "node.c"
 #include "yaml.c"
 #include <stdbool.h>
@@ -30,4 +34,7 @@ void Scene_node_by_id(void);
 void Scene_node_ids(void);
 void Scene_node_in_groups(void);
 
+#endif
+#ifdef __SCENE_MAIN__
+int main(){return 0;}
 #endif

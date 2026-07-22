@@ -1,5 +1,9 @@
 #ifndef __DICT_C__
 #define __DICT_C__
+#ifndef __MAIN__
+#define __MAIN__
+#define __DICT_MAIN__
+#endif
 #include "dbg.h"
 #include <stdbool.h>
 #include <stdlib.h>
@@ -257,4 +261,7 @@ int test_dict() {
     Dict_delete(dict);
     return 0;
 }
+#endif
+#ifdef __DICT_MAIN__
+int main(){return 0;}
 #endif

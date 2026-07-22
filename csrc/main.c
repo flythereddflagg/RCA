@@ -1,3 +1,8 @@
+#ifdef TEST_ALL
+int main(){return 0;}
+#else
+#ifndef __MAIN__
+#define __MAIN__
 #include "dbg.h"
 #include "engine.c"
 
@@ -10,3 +15,5 @@ int main(int argc, char *argv[]) {
         : game = Game_delete(game);
     return error_state;
 }
+#endif
+#endif

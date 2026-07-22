@@ -1,5 +1,9 @@
 #ifndef __INPUT_C__
 #define __INPUT_C__
+#ifndef __MAIN__
+#define __MAIN__
+#define __INPUT_MAIN__
+#endif
 #include "dbg.h"
 #include "raylib.h"
 #include "yaml.c"
@@ -115,7 +119,8 @@ error:
 }
 
 #endif
-#ifdef TEST_MAIN
+#ifdef __INPUT_MAIN__
+
 // NOTE: Gamepad name ID depends on drivers and OS
 #define XBOX_ALIAS_1 "xbox"
 #define XBOX_ALIAS_2 "x-box"

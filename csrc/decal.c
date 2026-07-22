@@ -1,5 +1,9 @@
 #ifndef __DECAL_C__
 #define __DECAL_C__
+#ifndef __MAIN__
+#define __MAIN__
+#define __DECAL_MAIN__
+#endif
 #include "dbg.h"
 #include "raylib.h"
 #include <stdlib.h>
@@ -31,8 +35,6 @@ error:
     return self;
 }
 #endif
-#ifdef TEST_MAIN
-int main(){
-    return 0;
-}
+#ifdef __DECAL_MAIN__
+int main(){return 0;}
 #endif

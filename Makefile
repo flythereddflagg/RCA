@@ -52,13 +52,16 @@ build:
 
 test_all: $(SRC_DIR)/*.c
 	for file in $^; do\
-		$(CC) $(CFLAGS) $$file -o $(OUT) $(LIBS) $(INCLUDES) -DTEST_MAIN;\
+		echo "-- BUILDING $$file --";\
+		$(CC) $(CFLAGS) $$file -o $(OUT) $(LIBS) $(INCLUDES) -DTEST_ALL;\
+		echo "-- BUILD COMMAND COMPLETE FOR $$file --";\
 		./$(OUT);\
 	done
 
 
 test:
-	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LIBS) $(INCLUDES) -DTEST_MAIN
+	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LIBS) $(INCLUDES) -DTEST \
+		-DSRC=$(SRC)
 	@echo "-- BUILD COMMAND COMPLETE --"
 	./$(OUT)
 

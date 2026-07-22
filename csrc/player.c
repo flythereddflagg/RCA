@@ -1,5 +1,9 @@
 #ifndef __PLAYER_C__
 #define __PLAYER_C__
+#ifndef __MAIN__
+#define __MAIN__
+#define __PLAYER_MAIN__
+#endif
 #include "dbg.h"
 #include <stdlib.h>
 
@@ -28,4 +32,7 @@ Player Player_new() {
 error:
     return self;
 }
+#endif
+#ifdef __PLAYER_MAIN__
+int main(){return 0;}
 #endif

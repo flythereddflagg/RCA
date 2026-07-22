@@ -1,5 +1,9 @@
 #ifndef __COMPASS_C__
 #define __COMPASS_C__
+#ifndef __MAIN__
+#define __MAIN__
+#define __COMPASS_MAIN__
+#endif
 #include "raylib.h"
 typedef enum { UP, RIGHT, DOWN, LEFT } Compass;
 
@@ -25,8 +29,6 @@ Vector2 unit(Compass dir) {
 
 #endif
 
-#ifdef TEST_MAIN
-int main(){
-    return 0;
-}
+#ifdef __COMPASS_MAIN__
+int main(){return 0;}
 #endif

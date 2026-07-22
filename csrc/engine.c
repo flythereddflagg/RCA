@@ -1,5 +1,9 @@
 #ifndef __ENGINE_C__
 #define __ENGINE_C__
+#ifndef __MAIN__
+#define __MAIN__
+#define __ENGINE_MAIN__
+#endif
 #include "dbg.h"
 #include "raylib.h"
 #include <stdbool.h>
@@ -8,6 +12,8 @@
 #include "node.c"
 #include "scene.c"
 #include "yaml.c"
+
+
 
 #define MAX_INPUTS 6
 #define SPEED 200
@@ -134,4 +140,7 @@ int Game_run(Game game) {
 error:
     return 1;
 }
+#endif
+#ifdef __ENGINE_MAIN__
+int main(){return 0;}
 #endif

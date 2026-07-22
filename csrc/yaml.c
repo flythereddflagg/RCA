@@ -1,5 +1,9 @@
 #ifndef __YAML_C__
 #define __YAML_C__
+#ifndef __MAIN__
+#define __MAIN__
+#define __YAML_MAIN__
+#endif
 #include "cyaml.h"
 #include "dbg.h"
 #include "dict.c"
@@ -64,7 +68,7 @@ error:
     return (DictVal){._obj_ = NULL};
 }
 #endif
-#ifdef TEST_MAIN
+#ifdef __YAML_MAIN__
 int main(){
     Yaml settings = Yaml_load("./assets/init.yaml");
     check(settings, "yaml could not load");
