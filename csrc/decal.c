@@ -36,5 +36,5 @@ error:
 }
 #endif
 #ifdef __DECAL_MAIN__
-int main(){return 0;}
+int main() { return 0; }
 #endif

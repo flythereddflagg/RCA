@@ -29,7 +29,7 @@ Yaml Yaml_delete(Yaml doc) {
     return NULL;
 }
 
-DictVal Yaml_get(Yaml doc, const char *name) {
+DynValue Yaml_get(Yaml doc, const char *name) {
     cyaml_node_t *node = NULL;
     if (strchr(name, '/'))
         node = cyaml_path(doc, name);
@@ -40,45 +40,44 @@ DictVal Yaml_get(Yaml doc, const char *name) {
 
     switch (type) {
     case CYAML_KIND_NULL:
-        return (DictVal){._obj_ = NULL};
+        return (DynValue){._obj_ = NULL};
         break;
     case CYAML_KIND_STRING:
         char *get_str = cyaml_scalar_str(doc, node);
-        return (DictVal){._str_ = get_str};
+        return (DynValue){._str_ = get_str};
         break;
     case CYAML_KIND_INT:
         long get_int;
         cyaml_as_int(doc, node, &get_int);
-        return (DictVal){._int_ = get_int};
+        return (DynValue){._int_ = get_int};
         break;
     case CYAML_KIND_FLOAT:
         double get_float;
         cyaml_as_float(doc, node, &get_float);
-        return (DictVal){._float_ = get_float};
+        return (DynValue){._float_ = get_float};
         break;
     case CYAML_KIND_BOOL:
         bool get_bool;
         cyaml_as_bool(doc, node, &get_bool);
-        return (DictVal){._bool_ = get_bool};
+        return (DynValue){._bool_ = get_bool};
         break;
     default:
         sentinel("invalid type") break;
     }
 error:
-    return (DictVal){._obj_ = NULL};
+    return (DynValue){._obj_ = NULL};
 }
 #endif
 #ifdef __YAML_MAIN__
-int main(){
+int main() {
     Yaml settings = Yaml_load("./assets/init.yaml");
     check(settings, "yaml could not load");
     log_info("%d", Yaml_get(settings, "FPS")._int_);
     log_info("%d", Yaml_get(settings, "SHOW_EVENTS")._bool_);
     log_info("%d", Yaml_get(settings, "/ASPECT_RATIO[1]")._int_);
     log_info("%s", Yaml_get(settings, "icon")._str_);
-    log_info("%s", Yaml_get(settings, "title")._str_);    
-    log_info("%p", Yaml_get(settings, "/new_game_add_in[0]/groups")._obj_);    
-
+    log_info("%s", Yaml_get(settings, "title")._str_);
+    log_info("%p", Yaml_get(settings, "/new_game_add_in[0]/groups")._obj_);
 
     return 0;
 error:

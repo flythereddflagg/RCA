@@ -30,5 +30,5 @@ Vector2 unit(Compass dir) {
 #endif
 
 #ifdef __COMPASS_MAIN__
-int main(){return 0;}
+int main() { return 0; }
 #endif

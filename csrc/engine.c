@@ -13,8 +13,6 @@
 #include "scene.c"
 #include "yaml.c"
 
-
-
 #define MAX_INPUTS 6
 #define SPEED 200
 
@@ -33,7 +31,7 @@ struct GameData {
 };
 
 RenderTexture2D Game_init_screen(Yaml settings) {
-    SetTraceLogLevel(LOG_WARNING); 
+    SetTraceLogLevel(LOG_WARNING);
     int resolution = Yaml_get(settings, "RESOLUTION")._int_;
     int scale = Yaml_get(settings, "SCALE")._int_;
     char *title = Yaml_get(settings, "title")._str_;
@@ -142,5 +140,5 @@ error:
 }
 #endif
 #ifdef __ENGINE_MAIN__
-int main(){return 0;}
+int main() { return 0; }
 #endif

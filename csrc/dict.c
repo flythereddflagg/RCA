@@ -13,18 +13,19 @@
 #define HASHPRIME 31
 #define NO_NEXT -1
 #define EMPTYVAL                                                               \
-    (DictVal) { ._obj_ = NULL }
+    (DynValue) { ._obj_ = NULL }
 
 typedef struct DictData *Dict;
-typedef union DictValData DictVal;
+typedef union DynValueData DynValue;
 typedef char *DictKey;
 typedef enum DictTypeData DictType;
+typedef struct ValArrayData ValArray;
 
 enum DictTypeData { NONE, DICT, ARR, STR, INT, FLOAT, BOOL, OBJ };
 
-union DictValData {
+union DynValueData {
     Dict _dict_;
-    DictVal *_arr_;
+    DynValue *_arr_;
     char *_str_;
     int _int_;
     float _float_;
@@ -33,10 +34,34 @@ union DictValData {
     // NULL none;
 };
 
+struct ValArrayData {
+    size_t length;
+    DynValue *vals;
+};
+
+ValArray ValArray_new(size_t length) {
+    ValArray arr =
+        (ValArray){.length = length,
+                   .vals = (DynValue *)malloc(sizeof(DynValue) * length)};
+    check_mem(ValArray.vals);
+error:
+    return arr;
+}
+ValArray ValArray_delete(ValArray arr) {
+    if (arr.vals) {
+        free(arr.vals);
+        arr.vals = NULL;
+        arr.length = 0;
+    }
+    return arr;
+}
+DynValue ValArray_get_at(ValArray arr, int index);
+int ValArray_set_at(ValArray arr, DynValue val);
+
 struct DictData {
     DictKey *keys;
     DictType *types;
-    DictVal *vals;
+    DynValue *vals;
     int *next;
 };
 
@@ -59,7 +84,7 @@ error:
     return -1;
 }
 
-int Dict_set(Dict self, DictKey key, DictType type, DictVal val) {
+int Dict_set(Dict self, DictKey key, DictType type, DynValue val) {
     check(self, "invalid dict supplied");
     check(key[0], "invalid key supplied");
     // get the hash value
@@ -122,7 +147,7 @@ error:
     return -1;
 }
 
-DictVal Dict_get(Dict self, DictKey key, DictVal _default) {
+DynValue Dict_get(Dict self, DictKey key, DynValue _default) {
     check(self, "invalid dict supplied");
     check(key[0], "invalid key supplied");
     int index = Dict_hash(key);
@@ -183,21 +208,21 @@ error:
 }
 
 Dict Dict_new() {
-    Dict dict = (Dict) malloc(sizeof(struct DictData));
+    Dict dict = (Dict)malloc(sizeof(struct DictData));
     check_mem(dict);
-    dict->keys = (DictKey*) malloc(sizeof(DictKey) * DICTSIZE);
+    dict->keys = (DictKey *)malloc(sizeof(DictKey) * DICTSIZE);
     check_mem(dict->keys);
-    dict->types = (DictType*) malloc(sizeof(DictType) * DICTSIZE);
+    dict->types = (DictType *)malloc(sizeof(DictType) * DICTSIZE);
     check_mem(dict->types);
-    dict->vals = (DictVal*) malloc(sizeof(DictVal) * DICTSIZE);
+    dict->vals = (DynValue *)malloc(sizeof(DynValue) * DICTSIZE);
     check_mem(dict->vals);
-    dict->next = (int*) malloc(sizeof(int) * DICTSIZE);
+    dict->next = (int *)malloc(sizeof(int) * DICTSIZE);
     check_mem(dict->next);
 
     for (int i = 0; i < DICTSIZE; i++) {
         dict->keys[i] = NULL;
         dict->types[i] = 0;
-        dict->vals[i] = (DictVal){._obj_ = NULL};
+        dict->vals[i] = (DynValue){._obj_ = NULL};
         dict->next[i] = NO_NEXT;
     }
     return dict;
@@ -220,14 +245,13 @@ Dict Dict_delete(Dict dict) {
     return NULL;
 }
 
-
 #endif
 #ifdef __DICT_MAIN__
 int test_dict() {
     log_info("compile successful");
     // DictKey dkeys[DICTSIZE] = {0};
     // DictType dtypes[DICTSIZE] = {0};
-    // DictVal dvals[DICTSIZE] = {0};
+    // DynValue dvals[DICTSIZE] = {0};
     // int dnext[DICTSIZE] = {0};
     // for (int i = 0; i < DICTSIZE; i++)
     //     dnext[i] = NO_NEXT;
@@ -240,22 +264,22 @@ int test_dict() {
     // };
     // Dict dict = &ddict;
     Dict dict = Dict_new();
-    Dict_set(dict, (DictKey) "pickle", INT, (DictVal){._int_ = 25});
-    Dict_set(dict, (DictKey) "cheese", STR, (DictVal){._str_ = "23"});
+    Dict_set(dict, (DictKey) "pickle", INT, (DynValue){._int_ = 25});
+    Dict_set(dict, (DictKey) "cheese", STR, (DynValue){._str_ = "23"});
     Dict_set(dict, (DictKey) "crackers", STR,
-             (DictVal){._str_ = "holy guacamole"});
+             (DynValue){._str_ = "holy guacamole"});
     Dict_set(dict, (DictKey) "crackers2", STR,
-             (DictVal){._str_ = "holy guacamole"});
+             (DynValue){._str_ = "holy guacamole"});
     Dict_printrepr(dict);
     Dict_delkey(dict, (DictKey) "pickle");
     Dict_printrepr(dict);
-    Dict_set(dict, (DictKey) "pickle", INT, (DictVal){._int_ = 26});
-    Dict_set(dict, (DictKey) "cheese", STR, (DictVal){._str_ = "24"});
+    Dict_set(dict, (DictKey) "pickle", INT, (DynValue){._int_ = 26});
+    Dict_set(dict, (DictKey) "cheese", STR, (DynValue){._str_ = "24"});
     Dict_printrepr(dict);
     Dict_delkey(dict, (DictKey) "pickl");
     debug("getting value of pickle as %d",
           Dict_get(dict, "pickle", EMPTYVAL)._int_);
-    Dict_set(dict, (DictKey) "cheese", OBJ, (DictVal){._obj_ = dict});
+    Dict_set(dict, (DictKey) "cheese", OBJ, (DynValue){._obj_ = dict});
     Dict_printrepr(dict);
     Dict_delkey(dict, (DictKey) "pickle");
     Dict_delkey(dict, (DictKey) "cheese");
@@ -264,8 +288,8 @@ int test_dict() {
     dict = Dict_delete(dict);
     return 0;
 }
-int main(){
-    test_dict();    
+int main() {
+    test_dict();
     return 0;
 }
 #endif

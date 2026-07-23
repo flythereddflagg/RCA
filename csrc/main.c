@@ -1,5 +1,5 @@
 #ifdef TEST_ALL
-int main(){return 0;}
+int main() { return 0; }
 #else
 #ifndef __MAIN__
 #define __MAIN__

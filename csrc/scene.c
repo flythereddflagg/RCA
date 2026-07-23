@@ -36,5 +36,5 @@ void Scene_node_in_groups(void);
 
 #endif
 #ifdef __SCENE_MAIN__
-int main(){return 0;}
+int main() { return 0; }
 #endif

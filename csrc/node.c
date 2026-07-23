@@ -66,5 +66,5 @@ error:
 
 #endif
 #ifdef __NODE_MAIN__
-int main(){return 0;}
+int main() { return 0; }
 #endif
