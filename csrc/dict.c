@@ -18,7 +18,9 @@
 typedef struct DictData *Dict;
 typedef union DictValData DictVal;
 typedef char *DictKey;
-typedef enum { NONE, DICT, ARR, STR, INT, FLOAT, BOOL, OBJ } DictType;
+typedef enum DictTypeData DictType;
+
+enum DictTypeData { NONE, DICT, ARR, STR, INT, FLOAT, BOOL, OBJ };
 
 union DictValData {
     Dict _dict_;
@@ -186,8 +188,10 @@ Dict Dict_new() {
 
     dict->keys = (DictKey *)malloc(sizeof(DictKey) * DICTSIZE);
     check_mem(dict->keys);
+
     dict->types = (DictType *)malloc(sizeof(DictType) * DICTSIZE);
     check_mem(dict->types);
+    debug("%p", dict->types);
     dict->vals = (DictVal *)malloc(sizeof(DictVal) * DICTSIZE);
     check_mem(dict->vals);
     dict->next = (int *)malloc(sizeof(int) * DICTSIZE);
@@ -220,6 +224,9 @@ Dict Dict_delete(Dict dict) {
     return NULL;
 }
 
+
+#endif
+#ifdef __DICT_MAIN__
 int test_dict() {
     log_info("compile successful");
     // DictKey dkeys[DICTSIZE] = {0};
@@ -261,7 +268,8 @@ int test_dict() {
     Dict_delete(dict);
     return 0;
 }
-#endif
-#ifdef __DICT_MAIN__
-int main(){return 0;}
+int main(){
+    test_dict();    
+    return 0;
+}
 #endif
