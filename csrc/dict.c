@@ -183,18 +183,15 @@ error:
 }
 
 Dict Dict_new() {
-    Dict dict = (Dict)malloc(sizeof(Dict));
+    Dict dict = (Dict) malloc(sizeof(struct DictData));
     check_mem(dict);
-
-    dict->keys = (DictKey *)malloc(sizeof(DictKey) * DICTSIZE);
+    dict->keys = (DictKey*) malloc(sizeof(DictKey) * DICTSIZE);
     check_mem(dict->keys);
-
-    dict->types = (DictType *)malloc(sizeof(DictType) * DICTSIZE);
+    dict->types = (DictType*) malloc(sizeof(DictType) * DICTSIZE);
     check_mem(dict->types);
-    debug("%p", dict->types);
-    dict->vals = (DictVal *)malloc(sizeof(DictVal) * DICTSIZE);
+    dict->vals = (DictVal*) malloc(sizeof(DictVal) * DICTSIZE);
     check_mem(dict->vals);
-    dict->next = (int *)malloc(sizeof(int) * DICTSIZE);
+    dict->next = (int*) malloc(sizeof(int) * DICTSIZE);
     check_mem(dict->next);
 
     for (int i = 0; i < DICTSIZE; i++) {
@@ -203,7 +200,6 @@ Dict Dict_new() {
         dict->vals[i] = (DictVal){._obj_ = NULL};
         dict->next[i] = NO_NEXT;
     }
-
     return dict;
 error:
     return NULL;
@@ -265,7 +261,7 @@ int test_dict() {
     Dict_delkey(dict, (DictKey) "cheese");
     Dict_delkey(dict, (DictKey) "crackers");
     Dict_printrepr(dict);
-    Dict_delete(dict);
+    dict = Dict_delete(dict);
     return 0;
 }
 int main(){
