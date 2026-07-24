@@ -6,7 +6,7 @@
 #endif
 #include "cyaml.h"
 #include "dbg.h"
-#include "dict.c"
+#include "dictarr.c"
 #include "raylib.h"
 #include <stdlib.h>
 #include <string.h>

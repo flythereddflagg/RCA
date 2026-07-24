@@ -1,5 +1,5 @@
-#ifndef __DICT_C__
-#define __DICT_C__
+#ifndef __DICTARR_C__
+#define __DICTARR_C__
 #ifndef __MAIN__
 #define __MAIN__
 #define __DICT_MAIN__
