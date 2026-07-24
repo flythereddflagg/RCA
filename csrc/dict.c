@@ -43,7 +43,7 @@ ValArray ValArray_new(size_t length) {
     ValArray arr =
         (ValArray){.length = length,
                    .vals = (DynValue *)malloc(sizeof(DynValue) * length)};
-    check_mem(ValArray.vals);
+    check_mem(arr.vals);
 error:
     return arr;
 }
