@@ -21,7 +21,7 @@ typedef char *DictKey;
 typedef union DynValueData DynValue;
 typedef enum DynTypeData DynType;
 typedef struct ValArrayData *ValArray;
-
+void Dict_print(Dict dict);
 enum DynTypeData { NONE, DICT, ARR, STR, INT, FLOAT, BOOL, OBJ };
 
 union DynValueData {
@@ -122,7 +122,7 @@ void ValArray_print(ValArray arr) {
             printf("none");
             break;
         case DICT:
-            Dict_printrepr(arr->vals[i]._dict_);
+            Dict_print(arr->vals[i]._dict_);
             break;
         case ARR:
             ValArray_print(arr->vals[i]._arr_);
@@ -255,7 +255,7 @@ error:
     return EMPTYVAL;
 }
 
-void Dict_printrepr(Dict dict) {
+void Dict_print(Dict dict) {
 
     printf("\n[ind]        key |  type                  val | next\n");
     printf("----------------------------------------------------\n");
@@ -269,9 +269,12 @@ void Dict_printrepr(Dict dict) {
             printf(" none %20s", "null");
             break;
         case DICT:
-            Dict_printrepr(dict->vals[i]._dict_);
+            printf(" dict ");
+            Dict_print(dict->vals[i]._dict_);
             break;
         case ARR:
+            printf("  arr ");
+            ValArray_print(dict->vals[i]._arr_);
         case STR:
             printf("  str %20s", dict->vals[i]._str_);
             break;
@@ -361,21 +364,21 @@ int test_dict() {
     Dict_set(dict, (DictKey) "cheese", STR, dynval(_str_,"23"));
     Dict_set(dict, (DictKey) "crackers", STR, dynval(_str_, "holy guacamole"));
     Dict_set(dict, (DictKey) "crackers2", STR, dynval(_str_, "holy guacamole"));
-    Dict_printrepr(dict);
+    Dict_print(dict);
     Dict_delkey(dict, (DictKey) "pickle");
-    Dict_printrepr(dict);
+    Dict_print(dict);
     Dict_set(dict, (DictKey) "pickle", FLOAT, dynval(_float_, 26.2));
     Dict_set(dict, (DictKey) "cheese", STR, dynval(_str_, "24"));
-    Dict_printrepr(dict);
+    Dict_print(dict);
     Dict_delkey(dict, (DictKey) "pickl");
-    debug("getting value of pickle as %d",
+    debug("getting value of pickle as %f",
           Dict_get(dict, "pickle", EMPTYVAL)._float_);
     Dict_set(dict, (DictKey) "cheese", OBJ, dynval(_obj_, dict));
-    Dict_printrepr(dict);
+    Dict_print(dict);
     Dict_delkey(dict, (DictKey) "pickle");
     Dict_delkey(dict, (DictKey) "cheese");
     Dict_delkey(dict, (DictKey) "crackers");
-    Dict_printrepr(dict);
+    Dict_print(dict);
     dict = Dict_delete(dict);
     return 0;
 }
