@@ -14,18 +14,19 @@
 #define NO_NEXT -1
 #define EMPTYVAL                                                               \
     (DynValue) { ._obj_ = NULL }
+#define dynval(T, V) (DynValue) { .T = V }
 
 typedef struct DictData *Dict;
-typedef union DynValueData DynValue;
 typedef char *DictKey;
+typedef union DynValueData DynValue;
 typedef enum DynTypeData DynType;
-typedef struct ValArrayData ValArray;
+typedef struct ValArrayData *ValArray;
 
 enum DynTypeData { NONE, DICT, ARR, STR, INT, FLOAT, BOOL, OBJ };
 
 union DynValueData {
     Dict _dict_;
-    DynValue *_arr_;
+    ValArray _arr_;
     char *_str_;
     int _int_;
     float _float_;
@@ -35,78 +36,122 @@ union DynValueData {
 };
 
 struct ValArrayData {
-    size_t length;
+    int length;
     DynValue *vals;
     DynType *types;
 
 };
 
-ValArray ValArray_new(size_t length) {
-    ValArray arr =
-        (ValArray){.length = length,
-                   .vals = (DynValue *)malloc(sizeof(DynValue) * length)
-                   .types = (DynType*)malloc(sizeof(DynType) * length)};
-    check_mem(arr.vals);
+ValArray ValArray_new(int length) {
+    check(length > 0, "invalid length supplied");
+    ValArray arr = (ValArray) malloc(sizeof(struct ValArrayData) * length);
+    check_mem(arr);
+    arr->length = length;
+    arr->vals = (DynValue *)malloc(sizeof(DynValue) * length);
+    arr->types = (DynType*)malloc(sizeof(DynType) * length);
+    check_mem(arr->vals);
+    check_mem(arr->types);
+    for (int i = 0; i < arr->length; i++){
+        arr->vals[i] = EMPTYVAL;
+        arr->types[i] = NONE;
+    }
 error:
     return arr;
 }
 ValArray ValArray_delete(ValArray arr) {
-    if (arr.vals) {
-        free(arr.vals);
-        arr.vals = NULL;
+    if (arr) {
+        if (arr->vals) {
+            free(arr->vals);
+            arr->vals = NULL;
+        }
+        if (arr->types) {
+            free(arr->types);
+            arr->types = NULL;
+        }
+        arr->length = 0;
+        free(arr);
+        arr = NULL;
     }
-    if (arr.types) {
-        free(arr.types);
-        arr.types = NULL;
-    }
-    arr.length = 0;
     return arr;
 }
 DynValue ValArray_get_at(ValArray arr, int index){
     // allows negative indexing
-    index = index < 0 ? arr.length + index % arr.length : index;
+    index = index < 0 ? arr->length + index % arr->length : index;
     check(
-        index < arr.length, 
+        index < arr->length, 
         "index %d out of bounds for length %d", 
         index, 
-        arr.length);
-    return arr.vals[index];
+        arr->length);
+    return arr->vals[index];
 error:
     return EMPTYVAL;
 }
 
 DynType ValArray_type_at(ValArray arr, int index){
     // allows negative indexing
-    index = index < 0 ? arr.length + index % arr.length : index;
+    index = index < 0 ? arr->length + index % arr->length : index;
     check(
-        index < arr.length, 
+        index < arr->length, 
         "index %d out of bounds for length %d", 
         index, 
-        arr.length);
-    return arr.types[index];
+        arr->length);
+    return arr->types[index];
 error:
-    return EMPTYVAL;
+    return NONE;
 }
 
 int ValArray_set_at(ValArray arr, int index, DynValue val, DynType type){
-    index = index < 0 ? arr.length + index % arr.length : index;
+    index = index < 0 ? arr->length + index % arr->length : index;
     check(
-        index < arr.length, 
+        index < arr->length, 
         "index %d out of bounds for length %d", 
         index, 
-        arr.length);
-    arr.vals[index] = val;
-    arr.types[index] = type;
+        arr->length);
+    arr->vals[index] = val;
+    arr->types[index] = type;
     return 0;
 error:
     return -1;
 }
-// void ValArray_print(ValArray arr){
-//     for (int i = 0; i < arr.length; i++){
-//         printf("%")
-//     }
-// }
+void ValArray_print(ValArray arr) {
+    printf("{ ");
 
+    for (int i = 0; i < arr->length; i++) {
+        switch (arr->types[i]) {
+        case NONE:
+            printf("none");
+            break;
+        case DICT:
+            Dict_printrepr(arr->vals[i]._dict_);
+            break;
+        case ARR:
+            ValArray_print(arr->vals[i]._arr_);
+        case STR:
+            printf("%s", arr->vals[i]._str_);
+            break;
+        case INT:
+            printf("%d", arr->vals[i]._int_);
+            break;
+        case FLOAT:
+            printf("%f", arr->vals[i]._float_);
+            break;
+        case BOOL:
+            printf("%d", arr->vals[i]._bool_);
+            break;
+        case OBJ:
+            printf("%p", arr->vals[i]._obj_);
+            break;
+        default:
+            sentinel("invalid type") break;
+        }
+        printf(", ");
+    }
+    printf("\b\b }\n");
+error:
+    return;
+}
+
+//#####################################################################
 
 struct DictData {
     DictKey *keys;
@@ -270,7 +315,7 @@ Dict Dict_new() {
     for (int i = 0; i < DICTSIZE; i++) {
         dict->keys[i] = NULL;
         dict->types[i] = 0;
-        dict->vals[i] = (DynValue){._obj_ = NULL};
+        dict->vals[i] = EMPTYVAL;
         dict->next[i] = NO_NEXT;
     }
     return dict;
@@ -312,22 +357,20 @@ int test_dict() {
     // };
     // Dict dict = &ddict;
     Dict dict = Dict_new();
-    Dict_set(dict, (DictKey) "pickle", INT, (DynValue){._int_ = 25});
-    Dict_set(dict, (DictKey) "cheese", STR, (DynValue){._str_ = "23"});
-    Dict_set(dict, (DictKey) "crackers", STR,
-             (DynValue){._str_ = "holy guacamole"});
-    Dict_set(dict, (DictKey) "crackers2", STR,
-             (DynValue){._str_ = "holy guacamole"});
+    Dict_set(dict, (DictKey) "pickle", INT, dynval(_int_, 25));
+    Dict_set(dict, (DictKey) "cheese", STR, dynval(_str_,"23"));
+    Dict_set(dict, (DictKey) "crackers", STR, dynval(_str_, "holy guacamole"));
+    Dict_set(dict, (DictKey) "crackers2", STR, dynval(_str_, "holy guacamole"));
     Dict_printrepr(dict);
     Dict_delkey(dict, (DictKey) "pickle");
     Dict_printrepr(dict);
-    Dict_set(dict, (DictKey) "pickle", INT, (DynValue){._int_ = 26});
-    Dict_set(dict, (DictKey) "cheese", STR, (DynValue){._str_ = "24"});
+    Dict_set(dict, (DictKey) "pickle", FLOAT, dynval(_float_, 26.2));
+    Dict_set(dict, (DictKey) "cheese", STR, dynval(_str_, "24"));
     Dict_printrepr(dict);
     Dict_delkey(dict, (DictKey) "pickl");
     debug("getting value of pickle as %d",
-          Dict_get(dict, "pickle", EMPTYVAL)._int_);
-    Dict_set(dict, (DictKey) "cheese", OBJ, (DynValue){._obj_ = dict});
+          Dict_get(dict, "pickle", EMPTYVAL)._float_);
+    Dict_set(dict, (DictKey) "cheese", OBJ, dynval(_obj_, dict));
     Dict_printrepr(dict);
     Dict_delkey(dict, (DictKey) "pickle");
     Dict_delkey(dict, (DictKey) "cheese");
@@ -340,6 +383,12 @@ int test_dict() {
 int test_arr() {
     int len = 10;
     ValArray arr = ValArray_new(len);
+    ValArray_print(arr);
+    for (int i = 0; i < arr->length; i++){
+        ValArray_set_at(arr, i, dynval(_int_, 0), INT);
+    }
+    ValArray_print(arr);
+
     arr = ValArray_delete(arr);
 
     return 0;
