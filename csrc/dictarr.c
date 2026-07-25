@@ -18,10 +18,10 @@
 typedef struct DictData *Dict;
 typedef union DynValueData DynValue;
 typedef char *DictKey;
-typedef enum DictTypeData DictType;
+typedef enum DynTypeData DynType;
 typedef struct ValArrayData ValArray;
 
-enum DictTypeData { NONE, DICT, ARR, STR, INT, FLOAT, BOOL, OBJ };
+enum DynTypeData { NONE, DICT, ARR, STR, INT, FLOAT, BOOL, OBJ };
 
 union DynValueData {
     Dict _dict_;
@@ -37,12 +37,15 @@ union DynValueData {
 struct ValArrayData {
     size_t length;
     DynValue *vals;
+    DynType *types;
+
 };
 
 ValArray ValArray_new(size_t length) {
     ValArray arr =
         (ValArray){.length = length,
-                   .vals = (DynValue *)malloc(sizeof(DynValue) * length)};
+                   .vals = (DynValue *)malloc(sizeof(DynValue) * length)
+                   .types = (DynType*)malloc(sizeof(DynType) * length)};
     check_mem(arr.vals);
 error:
     return arr;
@@ -51,16 +54,63 @@ ValArray ValArray_delete(ValArray arr) {
     if (arr.vals) {
         free(arr.vals);
         arr.vals = NULL;
-        arr.length = 0;
     }
+    if (arr.types) {
+        free(arr.types);
+        arr.types = NULL;
+    }
+    arr.length = 0;
     return arr;
 }
-DynValue ValArray_get_at(ValArray arr, int index);
-int ValArray_set_at(ValArray arr, DynValue val);
+DynValue ValArray_get_at(ValArray arr, int index){
+    // allows negative indexing
+    index = index < 0 ? arr.length + index % arr.length : index;
+    check(
+        index < arr.length, 
+        "index %d out of bounds for length %d", 
+        index, 
+        arr.length);
+    return arr.vals[index];
+error:
+    return EMPTYVAL;
+}
+
+DynType ValArray_type_at(ValArray arr, int index){
+    // allows negative indexing
+    index = index < 0 ? arr.length + index % arr.length : index;
+    check(
+        index < arr.length, 
+        "index %d out of bounds for length %d", 
+        index, 
+        arr.length);
+    return arr.types[index];
+error:
+    return EMPTYVAL;
+}
+
+int ValArray_set_at(ValArray arr, int index, DynValue val, DynType type){
+    index = index < 0 ? arr.length + index % arr.length : index;
+    check(
+        index < arr.length, 
+        "index %d out of bounds for length %d", 
+        index, 
+        arr.length);
+    arr.vals[index] = val;
+    arr.types[index] = type;
+    return 0;
+error:
+    return -1;
+}
+// void ValArray_print(ValArray arr){
+//     for (int i = 0; i < arr.length; i++){
+//         printf("%")
+//     }
+// }
+
 
 struct DictData {
     DictKey *keys;
-    DictType *types;
+    DynType *types;
     DynValue *vals;
     int *next;
 };
@@ -84,7 +134,7 @@ error:
     return -1;
 }
 
-int Dict_set(Dict self, DictKey key, DictType type, DynValue val) {
+int Dict_set(Dict self, DictKey key, DynType type, DynValue val) {
     check(self, "invalid dict supplied");
     check(key[0], "invalid key supplied");
     // get the hash value
@@ -124,8 +174,6 @@ int Dict_delkey(Dict self, DictKey key) {
     check(self, "invalid dict supplied");
     check(key[0], "invalid key supplied");
     int prev = Dict_hash(key), index = prev;
-    debug("%s", key);
-    debug("%d", index);
     // TODO figure out how to represent this
     // if keys do not match follow the linked list and error if we reach the end
     while (!self->keys[index] ||
@@ -212,7 +260,7 @@ Dict Dict_new() {
     check_mem(dict);
     dict->keys = (DictKey *)malloc(sizeof(DictKey) * DICTSIZE);
     check_mem(dict->keys);
-    dict->types = (DictType *)malloc(sizeof(DictType) * DICTSIZE);
+    dict->types = (DynType *)malloc(sizeof(DynType) * DICTSIZE);
     check_mem(dict->types);
     dict->vals = (DynValue *)malloc(sizeof(DynValue) * DICTSIZE);
     check_mem(dict->vals);
@@ -250,7 +298,7 @@ Dict Dict_delete(Dict dict) {
 int test_dict() {
     log_info("compile successful");
     // DictKey dkeys[DICTSIZE] = {0};
-    // DictType dtypes[DICTSIZE] = {0};
+    // DynType dtypes[DICTSIZE] = {0};
     // DynValue dvals[DICTSIZE] = {0};
     // int dnext[DICTSIZE] = {0};
     // for (int i = 0; i < DICTSIZE; i++)
@@ -288,8 +336,18 @@ int test_dict() {
     dict = Dict_delete(dict);
     return 0;
 }
+
+int test_arr() {
+    int len = 10;
+    ValArray arr = ValArray_new(len);
+    arr = ValArray_delete(arr);
+
+    return 0;
+}
 int main() {
+    log_info("compile successful");
     test_dict();
+    test_arr();
     return 0;
 }
 #endif
