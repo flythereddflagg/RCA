@@ -78,7 +78,7 @@ int main() {
     log_info("%s", Yaml_get(settings, "icon")._str_);
     log_info("%s", Yaml_get(settings, "title")._str_);
     log_info("%p", Yaml_get(settings, "/new_game_add_in[0]/groups")._obj_);
-
+    Yaml_delete(settings);
     return 0;
 error:
     return 1;
