@@ -4,10 +4,13 @@
 #include <stdbool.h>
 
 #include "dbg.h"
+#define MAX_NESTING_DEPTH 10
 
+typedef enum {YAML_NO_STATE, YAML_MAP_STATE, YAML_SEQ_STATE} yaml_state_t;
 
 void process_yaml_file(const char *filename) {
     FILE *fh = fopen(filename, "rb");
+    yaml_state_t nests[MAX_NESTING_DEPTH] = {YAML_NO_STATE};
     yaml_parser_t parser;
     yaml_event_t event;
 
@@ -18,40 +21,44 @@ void process_yaml_file(const char *filename) {
     check(fh, "Failed to open file!\n");
 
     yaml_parser_set_input_file(&parser, fh);
-    int levels = 0;
-    bool key = false;
-    bool seq = false;
+    int levels = -1;
+    bool key = false; // will the next scalar be a key or a value?
     while (1) {
         if (!yaml_parser_parse(&parser, &event))
             break;
         switch (event.type){
             case YAML_MAPPING_START_EVENT:
-                key = true;
                 printf("\n");
+                key = true; // next scalar will be a key
                 levels += 1;
+                nests[levels] = YAML_MAP_STATE;
                 break;
             case YAML_MAPPING_END_EVENT:
-                // key = false;
-                printf("\n");
+                nests[levels] = YAML_NO_STATE;
                 levels -= 1;
                 break;
             case YAML_SEQUENCE_START_EVENT:
-                seq = true;
                 printf("\n");
                 levels += 1;
+                nests[levels] = YAML_SEQ_STATE;
                 break;
             case YAML_SEQUENCE_END_EVENT:
-                seq = false;
-                printf("\n");
+                key = true;
+                nests[levels] = YAML_NO_STATE;
                 levels -= 1;
                 break;
             case YAML_SCALAR_EVENT:
-                for (int i = 0; i < levels; i++)
-                    printf("  ");
-                if (seq)
-                    printf(" - ");
-                if (key){
-                    printf("%s -> ", event.data.scalar.value);
+                
+                if (nests[levels] == YAML_SEQ_STATE){
+                    for (int i = 0; i < levels; i++)
+                        printf("  ");
+                    printf("- ");
+                    printf("%s\n", event.data.scalar.value);
+                }
+                else if (nests[levels] == YAML_MAP_STATE && key){
+                    for (int i = 0; i < levels; i++)
+                        printf("  ");
+                    printf("%s : ", event.data.scalar.value);
                     key= !key;
                 }
                 else {
