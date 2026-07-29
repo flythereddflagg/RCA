@@ -18,29 +18,49 @@ void process_yaml_file(const char *filename) {
     check(fh, "Failed to open file!\n");
 
     yaml_parser_set_input_file(&parser, fh);
-    // int levels = 0;
-    bool mapping = true;
-    bool key = true;
+    int levels = 0;
+    bool key = false;
+    bool seq = false;
     while (1) {
         if (!yaml_parser_parse(&parser, &event))
             break;
-        if (event.type == YAML_SCALAR_EVENT && key){
-            printf("Key: %s -> ", event.data.scalar.value);
-            key= !key;
+        switch (event.type){
+            case YAML_MAPPING_START_EVENT:
+                key = true;
+                printf("\n");
+                levels += 1;
+                break;
+            case YAML_MAPPING_END_EVENT:
+                // key = false;
+                printf("\n");
+                levels -= 1;
+                break;
+            case YAML_SEQUENCE_START_EVENT:
+                seq = true;
+                printf("\n");
+                levels += 1;
+                break;
+            case YAML_SEQUENCE_END_EVENT:
+                seq = false;
+                printf("\n");
+                levels -= 1;
+                break;
+            case YAML_SCALAR_EVENT:
+                for (int i = 0; i < levels; i++)
+                    printf("  ");
+                if (seq)
+                    printf(" - ");
+                if (key){
+                    printf("%s -> ", event.data.scalar.value);
+                    key= !key;
+                }
+                else {
+                    printf("%s\n", event.data.scalar.value);
+                    key = !key;
+                }
+            default:
+                break;
         }
-        else if (event.type == YAML_SCALAR_EVENT){
-            printf("Value: %s\n", event.data.scalar.value);
-            key = !key;
-        }
-
-        if (event.type == YAML_MAPPING_START_EVENT)
-            printf("\nMAPPING START\n");
-        if (event.type == YAML_MAPPING_END_EVENT)
-            printf("\nMAPPING END\n", event.data.scalar.value);
-        if (event.type == YAML_SEQUENCE_END_EVENT)
-            printf("\nSEQ END\n", event.data.scalar.value);
-        if (event.type == YAML_SEQUENCE_START_EVENT)
-            printf("\nSEQ START\n", event.data.scalar.value);
                 
 
         if (event.type == YAML_STREAM_END_EVENT)
