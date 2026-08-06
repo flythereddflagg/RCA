@@ -22,7 +22,7 @@ void process_yaml_file(const char *filename) {
     check(fh, "Failed to open file!\n");
 
     yaml_parser_set_input_file(&parser, fh);
-    int levels = -1;
+    int levels = -1; // start at -1 because first event will bring us to 0
     bool key = false; // will the next scalar be a key or a value?
     bool first_key = false;
     while (1) {
