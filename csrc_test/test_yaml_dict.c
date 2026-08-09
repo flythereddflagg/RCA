@@ -12,12 +12,12 @@ typedef enum { YAML_NO_STATE, YAML_MAP_STATE, YAML_SEQ_STATE } yaml_state_t;
 DynValue process_yaml_file(const char *filename) {
     FILE *fh = fopen(filename, "rb");
     yaml_state_t nests[MAX_NESTING_DEPTH] = {YAML_NO_STATE};
-    DynValue *parents[MAX_NESTING_DEPTH] = {NULL};
+    DynValue parents[MAX_NESTING_DEPTH] = {EMPTYVAL};
     yaml_parser_t parser;
     yaml_event_t event;
     DynValue output_obj = EMPTYVAL;
-    DynValue *cur_obj = &output_obj;
-    DynValue *parent = &output_obj;
+    DynValue cur_obj = output_obj;
+    DynValue parent = output_obj;
 
     check(yaml_parser_initialize(&parser),
           "Failed to initialize YAML parser!\n");
@@ -38,35 +38,35 @@ DynValue process_yaml_file(const char *filename) {
             else
                 printf("\n");
             key = true; // next scalar will be a key
-            parents[levels] = &cur_obj;
+            parents[levels] = cur_obj;
             if (nests[levels] == YAML_MAP_STATE) {
-                Dict_set(cur_obj->_dict_, cur_key, DICT,
-                         dynval(DICT, Dict_new()));
-                cur_obj = Dict_get(cur_obj->_dict_, cur_key, EMPTYVAL);
+                Dict_set(cur_obj._dict_, cur_key, DICT,
+                         dynval(_dict_, Dict_new()));
+                cur_obj = Dict_get(cur_obj._dict_, cur_key, EMPTYVAL);
             } else if (nests[levels] == YAML_SEQ_STATE) {
-                ValArray_append(cur_obj->_arr_, dynval(DICT, Dict_new()), DICT);
-                cur_obj = ValArray_get_at(cur_obj->_arr_, -1);
+                ValArray_append(cur_obj._arr_, dynval(_dict_, Dict_new()), DICT);
+                cur_obj = ValArray_get_at(cur_obj._arr_, -1);
             } else
                 sentinel("INVALID YAML STATE");
             levels += 1;
             nests[levels] = YAML_MAP_STATE;
             break;
         case YAML_MAPPING_END_EVENT:
-            parents[levels] = &cur_obj;
-            if (nests[levels] == YAML_MAP_STATE) {
-                Dict_set(cur_obj->_dict_, cur_key, DICT,
-                         dynval(DICT, Dict_new()));
-                cur_obj = Dict_get(cur_obj->_dict_, cur_key, EMPTYVAL);
-            } else if (nests[levels] == YAML_SEQ_STATE) {
-                ValArray_append(cur_obj->_arr_, dynval(DICT, Dict_new()), DICT);
-                cur_obj = ValArray_get_at(cur_obj->_arr_, -1);
-            } else
-                sentinel("INVALID YAML STATE");
+
             nests[levels] = YAML_NO_STATE;
             levels -= 1;
             break;
         case YAML_SEQUENCE_START_EVENT:
-            printf("\n");
+            parents[levels] = cur_obj;
+            if (nests[levels] == YAML_MAP_STATE) {
+                Dict_set(cur_obj._dict_, cur_key, ARR,
+                         dynval(_arr_, ValArray_new()));
+                cur_obj = Dict_get(cur_obj._dict_, cur_key, EMPTYVAL);
+            } else if (nests[levels] == YAML_SEQ_STATE) {
+                ValArray_append(cur_obj._arr_, dynval(_arr_, ValArray_new()), DICT);
+                cur_obj = ValArray_get_at(cur_obj._arr_, -1);
+            } else
+                sentinel("INVALID YAML STATE");
             levels += 1;
             nests[levels] = YAML_SEQ_STATE;
             break;

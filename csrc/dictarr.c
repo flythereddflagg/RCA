@@ -43,7 +43,7 @@ struct ValArrayData {
 };
 
 ValArray ValArray_new() {
-    check(length > 0, "invalid length supplied");
+    // check(length > 0, "invalid length supplied");
     ValArray arr = (ValArray) malloc(sizeof(struct ValArrayData) * DICTSIZE);
     check_mem(arr);
     arr->length = 0;
@@ -51,7 +51,7 @@ ValArray ValArray_new() {
     arr->types = (DynType*)malloc(sizeof(DynType) * DICTSIZE);
     check_mem(arr->vals);
     check_mem(arr->types);
-    for (int i = 0; i < arr->DICTSIZE; i++){
+    for (int i = 0; i < arr->length; i++){
         arr->vals[i] = EMPTYVAL;
         arr->types[i] = NONE;
     }
