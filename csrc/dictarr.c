@@ -42,16 +42,16 @@ struct ValArrayData {
 
 };
 
-ValArray ValArray_new(int length) {
+ValArray ValArray_new() {
     check(length > 0, "invalid length supplied");
-    ValArray arr = (ValArray) malloc(sizeof(struct ValArrayData) * length);
+    ValArray arr = (ValArray) malloc(sizeof(struct ValArrayData) * DICTSIZE);
     check_mem(arr);
-    arr->length = length;
-    arr->vals = (DynValue *)malloc(sizeof(DynValue) * length);
-    arr->types = (DynType*)malloc(sizeof(DynType) * length);
+    arr->length = 0;
+    arr->vals = (DynValue *)malloc(sizeof(DynValue) * DICTSIZE);
+    arr->types = (DynType*)malloc(sizeof(DynType) * DICTSIZE);
     check_mem(arr->vals);
     check_mem(arr->types);
-    for (int i = 0; i < arr->length; i++){
+    for (int i = 0; i < arr->DICTSIZE; i++){
         arr->vals[i] = EMPTYVAL;
         arr->types[i] = NONE;
     }
@@ -110,6 +110,14 @@ int ValArray_set_at(ValArray arr, int index, DynValue val, DynType type){
     arr->vals[index] = val;
     arr->types[index] = type;
     return 0;
+error:
+    return -1;
+}
+int ValArray_append(ValArray arr, DynValue val, DynType type){
+    check(arr, "array is NULL");
+    check(arr->length <= DICTSIZE, "Array is full");
+    arr->length += 1;
+    return ValArray_set_at(arr, arr->length - 1, val, type);
 error:
     return -1;
 }
