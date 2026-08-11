@@ -10,8 +10,11 @@
 typedef enum { YAML_NO_STATE, YAML_MAP_STATE, YAML_SEQ_STATE } yaml_state_t;
 
 DynValue process_yaml_file(const char *filename) {
-    DynValue output_obj = EMPTYVAL;
     DynValue cur_obj = EMPTYVAL;
+    int top = -1;
+    DictKey cur_key = "";
+    DynValue stack[MAX_NESTING_DEPTH] = {EMPTYVAL};
+    yaml_state_t levels[MAX_NESTING_DEPTH] = {YAML_NO_STATE};
     FILE *fh = fopen(filename, "rb");
     yaml_parser_t parser;
     yaml_event_t event;
@@ -23,18 +26,36 @@ DynValue process_yaml_file(const char *filename) {
     while (yaml_parser_parse(&parser, &event)) {
         switch (event.type) {
         case YAML_MAPPING_START_EVENT:
-            if (output_obj == EMPTYVAL){
-                output_obj = Dict_new();
+            cur_obj._dict_ = Dict_new();
+            if (top >= 0 && levels[top] == YAML_MAP_STATE){
+                Dict_set(stack[top]._dict_, cur_key, DICT, cur_obj);
+            }else if (top >= 0 && levels[top] == YAML_SEQ_STATE){
+                ValArray_append(stack[top]._arr_, DICT, cur_obj);
             }
+            top += 1;
+            levels[top] = YAML_MAP_STATE;
+            stack[top] = cur_obj;
             break;
         case YAML_MAPPING_END_EVENT:
+            stack[top] = EMPTYVAL;
+            levels[top] = YAML_NO_STATE;
+            top -= 1;
             break;
         case YAML_SEQUENCE_START_EVENT:
-            if (output_obj == EMPTYVAL){
-                output_obj = ValArray_new();
+            cur_obj._arr_ = ValArray_new();
+            if (top >= 0 && levels[top] == YAML_MAP_STATE){
+                Dict_set(stack[top]._dict_, cur_key, ARR, cur_obj);
+            }else if (top >= 0 && levels[top] == YAML_SEQ_STATE){
+                ValArray_append(stack[top]._arr_, ARR, cur_obj);
             }
+            top += 1;
+            levels[top] = YAML_SEQ_STATE;
+            stack[top] = cur_obj;
             break;
         case YAML_SEQUENCE_END_EVENT:
+            stack[top] = EMPTYVAL;
+            levels[top] = YAML_NO_STATE;
+            top -= 1;
             break;
         case YAML_SCALAR_EVENT:
             break;
@@ -49,7 +70,7 @@ DynValue process_yaml_file(const char *filename) {
 error:
     yaml_parser_delete(&parser);
     fclose(fh);
-    return output_obj;
+    return stack[0];
 }
 
 int main() {

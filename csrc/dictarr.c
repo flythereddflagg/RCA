@@ -100,7 +100,7 @@ error:
     return NONE;
 }
 
-int ValArray_set_at(ValArray arr, int index, DynValue val, DynType type){
+int ValArray_set_at(ValArray arr, int index, DynType type, DynValue val){
     index = index < 0 ? arr->length + index % arr->length : index;
     check(
         index < arr->length, 
@@ -113,11 +113,11 @@ int ValArray_set_at(ValArray arr, int index, DynValue val, DynType type){
 error:
     return -1;
 }
-int ValArray_append(ValArray arr, DynValue val, DynType type){
+int ValArray_append(ValArray arr, DynType type, DynValue val){
     check(arr, "array is NULL");
     check(arr->length <= DICTSIZE, "Array is full");
     arr->length += 1;
-    return ValArray_set_at(arr, arr->length - 1, val, type);
+    return ValArray_set_at(arr, arr->length - 1, type, val);
 error:
     return -1;
 }
