@@ -189,7 +189,7 @@ error:
 
 int Dict_set(Dict self, DictKey key, DynType type, DynValue val) {
     check(self, "invalid dict supplied");
-    check(key[0], "invalid key supplied");
+    check(key && key[0], "invalid key '%s' supplied", key);
     // get the hash value
     int hash_i = Dict_hash(key), index = 0, i = 0;
 
@@ -214,7 +214,7 @@ int Dict_set(Dict self, DictKey key, DynType type, DynValue val) {
     if (hash_i != index)
         self->next[hash_i] = index;
 
-    check(index >= 0 && index < DICTSIZE, "invalid index detected");
+    check(index >= 0 && index < DICTSIZE, "invalid index '%d' detected", index);
     self->keys[index] = key;
     self->types[index] = type;
     self->vals[index] = val;
