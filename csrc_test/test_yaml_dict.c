@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <yaml.h>
 
 #include "dbg.h"
@@ -12,7 +13,9 @@ typedef enum { YAML_NO_STATE, YAML_MAP_STATE, YAML_SEQ_STATE } yaml_state_t;
 DynValue process_yaml_file(const char *filename) {
     DynValue cur_obj = EMPTYVAL;
     int top = -1;
-    DictKey cur_key = "";
+    // set key to length of hashprime arbitrarily
+    DictKey cur_key = (char *) malloc(sizeof(char)*HASHPRIME);
+    cur_key[0] = '\0'; // empty string to start
     DynValue stack[MAX_NESTING_DEPTH] = {EMPTYVAL};
     yaml_state_t levels[MAX_NESTING_DEPTH] = {YAML_NO_STATE};
     FILE *fh = fopen(filename, "rb");
@@ -64,15 +67,15 @@ DynValue process_yaml_file(const char *filename) {
             if (levels[top] == YAML_SEQ_STATE) {
                 printf("- %s\n", event.data.scalar.value);
                 ValArray_append(stack[top]._arr_, STR,
-                                dynval(_str_, event.data.scalar.value));
+                                dynval(_str_, (char *) event.data.scalar.value));
             } else if (levels[top] == YAML_MAP_STATE && key) {
                 printf("%s : ", event.data.scalar.value);
-                cur_key = event.data.scalar.value;
+                strncpy(cur_key, (char *) event.data.scalar.value, HASHPRIME);
                 key = !key;
             } else {
                 printf("%s\n", event.data.scalar.value);
                 Dict_set(stack[top]._dict_, cur_key, STR,
-                         dynval(_str_, event.data.scalar.value));
+                         dynval(_str_, (char *) event.data.scalar.value));
                 key = !key;
             }
             break;

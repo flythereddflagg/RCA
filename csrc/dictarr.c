@@ -14,7 +14,8 @@
 #define NO_NEXT -1
 #define EMPTYVAL                                                               \
     (DynValue) { ._obj_ = NULL }
-#define dynval(T, V) (DynValue) { .T = V }
+#define dynval(T, V)                                                           \
+    (DynValue) { .T = V }
 
 typedef struct DictData *Dict;
 typedef char *DictKey;
@@ -39,19 +40,18 @@ struct ValArrayData {
     int length;
     DynValue *vals;
     DynType *types;
-
 };
 
 ValArray ValArray_new() {
     // check(length > 0, "invalid length supplied");
-    ValArray arr = (ValArray) malloc(sizeof(struct ValArrayData) * DICTSIZE);
+    ValArray arr = (ValArray)malloc(sizeof(struct ValArrayData) * DICTSIZE);
     check_mem(arr);
     arr->length = 0;
     arr->vals = (DynValue *)malloc(sizeof(DynValue) * DICTSIZE);
-    arr->types = (DynType*)malloc(sizeof(DynType) * DICTSIZE);
+    arr->types = (DynType *)malloc(sizeof(DynType) * DICTSIZE);
     check_mem(arr->vals);
     check_mem(arr->types);
-    for (int i = 0; i < arr->length; i++){
+    for (int i = 0; i < arr->length; i++) {
         arr->vals[i] = EMPTYVAL;
         arr->types[i] = NONE;
     }
@@ -74,46 +74,37 @@ ValArray ValArray_delete(ValArray arr) {
     }
     return arr;
 }
-DynValue ValArray_get_at(ValArray arr, int index){
+DynValue ValArray_get_at(ValArray arr, int index) {
     // allows negative indexing
     index = index < 0 ? arr->length + index % arr->length : index;
-    check(
-        index < arr->length, 
-        "index %d out of bounds for length %d", 
-        index, 
-        arr->length);
+    check(index < arr->length, "index %d out of bounds for length %d", index,
+          arr->length);
     return arr->vals[index];
 error:
     return EMPTYVAL;
 }
 
-DynType ValArray_type_at(ValArray arr, int index){
+DynType ValArray_type_at(ValArray arr, int index) {
     // allows negative indexing
     index = index < 0 ? arr->length + index % arr->length : index;
-    check(
-        index < arr->length, 
-        "index %d out of bounds for length %d", 
-        index, 
-        arr->length);
+    check(index < arr->length, "index %d out of bounds for length %d", index,
+          arr->length);
     return arr->types[index];
 error:
     return NONE;
 }
 
-int ValArray_set_at(ValArray arr, int index, DynType type, DynValue val){
+int ValArray_set_at(ValArray arr, int index, DynType type, DynValue val) {
     index = index < 0 ? arr->length + index % arr->length : index;
-    check(
-        index < arr->length, 
-        "index %d out of bounds for length %d", 
-        index, 
-        arr->length);
+    check(index < arr->length, "index %d out of bounds for length %d", index,
+          arr->length);
     arr->vals[index] = val;
     arr->types[index] = type;
     return 0;
 error:
     return -1;
 }
-int ValArray_append(ValArray arr, DynType type, DynValue val){
+int ValArray_append(ValArray arr, DynType type, DynValue val) {
     check(arr, "array is NULL");
     check(arr->length <= DICTSIZE, "Array is full");
     arr->length += 1;
@@ -159,7 +150,7 @@ error:
     return;
 }
 
-//#####################################################################
+// #####################################################################
 
 struct DictData {
     DictKey *keys;
@@ -207,7 +198,7 @@ int Dict_set(Dict self, DictKey key, DynType type, DynValue val) {
         index++;
         // wrap around
         if (index >= DICTSIZE)
-            index -= DICTSIZE;
+            index = index % DICTSIZE;
     }
     check(i < DICTSIZE, "Dict is full");
     // then if we needed to find another slot, we link to it in the previous one
@@ -369,7 +360,7 @@ int test_dict() {
     // Dict dict = &ddict;
     Dict dict = Dict_new();
     Dict_set(dict, (DictKey) "pickle", INT, dynval(_int_, 25));
-    Dict_set(dict, (DictKey) "cheese", STR, dynval(_str_,"23"));
+    Dict_set(dict, (DictKey) "cheese", STR, dynval(_str_, "23"));
     Dict_set(dict, (DictKey) "crackers", STR, dynval(_str_, "holy guacamole"));
     Dict_set(dict, (DictKey) "crackers2", STR, dynval(_str_, "holy guacamole"));
     Dict_print(dict);
@@ -395,7 +386,7 @@ int test_arr() {
     int len = 10;
     ValArray arr = ValArray_new(len);
     ValArray_print(arr);
-    for (int i = 0; i < arr->length; i++){
+    for (int i = 0; i < arr->length; i++) {
         ValArray_set_at(arr, i, dynval(_int_, 0), INT);
     }
     ValArray_print(arr);
