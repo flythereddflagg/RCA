@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include "lstring.c"
 #define DICTKEYLENGTH 256
 #define DICTSIZE 255
 #define HASHPRIME 31
@@ -18,17 +19,17 @@
     (DynValue) { .T = V }
 
 typedef struct DictData *Dict;
-typedef char *DictKey;
 typedef union DynValueData DynValue;
 typedef enum DynTypeData DynType;
 typedef struct ValArrayData *ValArray;
 void Dict_print(Dict dict);
+Dict Dict_delete(Dict dict);
 enum DynTypeData { NONE, DICT, ARR, STR, INT, FLOAT, BOOL, OBJ };
 
 union DynValueData {
     Dict _dict_;
     ValArray _arr_;
-    char *_str_;
+    Lstring _str_;
     int _int_;
     float _float_;
     bool _bool_;
@@ -60,6 +61,14 @@ error:
 }
 ValArray ValArray_delete(ValArray arr) {
     if (arr) {
+        for (int i = 0; i < arr->length; i++){
+            if (arr->types[i] == DICT)
+                Dict_delete(arr->vals[i]._dict_);
+            else if (arr->types[i] == ARR)
+                ValArray_delete(arr->vals[i]._arr_);
+            else if (arr->types[i] == STR)
+                Lstring_delete(arr->vals[i]._str_);
+        }
         if (arr->vals) {
             free(arr->vals);
             arr->vals = NULL;
@@ -126,7 +135,7 @@ void ValArray_print(ValArray arr) {
         case ARR:
             ValArray_print(arr->vals[i]._arr_);
         case STR:
-            printf("%s", arr->vals[i]._str_);
+            Lstring_print(arr->vals[i]._str_);
             break;
         case INT:
             printf("%d", arr->vals[i]._int_);
@@ -153,21 +162,21 @@ error:
 // #####################################################################
 
 struct DictData {
-    DictKey *keys;
+    Lstring *keys;
     DynType *types;
     DynValue *vals;
     int *next;
 };
 
-int Dict_hash(const DictKey key) {
+int Dict_hash(const Lstring key) {
     long long hash = 0, hpow = 1;
     int i = 0;
-    for (i = 0; i < DICTKEYLENGTH; i++) {
-        if (key[i] == '\0')
+    for (i = 0; i < key->length; i++) {
+        if (key->cstring[i] == '\0')
             break;
         hpow = 1;
         for (int j = 0; j < i + 1; j++)
-            hpow *= key[i];
+            hpow *= key->cstring[i];
         hash += hpow * HASHPRIME;
     }
     check(i > 0, "invalid hash key");
@@ -178,9 +187,9 @@ error:
     return -1;
 }
 
-int Dict_set(Dict self, DictKey key, DynType type, DynValue val) {
+int Dict_set(Dict self, Lstring key, DynType type, DynValue val) {
     check(self, "invalid dict supplied");
-    check(key && key[0], "invalid key '%s' supplied", key);
+    check(key && key->cstring[0], "invalid key '" LSTRING_FMT "' supplied", Lstring_format(key));
     // get the hash value
     int hash_i = Dict_hash(key), index = 0, i = 0;
 
@@ -193,7 +202,7 @@ int Dict_set(Dict self, DictKey key, DynType type, DynValue val) {
     // so we increment by 1 until we either find an empty slot or the given key
     for (i = 0; i < DICTSIZE; i++) {
         if (!self->keys[index] ||
-            !strncmp(key, self->keys[index], DICTKEYLENGTH))
+            Lstring_equal(key, self->keys[index]))
             break;
         index++;
         // wrap around
@@ -214,16 +223,16 @@ error:
     return -1;
 }
 
-int Dict_delkey(Dict self, DictKey key) {
+int Dict_delkey(Dict self, Lstring key) {
     check(self, "invalid dict supplied");
-    check(key[0], "invalid key supplied");
+    check(key && key->cstring[0], "invalid key supplied");
     int prev = Dict_hash(key), index = prev;
     // TODO figure out how to represent this
     // if keys do not match follow the linked list and error if we reach the end
     while (!self->keys[index] ||
-           strncmp(key, self->keys[index], DICTKEYLENGTH)) {
+           Lstring_equal(key, self->keys[index])) {
         debug("%d", index);
-        check(self->next[index] != NO_NEXT, "'%s' Key not found", key);
+        check(self->next[index] != NO_NEXT, "'" LSTRING_FMT "' Key not found", Lstring_format(key));
         prev = index;
         index = self->next[index];
     }
@@ -234,20 +243,22 @@ int Dict_delkey(Dict self, DictKey key) {
     self->next[index] = NO_NEXT;
     // then we set the prev item to be the next
     self->next[prev] = tmp_next;
+    Lstring_delete(key);
     return 0;
 error:
     return -1;
 }
 
-DynValue Dict_get(Dict self, DictKey key, DynValue _default) {
+DynValue Dict_get(Dict self, Lstring key, DynValue _default) {
     check(self, "invalid dict supplied");
-    check(key[0], "invalid key supplied");
+    check(key->cstring[0], "invalid key supplied");
     int index = Dict_hash(key);
     while (!self->keys[index] ||
-           strncmp(key, self->keys[index], DICTKEYLENGTH)) {
-        check(self->next[index] != NO_NEXT, "'%s' Key not found", key);
+           Lstring_equal(key, self->keys[index])) {
+        check(self->next[index] != NO_NEXT, "'" LSTRING_FMT "' Key not found", Lstring_format(key));
         index = self->next[index];
     }
+    Lstring_delete(key); // TODO we delete the key we get. Bad idea?
     return self->vals[index];
 
 error:
@@ -260,9 +271,9 @@ void Dict_print(Dict dict) {
     printf("----------------------------------------------------\n");
 
     for (int i = 0; i < DICTSIZE; i++) {
-        if (!dict->keys[i] || !dict->keys[i][0])
+        if (!dict->keys[i] || !dict->keys[i]->cstring[0])
             continue;
-        printf("[%3d] %10s | ", i, dict->keys[i]);
+        printf("[%3d] %10s | ", i, dict->keys[i]->cstring);
         switch (dict->types[i]) {
         case NONE:
             printf(" none %20s", "null");
@@ -275,7 +286,7 @@ void Dict_print(Dict dict) {
             printf("  arr ");
             ValArray_print(dict->vals[i]._arr_);
         case STR:
-            printf("  str %20s", dict->vals[i]._str_);
+            printf("  str %20s", dict->vals[i]._str_->cstring);
             break;
         case INT:
             printf("  int %20d", dict->vals[i]._int_);
@@ -305,7 +316,7 @@ error:
 Dict Dict_new() {
     Dict dict = (Dict)malloc(sizeof(struct DictData));
     check_mem(dict);
-    dict->keys = (DictKey *)malloc(sizeof(DictKey) * DICTSIZE);
+    dict->keys = (Lstring *)malloc(sizeof(Lstring) * DICTSIZE);
     check_mem(dict->keys);
     dict->types = (DynType *)malloc(sizeof(DynType) * DICTSIZE);
     check_mem(dict->types);
@@ -327,6 +338,14 @@ error:
 
 Dict Dict_delete(Dict dict) {
     if (dict) {
+        for (int i = 0; i < DICTSIZE; i++){
+            if (dict->types[i] == DICT)
+                dict->vals[i]._dict_ = Dict_delete(dict->vals[i]._dict_);
+            else if (dict->types[i] == ARR)
+                dict->vals[i]._arr_ = ValArray_delete(dict->vals[i]._arr_);
+            else if (dict->types[i] == STR)
+                dict->vals[i]._str_ = Lstring_delete(dict->vals[i]._str_);
+        }
         if (dict->keys)
             free(dict->keys);
         if (dict->types)
@@ -344,7 +363,7 @@ Dict Dict_delete(Dict dict) {
 #ifdef __DICT_MAIN__
 int test_dict() {
     log_info("compile successful");
-    // DictKey dkeys[DICTSIZE] = {0};
+    // Lstring dkeys[DICTSIZE] = {0};
     // DynType dtypes[DICTSIZE] = {0};
     // DynValue dvals[DICTSIZE] = {0};
     // int dnext[DICTSIZE] = {0};
@@ -359,24 +378,24 @@ int test_dict() {
     // };
     // Dict dict = &ddict;
     Dict dict = Dict_new();
-    Dict_set(dict, (DictKey) "pickle", INT, dynval(_int_, 25));
-    Dict_set(dict, (DictKey) "cheese", STR, dynval(_str_, "23"));
-    Dict_set(dict, (DictKey) "crackers", STR, dynval(_str_, "holy guacamole"));
-    Dict_set(dict, (DictKey) "crackers2", STR, dynval(_str_, "holy guacamole"));
+    Dict_set(dict, Lstring_new("pickle"), INT, dynval(_int_, 25));
+    Dict_set(dict, Lstring_new("cheese"), STR, dynval(_str_, Lstring_new("23")));
+    Dict_set(dict, Lstring_new("crackers"), STR, dynval(_str_, Lstring_new("holy guacamole")));
+    Dict_set(dict, Lstring_new("crackers2"), STR, dynval(_str_, Lstring_new("holy guacamole")));
     Dict_print(dict);
-    Dict_delkey(dict, (DictKey) "pickle");
+    Dict_delkey(dict, Lstring_new("pickle"));
     Dict_print(dict);
-    Dict_set(dict, (DictKey) "pickle", FLOAT, dynval(_float_, 26.2));
-    Dict_set(dict, (DictKey) "cheese", STR, dynval(_str_, "24"));
+    Dict_set(dict, Lstring_new("pickle"), FLOAT, dynval(_float_, 26.2));
+    Dict_set(dict, Lstring_new("cheese"), STR, dynval(_str_, Lstring_new("24")));
     Dict_print(dict);
-    Dict_delkey(dict, (DictKey) "pickl");
+    Dict_delkey(dict, Lstring_new("pickl"));
     debug("getting value of pickle as %f",
-          Dict_get(dict, "pickle", EMPTYVAL)._float_);
-    Dict_set(dict, (DictKey) "cheese", OBJ, dynval(_obj_, dict));
+          Dict_get(dict, Lstring_new("pickle"), EMPTYVAL)._float_);
+    Dict_set(dict, Lstring_new("cheese"), OBJ, dynval(_obj_, dict));
     Dict_print(dict);
-    Dict_delkey(dict, (DictKey) "pickle");
-    Dict_delkey(dict, (DictKey) "cheese");
-    Dict_delkey(dict, (DictKey) "crackers");
+    Dict_delkey(dict, Lstring_new("pickle"));
+    Dict_delkey(dict, Lstring_new("cheese"));
+    Dict_delkey(dict, Lstring_new("crackers"));
     Dict_print(dict);
     dict = Dict_delete(dict);
     return 0;
@@ -387,7 +406,7 @@ int test_arr() {
     ValArray arr = ValArray_new(len);
     ValArray_print(arr);
     for (int i = 0; i < arr->length; i++) {
-        ValArray_set_at(arr, i, dynval(_int_, 0), INT);
+        ValArray_set_at(arr, i, INT, dynval(_int_, 0));
     }
     ValArray_print(arr);
 

@@ -5,17 +5,21 @@
 #define __LSTRING_MAIN__
 #endif
 #include "dbg.h"
+#include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #define MAX_LSTRING_LEN 500
+#define LSTRING_FMT "%.*s"
+#define Lstring_format(self) (int)self->length, self->cstring
 
-typedef struct LStringData *LString;
+typedef struct LstringData *Lstring;
 
-struct LStringData {
+struct LstringData {
     size_t length;
     char *cstring;
 };
 
-LString LString_delete(LString self) {
+Lstring Lstring_delete(Lstring self) {
     check(self, "'self' is NULL");
     if (self->cstring)
         free(self->cstring);
@@ -25,24 +29,54 @@ error:
     return NULL;
 }
 
-LString LString_new(char *cstring) {
-    LString self = (LString)malloc(sizeof(struct LStringData));
+Lstring Lstring_new(char *cstring) {
+    Lstring self = (Lstring)malloc(sizeof(struct LstringData));
     check_mem(self);
     check(cstring, "invalid string supplied");
     self->length = strnlen(cstring, MAX_LSTRING_LEN);
+    check(self->length < MAX_LSTRING_LEN, "invalid C string supplied");
     self->cstring = (char *)malloc(sizeof(char) * (self->length + 1));
-    check_mem(self->cstring) strncpy(self->cstring, cstring, MAX_LSTRING_LEN);
-    // guarentee all LStrings are null terminated upon creation
-    self->cstring[length] = '\0';
+    check_mem(self->cstring);
+    strncpy(self->cstring, cstring, self->length + 1);
+    // guarentee all Lstrings are null terminated upon creation
+    self->cstring[self->length] = '\0';
 error:
     return self;
 }
 
-int LString_print(LString self) { return 0; }
+void Lstring_print(Lstring self) { printf(LSTRING_FMT, Lstring_format(self)); }
 
-int LString_equal(LString self, )
+bool Lstring_equal(Lstring self, Lstring other) {
+    if (self && other && self->cstring && other->cstring &&
+        self->length == other->length &&
+        !strncmp(self->cstring, other->cstring, self->length))
+
+        return true;
+    return false;
+}
+
+bool Lstring_cstring_equal(char *self, char *other){
+    Lstring s = Lstring_new(self), o = Lstring_new(other);
+    bool equal = Lstring_equal(s, o);
+    s = Lstring_delete(s);
+    o = Lstring_delete(o);
+    return equal;
+}
 
 #endif
 #ifdef __LSTRING_MAIN__
-int main() { return 0; }
+int main() {
+    Lstring str = Lstring_new("Its a string!");
+    Lstring str2 = Lstring_new("Its a string?");
+    log_info("equal? %d", Lstring_equal(str, str2));
+    str2->cstring[str2->length - 1] = '!';
+    log_info("how bout now? %d", Lstring_equal(str, str2));
+    log_info("C string equal? %d", Lstring_cstring_equal("boy", "girl"));
+    
+    Lstring_print(str);
+    printf("\n");
+    str = Lstring_delete(str);
+    str2 = Lstring_delete(str2);
+    return 0;
+}
 #endif
