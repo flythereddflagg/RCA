@@ -20,12 +20,14 @@ struct LstringData {
 };
 
 Lstring Lstring_delete(Lstring self) {
-    check(self, "'self' is NULL");
+    // check(self, "'self' is NULL");
+    if (!self)
+        return NULL;
     if (self->cstring)
         free(self->cstring);
     self->cstring = NULL;
     free(self);
-error:
+    // error:
     return NULL;
 }
 
@@ -55,7 +57,7 @@ bool Lstring_equal(Lstring self, Lstring other) {
     return false;
 }
 
-bool Lstring_cstring_equal(char *self, char *other){
+bool Lstring_cstring_equal(char *self, char *other) {
     Lstring s = Lstring_new(self), o = Lstring_new(other);
     bool equal = Lstring_equal(s, o);
     s = Lstring_delete(s);
@@ -72,7 +74,7 @@ int main() {
     str2->cstring[str2->length - 1] = '!';
     log_info("how bout now? %d", Lstring_equal(str, str2));
     log_info("C string equal? %d", Lstring_cstring_equal("boy", "girl"));
-    
+
     Lstring_print(str);
     printf("\n");
     str = Lstring_delete(str);
