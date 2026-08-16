@@ -10,38 +10,44 @@
 #include <stdlib.h>
 #define MAX_LSTRING_LEN 500
 #define LSTRING_FMT "%.*s"
-#define Lstring_format(self) (int)self->length, self->cstring
+#define Lstring_format(self) (int)self.length, self.cstring
+#define LSTRING_NULL (Lstring) {.length=0, .cstring=NULL}
 
-typedef struct LstringData *Lstring;
+typedef struct LstringData Lstring;
 
 struct LstringData {
     size_t length;
     char *cstring;
 };
 
+Lstring to_Lstring(char *cstring){
+    return (Lstring) {
+        .length = strnlen(cstring, MAX_LSTRING_LEN),
+        .cstring = cstring
+    };
+}
+
 Lstring Lstring_delete(Lstring self) {
-    // check(self, "'self' is NULL");
-    if (!self)
-        return NULL;
-    if (self->cstring)
-        free(self->cstring);
-    self->cstring = NULL;
-    free(self);
-    // error:
-    return NULL;
+    if (self.cstring)
+        free(self.cstring);
+    return LSTRING_NULL;
 }
 
 Lstring Lstring_new(char *cstring) {
-    Lstring self = (Lstring)malloc(sizeof(struct LstringData));
-    check_mem(self);
+    // Lstring self = (Lstring)malloc(sizeof(struct LstringData));
+    // check_mem(self);
     check(cstring, "invalid string supplied");
-    self->length = strnlen(cstring, MAX_LSTRING_LEN);
-    check(self->length < MAX_LSTRING_LEN, "invalid C string supplied");
-    self->cstring = (char *)malloc(sizeof(char) * (self->length + 1));
-    check_mem(self->cstring);
-    strncpy(self->cstring, cstring, self->length + 1);
+    Lstring self = {
+        .length = strnlen(cstring, MAX_LSTRING_LEN),
+        .cstring = (char*)malloc(sizeof(char) * (self.length + 1))
+    };
+    // self.length = strnlen(cstring, MAX_LSTRING_LEN);
+    check(self.length < MAX_LSTRING_LEN, "invalid C string supplied");
+    // self.cstring = (char *)malloc(sizeof(char) * (self.length + 1));
+    check_mem(self.cstring);
+    strncpy(self.cstring, cstring, self.length + 1);
     // guarentee all Lstrings are null terminated upon creation
-    self->cstring[self->length] = '\0';
+    self.cstring[self.length] = '\0';
 error:
     return self;
 }
@@ -49,9 +55,9 @@ error:
 void Lstring_print(Lstring self) { printf(LSTRING_FMT, Lstring_format(self)); }
 
 bool Lstring_equal(Lstring self, Lstring other) {
-    if (self && other && self->cstring && other->cstring &&
-        self->length == other->length &&
-        !strncmp(self->cstring, other->cstring, self->length))
+    if (self.cstring && other.cstring &&
+        self.length == other.length &&
+        !strncmp(self.cstring, other.cstring, self.length))
 
         return true;
     return false;
@@ -71,7 +77,7 @@ int main() {
     Lstring str = Lstring_new("Its a string!");
     Lstring str2 = Lstring_new("Its a string?");
     log_info("equal? %d", Lstring_equal(str, str2));
-    str2->cstring[str2->length - 1] = '!';
+    str2.cstring[str2.length - 1] = '!';
     log_info("how bout now? %d", Lstring_equal(str, str2));
     log_info("C string equal? %d", Lstring_cstring_equal("boy", "girl"));
 

@@ -171,12 +171,12 @@ struct DictData {
 int Dict_hash(const Lstring key) {
     long long hash = 0, hpow = 1;
     int i = 0;
-    for (i = 0; i < key->length; i++) {
-        if (key->cstring[i] == '\0')
+    for (i = 0; i < key.length; i++) {
+        if (key.cstring[i] == '\0')
             break;
         hpow = 1;
         for (int j = 0; j < i + 1; j++)
-            hpow *= key->cstring[i];
+            hpow *= key.cstring[i];
         hash += hpow * HASHPRIME;
     }
     check(i > 0, "invalid hash key");
@@ -191,7 +191,7 @@ int Dict_get_index(Dict self, Lstring key){
      int hash_i = Dict_hash(key), index = 0, i = 0;
 
     // if the key at that index is not empty follow the linked list to the end
-    while (self->keys[index] && self->next[hash_i] != NO_NEXT &&
+    while (self->keys[index].cstring && self->next[hash_i] != NO_NEXT &&
            Lstring_equal(key, self->keys[hash_i]))
         hash_i = self->next[hash_i];
 
@@ -200,7 +200,7 @@ int Dict_get_index(Dict self, Lstring key){
     // now we have the end of the current hash list
     // so we increment by 1 until we either find an empty slot or the given key
     for (i = 0; i < DICTSIZE; i++) {
-        if (Lstring_equal(key, self->keys[hash_i]) || !self->keys[index])
+        if (Lstring_equal(key, self->keys[hash_i]) || !self->keys[index].cstring)
             break;
         index++;
         // wrap around
@@ -222,7 +222,7 @@ error:
 
 int Dict_set(Dict self, Lstring key, DynType type, DynValue val) {
     check(self, "invalid dict supplied");
-    check(key && key->cstring[0], "invalid key '" LSTRING_FMT "' supplied",
+    check(key.cstring[0], "invalid key '" LSTRING_FMT "' supplied",
           Lstring_format(key));
     int index = Dict_get_index(self, key);
     check(index > 0 && index < DICTSIZE, "Index error")
@@ -245,11 +245,11 @@ error:
 
 int Dict_delkey(Dict self, Lstring key) {
     check(self, "invalid dict supplied");
-    check(key && key->cstring[0], "invalid key supplied");
+    check(key.cstring[0], "invalid key supplied");
     int prev = Dict_hash(key), index = prev;
     // TODO figure out how to represent this
     // if keys do not match follow the linked list and error if we reach the end
-    while (!self->keys[index] || Lstring_equal(key, self->keys[index])) {
+    while (!self->keys[index].cstring || Lstring_equal(key, self->keys[index])) {
         debug("%d", index);
         check(self->next[index] != NO_NEXT, "'" LSTRING_FMT "' Key not found",
               Lstring_format(key));
@@ -272,7 +272,7 @@ error:
 
 DynValue Dict_get(Dict self, Lstring key, DynValue _default) {
     check(self, "invalid dict supplied");
-    check(key->cstring[0], "invalid key supplied");
+    check(key.cstring[0], "invalid key supplied");
     int index = Dict_get_index(self, key);
     Lstring_delete(key); // TODO we delete the key we get. Bad idea?
     return self->vals[index];
@@ -287,9 +287,9 @@ void Dict_print(Dict dict) {
     printf("----------------------------------------------------\n");
 
     for (int i = 0; i < DICTSIZE; i++) {
-        if (!dict->keys[i] || !dict->keys[i]->cstring[0])
+        if (!dict->keys[i].cstring || !dict->keys[i].cstring[0])
             continue;
-        printf("[%3d] %10s | ", i, dict->keys[i]->cstring);
+        printf("[%3d] %10s | ", i, dict->keys[i].cstring);
         switch (dict->types[i]) {
         case NONE:
             printf(" none %20s", "null");
@@ -302,7 +302,7 @@ void Dict_print(Dict dict) {
             printf("  arr ");
             ValArray_print(dict->vals[i]._arr_);
         case STR:
-            printf("  str %20s", dict->vals[i]._str_->cstring);
+            printf("  str %20s", dict->vals[i]._str_.cstring);
             break;
         case INT:
             printf("  int %20d", dict->vals[i]._int_);
@@ -342,7 +342,7 @@ Dict Dict_new() {
     check_mem(dict->next);
 
     for (int i = 0; i < DICTSIZE; i++) {
-        dict->keys[i] = NULL;
+        dict->keys[i] = LSTRING_NULL;
         dict->types[i] = 0;
         dict->vals[i] = EMPTYVAL;
         dict->next[i] = NO_NEXT;
