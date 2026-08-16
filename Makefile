@@ -6,7 +6,7 @@ SRC_DIR = ./csrc
 LIBS = -lraylib -L./lib -lm -lyaml 
 LIBS += '-Wl,-rpath,$$ORIGIN/lib' # needed to point to .so files
 ifeq ($(OS),Windows_NT)
-	LIBS += -lgdi32 -lwinmm
+	LIBS += -lgdi32 -lwinmm -Wl,--defsym,stat64i32=_stat64
 	OUT = main.exe
 else
 	LIBS += -lX11
