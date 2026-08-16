@@ -60,10 +60,12 @@ test_all: $(SRC_DIR)/*.c
 
 
 test:
-	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LIBS) $(INCLUDES) -DTEST \
-		-DSRC=$(SRC)
+	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LIBS) $(INCLUDES) -DTEST
 	@echo "-- BUILD COMMAND COMPLETE --"
 	./$(OUT)
+
+mem_check: test
+	valgrind ./$(OUT)
 
 run: build
 	./$(OUT)

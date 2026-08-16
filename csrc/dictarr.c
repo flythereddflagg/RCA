@@ -187,12 +187,8 @@ error:
     return -1;
 }
 
-int Dict_set(Dict self, Lstring key, DynType type, DynValue val) {
-    check(self, "invalid dict supplied");
-    check(key && key->cstring[0], "invalid key '" LSTRING_FMT "' supplied",
-          Lstring_format(key));
-    // get the hash value
-    int hash_i = Dict_hash(key), index = 0, i = 0;
+int Dict_get_index(Dict self, Lstring key){
+     int hash_i = Dict_hash(key), index = 0, i = 0;
 
     // if the key at that index is not empty follow the linked list to the end
     while (self->keys[index] && self->next[hash_i] != NO_NEXT &&
@@ -217,11 +213,24 @@ int Dict_set(Dict self, Lstring key, DynType type, DynValue val) {
         self->next[hash_i] = index;
 
     check(index >= 0 && index < DICTSIZE, "invalid index '%d' detected", index);
-    // delete the old value if there
+    
+    return index;
+error:
+    return -1;
+
+}
+
+int Dict_set(Dict self, Lstring key, DynType type, DynValue val) {
+    check(self, "invalid dict supplied");
+    check(key && key->cstring[0], "invalid key '" LSTRING_FMT "' supplied",
+          Lstring_format(key));
+    int index = Dict_get_index(self, key);
+    check(index > 0 && index < DICTSIZE, "Index error")
+   
     self->keys[index] = Lstring_delete(self->keys[index]);
     if (self->types[index] == DICT)
         self->vals[index]._dict_ = Dict_delete(self->vals[index]._dict_);
-    else if (self->types[i] == ARR)
+    else if (self->types[index] == ARR)
         self->vals[index]._arr_ = ValArray_delete(self->vals[index]._arr_);
     else if (self->types[index] == STR)
         self->vals[index]._str_ = Lstring_delete(self->vals[index]._str_);
@@ -250,7 +259,7 @@ int Dict_delkey(Dict self, Lstring key) {
 
     // we now have the index which we erase saving the 'next' value
     int tmp_next = self->next[index];
-    self->keys[index] = NULL;
+    self->keys[index] = Lstring_delete(self->keys[index]);
     self->next[index] = NO_NEXT;
     // then we set the prev item to be the next
     self->next[prev] = tmp_next;
@@ -264,12 +273,7 @@ error:
 DynValue Dict_get(Dict self, Lstring key, DynValue _default) {
     check(self, "invalid dict supplied");
     check(key->cstring[0], "invalid key supplied");
-    int index = Dict_hash(key);
-    while (!self->keys[index] || Lstring_equal(key, self->keys[index])) {
-        check(self->next[index] != NO_NEXT, "'" LSTRING_FMT "' Key not found",
-              Lstring_format(key));
-        index = self->next[index];
-    }
+    int index = Dict_get_index(self, key);
     Lstring_delete(key); // TODO we delete the key we get. Bad idea?
     return self->vals[index];
 
@@ -376,20 +380,6 @@ Dict Dict_delete(Dict dict) {
 #ifdef __DICT_MAIN__
 int test_dict() {
     log_info("compile successful");
-    // Lstring dkeys[DICTSIZE] = {0};
-    // DynType dtypes[DICTSIZE] = {0};
-    // DynValue dvals[DICTSIZE] = {0};
-    // int dnext[DICTSIZE] = {0};
-    // for (int i = 0; i < DICTSIZE; i++)
-    //     dnext[i] = NO_NEXT;
-    // struct DictData ddict =
-    //     (struct DictData) {
-    //         .keys = &dkeys[0],
-    //         .types = &dtypes[0],
-    //         .vals = &dvals[0],
-    //         .next = &dnext[0]
-    // };
-    // Dict dict = &ddict;
     Dict dict = Dict_new();
     Dict_set(dict, Lstring_new("pickle"), INT, dynval(_int_, 25));
     Dict_set(dict, Lstring_new("cheese"), STR,
@@ -406,11 +396,11 @@ int test_dict() {
     Dict_delkey(dict, Lstring_new("pickl"));
     debug("getting value of pickle as %f",
           Dict_get(dict, Lstring_new("pickle"), EMPTYVAL)._float_);
-    // Dict_set(dict, Lstring_new("cheese"), OBJ, dynval(_obj_, dict));
-    // Dict_print(dict);
-    // Dict_delkey(dict, Lstring_new("pickle"));
-    // Dict_delkey(dict, Lstring_new("cheese"));
-    // Dict_delkey(dict, Lstring_new("crackers"));
+    Dict_set(dict, Lstring_new("cheese"), OBJ, dynval(_obj_, dict));
+    Dict_print(dict);
+    Dict_delkey(dict, Lstring_new("pickle"));
+    Dict_delkey(dict, Lstring_new("cheese"));
+    Dict_delkey(dict, Lstring_new("crackers"));
     Dict_print(dict);
     dict = Dict_delete(dict);
     return 0;
