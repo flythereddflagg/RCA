@@ -51,6 +51,10 @@ Lstring Lstring_new(char *cstring) {
 error:
     return self;
 }
+Lstring Lstring_set(Lstring old, char *cstring){
+    Lstring_delete(old);
+    return Lstring_new(cstring);
+}
 
 void Lstring_print(Lstring self) { printf(LSTRING_FMT, Lstring_format(self)); }
 

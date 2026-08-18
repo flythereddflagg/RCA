@@ -13,6 +13,7 @@ else
 	OUT = main
 endif
 INCLUDES = -I./include -I./csrc
+VALGRIND_OPTS ?=
 
 .PHONY: all clean clean_all build run get_raylib help python flatpak appimage
 
@@ -65,7 +66,7 @@ test:
 	./$(OUT)
 
 mem_check: test
-	valgrind ./$(OUT)
+	valgrind ./$(OUT) $(VALGRIND_OPTS)
 
 run: build
 	./$(OUT)

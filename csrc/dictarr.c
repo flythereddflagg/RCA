@@ -283,6 +283,7 @@ error:
 }
 
 void Dict_print(Dict dict) {
+    check(dict, "NULL dict supplied");
 
     printf("\n[ind]        key |  type                  val | next\n");
     printf("----------------------------------------------------\n");
