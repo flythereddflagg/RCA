@@ -11,7 +11,7 @@
 #define MAX_LSTRING_LEN 500
 #define LSTRING_FMT "%.*s"
 #define Lstring_format(self) (int)self.length, self.cstring
-#define LSTRING_NULL (Lstring) {.length=0, .cstring=NULL}
+#define LSTRING_NULL (Lstring){.length=0, .cstring=NULL}
 
 typedef struct LstringData Lstring;
 

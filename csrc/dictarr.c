@@ -187,7 +187,9 @@ error:
     return -1;
 }
 
-int Dict_get_index(Dict self, Lstring key){
+int Dict_get_index(const Dict self, const Lstring key){
+    check(self, "invalid dict supplied");
+    check(key.cstring && key.cstring[0], "invalid key '%s' supplied", key.cstring);
      int hash_i = Dict_hash(key), index = 0, i = 0;
 
     // if the key at that index is not empty follow the linked list to the end
@@ -220,10 +222,10 @@ error:
 
 }
 
-int Dict_set(Dict self, Lstring key, DynType type, DynValue val) {
+int Dict_set(Dict self, char* cstring, DynType type, DynValue val) {
     check(self, "invalid dict supplied");
-    check(key.cstring[0], "invalid key '" LSTRING_FMT "' supplied",
-          Lstring_format(key));
+    check(cstring && cstring[0], "invalid key '%s' supplied", cstring);
+    Lstring key = Lstring_new(cstring);
     int index = Dict_get_index(self, key);
     check(index > 0 && index < DICTSIZE, "Index error")
    
@@ -243,9 +245,10 @@ error:
     return -1;
 }
 
-int Dict_delkey(Dict self, Lstring key) {
+int Dict_delkey(Dict self, char *cstring) {
     check(self, "invalid dict supplied");
-    check(key.cstring[0], "invalid key supplied");
+    check(cstring && cstring[0], "invalid key '%s' supplied", cstring);
+    Lstring key = to_Lstring(cstring);
     int prev = Dict_hash(key), index = prev;
     // TODO figure out how to represent this
     // if keys do not match follow the linked list and error if we reach the end
@@ -263,18 +266,16 @@ int Dict_delkey(Dict self, Lstring key) {
     self->next[index] = NO_NEXT;
     // then we set the prev item to be the next
     self->next[prev] = tmp_next;
-    Lstring_delete(key);
     return 0;
 error:
-    Lstring_delete(key);
     return -1;
 }
 
-DynValue Dict_get(Dict self, Lstring key, DynValue _default) {
+DynValue Dict_get(Dict self, char *cstring, DynValue _default) {
     check(self, "invalid dict supplied");
-    check(key.cstring[0], "invalid key supplied");
+    check(cstring && cstring[0], "invalid key '%s' supplied", cstring);
+    Lstring key = to_Lstring(cstring);
     int index = Dict_get_index(self, key);
-    Lstring_delete(key); // TODO we delete the key we get. Bad idea?
     return self->vals[index];
 
 error:
@@ -381,26 +382,26 @@ Dict Dict_delete(Dict dict) {
 int test_dict() {
     log_info("compile successful");
     Dict dict = Dict_new();
-    Dict_set(dict, Lstring_new("pickle"), INT, dynval(_int_, 25));
-    Dict_set(dict, Lstring_new("cheese"), STR,
+    Dict_set(dict, "pickle", INT, dynval(_int_, 25));
+    Dict_set(dict, "cheese", STR,
              dynval(_str_, Lstring_new("23")));
-    Dict_set(dict, Lstring_new("crackers"), STR,
+    Dict_set(dict, "crackers", STR,
              dynval(_str_, Lstring_new("holy guacamole")));
-    Dict_set(dict, Lstring_new("crackers2"), STR,
+    Dict_set(dict, "crackers2", STR,
              dynval(_str_, Lstring_new("holy guacamole")));
     Dict_print(dict);
-    Dict_delkey(dict, Lstring_new("pickle"));
+    Dict_delkey(dict, "pickle");
     Dict_print(dict);
-    Dict_set(dict, Lstring_new("pickle"), FLOAT, dynval(_float_, 26.2));
+    Dict_set(dict, "pickle", FLOAT, dynval(_float_, 26.2));
     Dict_print(dict);
-    Dict_delkey(dict, Lstring_new("pickl"));
+    Dict_delkey(dict, "pickl");
     debug("getting value of pickle as %f",
-          Dict_get(dict, Lstring_new("pickle"), EMPTYVAL)._float_);
-    Dict_set(dict, Lstring_new("cheese"), OBJ, dynval(_obj_, dict));
+          Dict_get(dict, "pickle", EMPTYVAL)._float_);
+    Dict_set(dict, "cheese", OBJ, dynval(_obj_, dict));
     Dict_print(dict);
-    Dict_delkey(dict, Lstring_new("pickle"));
-    Dict_delkey(dict, Lstring_new("cheese"));
-    Dict_delkey(dict, Lstring_new("crackers"));
+    Dict_delkey(dict, "pickle");
+    Dict_delkey(dict, "cheese");
+    Dict_delkey(dict, "crackers");
     Dict_print(dict);
     dict = Dict_delete(dict);
     return 0;
