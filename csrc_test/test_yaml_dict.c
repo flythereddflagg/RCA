@@ -33,6 +33,7 @@ DynValue process_yaml_file(const char *filename) {
             out_obj = cur_obj;
         switch (event.type) {
         case YAML_MAPPING_START_EVENT:
+            debug("YAML_MAPPING_START_EVENT");
             cur_obj._dict_ = Dict_new();
             if (top >= 0 && levels[top] == YAML_MAP_STATE) {
                 Dict_set(stack[top]._dict_, cur_key.cstring, DICT, cur_obj);
@@ -45,11 +46,14 @@ DynValue process_yaml_file(const char *filename) {
             key = true;
             break;
         case YAML_MAPPING_END_EVENT:
+            debug("YAML_MAPPING_END_EVENT");
             stack[top] = EMPTYVAL;
             levels[top] = YAML_NO_STATE;
             top -= 1;
             break;
         case YAML_SEQUENCE_START_EVENT:
+            debug("YAML_SEQUENCE_START_EVENT");
+
             cur_obj._arr_ = ValArray_new();
             if (top >= 0 && levels[top] == YAML_MAP_STATE) {
                 Dict_set(stack[top]._dict_, cur_key.cstring, ARR, cur_obj);
@@ -61,11 +65,15 @@ DynValue process_yaml_file(const char *filename) {
             stack[top] = cur_obj;
             break;
         case YAML_SEQUENCE_END_EVENT:
+            debug("YAML_SEQUENCE_END_EVENT");
+
             stack[top] = EMPTYVAL;
             levels[top] = YAML_NO_STATE;
             top -= 1;
             break;
         case YAML_SCALAR_EVENT:
+            debug("YAML_SCALAR_EVENT");
+
             if (levels[top] == YAML_SEQ_STATE) {
                 // printf("- %s\n", event.data.scalar.value);
                 ValArray_append(
@@ -78,6 +86,7 @@ DynValue process_yaml_file(const char *filename) {
                 key = !key;
             } else {
                 // printf("%s\n", event.data.scalar.value);
+                debug("key val: %s -> %s", cur_key.cstring, (char *)event.data.scalar.value);
                 Dict_set(stack[top]._dict_, cur_key.cstring, STR,
                          dynval(_str_,
                                 Lstring_new((char *)event.data.scalar.value)));
@@ -85,6 +94,7 @@ DynValue process_yaml_file(const char *filename) {
             }
             break;
         default:
+            debug("NO EVENT!");
             break;
         }
         if (event.type == YAML_STREAM_END_EVENT)

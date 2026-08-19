@@ -168,21 +168,33 @@ struct DictData {
     int *next;
 };
 
-int Dict_hash(const Lstring key) {
-    long long hash = 0, hpow = 1;
+// int Dict_hash(const Lstring key) {
+//     long long hash = 0, hpow = 1;
+//     int i = 0;
+//     for (i = 0; i < key.length; i++) {
+//         if (key.cstring[i] == '\0')
+//             break;
+//         hpow = 1;
+//         for (int j = 0; j < i + 1; j++)
+//             hpow *= key.cstring[i];
+//         hash += hpow * HASHPRIME;
+//     }
+//     check(i > 0, "invalid hash key");
+//     // debug("hash %lld", hash);
+//     return hash % DICTSIZE;
+
+// error:
+//     return -1;
+// }
+
+int Dict_hash(const Lstring key){
+    check(key.cstring && key.cstring[0], "invalid key to hash %s", key.cstring);
+    char hash = 0;
     int i = 0;
     for (i = 0; i < key.length; i++) {
-        if (key.cstring[i] == '\0')
-            break;
-        hpow = 1;
-        for (int j = 0; j < i + 1; j++)
-            hpow *= key.cstring[i];
-        hash += hpow * HASHPRIME;
+        hash = hash ^ key.cstring[i];
     }
-    check(i > 0, "invalid hash key");
-    // debug("hash %lld", hash);
-    return hash % DICTSIZE;
-
+    return (int) hash % DICTSIZE;
 error:
     return -1;
 }
@@ -192,7 +204,7 @@ int Dict_get_index(const Dict self, const Lstring key) {
     check(key.cstring && key.cstring[0], "invalid key '%s' supplied",
           key.cstring);
     int hash_i = Dict_hash(key), index = 0, i = 0;
-    debug("%d", hash_i);
+    // debug("%d", hash_i);
 
     // if the key at that index is not empty follow the linked list to the end
     while (self->keys[index].cstring && self->next[hash_i] != NO_NEXT &&
@@ -229,9 +241,9 @@ int Dict_set(Dict self, char *cstring, DynType type, DynValue val) {
     check(cstring && cstring[0], "invalid key '%s' supplied", cstring);
     Lstring key = Lstring_new(cstring);
     int index = Dict_get_index(self, key);
-    check(index > 0 && index < DICTSIZE, "Index error")
+    check(index >= 0 && index < DICTSIZE, "Index error '%d'", index);
 
-        self->keys[index] = Lstring_delete(self->keys[index]);
+    self->keys[index] = Lstring_delete(self->keys[index]);
     if (self->types[index] == DICT)
         self->vals[index]._dict_ = Dict_delete(self->vals[index]._dict_);
     else if (self->types[index] == ARR)
@@ -256,7 +268,6 @@ int Dict_delkey(Dict self, char *cstring) {
     // if keys do not match follow the linked list and error if we reach the end
     while (!self->keys[index].cstring ||
            Lstring_equal(key, self->keys[index])) {
-        debug("%d", index);
         check(self->next[index] != NO_NEXT, "'" LSTRING_FMT "' Key not found",
               Lstring_format(key));
         prev = index;
