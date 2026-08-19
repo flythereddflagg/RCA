@@ -11,7 +11,8 @@
 #define MAX_LSTRING_LEN 500
 #define LSTRING_FMT "%.*s"
 #define Lstring_format(self) (int)self.length, self.cstring
-#define LSTRING_NULL (Lstring){.length=0, .cstring=NULL}
+#define LSTRING_NULL                                                           \
+    (Lstring) { .length = 0, .cstring = NULL }
 
 typedef struct LstringData Lstring;
 
@@ -20,11 +21,9 @@ struct LstringData {
     char *cstring;
 };
 
-Lstring to_Lstring(char *cstring){
-    return (Lstring) {
-        .length = strnlen(cstring, MAX_LSTRING_LEN),
-        .cstring = cstring
-    };
+Lstring to_Lstring(char *cstring) {
+    return (Lstring){.length = strnlen(cstring, MAX_LSTRING_LEN),
+                     .cstring = cstring};
 }
 
 Lstring Lstring_delete(Lstring self) {
@@ -37,10 +36,9 @@ Lstring Lstring_new(char *cstring) {
     // Lstring self = (Lstring)malloc(sizeof(struct LstringData));
     // check_mem(self);
     check(cstring, "invalid string supplied");
-    Lstring self = {
-        .length = strnlen(cstring, MAX_LSTRING_LEN),
-        .cstring = (char*)malloc(sizeof(char) * (self.length + 1))
-    };
+    Lstring self = {.length = strnlen(cstring, MAX_LSTRING_LEN),
+                    .cstring =
+                        (char *)malloc(sizeof(char) * (self.length + 1))};
     // self.length = strnlen(cstring, MAX_LSTRING_LEN);
     check(self.length < MAX_LSTRING_LEN, "invalid C string supplied");
     // self.cstring = (char *)malloc(sizeof(char) * (self.length + 1));
@@ -51,7 +49,7 @@ Lstring Lstring_new(char *cstring) {
 error:
     return self;
 }
-Lstring Lstring_set(Lstring old, char *cstring){
+Lstring Lstring_set(Lstring old, char *cstring) {
     Lstring_delete(old);
     return Lstring_new(cstring);
 }
@@ -59,8 +57,7 @@ Lstring Lstring_set(Lstring old, char *cstring){
 void Lstring_print(Lstring self) { printf(LSTRING_FMT, Lstring_format(self)); }
 
 bool Lstring_equal(Lstring self, Lstring other) {
-    if (self.cstring && other.cstring &&
-        self.length == other.length &&
+    if (self.cstring && other.cstring && self.length == other.length &&
         !strncmp(self.cstring, other.cstring, self.length))
 
         return true;

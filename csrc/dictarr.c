@@ -187,10 +187,12 @@ error:
     return -1;
 }
 
-int Dict_get_index(const Dict self, const Lstring key){
+int Dict_get_index(const Dict self, const Lstring key) {
     check(self, "invalid dict supplied");
-    check(key.cstring && key.cstring[0], "invalid key '%s' supplied", key.cstring);
-     int hash_i = Dict_hash(key), index = 0, i = 0;
+    check(key.cstring && key.cstring[0], "invalid key '%s' supplied",
+          key.cstring);
+    int hash_i = Dict_hash(key), index = 0, i = 0;
+    debug("%d", hash_i);
 
     // if the key at that index is not empty follow the linked list to the end
     while (self->keys[index].cstring && self->next[hash_i] != NO_NEXT &&
@@ -202,7 +204,8 @@ int Dict_get_index(const Dict self, const Lstring key){
     // now we have the end of the current hash list
     // so we increment by 1 until we either find an empty slot or the given key
     for (i = 0; i < DICTSIZE; i++) {
-        if (Lstring_equal(key, self->keys[hash_i]) || !self->keys[index].cstring)
+        if (Lstring_equal(key, self->keys[hash_i]) ||
+            !self->keys[index].cstring)
             break;
         index++;
         // wrap around
@@ -215,21 +218,20 @@ int Dict_get_index(const Dict self, const Lstring key){
         self->next[hash_i] = index;
 
     check(index >= 0 && index < DICTSIZE, "invalid index '%d' detected", index);
-    
+
     return index;
 error:
     return -1;
-
 }
 
-int Dict_set(Dict self, char* cstring, DynType type, DynValue val) {
+int Dict_set(Dict self, char *cstring, DynType type, DynValue val) {
     check(self, "invalid dict supplied");
     check(cstring && cstring[0], "invalid key '%s' supplied", cstring);
     Lstring key = Lstring_new(cstring);
     int index = Dict_get_index(self, key);
     check(index > 0 && index < DICTSIZE, "Index error")
-   
-    self->keys[index] = Lstring_delete(self->keys[index]);
+
+        self->keys[index] = Lstring_delete(self->keys[index]);
     if (self->types[index] == DICT)
         self->vals[index]._dict_ = Dict_delete(self->vals[index]._dict_);
     else if (self->types[index] == ARR)
@@ -252,7 +254,8 @@ int Dict_delkey(Dict self, char *cstring) {
     int prev = Dict_hash(key), index = prev;
     // TODO figure out how to represent this
     // if keys do not match follow the linked list and error if we reach the end
-    while (!self->keys[index].cstring || Lstring_equal(key, self->keys[index])) {
+    while (!self->keys[index].cstring ||
+           Lstring_equal(key, self->keys[index])) {
         debug("%d", index);
         check(self->next[index] != NO_NEXT, "'" LSTRING_FMT "' Key not found",
               Lstring_format(key));
@@ -384,8 +387,7 @@ int test_dict() {
     log_info("compile successful");
     Dict dict = Dict_new();
     Dict_set(dict, "pickle", INT, dynval(_int_, 25));
-    Dict_set(dict, "cheese", STR,
-             dynval(_str_, Lstring_new("23")));
+    Dict_set(dict, "cheese", STR, dynval(_str_, Lstring_new("23")));
     Dict_set(dict, "crackers", STR,
              dynval(_str_, Lstring_new("holy guacamole")));
     Dict_set(dict, "crackers2", STR,
