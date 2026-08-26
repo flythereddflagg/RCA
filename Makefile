@@ -23,6 +23,7 @@ help:
 	@echo "Usage: make [build|run|clean|clean_all|get_raylib|help|python|flatpak|appimage]"
 
 # get version 6.0 of raylib
+# TODO get the right version of raylib by system detection.
 get_raylib:
 	mkdir -p ./lib
 	wget https://github.com/raysan5/raylib/releases/download/6.0/raylib-6.0_linux_amd64.tar.gz
