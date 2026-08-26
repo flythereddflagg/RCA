@@ -8,7 +8,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX_LSTRING_LEN 500
+#define MAX_LSTRING_LEN 1024
 #define LSTRING_FMT "%.*s"
 #define Lstring_format(self) (int)self.length, self.cstring
 #define LSTRING_NULL                                                           \
@@ -22,6 +22,8 @@ struct LstringData {
 };
 
 Lstring to_Lstring(char *cstring) {
+    // return an Lstring without copying and allocating new memory. 
+    // This can be risky.
     return (Lstring){.length = strnlen(cstring, MAX_LSTRING_LEN),
                      .cstring = cstring};
 }
@@ -56,7 +58,7 @@ Lstring Lstring_set(Lstring old, char *cstring) {
 
 void Lstring_print(Lstring self) { printf(LSTRING_FMT, Lstring_format(self)); }
 
-bool Lstring_equal(Lstring self, Lstring other) {
+bool Lstring_equal(const Lstring self, const Lstring other) {
     if (self.cstring && other.cstring && self.length == other.length &&
         !strncmp(self.cstring, other.cstring, self.length))
 

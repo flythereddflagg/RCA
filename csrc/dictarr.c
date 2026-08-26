@@ -238,7 +238,7 @@ error:
 
 int Dict_set(Dict self, char *cstring, DynType type, DynValue val) {
     check(self, "invalid dict supplied");
-    check(cstring && cstring[0], "invalid key '%s' supplied", cstring);
+    check(cstring && cstring[0], "invalid key supplied: '%s'", cstring);
     Lstring key = Lstring_new(cstring);
     int index = Dict_get_index(self, key);
     check(index >= 0 && index < DICTSIZE, "Index error '%d'", index);
