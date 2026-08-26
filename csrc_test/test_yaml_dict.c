@@ -75,7 +75,27 @@ DynValue process_yaml_file(const char *filename) {
             check that the value is not 0 if it is return int = 0
             try to parse as a int and a float. If int and float are the same value and there is no e, E or '.' in the string, parse as int, otherwise parse as float (use --strtol and strtof--)
             if parsing error occurs then check for bool lower("true") and lower("false") only if all of these fail do you parse as string
-             */
+            */
+            Lstring event_value = Lstring_new((char*)event.data.scalar.value);
+            DynValue value = EMPTYVAL;
+            if (Lstring_cstring_equal("0", event_value.cstring))
+                value = dynval(_int_, 0);
+            else {
+                long i_val = strtol(event_value.cstring, 0);
+                float f_val = strtof(event_value.cstring, NULL);
+                if (i_val == 0 && f_val == 0.0f)
+                    value = dynval(_str_, event_value);
+                else if (
+                    (float) ival == f_val 
+                    && !strchr(event_value.cstring, "e")
+                    && !strchr(event_value.cstring, "e")
+                    && !strchr(event_value.cstring, "."))
+
+                    value = dynval(_int_, i_val);
+                else
+                    value = dynval(_float_, f_val);
+            }
+            // continue testing here
             if (levels[top] == YAML_SEQ_STATE) {
                 ValArray_append(
                     stack[top]._arr_, STR,
