@@ -73,7 +73,7 @@ DynValue process_yaml_file(const char *filename) {
         case YAML_SCALAR_EVENT:
             /*
             check that the value is not 0 if it is return int = 0
-            try to parse as a int and a float. If int and float are the same value, parse as int, otherwise parse as float (use --strtol--)
+            try to parse as a int and a float. If int and float are the same value and there is no e, E or '.' in the string, parse as int, otherwise parse as float (use --strtol and strtof--)
             if parsing error occurs then check for bool lower("true") and lower("false") only if all of these fail do you parse as string
              */
             if (levels[top] == YAML_SEQ_STATE) {
