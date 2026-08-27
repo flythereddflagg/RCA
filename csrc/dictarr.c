@@ -30,7 +30,7 @@ union DynValueData {
     Dict _dict_;
     ValArray _arr_;
     Lstring _str_;
-    long _int_;
+    int _int_;
     float _float_;
     bool _bool_;
     void *_obj_;

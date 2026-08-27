@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,6 +11,70 @@
 #define MAX_NESTING_DEPTH 10
 
 typedef enum { YAML_NO_STATE, YAML_MAP_STATE, YAML_SEQ_STATE } yaml_state_t;
+
+typedef struct {
+    DynValue value;
+    DynType type;
+} DynTypeVal;
+
+DynTypeVal parse_value(yaml_event_t event) {
+    /*
+    check that the value is not 0 if it is return int = 0
+    try to parse as a int and a float. If int and float are the same value and
+    there is no e, E or '.' in the string, parse as int, otherwise parse as
+    float (use --strtol and strtof--) if parsing error occurs then check for
+    bool lower("true") and lower("false") only if all of these fail do you parse
+    as string
+    */
+    Lstring event_value = Lstring_new((char *)event.data.scalar.value);
+    Lstring val_copy = Lstring_new(event_value.cstring);
+    
+    DynValue value = EMPTYVAL;
+    DynType type = NONE;
+    int i_val = (int) strtol(event_value.cstring, NULL, 0);
+    float f_val = strtof(event_value.cstring, NULL);
+    if (Lstring_cstring_equal("0", event_value.cstring))
+        value = dynval(_int_, 0);
+        Lstring_delete(event_value);
+    else {
+        if (i_val == 0 && f_val == 0.0f) { // so not a number
+            
+            for (size_t i = 0; i < val_copy.length; i++)
+                val_copy.cstring[i] = (char)tolower(val_copy.cstring[i]);
+            
+            if (Lstring_cstring_equal("true", val_copy.cstring)){
+                value = dynval(_bool_, true);
+                type = BOOL;
+                Lstring_delete(event_value);
+            }
+            else if (Lstring_cstring_equal("false", val_copy.cstring)){
+                value = dynval(_bool_, false);
+                type = BOOL;
+                Lstring_delete(event_value);
+            }
+            else{
+                value = dynval(_str_, event_value);
+                type = STR;
+                // Lstring_delete(event_value); // DO NOT DELETE IF ITS A STRING
+            }
+            
+        } else if ((float)i_val == f_val && 
+                   !strchr(event_value.cstring, 'e') &&
+                   !strchr(event_value.cstring, 'e') &&
+                   !strchr(event_value.cstring, '.')){
+                value = dynval(_int_, i_val);    
+                type = INT;
+                Lstring_delete(event_value);
+            }
+        else{
+            value = dynval(_float_, f_val);
+            type = FLOAT;
+            Lstring_delete(event_value);
+        }
+    }
+    Lstring_delete(val_copy);
+    return (DynTypeVal){.value = value, .type = type};
+}
 
 DynValue process_yaml_file(const char *filename) {
     DynValue cur_obj = EMPTYVAL;
@@ -35,7 +100,8 @@ DynValue process_yaml_file(const char *filename) {
         case YAML_MAPPING_START_EVENT:
             cur_obj._dict_ = Dict_new();
             if (top >= 0 && levels[top] == YAML_MAP_STATE) {
-                fail = Dict_set(stack[top]._dict_, cur_key.cstring, DICT, cur_obj);
+                fail =
+                    Dict_set(stack[top]._dict_, cur_key.cstring, DICT, cur_obj);
                 check(!fail, "Dict failure detected");
             } else if (top >= 0 && levels[top] == YAML_SEQ_STATE) {
                 ValArray_append(stack[top]._arr_, DICT, cur_obj);
@@ -51,10 +117,10 @@ DynValue process_yaml_file(const char *filename) {
             top -= 1;
             break;
         case YAML_SEQUENCE_START_EVENT:
-
             cur_obj._arr_ = ValArray_new();
             if (top >= 0 && levels[top] == YAML_MAP_STATE) {
-                fail = Dict_set(stack[top]._dict_, cur_key.cstring, ARR, cur_obj);
+                fail =
+                    Dict_set(stack[top]._dict_, cur_key.cstring, ARR, cur_obj);
                 check(!fail, "Dict failure detected");
             } else if (top >= 0 && levels[top] == YAML_SEQ_STATE) {
                 ValArray_append(stack[top]._arr_, ARR, cur_obj);
@@ -71,44 +137,24 @@ DynValue process_yaml_file(const char *filename) {
             key = true;
             break;
         case YAML_SCALAR_EVENT:
-            /*
-            check that the value is not 0 if it is return int = 0
-            try to parse as a int and a float. If int and float are the same value and there is no e, E or '.' in the string, parse as int, otherwise parse as float (use --strtol and strtof--)
-            if parsing error occurs then check for bool lower("true") and lower("false") only if all of these fail do you parse as string
-            */
-            Lstring event_value = Lstring_new((char*)event.data.scalar.value);
-            DynValue value = EMPTYVAL;
-            if (Lstring_cstring_equal("0", event_value.cstring))
-                value = dynval(_int_, 0);
-            else {
-                long i_val = strtol(event_value.cstring, 0);
-                float f_val = strtof(event_value.cstring, NULL);
-                if (i_val == 0 && f_val == 0.0f)
-                    value = dynval(_str_, event_value);
-                else if (
-                    (float) ival == f_val 
-                    && !strchr(event_value.cstring, "e")
-                    && !strchr(event_value.cstring, "e")
-                    && !strchr(event_value.cstring, "."))
-
-                    value = dynval(_int_, i_val);
-                else
-                    value = dynval(_float_, f_val);
-            }
-            // continue testing here
+            debug("breakpoint");
             if (levels[top] == YAML_SEQ_STATE) {
-                ValArray_append(
-                    stack[top]._arr_, STR,
-                    dynval(_str_,
-                           Lstring_new((char *)event.data.scalar.value)));
+                debug("breakpoint");
+
+                DynTypeVal type_value = parse_value(event);
+                ValArray_append(stack[top]._arr_, type_value.type,
+                                type_value.value);
             } else if (levels[top] == YAML_MAP_STATE && key) {
+                debug("breakpoint");
+
                 cur_key = Lstring_set(cur_key, (char *)event.data.scalar.value);
                 key = !key;
             } else {
+                debug("breakpoint");
 
-                fail = Dict_set(stack[top]._dict_, cur_key.cstring, STR,
-                         dynval(_str_,
-                                Lstring_new((char *)event.data.scalar.value)));
+                DynTypeVal type_value = parse_value(event);
+                fail = Dict_set(stack[top]._dict_, cur_key.cstring,
+                                type_value.type, type_value.value);
                 check(!fail, "Dict failure detected");
                 key = !key;
             }
@@ -137,4 +183,3 @@ int main() {
     Dict_delete(out._dict_);
     return 0;
 }
-
