@@ -11,7 +11,9 @@
 #include "input.c"
 #include "node.c"
 #include "scene.c"
-#include "yaml.c"
+
+#include "dictarr.c"
+#include "yaml_parse.c"
 
 #define MAX_INPUTS 6
 #define SPEED 200
@@ -19,7 +21,7 @@
 typedef struct GameData *Game;
 
 struct GameData {
-    Yaml settings;
+    Dict settings;
     bool debug;
     bool running;
     bool paused;
@@ -30,22 +32,25 @@ struct GameData {
     Scene *saved_scenes;
 };
 
-RenderTexture2D Game_init_screen(Yaml settings) {
+RenderTexture2D Game_init_screen(Dict settings) {
     SetTraceLogLevel(LOG_WARNING);
-    int resolution = Yaml_get(settings, "RESOLUTION")._int_;
-    int scale = Yaml_get(settings, "SCALE")._int_;
-    char *title = Yaml_get(settings, "title")._str_;
-    double aspect_ratio = (1.0f * Yaml_get(settings, "/ASPECT_RATIO[0]")._int_ /
-                           Yaml_get(settings, "/ASPECT_RATIO[1]")._int_);
+    RenderTexture2D v_screen;
+    int resolution = Dict_get(settings, "RESOLUTION", EMPTYVAL)._int_;
+    int scale = Dict_get(settings, "SCALE", EMPTYVAL)._int_;
+    char *title = Dict_get(settings, "title", EMPTYVAL)._str_.cstring;
+    ValArray aspect_ratio_parts = Dict_get(
+        settings, "ASPECT_RATIO", EMPTYVAL)._arr_;
+    check(aspect_ratio_parts, "ValArray Failed to load.");
+    double aspect_ratio = (1.0f * ValArray_get_at(aspect_ratio_parts, 0)._int_ /
+                           ValArray_get_at(aspect_ratio_parts, 1)._int_);
 
     SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT);
     InitWindow((int)(resolution * aspect_ratio * scale), resolution * scale,
                title);
-    SetTargetFPS(Yaml_get(settings, "FPS")._int_);
-    log_info("FPS %d", Yaml_get(settings, "FPS")._int_);
+    SetTargetFPS(Dict_get(settings, "FPS", EMPTYVAL)._int_);
+    log_info("FPS %d", Dict_get(settings, "FPS", EMPTYVAL)._int_);
     SetExitKey(KEY_BACKSPACE);
-    RenderTexture2D v_screen =
-        LoadRenderTexture((int)(resolution * aspect_ratio), resolution);
+    v_screen = LoadRenderTexture((int)(resolution * aspect_ratio), resolution);
     check(IsRenderTextureValid(v_screen), "render texture not loaded");
     // TODO figure out what this does.
     // SetTextureFilter(v_screen.texture, TEXTURE_FILTER_BILINEAR);
@@ -92,16 +97,15 @@ void Game_draw_frame(Game self) {
 Game Game_new(const char *init_path) {
     Game game = (Game)malloc(sizeof(struct GameData));
     check_mem(game);
-    game->settings = Yaml_load(init_path);
+    game->settings = YamlParse_process_yaml_file(init_path)._dict_;
     check(game->settings, "Settings could not load");
     game->debug = false;
     game->running = false;
     game->paused = false;
     game->input = Input_new(game);
     game->draw_surface = Game_init_screen(game->settings);
-    log_info("icon %s", Yaml_get(game->settings, "icon")._str_);
 
-    game->icon = LoadImage(Yaml_get(game->settings, "icon")._str_);
+    game->icon = LoadImage(Dict_get(game->settings, "icon", EMPTYVAL)._str_.cstring);
     game->scene = NULL;
     game->saved_scenes = NULL;
     SetWindowIcon(game->icon);
@@ -112,7 +116,7 @@ Game Game_delete(Game game) {
     UnloadImage(game->icon);
     UnloadRenderTexture(game->draw_surface);
     game->input = Input_delete(game->input);
-    game->settings = Yaml_delete(game->settings);
+    game->settings = Dict_delete(game->settings);
     CloseWindow();
 
     if (game)
@@ -135,8 +139,8 @@ int Game_run(Game game) {
     }
     return 0;
 
-error:
-    return 1;
+// error:
+//     return 1;
 }
 #endif
 #ifdef __ENGINE_MAIN__

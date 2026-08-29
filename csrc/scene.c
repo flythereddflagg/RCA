@@ -5,7 +5,7 @@
 #define __SCENE_MAIN__
 #endif
 #include "node.c"
-#include "yaml.c"
+#include "yaml_parse.c"
 #include <stdbool.h>
 
 // TODO implement Scene logic
@@ -22,7 +22,7 @@ struct SceneData {
     NodeArray all_nodes;
     NodeArray active_nodes;
     Node bg_ref;
-    Yaml init;
+    Dict init;
 };
 void Scene_new(void);
 void Scene_delete(void);

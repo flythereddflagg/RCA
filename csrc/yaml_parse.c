@@ -23,7 +23,7 @@ typedef struct {
     DynType type;
 } DynTypeVal;
 
-DynTypeVal parse_value(yaml_event_t event) {
+DynTypeVal YamlParse_parse_value(yaml_event_t event) {
     /*
     check that the value is not 0 if it is return int = 0
     try to parse as a int and a float. If int and float are the same value and
@@ -85,7 +85,7 @@ DynTypeVal parse_value(yaml_event_t event) {
     return (DynTypeVal){.value = value, .type = type};
 }
 
-DynValue process_yaml_file(const char *filename) {
+DynValue YamlParse_process_yaml_file(const char *filename) {
     DynValue cur_obj = EMPTYVAL;
     DynValue out_obj = EMPTYVAL;
     int top = -1, fail = 0;
@@ -147,7 +147,7 @@ DynValue process_yaml_file(const char *filename) {
             break;
         case YAML_SCALAR_EVENT:
             if (levels[top] == YAML_SEQ_STATE) {
-                DynTypeVal type_value = parse_value(event);
+                DynTypeVal type_value = YamlParse_parse_value(event);
                 ValArray_append(stack[top]._arr_, type_value.type,
                                 type_value.value);
             } else if (levels[top] == YAML_MAP_STATE && key) {
@@ -155,7 +155,7 @@ DynValue process_yaml_file(const char *filename) {
                 cur_key = Lstring_set(cur_key, (char *)event.data.scalar.value);
                 key = !key;
             } else {
-                DynTypeVal type_value = parse_value(event);
+                DynTypeVal type_value = YamlParse_parse_value(event);
                 fail = Dict_set(stack[top]._dict_, cur_key.cstring,
                                 type_value.type, type_value.value);
                 check(!fail, "Dict failure detected");
@@ -181,11 +181,19 @@ error:
 #endif
 #ifdef __YAML_PARSE_MAIN__
 int main() {
-    DynValue out = process_yaml_file("./assets/init.yaml");
+    DynValue out = YamlParse_process_yaml_file("./assets/init.yaml");
+    Dict dict = out._dict_;
     log_info("FINAL DICT");
     Dict_print(out._dict_);
     printf("\n");
+    ValArray aspect_ratio_parts = Dict_get(
+        dict, "ASPECT_RATIO", EMPTYVAL)._arr_;
+    check(aspect_ratio_parts, "ValArray Failed to load.");
+    
     Dict_delete(out._dict_);
     return 0;
+
+error:
+    Dict_delete(out._dict_);
 }
 #endif

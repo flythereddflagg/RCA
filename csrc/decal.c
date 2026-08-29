@@ -13,7 +13,7 @@ typedef struct DecalData *Decal;
 
 struct DecalData {
     Texture2D image;
-    Bitmask mask;
+    BitMask mask;
     Vector2 position;
 };
 
@@ -21,7 +21,7 @@ void Decal_delete(Decal self) {
     check(self, "'self' is NULL");
     UnloadTexture(self->image);
     if (self->mask) {
-        Bitmask_delete(self->mask);
+        BitMask_delete(self->mask);
     }
     free(self);
 error:;
@@ -40,7 +40,7 @@ error:
 
 int Decal_set_image(Decal self, Image img) { return 0; }
 
-int Decal_set_mask(Decal self, Bitmask mask) { return 0; }
+int Decal_set_mask(Decal self, BitMask mask) { return 0; }
 
 #endif
 #ifdef __DECAL_MAIN__

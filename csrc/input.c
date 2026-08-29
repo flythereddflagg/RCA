@@ -6,7 +6,7 @@
 #endif
 #include "dbg.h"
 #include "raylib.h"
-#include "yaml.c"
+#include "yaml_parse.c"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>

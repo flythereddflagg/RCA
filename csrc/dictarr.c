@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #define DICTKEYLENGTH 256
-#define DICTSIZE 255
+#define DICTSIZE 256
 #define HASHPRIME 31
 #define NO_NEXT -1
 #define EMPTYVAL                                                               \
@@ -170,24 +170,6 @@ struct DictData {
     int *next;
 };
 
-// int Dict_hash(const Lstring key) {
-//     long long hash = 0, hpow = 1;
-//     int i = 0;
-//     for (i = 0; i < key.length; i++) {
-//         if (key.cstring[i] == '\0')
-//             break;
-//         hpow = 1;
-//         for (int j = 0; j < i + 1; j++)
-//             hpow *= key.cstring[i];
-//         hash += hpow * HASHPRIME;
-//     }
-//     check(i > 0, "invalid hash key");
-//     // debug("hash %lld", hash);
-//     return hash % DICTSIZE;
-
-// error:
-//     return -1;
-// }
 
 int Dict_hash(const Lstring key) {
     check(key.cstring && key.cstring[0], "invalid key to hash %s", key.cstring);
@@ -292,10 +274,14 @@ DynValue Dict_get(Dict self, char *cstring, DynValue _default) {
     check(cstring && cstring[0], "invalid key '%s' supplied", cstring);
     Lstring key = to_Lstring(cstring);
     int index = Dict_get_index(self, key);
+    check(
+        Lstring_equal(self->keys[index], key), 
+        "key '"LSTRING_FMT"' not found!", 
+        Lstring_format(key));
     return self->vals[index];
 
 error:
-    return EMPTYVAL;
+    return _default;
 }
 
 void Dict_print(Dict dict) {
@@ -319,6 +305,7 @@ void Dict_print(Dict dict) {
         case ARR:
             printf("  arr ");
             ValArray_print(dict->vals[i]._arr_);
+            break;
         case STR:
             // TODO fix padding
             /*
