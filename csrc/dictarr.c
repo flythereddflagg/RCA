@@ -101,7 +101,7 @@ DynType ValArray_type_at(ValArray arr, int index) {
     return arr->types[index];
 error:
     return NONE;
-} 
+}
 
 int ValArray_set_at(ValArray arr, int index, DynType type, DynValue val) {
     index = index < 0 ? arr->length + index % arr->length : index;
@@ -146,7 +146,7 @@ void ValArray_print(ValArray arr) {
             printf("%f", arr->vals[i]._float_);
             break;
         case BOOL:
-            printf("%s", arr->vals[i]._bool_? "true" : "false");
+            printf("%s", arr->vals[i]._bool_ ? "true" : "false");
             break;
         case OBJ:
             printf("%p", arr->vals[i]._obj_);
@@ -189,14 +189,14 @@ struct DictData {
 //     return -1;
 // }
 
-int Dict_hash(const Lstring key){
+int Dict_hash(const Lstring key) {
     check(key.cstring && key.cstring[0], "invalid key to hash %s", key.cstring);
     char hash = 0;
     int i = 0;
     for (i = 0; i < key.length; i++) {
         hash = hash ^ key.cstring[i];
     }
-    return (int) hash % DICTSIZE;
+    return (int)hash % DICTSIZE;
 error:
     return -1;
 }
@@ -322,7 +322,8 @@ void Dict_print(Dict dict) {
         case STR:
             // TODO fix padding
             /*
-            The "%*.*s" can be placed before OR after your "%s", depending desire for LEFT or RIGHT padding.
+            The "%*.*s" can be placed before OR after your "%s", depending
+            desire for LEFT or RIGHT padding.
             https://stackoverflow.com/questions/276827/string-padding-in-c
              */
 
@@ -335,7 +336,7 @@ void Dict_print(Dict dict) {
             printf("float %20f", dict->vals[i]._float_);
             break;
         case BOOL:
-            printf(" bool %20s", dict->vals[i]._bool_? "true":"false");
+            printf(" bool %20s", dict->vals[i]._bool_ ? "true" : "false");
             break;
         case OBJ:
             printf("  obj %20p", dict->vals[i]._obj_);

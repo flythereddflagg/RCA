@@ -1,3 +1,9 @@
+#ifndef __YAML_PARSE_C__
+#define __YAML_PARSE_C__
+#ifndef __MAIN__
+#define __MAIN__
+#define __YAML_PARSE_MAIN__
+#endif
 #include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -28,55 +34,48 @@ DynTypeVal parse_value(yaml_event_t event) {
     */
     Lstring event_value = Lstring_new((char *)event.data.scalar.value);
     Lstring val_copy = Lstring_new(event_value.cstring);
-    
+
     DynValue value = EMPTYVAL;
     DynType type = NONE;
-    int i_val = (int) strtol(event_value.cstring, NULL, 0);
+    int i_val = (int)strtol(event_value.cstring, NULL, 0);
     float f_val = strtof(event_value.cstring, NULL);
-    if (Lstring_cstring_equal("0", event_value.cstring)){
+    if (Lstring_cstring_equal("0", event_value.cstring)) {
         value = dynval(_int_, 0);
         Lstring_delete(event_value);
-    }
-    else {
+    } else {
         if (i_val == 0 && f_val == 0.0f) { // so not a number
-            
+
             for (size_t i = 0; i < val_copy.length; i++)
                 val_copy.cstring[i] = (char)tolower(val_copy.cstring[i]);
-            
-            if (Lstring_cstring_equal("true", val_copy.cstring)){
+
+            if (Lstring_cstring_equal("true", val_copy.cstring)) {
                 value = dynval(_bool_, true);
                 type = BOOL;
                 Lstring_delete(event_value);
-            }
-            else if (Lstring_cstring_equal("false", val_copy.cstring)){
+            } else if (Lstring_cstring_equal("false", val_copy.cstring)) {
                 value = dynval(_bool_, false);
                 type = BOOL;
                 Lstring_delete(event_value);
-            }
-            else{
-                if (Lstring_cstring_equal("", event_value.cstring)){
+            } else {
+                if (Lstring_cstring_equal("", event_value.cstring)) {
                     value = dynval(_obj_, NULL);
                     type = NONE;
                     Lstring_delete(event_value);
-                }
-                else{
+                } else {
                     value = dynval(_str_, event_value);
                     type = STR;
                     // DO NOT DELETE IF ITS A STRING
-                    // Lstring_delete(event_value); 
+                    // Lstring_delete(event_value);
                 }
-                
             }
-            
-        } else if ((float)i_val == f_val && 
+
+        } else if ((float)i_val == f_val && !strchr(event_value.cstring, 'e') &&
                    !strchr(event_value.cstring, 'e') &&
-                   !strchr(event_value.cstring, 'e') &&
-                   !strchr(event_value.cstring, '.')){
-                value = dynval(_int_, i_val);    
-                type = INT;
-                Lstring_delete(event_value);
-            }
-        else{
+                   !strchr(event_value.cstring, '.')) {
+            value = dynval(_int_, i_val);
+            type = INT;
+            Lstring_delete(event_value);
+        } else {
             value = dynval(_float_, f_val);
             type = FLOAT;
             Lstring_delete(event_value);
@@ -179,11 +178,14 @@ error:
     cur_key = Lstring_delete(cur_key);
     return out_obj;
 }
-
+#endif
+#ifdef __YAML_PARSE_MAIN__
 int main() {
     DynValue out = process_yaml_file("./assets/init.yaml");
     log_info("FINAL DICT");
     Dict_print(out._dict_);
+    printf("\n");
     Dict_delete(out._dict_);
     return 0;
 }
+#endif

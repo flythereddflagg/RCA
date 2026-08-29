@@ -22,7 +22,7 @@ struct LstringData {
 };
 
 Lstring to_Lstring(char *cstring) {
-    // return an Lstring without copying and allocating new memory. 
+    // return an Lstring without copying and allocating new memory.
     // This can be risky.
     return (Lstring){.length = strnlen(cstring, MAX_LSTRING_LEN),
                      .cstring = cstring};
