@@ -33,9 +33,10 @@ DynTypeVal parse_value(yaml_event_t event) {
     DynType type = NONE;
     int i_val = (int) strtol(event_value.cstring, NULL, 0);
     float f_val = strtof(event_value.cstring, NULL);
-    if (Lstring_cstring_equal("0", event_value.cstring))
+    if (Lstring_cstring_equal("0", event_value.cstring)){
         value = dynval(_int_, 0);
         Lstring_delete(event_value);
+    }
     else {
         if (i_val == 0 && f_val == 0.0f) { // so not a number
             
@@ -53,9 +54,18 @@ DynTypeVal parse_value(yaml_event_t event) {
                 Lstring_delete(event_value);
             }
             else{
-                value = dynval(_str_, event_value);
-                type = STR;
-                // Lstring_delete(event_value); // DO NOT DELETE IF ITS A STRING
+                if (Lstring_cstring_equal("", event_value.cstring)){
+                    value = dynval(_obj_, NULL);
+                    type = NONE;
+                    Lstring_delete(event_value);
+                }
+                else{
+                    value = dynval(_str_, event_value);
+                    type = STR;
+                    // DO NOT DELETE IF ITS A STRING
+                    // Lstring_delete(event_value); 
+                }
+                
             }
             
         } else if ((float)i_val == f_val && 
@@ -137,21 +147,15 @@ DynValue process_yaml_file(const char *filename) {
             key = true;
             break;
         case YAML_SCALAR_EVENT:
-            debug("breakpoint");
             if (levels[top] == YAML_SEQ_STATE) {
-                debug("breakpoint");
-
                 DynTypeVal type_value = parse_value(event);
                 ValArray_append(stack[top]._arr_, type_value.type,
                                 type_value.value);
             } else if (levels[top] == YAML_MAP_STATE && key) {
-                debug("breakpoint");
 
                 cur_key = Lstring_set(cur_key, (char *)event.data.scalar.value);
                 key = !key;
             } else {
-                debug("breakpoint");
-
                 DynTypeVal type_value = parse_value(event);
                 fail = Dict_set(stack[top]._dict_, cur_key.cstring,
                                 type_value.type, type_value.value);

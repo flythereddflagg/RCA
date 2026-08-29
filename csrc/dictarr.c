@@ -101,7 +101,7 @@ DynType ValArray_type_at(ValArray arr, int index) {
     return arr->types[index];
 error:
     return NONE;
-}
+} 
 
 int ValArray_set_at(ValArray arr, int index, DynType type, DynValue val) {
     index = index < 0 ? arr->length + index % arr->length : index;
@@ -135,7 +135,9 @@ void ValArray_print(ValArray arr) {
         case ARR:
             ValArray_print(arr->vals[i]._arr_);
         case STR:
+            printf("\"");
             Lstring_print(arr->vals[i]._str_);
+            printf("\"");
             break;
         case INT:
             printf("%d", arr->vals[i]._int_);
@@ -144,7 +146,7 @@ void ValArray_print(ValArray arr) {
             printf("%f", arr->vals[i]._float_);
             break;
         case BOOL:
-            printf("%d", arr->vals[i]._bool_);
+            printf("%s", arr->vals[i]._bool_? "true" : "false");
             break;
         case OBJ:
             printf("%p", arr->vals[i]._obj_);
@@ -154,7 +156,7 @@ void ValArray_print(ValArray arr) {
         }
         printf(", ");
     }
-    printf("\b\b }\n");
+    printf("\b\b }");
 error:
     return;
 }
@@ -298,7 +300,7 @@ error:
 
 void Dict_print(Dict dict) {
     check(dict, "NULL dict supplied");
-
+    printf("{ ");
     printf("\n[ind]        key |  type                  val | next\n");
     printf("----------------------------------------------------\n");
 
@@ -318,7 +320,13 @@ void Dict_print(Dict dict) {
             printf("  arr ");
             ValArray_print(dict->vals[i]._arr_);
         case STR:
-            printf("  str %20s", dict->vals[i]._str_.cstring);
+            // TODO fix padding
+            /*
+            The "%*.*s" can be placed before OR after your "%s", depending desire for LEFT or RIGHT padding.
+            https://stackoverflow.com/questions/276827/string-padding-in-c
+             */
+
+            printf("  str \"%-19.*s", Lstring_format(dict->vals[i]._str_));
             break;
         case INT:
             printf("  int %20d", dict->vals[i]._int_);
@@ -327,7 +335,7 @@ void Dict_print(Dict dict) {
             printf("float %20f", dict->vals[i]._float_);
             break;
         case BOOL:
-            printf(" bool %20d", dict->vals[i]._bool_);
+            printf(" bool %20s", dict->vals[i]._bool_? "true":"false");
             break;
         case OBJ:
             printf("  obj %20p", dict->vals[i]._obj_);
@@ -340,7 +348,7 @@ void Dict_print(Dict dict) {
         else
             printf(" | %d\n", dict->next[i]);
     }
-    printf("\n");
+    printf("\n}");
 error:
     return;
 }
