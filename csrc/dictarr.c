@@ -184,6 +184,7 @@ error:
 }
 
 int Dict_get_index(const Dict self, const Lstring key) {
+    // TODO reimplement this more simply
     check(self, "invalid dict supplied");
     check(key.cstring && key.cstring[0], "invalid key '%s' supplied",
           key.cstring);
@@ -197,11 +198,12 @@ int Dict_get_index(const Dict self, const Lstring key) {
         hash_i = self->next[hash_i];
     }
     // debug("%d", hash_i);
-
-    index = hash_i;
-
+    
     // now we have the end of the current hash list
     // so we increment by 1 until we either find an empty slot or the given key
+    index = hash_i;
+
+    
     for (i = 0; i < DICTSIZE; i++) {
         if (Lstring_equal(key, self->keys[hash_i]) ||
             !self->keys[index].cstring)
