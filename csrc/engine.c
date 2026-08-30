@@ -48,7 +48,6 @@ RenderTexture2D Game_init_screen(Dict settings) {
     InitWindow((int)(resolution * aspect_ratio * scale), resolution * scale,
                title);
     SetTargetFPS(Dict_get(settings, "FPS", EMPTYVAL)._int_);
-    log_info("FPS %d", Dict_get(settings, "FPS", EMPTYVAL)._int_);
     SetExitKey(KEY_BACKSPACE);
     v_screen = LoadRenderTexture((int)(resolution * aspect_ratio), resolution);
     check(IsRenderTextureValid(v_screen), "render texture not loaded");
@@ -114,19 +113,21 @@ error:
     return game;
 }
 Game Game_delete(Game game) {
-    UnloadImage(game->icon);
-    UnloadRenderTexture(game->draw_surface);
-    game->input = Input_delete(game->input);
-    game->settings = Dict_delete(game->settings);
-    CloseWindow();
-
-    if (game)
+    if (game){
+        UnloadImage(game->icon);
+        UnloadRenderTexture(game->draw_surface);
+        game->input = Input_delete(game->input);
+        game->settings = Dict_delete(game->settings);
+        CloseWindow();
         free(game);
+    }
 
     return NULL;
 }
 
-void Game_logic(Game game) { ; }
+int Game_logic(Game game) { 
+    return 0; 
+}
 
 int Game_run(Game game) {
     // mainloop
@@ -135,7 +136,7 @@ int Game_run(Game game) {
         if (WindowShouldClose())
             game->running = false;
         Input_update(game->input);
-        Game_logic(game);
+        // check(Game_logic(game), "Logic Error with exit code %d");
         Game_draw_frame(game);
     }
     return 0;
