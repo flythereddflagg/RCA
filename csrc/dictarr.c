@@ -170,7 +170,6 @@ struct DictData {
     int *next;
 };
 
-
 int Dict_hash(const Lstring key) {
     check(key.cstring && key.cstring[0], "invalid key to hash %s", key.cstring);
     char hash = 0;
@@ -192,18 +191,17 @@ int Dict_get_index(const Dict self, const Lstring key) {
     // debug("%d", hash_i);
 
     // if the key at that index is not empty follow the linked list to the end
-    while (self->next[hash_i] != NO_NEXT){
-        if(Lstring_equal(key, self->keys[hash_i]))
+    while (self->next[hash_i] != NO_NEXT) {
+        if (Lstring_equal(key, self->keys[hash_i]))
             return hash_i;
         hash_i = self->next[hash_i];
     }
     // debug("%d", hash_i);
-    
+
     // now we have the end of the current hash list
     // so we increment by 1 until we either find an empty slot or the given key
     index = hash_i;
 
-    
     for (i = 0; i < DICTSIZE; i++) {
         if (Lstring_equal(key, self->keys[hash_i]) ||
             !self->keys[index].cstring)
@@ -279,10 +277,8 @@ DynValue Dict_get(Dict self, char *cstring, DynValue _default) {
     check(cstring && cstring[0], "invalid key '%s' supplied", cstring);
     Lstring key = to_Lstring(cstring);
     int index = Dict_get_index(self, key);
-    check(
-        Lstring_equal(self->keys[index], key), 
-        "key '"LSTRING_FMT"' not found!", 
-        Lstring_format(key));
+    check(Lstring_equal(self->keys[index], key),
+          "key '" LSTRING_FMT "' not found!", Lstring_format(key));
     return self->vals[index];
 
 error:

@@ -38,8 +38,8 @@ RenderTexture2D Game_init_screen(Dict settings) {
     int resolution = Dict_get(settings, "RESOLUTION", EMPTYVAL)._int_;
     int scale = Dict_get(settings, "SCALE", EMPTYVAL)._int_;
     char *title = Dict_get(settings, "title", EMPTYVAL)._str_.cstring;
-    ValArray aspect_ratio_parts = Dict_get(
-        settings, "ASPECT_RATIO", EMPTYVAL)._arr_;
+    ValArray aspect_ratio_parts =
+        Dict_get(settings, "ASPECT_RATIO", EMPTYVAL)._arr_;
     check(aspect_ratio_parts, "ValArray Failed to load.");
     double aspect_ratio = (1.0f * ValArray_get_at(aspect_ratio_parts, 0)._int_ /
                            ValArray_get_at(aspect_ratio_parts, 1)._int_);
@@ -105,7 +105,8 @@ Game Game_new(const char *init_path) {
     game->input = Input_new(game);
     game->draw_surface = Game_init_screen(game->settings);
 
-    game->icon = LoadImage(Dict_get(game->settings, "icon", EMPTYVAL)._str_.cstring);
+    game->icon =
+        LoadImage(Dict_get(game->settings, "icon", EMPTYVAL)._str_.cstring);
     game->scene = NULL;
     game->saved_scenes = NULL;
     SetWindowIcon(game->icon);
@@ -139,8 +140,8 @@ int Game_run(Game game) {
     }
     return 0;
 
-// error:
-//     return 1;
+    // error:
+    //     return 1;
 }
 #endif
 #ifdef __ENGINE_MAIN__
