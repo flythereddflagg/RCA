@@ -189,7 +189,8 @@ int main() {
     ValArray aspect_ratio_parts = Dict_get(
         dict, "ASPECT_RATIO", EMPTYVAL)._arr_;
     check(aspect_ratio_parts, "ValArray Failed to load.");
-    
+    ValArray_print(aspect_ratio_parts);
+    printf("\n");
     Dict_delete(out._dict_);
     return 0;
 

@@ -191,9 +191,12 @@ int Dict_get_index(const Dict self, const Lstring key) {
     // debug("%d", hash_i);
 
     // if the key at that index is not empty follow the linked list to the end
-    while (self->keys[index].cstring && self->next[hash_i] != NO_NEXT &&
-           Lstring_equal(key, self->keys[hash_i]))
+    while (self->next[hash_i] != NO_NEXT){
+        if(Lstring_equal(key, self->keys[hash_i]))
+            return hash_i;
         hash_i = self->next[hash_i];
+    }
+    // debug("%d", hash_i);
 
     index = hash_i;
 
