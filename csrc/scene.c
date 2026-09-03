@@ -33,7 +33,7 @@ Scene Scene_new(Game game, Lstring yaml_path, Dict yaml_data, Dict add_in) {
     self->init = yaml_data
                      ? yaml_data
                      : YamlParse_process_yaml_file(yaml_path.cstring)._dict_;
-
+    // TODO continue here
     return NULL;
 }
 void Scene_delete(void);
