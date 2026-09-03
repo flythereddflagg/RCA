@@ -41,7 +41,7 @@ get_raylib:
 	tar -xvf ./raylib-$(RAYLIB_VERSION)$(OS_VERSION)$(ZIP)
 	cp ./raylib-$(RAYLIB_VERSION)$(OS_VERSION)/lib/* ./lib
 	mv ./raylib-$(RAYLIB_VERSION)$(OS_VERSION)/LICENSE ./lib/RAYLIB_LICENSE
-	rm -rf ./raylib-$(RAYLIB_VERSION)$(OS_VERSION)$(ZIP)
+	rm -rf ./raylib-$(RAYLIB_VERSION)$(OS_VERSION)
 	rm -rf **.tar*
 	rm -rf **.zip*
 
