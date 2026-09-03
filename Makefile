@@ -4,8 +4,13 @@ SRC ?= ./csrc/main.c
 SRC_DIR = ./csrc
 RAYLIB_VERSION = 6.0
 # TEST_SRC = csrc/bitmask.c
-LIBS = -lraylib -L./lib -lm -lyaml 
+LIBS = -L./lib -lm -lyaml 
 LIBS += '-Wl,-rpath,$$ORIGIN/lib' # needed to point to .so files
+LIBS += -l:libraylib.so
+LIBS += -l:libraylib.so.6.0.0
+LIBS += -l:libraylib.so.600
+LIBS += -l:libraylib.a
+
 ifeq ($(OS),Windows_NT)
 	LIBS += -lgdi32 -lwinmm -Wl,--defsym,stat64i32=_stat64
 	OUT = main.exe
