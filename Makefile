@@ -2,15 +2,26 @@ CC = gcc
 CFLAGS = -g -Wall #-fanalyzer
 SRC ?= ./csrc/main.c
 SRC_DIR = ./csrc
+RAYLIB_VERSION = 6.0
 # TEST_SRC = csrc/bitmask.c
 LIBS = -lraylib -L./lib -lm -lyaml 
 LIBS += '-Wl,-rpath,$$ORIGIN/lib' # needed to point to .so files
 ifeq ($(OS),Windows_NT)
 	LIBS += -lgdi32 -lwinmm -Wl,--defsym,stat64i32=_stat64
 	OUT = main.exe
+	ZIP = .zip
+	OS_VERSION = _win64_mingw-w64
+	
 else
 	LIBS += -lX11
 	OUT = main
+	ZIP = .tar.gz
+	ifneq ($(filter arm%,$(UNAME_P)),)
+		OS_VERSION = _linux_arm64
+	else
+    	OS_VERSION = _linux_amd64
+	endif
+	
 endif
 INCLUDES = -I./include -I./csrc
 VALGRIND_OPTS ?=
@@ -26,20 +37,16 @@ help:
 # TODO get the right version of raylib by system detection.
 get_raylib:
 	mkdir -p ./lib
-	wget https://github.com/raysan5/raylib/releases/download/6.0/raylib-6.0_linux_amd64.tar.gz
-	tar -xvf ./raylib-6.0_linux_amd64.tar.gz
-	cp ./raylib-6.0_linux_amd64/lib/* ./lib
-	mv ./raylib-6.0_linux_amd64/LICENSE ./lib/RAYLIB_LICENSE
-	rm -rf ./raylib-6.0_linux_amd64
+	wget https://github.com/raysan5/raylib/releases/download/$(RAYLIB_VERSION)/raylib-$(RAYLIB_VERSION)$(OS_VERSION)$(ZIP)
+	tar -xvf ./raylib-$(RAYLIB_VERSION)$(OS_VERSION)$(ZIP)
+	cp ./raylib-$(RAYLIB_VERSION)$(OS_VERSION)/lib/* ./lib
+	mv ./raylib-$(RAYLIB_VERSION)$(OS_VERSION)/LICENSE ./lib/RAYLIB_LICENSE
+	rm -rf ./raylib-$(RAYLIB_VERSION)$(OS_VERSION)$(ZIP)
 	rm -rf **.tar*
+	rm -rf **.zip*
 
-get_cyaml:
-	dir -p ./lib
-	wget https://github.com/andrewmd5/cyaml/releases/download/v0.1.3/cyaml-linux-x64.tar.gz
-	tar -xvf ./cyaml-linux-x64.tar.gz
-	rm -rf **.tar*
 
-get_deps: clean_all get_raylib get_cyaml
+get_deps: clean_all get_raylib
 
 
 preprocess:
