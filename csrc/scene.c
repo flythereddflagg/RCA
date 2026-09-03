@@ -4,27 +4,38 @@
 #define __MAIN__
 #define __SCENE_MAIN__
 #endif
+#include "dictarr.c"
+#include "lstring.c"
 #include "node.c"
-#include "yaml_parse.c"
 #include <stdbool.h>
 
 // TODO implement Scene logic
 
 typedef struct SceneData *Scene;
 struct SceneData {
-    void *game;
+    Game game;
     bool paused;
     bool occupied;
-    char *id;
-    char **draw_layers;
-    char **group_names;
+    Lstring id;
+    Lstring *draw_layers;
+    Lstring *group_names;
     NodeArray *groups;
     NodeArray all_nodes;
     NodeArray active_nodes;
     Node bg_ref;
     Dict init;
 };
-void Scene_new(void);
+Scene Scene_new(Game game, Lstring yaml_path, Dict yaml_data, Dict add_in) {
+    Scene self = (Scene)malloc(sizeof(struct SceneData));
+    self->game = game;
+    self->paused = false;
+    self->id = yaml_path;
+    self->init = yaml_data
+                     ? yaml_data
+                     : YamlParse_process_yaml_file(yaml_path.cstring)._dict_;
+
+    return NULL;
+}
 void Scene_delete(void);
 void Scene_update(void);
 void Scene_place_node(void);

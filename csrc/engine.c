@@ -113,7 +113,7 @@ error:
     return game;
 }
 Game Game_delete(Game game) {
-    if (game){
+    if (game) {
         UnloadImage(game->icon);
         UnloadRenderTexture(game->draw_surface);
         game->input = Input_delete(game->input);
@@ -124,12 +124,13 @@ Game Game_delete(Game game) {
 
     return NULL;
 }
+Scene Game_load_scene(Game game, char *yaml_path, Dict add_in) { return NULL; }
 
-int Game_logic(Game game) { 
-    return 0; 
-}
+int Game_logic(Game game) { return 0; }
 
 int Game_run(Game game) {
+    Game_load_scene(game, Dict_get(game->settings, "inital_scene", EMPTYVAL),
+                    Dict_get(game->settings, "init_add_in", EMPTYVAL));
     // mainloop
     game->running = true;
     while (game->running) {
