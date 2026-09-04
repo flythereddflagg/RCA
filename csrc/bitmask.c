@@ -87,7 +87,7 @@ BitMask BitMask_from_image(Image img, int threshold) {
             else
                 BitMask_set(mask, i, j, false);
 
-    return mask; // TODO Test this
+    return mask;
 }
 
 Image BitMask_to_image(BitMask mask, Color set_color, Color unset_color) {
