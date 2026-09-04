@@ -3,7 +3,7 @@ int main() { return 0; }
 #else
 #ifndef __MAIN__
 #define __MAIN__
-#include "dbg.h"
+
 #include "engine.c"
 
 #define INIT_PATH "./assets/init.yaml"

@@ -4,7 +4,8 @@
 #define __MAIN__
 #define __NODE_MAIN__
 #endif
-#include "dbg.h"
+
+#include "core.h"
 #include "decal.c"
 #include "raylib.h"
 #include <stdio.h>

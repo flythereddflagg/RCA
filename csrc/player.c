@@ -4,7 +4,8 @@
 #define __MAIN__
 #define __PLAYER_MAIN__
 #endif
-#include "dbg.h"
+#include "core.h"
+
 #include <stdlib.h>
 
 typedef struct PlayerData *Player;

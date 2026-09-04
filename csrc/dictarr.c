@@ -4,7 +4,8 @@
 #define __MAIN__
 #define __DICT_MAIN__
 #endif
-#include "dbg.h"
+
+#include "core.h"
 #include "lstring.c"
 #include <stdbool.h>
 #include <stdlib.h>
@@ -18,10 +19,6 @@
 #define dynval(T, V)                                                           \
     (DynValue) { .T = V }
 
-typedef struct DictData *Dict;
-typedef union DynValueData DynValue;
-typedef enum DynTypeData DynType;
-typedef struct ValArrayData *ValArray;
 void Dict_print(Dict dict);
 Dict Dict_delete(Dict dict);
 enum DynTypeData { NONE, DICT, ARR, STR, INT, FLOAT, BOOL, OBJ };
@@ -118,6 +115,17 @@ int ValArray_append(ValArray arr, DynType type, DynValue val) {
     check(arr->length <= DICTSIZE, "Array is full");
     arr->length += 1;
     return ValArray_set_at(arr, arr->length - 1, type, val);
+error:
+    return -1;
+}
+
+int ValArray_extend(ValArray arr1, ValArray arr2) {
+    check(arr1 && arr2, "one of the given arrays is NULL");
+    for (int i = 0; i < arr2->length; i++) {
+        check(-1 != ValArray_append(arr1, arr2->types[i], arr2->vals[i]),
+              "Error while trying to append arrays");
+    }
+    return 0;
 error:
     return -1;
 }

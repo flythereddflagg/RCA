@@ -4,7 +4,8 @@
 #define __MAIN__
 #define __BITMASK_MAIN__
 #endif
-#include "dbg.h"
+
+#include "core.h"
 #include "raylib.h"
 #include <stdbool.h>
 #include <stdint.h>

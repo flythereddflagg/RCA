@@ -4,8 +4,8 @@
 #define __MAIN__
 #define __COMPASS_MAIN__
 #endif
+#include "core.h"
 #include "raylib.h"
-typedef enum { UP, RIGHT, DOWN, LEFT } Compass;
 
 Vector2 unit(Compass dir) {
     switch (dir) {

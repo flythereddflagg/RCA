@@ -3,7 +3,8 @@
 #include <stdlib.h>
 #include <yaml.h>
 
-#include "dbg.h"
+#include "core.h"
+
 #define MAX_NESTING_DEPTH 10
 
 typedef enum { YAML_NO_STATE, YAML_MAP_STATE, YAML_SEQ_STATE } yaml_state_t;

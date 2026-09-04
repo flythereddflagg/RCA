@@ -4,7 +4,8 @@
 #define __MAIN__
 #define __LSTRING_MAIN__
 #endif
-#include "dbg.h"
+#include "core.h"
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>

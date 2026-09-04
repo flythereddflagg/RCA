@@ -5,8 +5,10 @@
 #define __DECAL_MAIN__
 #endif
 #include "bitmask.c"
-#include "dbg.h"
+
+#include "core.h"
 #include "raylib.h"
+
 #include <stdlib.h>
 
 typedef struct DecalData *Decal;

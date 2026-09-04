@@ -4,6 +4,7 @@
 #define __MAIN__
 #define __YAML_PARSE_MAIN__
 #endif
+#include "core.h"
 #include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -11,7 +12,6 @@
 #include <string.h>
 #include <yaml.h>
 
-#include "dbg.h"
 #include "dictarr.c"
 #include "lstring.c"
 #define MAX_NESTING_DEPTH 10

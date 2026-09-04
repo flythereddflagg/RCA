@@ -4,7 +4,8 @@
 #define __MAIN__
 #define __ENGINE_MAIN__
 #endif
-#include "dbg.h"
+
+#include "core.h"
 #include "raylib.h"
 #include <stdbool.h>
 
@@ -17,8 +18,6 @@
 
 #define MAX_INPUTS 6
 #define SPEED 200
-
-typedef struct GameData *Game;
 
 struct GameData {
     Dict settings;
@@ -124,13 +123,16 @@ Game Game_delete(Game game) {
 
     return NULL;
 }
-Scene Game_load_scene(Game game, char *yaml_path, Dict add_in) { return NULL; }
+Scene Game_load_scene(Game game, char *yaml_path, ValArray add_in) {
+    return NULL;
+}
 
 int Game_logic(Game game) { return 0; }
 
 int Game_run(Game game) {
-    Game_load_scene(game, Dict_get(game->settings, "inital_scene", EMPTYVAL),
-                    Dict_get(game->settings, "init_add_in", EMPTYVAL));
+    Game_load_scene(
+        game, Dict_get(game->settings, "inital_scene", EMPTYVAL)._str_.cstring,
+        Dict_get(game->settings, "init_add_in", EMPTYVAL)._arr_);
     // mainloop
     game->running = true;
     while (game->running) {
@@ -145,7 +147,8 @@ int Game_run(Game game) {
     // error:
     //     return 1;
 }
-#endif
+
 #ifdef __ENGINE_MAIN__
 int main() { return 0; }
+#endif
 #endif

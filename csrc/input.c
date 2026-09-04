@@ -4,7 +4,8 @@
 #define __MAIN__
 #define __INPUT_MAIN__
 #endif
-#include "dbg.h"
+
+#include "core.h"
 #include "raylib.h"
 #include "yaml_parse.c"
 #include <stdbool.h>
@@ -21,10 +22,10 @@ typedef struct {
 } Action;
 
 typedef enum {
-    UP = KEY_UP,
-    DOWN = KEY_DOWN,
-    LEFT = KEY_LEFT,
-    RIGHT = KEY_RIGHT,
+    BUTTON_UP = KEY_UP,
+    BUTTON_DOWN = KEY_DOWN,
+    BUTTON_LEFT = KEY_LEFT,
+    BUTTON_RIGHT = KEY_RIGHT,
     BUTTON_S = KEY_V,
     BUTTON_E = KEY_SPACE,
     BUTTON_W = KEY_C,
