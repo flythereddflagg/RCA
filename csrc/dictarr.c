@@ -259,7 +259,6 @@ int Dict_delkey(Dict self, char *cstring) {
     check(cstring && cstring[0], "invalid key '%s' supplied", cstring);
     Lstring key = to_Lstring(cstring);
     int prev = Dict_hash(key), index = prev;
-    // TODO figure out how to represent this
     // if keys do not match follow the linked list and error if we reach the end
     while (!self->keys[index].cstring ||
            Lstring_equal(key, self->keys[index])) {
