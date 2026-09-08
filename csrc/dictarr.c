@@ -82,6 +82,7 @@ ValArray ValArray_delete(ValArray arr) {
 }
 DynValue ValArray_get_at(ValArray arr, int index) {
     // allows negative indexing
+    check(arr, "array is NULL");
     index = index < 0 ? arr->length + index % arr->length : index;
     check(index < arr->length, "index %d out of bounds for length %d", index,
           arr->length);
@@ -92,6 +93,7 @@ error:
 
 DynType ValArray_type_at(ValArray arr, int index) {
     // allows negative indexing
+    check(arr, "array is NULL");
     index = index < 0 ? arr->length + index % arr->length : index;
     check(index < arr->length, "index %d out of bounds for length %d", index,
           arr->length);
@@ -101,6 +103,7 @@ error:
 }
 
 int ValArray_set_at(ValArray arr, int index, DynType type, DynValue val) {
+    check(arr, "array is NULL");
     index = index < 0 ? arr->length + index % arr->length : index;
     check(index < arr->length, "index %d out of bounds for length %d", index,
           arr->length);
@@ -115,6 +118,20 @@ int ValArray_append(ValArray arr, DynType type, DynValue val) {
     check(arr->length <= DICTSIZE, "Array is full");
     arr->length += 1;
     return ValArray_set_at(arr, arr->length - 1, type, val);
+error:
+    return -1;
+}
+
+int ValArray_insert(ValArray arr, int index, DynType type, DynValue val) {
+    check(arr, "array is NULL");
+    check(!ValArray_append(arr, NONE, EMPTYVAL), "insertion failed at append");
+    for (int i = arr->length - 1; i > index; i--) {
+        arr->types[i] = arr->types[i - 1];
+        arr->vals[i] = arr->vals[i - 1];
+    }
+    check(!ValArray_set_at(arr, index, type, val),
+          "insertion failed at set_at");
+    return 0;
 error:
     return -1;
 }
@@ -432,6 +449,7 @@ int test_arr() {
     for (int i = 0; i < arr->length; i++) {
         ValArray_set_at(arr, i, INT, dynval(_int_, 0));
     }
+    ValArray_insert(arr, 3, INT, dynval(_int_, 5));
     ValArray_print(arr);
 
     arr = ValArray_delete(arr);
