@@ -5,11 +5,12 @@
 #define __NODE_MAIN__
 #endif
 
-#include "core.h"
+// #include "core.h"
 #include "decal.c"
-#include "raylib.h"
-#include <stdio.h>
-#include <stdlib.h>
+// #include "dictarr.c"
+// #include "raylib.h"
+// #include <stdio.h>
+// #include <stdlib.h>
 #define MAX_NODES 256
 #define ID_SIZE 32
 #define ID_MAX 255
@@ -19,17 +20,24 @@ children
 groups
 */
 typedef struct NodeData *Node;
-typedef struct {
-    unsigned char len;
-    Node *arr;
-} NodeArray;
+typedef ValArray NodeGroup;
 
-void NodeArray_add_node(NodeArray *nodes, Node node) {
-    if (nodes->len >= MAX_NODES)
-        return;
-    nodes->arr[nodes->len] = node;
-    nodes->len += 1;
-}
+void NodeGroup_new(void);
+void NodeGroup_delete(void);
+void NodeGroup_nodes(void);
+void NodeGroup_add(void);
+void NodeGroup_remove(void);
+void NodeGroup_has(void); // or IN?
+void NodeGroup_update(void);
+void NodeGroup_draw(void);
+
+void Node_add(void);
+void Node_remove(void);
+void Node_kill(void);
+void Node_alive(void);
+void Node_groups(void);
+
+
 
 struct NodeData {
     void *scene;
@@ -65,7 +73,8 @@ error:
     return self;
 }
 
-#endif
 #ifdef __NODE_MAIN__
 int main() { return 0; }
 #endif
+#endif
+
