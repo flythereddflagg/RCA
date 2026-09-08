@@ -135,6 +135,18 @@ int ValArray_insert(ValArray arr, int index, DynType type, DynValue val) {
 error:
     return -1;
 }
+bool ValArray_string_in(ValArray arr, char *cstring) {
+    check(arr, "array is NULL");
+    for (int i = 0; i < arr->length; i++) {
+        if (STR != ValArray_type_at(arr, i))
+            continue;
+        if (Lstring_cstring_equal(ValArray_get_at(arr, i)._str_.cstring,
+                                  cstring))
+            return true;
+    }
+error:
+    return false;
+}
 
 int ValArray_extend(ValArray arr1, ValArray arr2) {
     check(arr1 && arr2, "one of the given arrays is NULL");
@@ -147,7 +159,7 @@ error:
     return -1;
 }
 void ValArray_print(ValArray arr) {
-    printf("{ ");
+    printf("{  ");
 
     for (int i = 0; i < arr->length; i++) {
         switch (arr->types[i]) {
@@ -444,13 +456,16 @@ int test_dict() {
 
 int test_arr() {
     int len = 10;
-    ValArray arr = ValArray_new(len);
+    ValArray arr = ValArray_new();
     ValArray_print(arr);
-    for (int i = 0; i < arr->length; i++) {
-        ValArray_set_at(arr, i, INT, dynval(_int_, 0));
+    for (int i = 0; i < len; i++) {
+        ValArray_append(arr, INT, dynval(_int_, 0));
     }
     ValArray_insert(arr, 3, INT, dynval(_int_, 5));
+    ValArray_append(arr, STR, dynval(_str_, Lstring_new("a string")));
+
     ValArray_print(arr);
+    printf("\n");
 
     arr = ValArray_delete(arr);
 

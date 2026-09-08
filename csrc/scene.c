@@ -41,19 +41,12 @@ Scene Scene_new(Game game, char *yaml_path, Dict yaml_data, ValArray add_in) {
     self->draw_layers = Dict_get(self->init, "layers", EMPTYVAL)._arr_;
     // guarentee background exists
     bool add_background_blank = false;
-    for (int i = 0; i < self->draw_layers->length; i++) {
-        if (STR != ValArray_type_at(self->draw_layers, i))
-            continue;
-        if (Lstring_cstring_equal(
-                ValArray_get_at(self->draw_layers, i)._str_.cstring,
-                "background")) {
-            add_background_blank = true;
-            ValArray_insert(self->draw_layers, 0, STR,
-                            dynval(_str_, Lstring_new("background")));
-            break;
-        }
+    if (!ValArray_string_in(self->draw_layers, "background")) {
+        add_background_blank = true;
+        ValArray_insert(self->draw_layers, 0, STR,
+                        dynval(_str_, Lstring_new("background")));
     }
-
+    // continue in scene.py:69
     return self;
 error:
     self = Scene_delete(self);
