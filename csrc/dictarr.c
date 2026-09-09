@@ -124,6 +124,7 @@ error:
 
 int ValArray_insert(ValArray arr, int index, DynType type, DynValue val) {
     check(arr, "array is NULL");
+    index = index < 0 ? arr->length + index % arr->length : index;
     check(!ValArray_append(arr, NONE, EMPTYVAL), "insertion failed at append");
     for (int i = arr->length - 1; i > index; i--) {
         arr->types[i] = arr->types[i - 1];
@@ -134,6 +135,18 @@ int ValArray_insert(ValArray arr, int index, DynType type, DynValue val) {
     return 0;
 error:
     return -1;
+}
+DynValue ValArray_remove(ValArray arr, int index) {
+    check(arr, "array is NULL");
+    index = index < 0 ? arr->length + index % arr->length : index;
+    DynValue val = ValArray_get_at(arr, index);
+    for (int i = index; i < arr->length - 1; i++) {
+        arr->types[i] = arr->types[i + 1];
+        arr->vals[i] = arr->vals[i + 1];
+    }
+    return val;
+error:
+    return EMPTYVAL;
 }
 bool ValArray_string_in(ValArray arr, char *cstring) {
     check(arr, "array is NULL");
