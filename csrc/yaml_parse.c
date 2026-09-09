@@ -12,8 +12,9 @@
 #include <string.h>
 #include <yaml.h>
 
-#include "dictarr.c"
+#include "dict.c"
 #include "lstring.c"
+#include "valarray.c"
 #define MAX_NESTING_DEPTH 10
 
 typedef enum { YAML_NO_STATE, YAML_MAP_STATE, YAML_SEQ_STATE } yaml_state_t;

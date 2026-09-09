@@ -7,47 +7,45 @@
 
 #include "core.h"
 #include "decal.c"
-#include "dictarr.c"
+#include "dict.c"
+#include "valarray.c"
 
 typedef struct NodeData *Node;
 typedef ValArray NodeGroup;
 
-NodeGroup NodeGroup_new(){
-    NodeGroup group = (NodeGroup) ValArray_new();
+NodeGroup NodeGroup_new() {
+    NodeGroup group = (NodeGroup)ValArray_new();
     check(group, "New Group is NULL");
     return group;
 error:
     return NULL;
 }
-NodeGroup NodeGroup_delete(NodeGroup group){
-    return ValArray_delete(group);
-}
+NodeGroup NodeGroup_delete(NodeGroup group) { return ValArray_delete(group); }
 // TODO continue adding functionality to get reference in node
-int NodeGroup_add(NodeGroup group, Node node){
-    check(
-        !ValArray_append(group, OBJ, dynval(_obj_, node)), 
-        "NodeGroup_add failed");
+int NodeGroup_add(NodeGroup group, Node node) {
+    check(!ValArray_append(group, OBJ, dynval(_obj_, node)),
+          "NodeGroup_add failed");
     return 0;
 error:
     return -1;
 }
-Node NodeGroup_remove(NodeGroup group, Node node){
-    Node node = NULL;
-    check(arr, "array is NULL");
-    for (int i = 0; group->length; i++){
-        if (node == ValArray_get_at(arr, i)._obj_){
+Node NodeGroup_remove(NodeGroup group, Node node) {
+    Node matched_node = NULL;
+    check(group, "New Group is NULL");
+    for (int i = 0; group->length; i++) {
+        if (node == ValArray_get_at(group, i)._obj_) {
             ValArray_remove(group, i);
             break;
         }
     }
 error:
-    return node;
+    return matched_node;
 }
-bool NodeGroup_has(NodeGroup group, Node node){
+bool NodeGroup_has(NodeGroup group, Node node) {
     bool node_in_array = false;
-    check(arr, "array is NULL");
-    for (int i = 0; group->length; i++){
-        if (node == ValArray_get_at(arr, i)._obj_){
+    check(group, "group is NULL");
+    for (int i = 0; group->length; i++) {
+        if (node == ValArray_get_at(group, i)._obj_) {
             node_in_array = true;
             break;
         }
@@ -55,13 +53,9 @@ bool NodeGroup_has(NodeGroup group, Node node){
 error:
     return node_in_array;
 }
-int NodeGroup_update(NodeGroup group){
-    return 0;
-}
-int NodeGroup_draw(NodeGroup group, Node surface){
-    return 0;
-}
-//####################################################
+int NodeGroup_update(NodeGroup group) { return 0; }
+int NodeGroup_draw(NodeGroup group, Node surface) { return 0; }
+// ####################################################
 struct NodeData {
     Scene scene;
     Node parent;
@@ -72,28 +66,16 @@ struct NodeData {
     Node (*delete)(Node node);
 };
 
-int Node_update(const Node node){
-    return 0;
-}
-int Node_add(Node node, NodeGroup group){
-    return NodeGroup_add(group, node);
-}
-int Node_remove(Node node, NodeGroup group){
+int Node_update(const Node node) { return 0; }
+int Node_add(Node node, NodeGroup group) { return NodeGroup_add(group, node); }
+Node Node_remove(Node node, NodeGroup group) {
     return NodeGroup_remove(group, node);
 }
-int Node_kill(Node node){
-    return 0;
-}
-bool Node_alive(Node node){
-    return false;
-}
-int Node_add_child(const Node node, char *key, Node child){
-    return 0;
-}
+int Node_kill(Node node) { return 0; }
+bool Node_alive(Node node) { return false; }
+int Node_add_child(const Node node, char *key, Node child) { return 0; }
 
-int Node_remove_child(const Node node, char *key){
-    return 0;
-}
+int Node_remove_child(const Node node, char *key) { return 0; }
 
 Node Node_delete(Node node) {
     check(node, "'node' is NULL");
@@ -118,4 +100,3 @@ error:
 int main() { return 0; }
 #endif
 #endif
-

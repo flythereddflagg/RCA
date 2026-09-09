@@ -15,13 +15,6 @@
 #define LSTRING_NULL                                                           \
     (Lstring) { .length = 0, .cstring = NULL }
 
-typedef struct LstringData Lstring;
-
-struct LstringData {
-    size_t length;
-    char *cstring;
-};
-
 Lstring to_Lstring(char *cstring) {
     // return an Lstring without copying and allocating new memory.
     // This can be risky.

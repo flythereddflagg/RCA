@@ -5,10 +5,11 @@
 #define __SCENE_MAIN__
 #endif
 #include "core.h"
-#include "dictarr.c"
+#include "dict.c"
 #include "engine.c"
 #include "lstring.c"
 #include "node.c"
+#include "valarray.c"
 #include <stdbool.h>
 
 // TODO implement Scene logic
@@ -82,7 +83,6 @@ Scene Scene_delete(Scene self) {
     return NULL;
 }
 void Scene_place_node() { ; }
-
 
 #ifdef __SCENE_MAIN__
 int main() {

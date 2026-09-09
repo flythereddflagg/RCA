@@ -13,7 +13,8 @@
 #include "node.c"
 #include "scene.c"
 
-#include "dictarr.c"
+#include "dict.c"
+#include "valarray.c"
 #include "yaml_parse.c"
 
 #define MAX_INPUTS 6
