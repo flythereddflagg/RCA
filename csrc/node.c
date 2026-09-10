@@ -21,10 +21,12 @@ error:
     return NULL;
 }
 NodeGroup NodeGroup_delete(NodeGroup group) { return ValArray_delete(group); }
-// TODO continue adding functionality to get reference in node
+
 int NodeGroup_add(NodeGroup group, Node node) {
     check(!ValArray_append(group, OBJ, dynval(_obj_, node)),
           "NodeGroup_add failed");
+    check(!ValArray_append(node->groups, OBJ, dynval(_obj_, group)),
+          "Node_add failed");
     return 0;
 error:
     return -1;
