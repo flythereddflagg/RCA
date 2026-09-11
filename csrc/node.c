@@ -13,14 +13,37 @@
 typedef struct NodeData *Node;
 typedef ValArray NodeGroup;
 
-NodeGroup NodeGroup_new() {
+struct NodeData {
+    Scene scene;
+    Node parent;
+    Decal decal;
+    ValArray children;
+    ValArray groups;
+    int (*update)(const Node node);
+    Node (*delete)(Node node);
+};
+
+NodeGroup NodeGroup_new(char *id) {
     NodeGroup group = (NodeGroup)ValArray_new();
     check(group, "New Group is NULL");
-    return group;
+    // FIRST ELEMENT IS ALWAYS A STRING WITH THE GROUP ID
+    check(!ValArray_append(group, STR, dynval(_str_, Lstring_new(id))),
+          "ID append failed");
 error:
-    return NULL;
+    return group;
 }
-NodeGroup NodeGroup_delete(NodeGroup group) { return ValArray_delete(group); }
+NodeGroup NodeGroup_delete(NodeGroup group) {
+    check(group, "Group to be deleted is NULL");
+    Node current = NULL;
+    // starting at 1 because first element is always the string ID
+    for (int i = 1; i < group->length; i++) {
+        current = (Node)ValArray_get_at(group, i)._obj_;
+        current->delete (current);
+        ValArray_set_at(group, i, NONE, EMPTYVAL);
+    }
+error:
+    return ValArray_delete(group);
+}
 
 int NodeGroup_add(NodeGroup group, Node node) {
     check(!ValArray_append(group, OBJ, dynval(_obj_, node)),
@@ -33,10 +56,18 @@ error:
 }
 Node NodeGroup_remove(NodeGroup group, Node node) {
     Node matched_node = NULL;
-    check(group, "New Group is NULL");
+    check(group, "group is NULL");
+    check(node, "node is NULL");
     for (int i = 0; group->length; i++) {
-        if (node == ValArray_get_at(group, i)._obj_) {
-            ValArray_remove(group, i);
+        if (node == (Node)ValArray_get_at(group, i)._obj_) {
+            matched_node = ValArray_remove(group, i);
+            break;
+        }
+    }
+    check(matched_node, "node not found!");
+    for (int i = 0; node->groups->length; i++) {
+        if (node == (NodeGroup)ValArray_get_at(node->groups, i)._obj_) {
+            ValArray_remove(node->groups, i);
             break;
         }
     }
@@ -55,25 +86,34 @@ bool NodeGroup_has(NodeGroup group, Node node) {
 error:
     return node_in_array;
 }
-int NodeGroup_update(NodeGroup group) { return 0; }
+int NodeGroup_update(NodeGroup group) {
+    check(group, "group is NULL");
+    Node current = NULL;
+
+    // starting at 1 because first element is always the string ID
+    for (int i = 1; i < group->length; i++) {
+        current = (Node)ValArray_get_at(group, i)._obj_;
+        current->update(current);
+    }
+    return 0;
+error:
+    return -1;
+}
 int NodeGroup_draw(NodeGroup group, Node surface) { return 0; }
 // ####################################################
-struct NodeData {
-    Scene scene;
-    Node parent;
-    Decal decal;
-    ValArray children;
-    ValArray groups;
-    int (*update)(const Node node);
-    Node (*delete)(Node node);
-};
+
 
 int Node_update(const Node node) { return 0; }
 int Node_add(Node node, NodeGroup group) { return NodeGroup_add(group, node); }
 Node Node_remove(Node node, NodeGroup group) {
     return NodeGroup_remove(group, node);
 }
-int Node_kill(Node node) { return 0; }
+int Node_kill(Node node) { 
+    for (int i = 0; i < node->groups->length; i++){
+
+    }
+    return 0; 
+}
 bool Node_alive(Node node) { return false; }
 int Node_add_child(const Node node, char *key, Node child) { return 0; }
 
