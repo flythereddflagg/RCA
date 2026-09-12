@@ -130,19 +130,31 @@ Scene Game_load_scene(Game game, char *yaml_path, ValArray add_in) {
 
 int Game_logic(Game game) { return 0; }
 
+int Game_loop_steps(Game game) {
+    Input_update(game->input);
+    // check(Game_logic(game), "Logic Error with exit code %d");
+    Game_draw_frame(game);
+}
+
 int Game_run(Game game) {
     Game_load_scene(
         game, Dict_get(game->settings, "inital_scene", EMPTYVAL)._str_.cstring,
         Dict_get(game->settings, "init_add_in", EMPTYVAL)._arr_);
+
+#if defined(PLATFORM_WEB)
+    emscripten_set_main_loop_arg(
+        UpdateDrawFrame, game, Dict_get(game->settings, "FPS", EMPTYVAL)._int_,
+        true);
+#else
     // mainloop
     game->running = true;
     while (game->running) {
         if (WindowShouldClose())
             game->running = false;
-        Input_update(game->input);
-        // check(Game_logic(game), "Logic Error with exit code %d");
-        Game_draw_frame(game);
+        Game_loop_steps(game);
     }
+#endif
+
     return 0;
 
     // error:

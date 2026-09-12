@@ -16,12 +16,14 @@ ifeq ($(OS),Windows_NT)
 	LIBS += -lgdi32 -lwinmm -Wl,--defsym,stat64i32=_stat64
 	OUT = main.exe
 	ZIP = .zip
+	UNZIP = unzip
 	OS_VERSION = _win64_mingw-w64
 	
 else
 	LIBS += -lX11
 	OUT = main
 	ZIP = .tar.gz
+	UNZIP = tar -xvf
 	ifneq ($(filter arm%,$(UNAME_P)),)
 		OS_VERSION = _linux_arm64
 	else
@@ -44,15 +46,27 @@ help:
 get_raylib:
 	mkdir -p ./lib
 	wget https://github.com/raysan5/raylib/releases/download/$(RAYLIB_VERSION)/raylib-$(RAYLIB_VERSION)$(OS_VERSION)$(ZIP)
-	tar -xvf ./raylib-$(RAYLIB_VERSION)$(OS_VERSION)$(ZIP)
+	$(UNZIP) ./raylib-$(RAYLIB_VERSION)$(OS_VERSION)$(ZIP)
 	cp ./raylib-$(RAYLIB_VERSION)$(OS_VERSION)/lib/* ./lib
 	mv ./raylib-$(RAYLIB_VERSION)$(OS_VERSION)/LICENSE ./lib/RAYLIB_LICENSE
 	rm -rf ./raylib-$(RAYLIB_VERSION)$(OS_VERSION)
 	rm -rf **.tar*
 	rm -rf **.zip*
 
+get_raylib_web:
+	mkdir -p ./lib
+	wget https://github.com/raysan5/raylib/releases/download/6.0/raylib-6.0_webassembly.zip
+	unzip ./raylib-6.0_webassembly.zip
+	cp ./raylib-6.0_webassembly/lib/* ./lib
+	mv ./raylib-6.0_webassembly/LICENSE ./lib/RAYLIB_LICENSE
+	rm -rf ./raylib-6.0_webassembly
+	rm -rf **.tar*
+	rm -rf **.zip*
 
 get_deps: clean_all get_raylib
+
+web:
+	emcc -o game.html ./csrc/main.c -Os -Wall ./lib -I./csrc -I./include -L. -L./lib -s USE_GLFW=3 -DPLATFORM_WEB
 
 format:
 	clang-format -i $(SRC_DIR)/*.*
@@ -116,3 +130,5 @@ clean_all: clean
 	rm -rf ./lib
 	rm -rf ./.raylib
 	rm -rf **.tar*
+	rm -rf **.zip*
+
