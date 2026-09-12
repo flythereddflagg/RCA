@@ -2,6 +2,7 @@ CC = gcc
 CFLAGS = -g -Wall #-fanalyzer
 SRC ?= ./csrc/main.c
 SRC_DIR = ./csrc
+INCLUDE_DIR = ./include
 RAYLIB_VERSION = 6.0
 # TEST_SRC = csrc/bitmask.c
 LIBS = -L./lib -lm -lyaml 
@@ -28,7 +29,7 @@ else
 	endif
 	
 endif
-INCLUDES = -I./include -I./csrc
+INCLUDES = -I$(INCLUDE_DIR) -I$(SRC_DIR)
 VALGRIND_OPTS ?=
 
 .PHONY: all clean clean_all build run get_raylib help python flatpak appimage
@@ -53,6 +54,9 @@ get_raylib:
 
 get_deps: clean_all get_raylib
 
+format:
+	clang-format -i $(SRC_DIR)/*.*
+	clang-format -i $(INCLUDE_DIR)/*.*
 
 preprocess:
 	$(CC) $(CFLAGS) -E $(SRC) -o $(OUT).o $(INCLUDES)

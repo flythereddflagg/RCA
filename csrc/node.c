@@ -56,21 +56,24 @@ error:
 }
 Node NodeGroup_remove(NodeGroup group, Node node) {
     Node matched_node = NULL;
+    NodeGroup matched_nodegroup = NULL;
     check(group, "group is NULL");
     check(node, "node is NULL");
     for (int i = 0; group->length; i++) {
         if (node == (Node)ValArray_get_at(group, i)._obj_) {
-            matched_node = ValArray_remove(group, i);
+            matched_node = (Node)ValArray_remove(group, i)._obj_;
             break;
         }
     }
     check(matched_node, "node not found!");
     for (int i = 0; node->groups->length; i++) {
-        if (node == (NodeGroup)ValArray_get_at(node->groups, i)._obj_) {
-            ValArray_remove(node->groups, i);
+        if (group == (NodeGroup)ValArray_get_at(node->groups, i)._obj_) {
+            matched_nodegroup =
+                (NodeGroup)ValArray_remove(node->groups, i)._obj_;
             break;
         }
     }
+    check(matched_nodegroup, "group in node not found");
 error:
     return matched_node;
 }
@@ -102,19 +105,33 @@ error:
 int NodeGroup_draw(NodeGroup group, Node surface) { return 0; }
 // ####################################################
 
-
 int Node_update(const Node node) { return 0; }
 int Node_add(Node node, NodeGroup group) { return NodeGroup_add(group, node); }
 Node Node_remove(Node node, NodeGroup group) {
     return NodeGroup_remove(group, node);
 }
-int Node_kill(Node node) { 
-    for (int i = 0; i < node->groups->length; i++){
-
+int Node_kill(Node node) {
+    Node current = NULL;
+    for (int i = 0; i < node->groups->length; i++) {
+        current = NodeGroup_remove(
+            (NodeGroup)ValArray_get_at(node->groups, i)._obj_, node);
     }
-    return 0; 
+    check(current, "Node Not removed from any NodeGroups");
+    return 0;
+error:
+    return -1;
 }
-bool Node_alive(Node node) { return false; }
+bool Node_alive(Node node) {
+    for (int i = 0; i < node->groups->length; i++) {
+        if (NodeGroup_has((NodeGroup)ValArray_get_at(node->groups, i)._obj_,
+                          node))
+            return true;
+    }
+    check(!node->groups->length, "NODE-NODEGROUP inconsistency");
+error:
+    return false;
+}
+// TODO continue here and add tests
 int Node_add_child(const Node node, char *key, Node child) { return 0; }
 
 int Node_remove_child(const Node node, char *key) { return 0; }
