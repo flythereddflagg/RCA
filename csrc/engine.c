@@ -134,6 +134,7 @@ int Game_loop_steps(Game game) {
     Input_update(game->input);
     // check(Game_logic(game), "Logic Error with exit code %d");
     Game_draw_frame(game);
+    return 0;
 }
 
 int Game_run(Game game) {
