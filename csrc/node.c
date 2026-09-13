@@ -14,14 +14,59 @@ typedef struct NodeData *Node;
 typedef ValArray NodeGroup;
 
 struct NodeData {
+    Lstring type;
+    Lstring id;
     Scene scene;
     Node parent;
     Decal decal;
+    Dict init;
     ValArray children;
     ValArray groups;
     int (*update)(const Node node);
     Node (*delete)(Node node);
 };
+int Node_update(const Node node) { return 0; }
+
+Node Node_delete(Node node) {
+    check(node, "'node' is NULL");
+    if (node->decal)
+        Decal_delete(node->decal);
+    if (node->type.cstring)
+        node->type = Lstring_delete(node->type);
+    if (node->id.cstring)
+        node->id = Lstring_delete(node->id);
+    if (node->decal)
+        node->decal = Decal_delete(node->decal);
+    // NOTE this may cause issues. Maybe someone else owns init?
+    if (node->init)
+        node->init = Dict_delete(node->init); 
+    if (node->children)
+        // delete each child first?
+        node->children = ValArray_delete(node->children);
+    if (node->groups)
+        // delete each child first?
+        node->groups = ValArray_delete(node->groups);
+    free(node);
+error:
+    return NULL;
+}
+Node Node_new(Scene scene, Node parent, Dict init) {
+    Node node = (Node)malloc(sizeof(struct NodeData));
+    check_mem(node);
+    node->type = Lstring_new("Node");
+    node->id = LSTRING_NULL; // TODO figure out how to use SPRINTF here?
+    node->scene = scene;
+    node->parent = parent;
+    node->decal = NULL;
+    node->init = init;
+    node->children = ValArray_new();
+    node->groups = ValArray_new();
+    node->update = &Node_update;
+    node->delete = &Node_delete;
+
+error:
+    return node;
+}
 
 NodeGroup NodeGroup_new(char *id) {
     NodeGroup group = (NodeGroup)ValArray_new();
@@ -105,7 +150,7 @@ error:
 int NodeGroup_draw(NodeGroup group, Node surface) { return 0; }
 // ####################################################
 
-int Node_update(const Node node) { return 0; }
+
 int Node_add(Node node, NodeGroup group) { return NodeGroup_add(group, node); }
 Node Node_remove(Node node, NodeGroup group) {
     return NodeGroup_remove(group, node);
@@ -136,26 +181,12 @@ int Node_add_child(const Node node, char *key, Node child) { return 0; }
 
 int Node_remove_child(const Node node, char *key) { return 0; }
 
-Node Node_delete(Node node) {
-    check(node, "'node' is NULL");
-    if (node->decal)
-        Decal_delete(node->decal);
-    free(node);
-error:
-    return NULL;
-}
-Node Node_new(Decal decal) {
-    Node node = (Node)malloc(sizeof(struct NodeData));
-    check_mem(node);
-    node->update = &Node_update;
-    node->delete = &Node_delete;
-    node->decal = decal;
-
-error:
-    return node;
-}
 
 #ifdef __NODE_MAIN__
-int main() { return 0; }
+int main() { 
+    Node node = Node_new(NULL, NULL, Dict_new());
+    node = Node_delete(node);
+    return 0; 
+}
 #endif
 #endif

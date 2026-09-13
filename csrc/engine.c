@@ -139,7 +139,7 @@ int Game_loop_steps(Game game) {
 
 int Game_run(Game game) {
     Game_load_scene(
-        game, Dict_get(game->settings, "inital_scene", EMPTYVAL)._str_.cstring,
+        game, Dict_get(game->settings, "initial_scene", EMPTYVAL)._str_.cstring,
         Dict_get(game->settings, "init_add_in", EMPTYVAL)._arr_);
 
 #if defined(PLATFORM_WEB)

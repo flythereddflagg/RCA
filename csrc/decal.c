@@ -19,14 +19,15 @@ struct DecalData {
     Vector2 position;
 };
 
-void Decal_delete(Decal self) {
+Decal Decal_delete(Decal self) {
     check(self, "'self' is NULL");
     UnloadTexture(self->image);
     if (self->mask) {
         BitMask_delete(self->mask);
     }
     free(self);
-error:;
+error:
+    return NULL;
 }
 
 Decal Decal_new(char *image_path, Vector2 position) {
