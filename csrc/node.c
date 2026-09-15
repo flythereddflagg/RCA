@@ -26,39 +26,42 @@ struct NodeData {
     Node (*delete)(Node node);
 };
 int Node_update(const Node node) { return 0; }
+int Node_kill(Node node);
 
 Node Node_delete(Node node) {
     check(node, "'node' is NULL");
-    if (node->decal)
-        Decal_delete(node->decal);
-    if (node->type.cstring)
-        node->type = Lstring_delete(node->type);
-    if (node->id.cstring)
-        node->id = Lstring_delete(node->id);
-    if (node->decal)
-        node->decal = Decal_delete(node->decal);
-    // NOTE this may cause issues. Maybe someone else owns init?
-    if (node->init)
-        node->init = Dict_delete(node->init); 
+    if (node->groups) {
+        Node_kill(node);
+        node->groups = ValArray_delete(node->groups);
+    }
     if (node->children)
         // delete each child first?
         node->children = ValArray_delete(node->children);
-    if (node->groups)
-        // delete each child first?
-        node->groups = ValArray_delete(node->groups);
+    if (node->init)
+        node->init = Dict_delete(node->init);
+    if (node->decal)
+        Decal_delete(node->decal);
+    if (node->id.cstring)
+        node->id = Lstring_delete(node->id);
+    if (node->type.cstring)
+        node->type = Lstring_delete(node->type);
     free(node);
 error:
     return NULL;
 }
-Node Node_new(Scene scene, Node parent, Dict init) {
+Node Node_new() {
     Node node = (Node)malloc(sizeof(struct NodeData));
     check_mem(node);
-    node->type = Lstring_new("Node");
+    // owned field
+    node->type = LSTRING_NULL; // NULL is uninitialized node i guess
+    // owned field
     node->id = LSTRING_NULL; // TODO figure out how to use SPRINTF here?
-    node->scene = scene;
-    node->parent = parent;
+    node->scene = NULL;
+    node->parent = NULL;
+    // owned field
     node->decal = NULL;
-    node->init = init;
+    // owned field
+    node->init = NULL;
     node->children = ValArray_new();
     node->groups = ValArray_new();
     node->update = &Node_update;
@@ -150,7 +153,6 @@ error:
 int NodeGroup_draw(NodeGroup group, Node surface) { return 0; }
 // ####################################################
 
-
 int Node_add(Node node, NodeGroup group) { return NodeGroup_add(group, node); }
 Node Node_remove(Node node, NodeGroup group) {
     return NodeGroup_remove(group, node);
@@ -176,17 +178,51 @@ bool Node_alive(Node node) {
 error:
     return false;
 }
-// TODO continue here and add tests
-int Node_add_child(const Node node, char *key, Node child) { return 0; }
+int Node_add_child(const Node node, Node child) {
+    check(node, "given node is NULL");
+    check(child, "given id is NULL");
+    child->parent = node;
+    check(!ValArray_append(node->children, OBJ, dynval(_obj_, child)),
+          "add child failed");
+    return 0;
+error:
+    return -1;
+}
 
-int Node_remove_child(const Node node, char *key) { return 0; }
+Node Node_child_by_id(Node node, char *id) {
+    check(node, "given node is NULL");
+    check(id, "given id is NULL");
+    Lstring id_string = Lstring_new(id);
+    for (int i = 0; i < node->children->length; i++) {
+        if (Lstring_equal(
+                id_string,
+                ((Node)ValArray_get_at(node->children, i)._obj_)->id)) {
+            id_string = Lstring_delete(id_string);
+            return (Node)ValArray_get_at(node->children, i)._obj_;
+        }
+    }
+error:
+    id_string = Lstring_delete(id_string);
+    return NULL;
+}
 
+Node Node_remove_child(const Node node, Node child) {
+    check(node, "given node is NULL");
+    check(child, "given id is NULL");
+    for (int i = 0; i < node->children->length; i++) {
+        if (child == (Node)ValArray_get_at(node->children, i)._obj_) {
+            return (Node)ValArray_remove(node->children, i)._obj_;
+        }
+    }
+error:
+    return NULL;
+}
 
 #ifdef __NODE_MAIN__
-int main() { 
-    Node node = Node_new(NULL, NULL, Dict_new());
+int main() {
+    Node node = Node_new();
     node = Node_delete(node);
-    return 0; 
+    return 0;
 }
 #endif
 #endif
