@@ -25,57 +25,8 @@ struct NodeData {
     int (*update)(const Node node);
     Node (*delete)(Node node);
 };
-int Node_kill(Node node);
-int Node_update(const Node node) { return 0; }
 
-Node Node_delete(Node node) {
-    check(node, "'node' is NULL");
-    if (node->groups) {
-        Node_kill(node);
-        node->groups = ValArray_delete(node->groups);
-    }
-    if (node->children) {
-        Node child = NULL;
-        for (int i = 0; i < node->children->length; i++) {
-            child = (Node)ValArray_get_at(node->children, i)._obj_;
-            ValArray_set_at(node->children, i, NONE,
-                            dynval(_obj_, child->delete (child)));
-        }
-        node->children = ValArray_delete(node->children);
-    }
-    if (node->init)
-        node->init = Dict_delete(node->init);
-    if (node->decal)
-        Decal_delete(node->decal);
-    if (node->id.cstring)
-        node->id = Lstring_delete(node->id);
-    if (node->type.cstring)
-        node->type = Lstring_delete(node->type);
-    free(node);
-error:
-    return NULL;
-}
-Node Node_new() {
-    Node node = (Node)malloc(sizeof(struct NodeData));
-    check_mem(node);
-    // owned field
-    node->type = LSTRING_NULL; // NULL is uninitialized node i guess
-    // owned field
-    node->id = LSTRING_NULL; // TODO figure out how to use SPRINTF here?
-    node->scene = NULL;
-    node->parent = NULL;
-    // owned field
-    node->decal = NULL;
-    // owned field
-    node->init = NULL;
-    node->children = ValArray_new();
-    node->groups = ValArray_new();
-    node->update = &Node_update;
-    node->delete = &Node_delete;
-
-error:
-    return node;
-}
+Node Node_delete(Node node);
 
 NodeGroup NodeGroup_new(char *id) {
     NodeGroup group = (NodeGroup)ValArray_new();
@@ -158,7 +109,29 @@ error:
 }
 int NodeGroup_draw(NodeGroup group, Node surface) { return 0; }
 // ####################################################
+int Node_update(const Node node) { return 0; }
 
+Node Node_new() {
+    Node node = (Node)malloc(sizeof(struct NodeData));
+    check_mem(node);
+    // owned field
+    node->type = LSTRING_NULL; // NULL is uninitialized node i guess
+    // owned field
+    node->id = LSTRING_NULL; // TODO figure out how to use SPRINTF here?
+    node->scene = NULL;
+    node->parent = NULL;
+    // owned field
+    node->decal = NULL;
+    // owned field
+    node->init = NULL;
+    node->children = ValArray_new();
+    node->groups = ValArray_new();
+    node->update = &Node_update;
+    node->delete = &Node_delete;
+
+error:
+    return node;
+}
 int Node_add(Node node, NodeGroup group) { return NodeGroup_add(group, node); }
 Node Node_remove(Node node, NodeGroup group) {
     return NodeGroup_remove(group, node);
@@ -223,7 +196,33 @@ Node Node_remove_child(const Node node, Node child) {
 error:
     return NULL;
 }
-
+Node Node_delete(Node node) {
+    check(node, "'node' is NULL");
+    if (node->groups) {
+        Node_kill(node);
+        node->groups = ValArray_delete(node->groups);
+    }
+    if (node->children) {
+        Node child = NULL;
+        for (int i = 0; i < node->children->length; i++) {
+            child = (Node)ValArray_get_at(node->children, i)._obj_;
+            ValArray_set_at(node->children, i, NONE,
+                            dynval(_obj_, child->delete (child)));
+        }
+        node->children = ValArray_delete(node->children);
+    }
+    if (node->init)
+        node->init = Dict_delete(node->init);
+    if (node->decal)
+        Decal_delete(node->decal);
+    if (node->id.cstring)
+        node->id = Lstring_delete(node->id);
+    if (node->type.cstring)
+        node->type = Lstring_delete(node->type);
+    free(node);
+error:
+    return NULL;
+}
 #ifdef __NODE_MAIN__
 int main() {
     NodeGroup group = NodeGroup_new("cheesy boi");
