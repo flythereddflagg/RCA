@@ -25,8 +25,8 @@ struct NodeData {
     int (*update)(const Node node);
     Node (*delete)(Node node);
 };
-int Node_update(const Node node) { return 0; }
 int Node_kill(Node node);
+int Node_update(const Node node) { return 0; }
 
 Node Node_delete(Node node) {
     check(node, "'node' is NULL");
@@ -34,9 +34,15 @@ Node Node_delete(Node node) {
         Node_kill(node);
         node->groups = ValArray_delete(node->groups);
     }
-    if (node->children)
-        // delete each child first?
+    if (node->children) {
+        Node child = NULL;
+        for (int i = 0; i < node->children->length; i++) {
+            child = (Node)ValArray_get_at(node->children, i)._obj_;
+            ValArray_set_at(node->children, i, NONE,
+                            dynval(_obj_, child->delete (child)));
+        }
         node->children = ValArray_delete(node->children);
+    }
     if (node->init)
         node->init = Dict_delete(node->init);
     if (node->decal)
@@ -163,7 +169,7 @@ int Node_kill(Node node) {
         current = NodeGroup_remove(
             (NodeGroup)ValArray_get_at(node->groups, i)._obj_, node);
     }
-    check(current, "Node Not removed from any NodeGroups");
+    check_debug(current, "Node Not removed from any NodeGroups");
     return 0;
 error:
     return -1;
@@ -220,8 +226,12 @@ error:
 
 #ifdef __NODE_MAIN__
 int main() {
+    NodeGroup group = NodeGroup_new("cheesy boi");
+
     Node node = Node_new();
-    node = Node_delete(node);
+    Node_add_child(node, Node_new());
+    Node_add(node, group);
+    group = NodeGroup_delete(group);
     return 0;
 }
 #endif

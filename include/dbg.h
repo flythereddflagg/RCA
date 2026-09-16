@@ -71,4 +71,11 @@ Annotated by Mark Redd
         goto error;                                                            \
     }
 
+#define check_warn(A, M, ...)                                                  \
+    if (!(A)) {                                                                \
+        log_warn(M, ##__VA_ARGS__);                                            \
+        errno = 0;                                                             \
+        goto error;                                                            \
+    }
+
 #endif
