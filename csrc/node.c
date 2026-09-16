@@ -18,7 +18,7 @@ struct NodeData {
     Lstring id;
     Scene scene;
     Node parent;
-    Decal decal;
+    Decal sprite;
     Dict init;
     ValArray children;
     ValArray groups;
@@ -121,7 +121,7 @@ Node Node_new() {
     node->scene = NULL;
     node->parent = NULL;
     // owned field
-    node->decal = NULL;
+    node->sprite = NULL;
     // owned field
     node->init = NULL;
     node->children = ValArray_new();
@@ -213,8 +213,8 @@ Node Node_delete(Node node) {
     }
     if (node->init)
         node->init = Dict_delete(node->init);
-    if (node->decal)
-        Decal_delete(node->decal);
+    if (node->sprite)
+        Decal_delete(node->sprite);
     if (node->id.cstring)
         node->id = Lstring_delete(node->id);
     if (node->type.cstring)

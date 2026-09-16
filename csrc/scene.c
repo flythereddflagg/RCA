@@ -11,10 +11,12 @@
 #include "node.c"
 #include "valarray.c"
 #include <stdbool.h>
+#define BG_REF "bg_ref"
 
 // TODO implement Scene logic
 Scene Scene_delete(Scene);
-void Scene_place_node();
+int Scene_place_node(Scene scene, Node node, ValArray groups, Vector2 start,
+                     bool active);
 void Scene_update(void);
 void Scene_refresh(void);
 void Scene_serialize(void);
@@ -29,10 +31,10 @@ struct SceneData {
     Lstring id;
     Dict init;
     ValArray draw_layers;
-    Dict groups;
-    ValArray all_nodes;
-    ValArray active_nodes;
-    Node bg_ref;
+    Dict groups; // dict of NodeGroup
+    NodeGroup all_nodes;
+    NodeGroup active_nodes;
+    // Node bg_ref;
 };
 Scene Scene_new(Game game, char *yaml_path, Dict yaml_data, ValArray add_in) {
     Scene self = (Scene)malloc(sizeof(struct SceneData));
@@ -45,9 +47,9 @@ Scene Scene_new(Game game, char *yaml_path, Dict yaml_data, ValArray add_in) {
         yaml_data ? yaml_data : YamlParse_process_yaml_file(yaml_path)._dict_;
     self->draw_layers = Dict_get(self->init, "layers", EMPTYVAL)._arr_;
     self->groups = Dict_new();
-    self->all_nodes = NULL;
-    self->active_nodes = NULL;
-    self->bg_ref = NULL;
+    self->all_nodes = NodeGroup_new("all_nodes");
+    self->active_nodes = NodeGroup_new("active_nodes");
+    // self->bg_ref = NULL;
     ValArray yaml_nodes = Dict_get(self->init, "nodes", EMPTYVAL)._arr_;
     if (add_in)
         ValArray_extend(yaml_nodes, add_in);
@@ -66,7 +68,8 @@ Scene Scene_new(Game game, char *yaml_path, Dict yaml_data, ValArray add_in) {
     }
     // guarentee a blank background sprite if none exists.
     if (add_background_blank)
-        Scene_place_node(); // eventually add background here
+        
+        Scene_place_node(scene, Node_new());
 
     return self;
 error:
@@ -75,6 +78,8 @@ error:
 }
 Scene Scene_delete(Scene self) {
     if (self) {
+        self->active_nodes = NodeGroup_delete(self->active_nodes);
+        self->all_nodes = NodeGroup_delete(self->all_nodes);
         self->groups = Dict_delete(self->groups);
         self->init = Dict_delete(self->init);
         self->id = Lstring_delete(self->id);
@@ -82,16 +87,37 @@ Scene Scene_delete(Scene self) {
     }
     return NULL;
 }
-void Scene_place_node() { ; }
+
+int Scene_place_node(Scene scene, Node node, ValArray groups, Vector2 start,
+                     bool active) {
+    node->scene = scene;
+    NodeGroup_add(scene->all_nodes, node);
+    if (active)
+        NodeGroup_add(scene->active_nodes, node);
+    Node child = NULL;
+    ValArray startvec = NULL;
+    for (int i = 0; i < node->children->length; i++) {
+        child = (Node)ValArray_get_at(node->children, i)._obj_;
+        startvec = Dict_get(child->init, "start", EMPTYVAL)._arr_;
+        Scene_place_node(
+            scene, child, Dict_get(child->init, "groups", EMPTYVAL)._arr_,
+            startvec ? (Vector2){ValArray_get_at(startvec, 0)._float_,
+                                 ValArray_get_at(startvec, 1)._float_}
+                     : (Vector2){0.0, 0.0},
+            Dict_get(child->init, "active", dynval(_bool_, active))._bool_);
+    }
+    if (node->sprite == NULL){
+        if (groups){
+            // TODO continue here
+        }
+    }
+    return 0;
+}
 
 #ifdef __SCENE_MAIN__
 int main() {
     Scene scene = Scene_new(NULL, "./assets/scene/startup.yaml", NULL, NULL);
-    debug("%p", scene->init);
-    Dict_print(scene->init);
-    debug("Testing insert");
-    ValArray_print(scene->draw_layers);
-    printf("\n");
+
     scene = Scene_delete(scene);
     return 0;
 }
