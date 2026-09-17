@@ -10,7 +10,6 @@
 #include "valarray.c"
 #include <stdlib.h>
 #include <string.h>
-#define DICTKEYLENGTH 256
 #define DICTSIZE 256
 #define HASHPRIME 31
 #define NO_NEXT -1
@@ -134,6 +133,22 @@ DynValue Dict_get(Dict self, char *cstring, DynValue _default) {
 
 error:
     return _default;
+}
+
+bool Dict_key_in(Dict dict, char *key) {
+    Lstring key_in = Lstring_new(key);
+    check(dict, "dict is NULL");
+    check(key, "key is NULL");
+    for (int i = 0; i < DICTSIZE; i++) {
+        if (Lstring_equal(key_in, dict->keys[i])) {
+            key_in = Lstring_delete(key_in);
+            return true;
+        }
+    }
+
+error:
+    key_in = Lstring_delete(key_in);
+    return false;
 }
 
 void Dict_print(Dict dict) {

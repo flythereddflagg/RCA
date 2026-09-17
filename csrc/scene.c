@@ -15,7 +15,7 @@
 
 // TODO implement Scene logic
 Scene Scene_delete(Scene);
-int Scene_place_node(Scene scene, Node node, ValArray groups, Vector2 start,
+int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,
                      bool active);
 void Scene_update(void);
 void Scene_refresh(void);
@@ -37,81 +37,102 @@ struct SceneData {
     // Node bg_ref;
 };
 Scene Scene_new(Game game, char *yaml_path, Dict yaml_data, ValArray add_in) {
-    Scene self = (Scene)malloc(sizeof(struct SceneData));
-    check_mem(self);
-    self->game = game;
-    self->paused = false;
-    self->occupied = false;
-    self->id = Lstring_new(yaml_path);
-    self->init =
+    Scene scene = (Scene)malloc(sizeof(struct SceneData));
+    check_mem(scene);
+    scene->game = game;
+    scene->paused = false;
+    scene->occupied = false;
+    scene->id = Lstring_new(yaml_path);
+    scene->init =
         yaml_data ? yaml_data : YamlParse_process_yaml_file(yaml_path)._dict_;
-    self->draw_layers = Dict_get(self->init, "layers", EMPTYVAL)._arr_;
-    self->groups = Dict_new();
-    self->all_nodes = NodeGroup_new("all_nodes");
-    self->active_nodes = NodeGroup_new("active_nodes");
-    // self->bg_ref = NULL;
-    ValArray yaml_nodes = Dict_get(self->init, "nodes", EMPTYVAL)._arr_;
+    scene->draw_layers = Dict_get(scene->init, "layers", EMPTYVAL)._arr_;
+    scene->groups = Dict_new();
+    scene->all_nodes = NodeGroup_new("all_nodes");
+    scene->active_nodes = NodeGroup_new("active_nodes");
+    // scene->bg_ref = NULL;
+    ValArray yaml_nodes = Dict_get(scene->init, "nodes", EMPTYVAL)._arr_;
     if (add_in)
         ValArray_extend(yaml_nodes, add_in);
 
     // guarentee background exists
     bool add_background_blank = false;
-    if (!ValArray_string_in(self->draw_layers, "background")) {
+    if (!ValArray_string_in(scene->draw_layers, "background")) {
         add_background_blank = true;
-        ValArray_insert(self->draw_layers, 0, STR,
+        ValArray_insert(scene->draw_layers, 0, STR,
                         dynval(_str_, Lstring_new("background")));
     }
-    // guarentee hud exists and is drawn last
-    if (!ValArray_string_in(self->draw_layers, "hud")) {
-        ValArray_append(self->draw_layers, STR,
+    // guarentee hud exists and is drawn last if not explicitly placed
+    if (!ValArray_string_in(scene->draw_layers, "hud")) {
+        ValArray_append(scene->draw_layers, STR,
                         dynval(_str_, Lstring_new("hud")));
     }
     // guarentee a blank background sprite if none exists.
     if (add_background_blank)
-        
-        Scene_place_node(scene, Node_new());
+        // TODO still testing this and this is NOT final
+        Scene_place_node(scene, Node_new(), NULL, NULL, false);
 
-    return self;
+    return scene;
 error:
-    self = Scene_delete(self);
+    scene = Scene_delete(scene);
     return NULL;
 }
-Scene Scene_delete(Scene self) {
-    if (self) {
-        self->active_nodes = NodeGroup_delete(self->active_nodes);
-        self->all_nodes = NodeGroup_delete(self->all_nodes);
-        self->groups = Dict_delete(self->groups);
-        self->init = Dict_delete(self->init);
-        self->id = Lstring_delete(self->id);
-        free(self);
+Scene Scene_delete(Scene scene) {
+    if (scene) {
+        scene->active_nodes = NodeGroup_delete(scene->active_nodes);
+        scene->all_nodes = NodeGroup_delete(scene->all_nodes);
+        scene->groups = Dict_delete(scene->groups);
+        scene->init = Dict_delete(scene->init);
+        scene->id = Lstring_delete(scene->id);
+        free(scene);
     }
     return NULL;
 }
 
-int Scene_place_node(Scene scene, Node node, ValArray groups, Vector2 start,
+int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,
                      bool active) {
+    check(scene, "scene is NULL");
+    check(node, "node is NULL");
     node->scene = scene;
     NodeGroup_add(scene->all_nodes, node);
     if (active)
         NodeGroup_add(scene->active_nodes, node);
     Node child = NULL;
-    ValArray startvec = NULL;
+    Vector2 startvec = start ? (Vector2){ValArray_get_at(start, 0)._float_,
+                                          ValArray_get_at(start, 1)._float_}
+                              : (Vector2){0.0, 0.0};
     for (int i = 0; i < node->children->length; i++) {
         child = (Node)ValArray_get_at(node->children, i)._obj_;
-        startvec = Dict_get(child->init, "start", EMPTYVAL)._arr_;
         Scene_place_node(
             scene, child, Dict_get(child->init, "groups", EMPTYVAL)._arr_,
-            startvec ? (Vector2){ValArray_get_at(startvec, 0)._float_,
-                                 ValArray_get_at(startvec, 1)._float_}
-                     : (Vector2){0.0, 0.0},
+            Dict_get(child->init, "start", EMPTYVAL)._arr_,
             Dict_get(child->init, "active", dynval(_bool_, active))._bool_);
     }
-    if (node->sprite == NULL){
-        if (groups){
-            // TODO continue here
+
+    if (groups) {
+        NodeGroup nd_grp = NULL;
+        Lstring cur_grp = LSTRING_NULL;
+        for (int i = 0; i < groups->length; i++) {
+            // groups is a ValArray of strings
+            if (!Dict_key_in(scene->groups, ValArray_get_at(groups, i)._str_.cstring)) {
+                cur_grp = ValArray_get_at(groups, i)._str_;
+                Dict_set(scene->groups, cur_grp.cstring, OBJ,
+                         dynval(_obj_, NodeGroup_new(cur_grp.cstring)));
+            }
+            nd_grp = (NodeGroup)Dict_get(
+                         scene->groups,
+                         ValArray_get_at(groups, i)._str_.cstring, EMPTYVAL)
+                         ._obj_;
+            NodeGroup_add(nd_grp, node);
         }
     }
+    if (start) {
+        check(node->sprite, "No decal to set start vector");
+        node->sprite->position = startvec;
+    }
+
     return 0;
+error:
+    return -1;
 }
 
 #ifdef __SCENE_MAIN__
