@@ -17,10 +17,9 @@
 Scene Scene_delete(Scene);
 int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,
                      bool active);
-void Scene_update(void);
+
 void Scene_refresh(void);
 void Scene_serialize(void);
-void Scene_node_by_id(void);
 void Scene_node_ids(void);
 void Scene_node_in_groups(void);
 
@@ -98,8 +97,8 @@ int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,
         NodeGroup_add(scene->active_nodes, node);
     Node child = NULL;
     Vector2 startvec = start ? (Vector2){ValArray_get_at(start, 0)._float_,
-                                          ValArray_get_at(start, 1)._float_}
-                              : (Vector2){0.0, 0.0};
+                                         ValArray_get_at(start, 1)._float_}
+                             : (Vector2){0.0, 0.0};
     for (int i = 0; i < node->children->length; i++) {
         child = (Node)ValArray_get_at(node->children, i)._obj_;
         Scene_place_node(
@@ -113,7 +112,8 @@ int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,
         Lstring cur_grp = LSTRING_NULL;
         for (int i = 0; i < groups->length; i++) {
             // groups is a ValArray of strings
-            if (!Dict_key_in(scene->groups, ValArray_get_at(groups, i)._str_.cstring)) {
+            if (!Dict_key_in(scene->groups,
+                             ValArray_get_at(groups, i)._str_.cstring)) {
                 cur_grp = ValArray_get_at(groups, i)._str_;
                 Dict_set(scene->groups, cur_grp.cstring, OBJ,
                          dynval(_obj_, NodeGroup_new(cur_grp.cstring)));
@@ -133,6 +133,41 @@ int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,
     return 0;
 error:
     return -1;
+}
+
+int Scene_update(Scene scene) {
+    check(scene, "Scene is null");
+    if (scene->paused) {
+        NodeGroup pause_group =
+            (NodeGroup)Dict_get(scene->groups, "paused", EMPTYVAL)._obj_;
+        check(pause_group, "pause group is NULL");
+        check(!NodeGroup_update(pause_group), "pause group update failed.");
+    } else {
+        check(scene->active_nodes, "pause group is NULL");
+        check(!NodeGroup_update(scene->active_nodes),
+              "active node update failed.");
+    }
+    return 0;
+error:
+    return -1;
+}
+
+Node Scene_node_by_id(Scene scene, char *node_id) {
+    Node node = NULL;
+    Lstring id_str = LSTRING_NULL;
+    check(scene, "scene is NULL");
+    check(node_id, "node id is NULL");
+    id_str = Lstring_new(node_id);
+    for (int i = 0; i < scene->active_nodes->length; i++) {
+        node = (Node)ValArray_get_at(scene->active_nodes, i)._obj_;
+        if (node && Lstring_equal(id_str, node->id))
+            break;
+        else
+            node = NULL;
+    }
+error:
+    id_str = Lstring_delete(id_str);
+    return node;
 }
 
 #ifdef __SCENE_MAIN__
