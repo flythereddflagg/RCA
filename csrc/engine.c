@@ -128,13 +128,23 @@ Scene Game_load_scene(Game game, char *yaml_path, ValArray add_in) {
     return NULL;
 }
 
-int Game_logic(Game game) { return 0; }
+int Game_logic(Game game) {
+    check(game, "game is NULL"); 
+    if (game->scene && !game->paused){
+        check(!Scene_update(game->scene), "Scene update failed");
+    }
+    return 0;
+error:
+    return -1;
+}
 
 int Game_loop_steps(Game game) {
     Input_update(game->input);
-    // check(Game_logic(game), "Logic Error with exit code %d");
+    check(!Game_logic(game), "Game Logic error");
     Game_draw_frame(game);
     return 0;
+error:
+    return -1;
 }
 
 int Game_run(Game game) {
@@ -144,7 +154,7 @@ int Game_run(Game game) {
 
 #if defined(PLATFORM_WEB)
     emscripten_set_main_loop_arg(
-        UpdateDrawFrame, game, Dict_get(game->settings, "FPS", EMPTYVAL)._int_,
+        Game_loop_steps, game, Dict_get(game->settings, "FPS", EMPTYVAL)._int_,
         true);
 #else
     // mainloop
