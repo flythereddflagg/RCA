@@ -6,10 +6,10 @@
 #endif
 #include "core.h"
 #include "dict.c"
-#include "engine.c"
 #include "lstring.c"
 #include "node.c"
 #include "valarray.c"
+#include "yaml_parse.c"
 #include <stdbool.h>
 #define BG_REF "bg_ref"
 
@@ -36,6 +36,13 @@ struct SceneData {
     // Node bg_ref;
 };
 Scene Scene_new(Game game, char *yaml_path, Dict yaml_data, ValArray add_in) {
+    DynValue bg_vals[] = {dynval(_str_, to_Lstring("background"))};
+    DynType bg_types[] = {STR};
+    struct ValArrayData bg_gp_list =
+        (struct ValArrayData){.length = (int)sizeof(bg_vals) / sizeof(DynValue),
+                              .vals = (DynValue *)&(bg_vals[0]),
+                              .types = (DynType *)&(bg_types[0])};
+
     Scene scene = (Scene)malloc(sizeof(struct SceneData));
     check_mem(scene);
     scene->game = game;
@@ -66,9 +73,21 @@ Scene Scene_new(Game game, char *yaml_path, Dict yaml_data, ValArray add_in) {
                         dynval(_str_, Lstring_new("hud")));
     }
     // guarentee a blank background sprite if none exists.
-    if (add_background_blank)
-        // TODO still testing this and this is NOT final
-        Scene_place_node(scene, Node_new(), NULL, NULL, false);
+    if (add_background_blank) {
+        // Scene_place_node(scene, Node_new(), (ValArray)&bg_gp_list, NULL,
+        // false);
+    }
+    ValArray node_list = Dict_get(scene->init, "nodes", EMPTYVAL)._arr_;
+    Node current = NULL;
+    check(node_list, "node list did not load");
+    for (int i = 0; i < node_list->length; i++) {
+        current = Node_from_dict(ValArray_get_at(node_list, i)._dict_);
+        check(current, "current NODE is NULL");
+        Scene_place_node(
+            scene, current, Dict_get(current->init, "groups", EMPTYVAL)._arr_,
+            Dict_get(current->init, "start", EMPTYVAL)._arr_,
+            Dict_get(current->init, "active", dynval(_bool_, true))._bool_);
+    }
 
     return scene;
 error:
@@ -126,7 +145,7 @@ int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,
         }
     }
     if (start) {
-        check(node->sprite, "No decal to set start vector");
+        check(node->sprite, "No  to set start vector");
         node->sprite->position = startvec;
     }
 

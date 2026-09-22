@@ -11,15 +11,15 @@
 
 #include <stdlib.h>
 
-typedef struct DecalData *Decal;
+typedef struct SpriteData *Sprite;
 
-struct DecalData {
+struct SpriteData {
     Texture2D image;
     BitMask mask;
     Vector2 position;
 };
 
-Decal Decal_delete(Decal self) {
+Sprite Sprite_delete(Sprite self) {
     check(self, "'self' is NULL");
     UnloadTexture(self->image);
     if (self->mask) {
@@ -30,8 +30,8 @@ error:
     return NULL;
 }
 
-Decal Decal_new(char *image_path, Vector2 position) {
-    Decal self = (Decal)malloc(sizeof(struct DecalData));
+Sprite Sprite_new(char *image_path, Vector2 position) {
+    Sprite self = (Sprite)malloc(sizeof(struct SpriteData));
     check_mem(self);
     self->image = LoadTexture(image_path);
     self->mask = NULL;
@@ -41,9 +41,9 @@ error:
     return self;
 }
 
-int Decal_set_image(Decal self, Image img) { return 0; }
+int Sprite_set_image(Sprite self, Image img) { return 0; }
 
-int Decal_set_mask(Decal self, BitMask mask) { return 0; }
+int Sprite_set_mask(Sprite self, BitMask mask) { return 0; }
 
 #endif
 #ifdef __DECAL_MAIN__

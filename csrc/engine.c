@@ -73,9 +73,9 @@ void Game_draw_frame(Game self) {
     BeginTextureMode(v_screen);
     ClearBackground(BLACK);
     // for (int i = 0; i < nodes->len; i++)
-    //     DrawTexture(nodes->arr[i]->decal->image,
-    //                 nodes->arr[i]->decal->position.x,
-    //                 nodes->arr[i]->decal->position.y, WHITE);
+    //     DrawTexture(nodes->arr[i]->->image,
+    //                 nodes->arr[i]->->position.x,
+    //                 nodes->arr[i]->->position.y, WHITE);
     EndTextureMode();
 
     // then scale virtual screen to fit and then draw to the actual screen
@@ -129,8 +129,8 @@ Scene Game_load_scene(Game game, char *yaml_path, ValArray add_in) {
 }
 
 int Game_logic(Game game) {
-    check(game, "game is NULL"); 
-    if (game->scene && !game->paused){
+    check(game, "game is NULL");
+    if (game->scene && !game->paused) {
         check(!Scene_update(game->scene), "Scene update failed");
     }
     return 0;

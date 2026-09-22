@@ -13,7 +13,7 @@ typedef struct ValArrayData *ValArray;
 typedef struct GameData *Game;
 typedef struct SceneData *Scene;
 typedef enum { UP, RIGHT, DOWN, LEFT } Compass;
-typedef struct DecalData *Decal;
+typedef struct SpriteData *Sprite;
 typedef struct LstringData Lstring;
 struct LstringData {
     size_t length;

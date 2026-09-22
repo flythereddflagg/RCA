@@ -6,9 +6,13 @@
 #endif
 
 #include "core.h"
-#include "decal.c"
 #include "dict.c"
+#include "sprite.c"
 #include "valarray.c"
+
+#define INHERIT_KEY "_inherit_"
+#define MISSING_TYPE "<MISSING TYPE>"
+
 
 typedef struct NodeData *Node;
 typedef ValArray NodeGroup;
@@ -18,7 +22,7 @@ struct NodeData {
     Lstring id;
     Scene scene;
     Node parent;
-    Decal sprite;
+    Sprite sprite;
     Dict init;
     ValArray children;
     ValArray groups;
@@ -27,6 +31,16 @@ struct NodeData {
 };
 
 Node Node_delete(Node node);
+Node Node_kill(Node node);
+
+Node Node_from_dict(Dict init){
+    Dict yaml = Dict_get(init, "yaml", EMPTYVAL)._dict_;
+    if (yaml){
+        ;
+    // TODO write code to overwrite the data in yaml with the data in init
+    }
+    return NULL;
+}
 
 NodeGroup NodeGroup_new(char *id) {
     NodeGroup group = (NodeGroup)ValArray_new();
@@ -43,6 +57,7 @@ NodeGroup NodeGroup_delete(NodeGroup group) {
     // starting at 1 because first element is always the string ID
     for (int i = 1; i < group->length; i++) {
         current = (Node)ValArray_get_at(group, i)._obj_;
+        Node_kill(current);
         current->delete (current);
         ValArray_set_at(group, i, NONE, EMPTYVAL);
     }
@@ -136,16 +151,15 @@ int Node_add(Node node, NodeGroup group) { return NodeGroup_add(group, node); }
 Node Node_remove(Node node, NodeGroup group) {
     return NodeGroup_remove(group, node);
 }
-int Node_kill(Node node) {
+Node Node_kill(Node node) {
     Node current = NULL;
     for (int i = 0; i < node->groups->length; i++) {
         current = NodeGroup_remove(
             (NodeGroup)ValArray_get_at(node->groups, i)._obj_, node);
     }
     check_debug(current, "Node Not removed from any NodeGroups");
-    return 0;
 error:
-    return -1;
+    return node;
 }
 bool Node_alive(Node node) {
     for (int i = 0; i < node->groups->length; i++) {
@@ -214,7 +228,7 @@ Node Node_delete(Node node) {
     if (node->init)
         node->init = Dict_delete(node->init);
     if (node->sprite)
-        Decal_delete(node->sprite);
+        Sprite_delete(node->sprite);
     if (node->id.cstring)
         node->id = Lstring_delete(node->id);
     if (node->type.cstring)
