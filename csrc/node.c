@@ -32,6 +32,7 @@ struct NodeData {
 
 Node Node_delete(Node node);
 Node Node_kill(Node node);
+Node Node_new();
 
 Node Node_from_dict(Dict init){
     Dict yaml = Dict_get(init, "yaml", EMPTYVAL)._dict_;
@@ -39,6 +40,11 @@ Node Node_from_dict(Dict init){
         ;
     // TODO write code to overwrite the data in yaml with the data in init
     }
+    Node node = Node_new();
+    check(node, "node from dict failed");
+    node->init = init;
+    return node;
+error:
     return NULL;
 }
 
@@ -152,7 +158,9 @@ Node Node_remove(Node node, NodeGroup group) {
     return NodeGroup_remove(group, node);
 }
 Node Node_kill(Node node) {
+    check(node, "node is NULL");
     Node current = NULL;
+    check(node->groups, "node->grops is NULL");
     for (int i = 0; i < node->groups->length; i++) {
         current = NodeGroup_remove(
             (NodeGroup)ValArray_get_at(node->groups, i)._obj_, node);

@@ -125,6 +125,7 @@ Game Game_delete(Game game) {
     return NULL;
 }
 Scene Game_load_scene(Game game, char *yaml_path, ValArray add_in) {
+    
     return NULL;
 }
 

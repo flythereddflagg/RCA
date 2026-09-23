@@ -127,7 +127,7 @@ DynValue Dict_get(Dict self, char *cstring, DynValue _default) {
     check(cstring && cstring[0], "invalid key '%s' supplied", cstring);
     Lstring key = to_Lstring(cstring);
     int index = Dict_get_index(self, key);
-    check(Lstring_equal(self->keys[index], key),
+    check_debug(Lstring_equal(self->keys[index], key),
           "key '" LSTRING_FMT "' not found!", Lstring_format(key));
     return self->vals[index];
 
