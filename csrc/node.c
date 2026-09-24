@@ -153,6 +153,34 @@ Node Node_new() {
 error:
     return node;
 }
+Node Node_delete(Node node) {
+    check(node, "'node' is NULL");
+    if (node->groups) {
+        Node_kill(node);
+        node->groups = ValArray_delete(node->groups);
+    }
+    if (node->children) {
+        Node child = NULL;
+        for (int i = 0; i < node->children->length; i++) {
+            child = (Node)ValArray_get_at(node->children, i)._obj_;
+            ValArray_set_at(node->children, i, NONE,
+                            dynval(_obj_, child->delete (child)));
+        }
+        node->children = ValArray_delete(node->children);
+    }
+    if (node->init)
+        node->init = Dict_delete(node->init);
+    if (node->sprite)
+        Sprite_delete(node->sprite);
+    if (node->id.cstring)
+        node->id = Lstring_delete(node->id);
+    
+    if (node->type.cstring)
+        node->type = Lstring_delete(node->type);
+    free(node);
+error:
+    return NULL;
+}
 int Node_add(Node node, NodeGroup group) { return NodeGroup_add(group, node); }
 Node Node_remove(Node node, NodeGroup group) {
     return NodeGroup_remove(group, node);
@@ -160,7 +188,7 @@ Node Node_remove(Node node, NodeGroup group) {
 Node Node_kill(Node node) {
     check(node, "node is NULL");
     Node current = NULL;
-    check(node->groups, "node->grops is NULL");
+    check(node->groups, "node->groups is NULL");
     for (int i = 0; i < node->groups->length; i++) {
         current = NodeGroup_remove(
             (NodeGroup)ValArray_get_at(node->groups, i)._obj_, node);
@@ -218,38 +246,14 @@ Node Node_remove_child(const Node node, Node child) {
 error:
     return NULL;
 }
-Node Node_delete(Node node) {
-    check(node, "'node' is NULL");
-    if (node->groups) {
-        Node_kill(node);
-        node->groups = ValArray_delete(node->groups);
-    }
-    if (node->children) {
-        Node child = NULL;
-        for (int i = 0; i < node->children->length; i++) {
-            child = (Node)ValArray_get_at(node->children, i)._obj_;
-            ValArray_set_at(node->children, i, NONE,
-                            dynval(_obj_, child->delete (child)));
-        }
-        node->children = ValArray_delete(node->children);
-    }
-    if (node->init)
-        node->init = Dict_delete(node->init);
-    if (node->sprite)
-        Sprite_delete(node->sprite);
-    if (node->id.cstring)
-        node->id = Lstring_delete(node->id);
-    if (node->type.cstring)
-        node->type = Lstring_delete(node->type);
-    free(node);
-error:
-    return NULL;
-}
+
 #ifdef __NODE_MAIN__
 int main() {
     NodeGroup group = NodeGroup_new("cheesy boi");
 
     Node node = Node_new();
+    node = node->delete(node);
+    node = Node_new();
     Node_add_child(node, Node_new());
     Node_add(node, group);
     group = NodeGroup_delete(group);

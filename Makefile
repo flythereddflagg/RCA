@@ -78,6 +78,9 @@ preprocess:
 obj:
 	$(CC) $(CFLAGS) -c $(SRC) -o $(OUT).o $(INCLUDES)
 
+debug:
+	gdb ./$(OUT) -ex run -ex bt
+
 build:
 	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LIBS) $(INCLUDES)
 	@echo "-- BUILD COMMAND COMPLETE --"
