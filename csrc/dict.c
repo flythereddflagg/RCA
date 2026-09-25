@@ -128,7 +128,7 @@ DynValue Dict_get(Dict self, char *cstring, DynValue _default) {
     Lstring key = to_Lstring(cstring);
     int index = Dict_get_index(self, key);
     check_debug(Lstring_equal(self->keys[index], key),
-          "key '" LSTRING_FMT "' not found!", Lstring_format(key));
+                "key '" LSTRING_FMT "' not found!", Lstring_format(key));
     return self->vals[index];
 
 error:
@@ -170,7 +170,7 @@ void Dict_print(Dict dict) {
             ValArray_print(dict->vals[i]._arr_);
             break;
         case STR:
-            printf("\""LSTRING_FMT"\"", Lstring_format(dict->vals[i]._str_));
+            printf("\"" LSTRING_FMT "\"", Lstring_format(dict->vals[i]._str_));
             break;
         case INT:
             printf("%d", dict->vals[i]._int_);
@@ -185,11 +185,10 @@ void Dict_print(Dict dict) {
             printf("%p", dict->vals[i]._obj_);
             break;
         default:
-            sentinel("invalid type"); 
+            sentinel("invalid type");
             break;
         }
         printf(", ");
-
     }
     printf("\b\b}");
 error:
@@ -253,7 +252,6 @@ error:
     return;
 }
 
-
 Dict Dict_new() {
     Dict dict = (Dict)malloc(sizeof(struct DictData));
     check_mem(dict);
@@ -275,6 +273,55 @@ Dict Dict_new() {
     return dict;
 error:
     return NULL;
+}
+
+Dict Dict_copy(Dict dict) {
+    Dict copy = Dict_new();
+    char *key;
+    check(copy, "Dict copy failed.");
+    for (int i = 0; i < DICTSIZE; i++) {
+        if (!dict->keys[i].cstring || !dict->keys[i].cstring[0])
+            continue;
+        key = dict->keys[i].cstring;
+        switch (dict->types[i]) {
+        case NONE:
+            Dict_set(copy, key, NONE, dynval(_obj_, NULL));
+            break;
+        case DICT:
+            Dict_set(copy, key, DICT, dynval(_dict_, Dict_copy(dict->vals[i])));
+            break;
+        case ARR:
+            Dict_set(copy, key, ARR,
+                     dynval(_arr_, ValArray_copy(dict->vals[i])));
+            break;
+        case STR:
+            // TODO fix padding
+            /*
+            The "%*.*s" can be placed before OR after your "%s", depending
+            desire for LEFT or RIGHT padding.
+            https://stackoverflow.com/questions/276827/string-padding-in-c
+             */
+
+            printf("  str \"%-19.*s\"", Lstring_format(dict->vals[i]._str_));
+            break;
+        case INT:
+            printf("  int %20d", dict->vals[i]._int_);
+            break;
+        case FLOAT:
+            printf("float %20f", dict->vals[i]._float_);
+            break;
+        case BOOL:
+            printf(" bool %20s", dict->vals[i]._bool_ ? "true" : "false");
+            break;
+        case OBJ:
+            printf("  obj %20p", dict->vals[i]._obj_);
+            break;
+        default:
+            sentinel("invalid type") break;
+        }
+    }
+error:
+    return dict;
 }
 
 Dict Dict_delete(Dict dict) {

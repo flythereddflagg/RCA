@@ -13,7 +13,6 @@
 #define INHERIT_KEY "_inherit_"
 #define MISSING_TYPE "<MISSING TYPE>"
 
-
 typedef struct NodeData *Node;
 typedef ValArray NodeGroup;
 
@@ -33,20 +32,6 @@ struct NodeData {
 Node Node_delete(Node node);
 Node Node_kill(Node node);
 Node Node_new();
-
-Node Node_from_dict(Dict init){
-    Dict yaml = Dict_get(init, "yaml", EMPTYVAL)._dict_;
-    if (yaml){
-        ;
-    // TODO write code to overwrite the data in yaml with the data in init
-    }
-    Node node = Node_new();
-    check(node, "node from dict failed");
-    node->init = init;
-    return node;
-error:
-    return NULL;
-}
 
 NodeGroup NodeGroup_new(char *id) {
     NodeGroup group = (NodeGroup)ValArray_new();
@@ -153,11 +138,24 @@ Node Node_new() {
 error:
     return node;
 }
+Node Node_from_dict(Dict init) {
+    Dict yaml = Dict_get(init, "yaml", EMPTYVAL)._dict_;
+    if (yaml) {
+        ;
+        // TODO write code to overwrite the data in yaml with the data in init
+    }
+    Node node = Node_new();
+    check(node, "node from dict failed");
+    node->init = init;
+    return node;
+error:
+    return NULL;
+}
 Node Node_delete(Node node) {
     check(node, "'node' is NULL");
     if (node->groups) {
         Node_kill(node);
-        node->groups = ValArray_delete(node->groups);
+        // node->groups = ValArray_delete(node->groups);
     }
     if (node->children) {
         Node child = NULL;
@@ -172,14 +170,13 @@ Node Node_delete(Node node) {
         node->init = Dict_delete(node->init);
     if (node->sprite)
         Sprite_delete(node->sprite);
-    if (node->id.cstring)
+    if (node->id.cstring) {
         node->id = Lstring_delete(node->id);
-    
-    if (node->type.cstring){
-        debug("%p", node->type.cstring);
+    }
+    if (node->type.cstring) {
         node->type = Lstring_delete(node->type);
     }
-        
+
     free(node);
 error:
     return NULL;
@@ -255,7 +252,7 @@ int main() {
     NodeGroup group = NodeGroup_new("cheesy boi");
 
     Node node = Node_new();
-    node = node->delete(node);
+    node = node->delete (node);
     node = Node_new();
     Node_add_child(node, Node_new());
     Node_add(node, group);

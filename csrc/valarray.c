@@ -154,8 +154,7 @@ error:
     return -1;
 }
 void ValArray_print(ValArray arr) {
-    check(arr, "NULL arr supplied")
-    printf("[");
+    check(arr, "NULL arr supplied") printf("[");
 
     for (int i = 0; i < arr->length; i++) {
         switch (arr->types[i]) {

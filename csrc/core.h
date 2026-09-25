@@ -18,6 +18,7 @@ typedef struct LstringData Lstring;
 struct LstringData {
     size_t length;
     char *cstring;
+    bool on_heap;
 };
 enum DynTypeData { NONE, DICT, ARR, STR, INT, FLOAT, BOOL, OBJ };
 union DynValueData {

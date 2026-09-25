@@ -42,7 +42,7 @@ DynTypeVal YamlParse_parse_value(yaml_event_t event) {
     float f_val = strtof(event_value.cstring, NULL);
     if (Lstring_cstring_equal("0", event_value.cstring)) {
         value = dynval(_int_, 0);
-        Lstring_delete(event_value);
+        event_value = Lstring_delete(event_value);
     } else {
         if (i_val == 0 && f_val == 0.0f) { // so not a number
 
@@ -52,21 +52,21 @@ DynTypeVal YamlParse_parse_value(yaml_event_t event) {
             if (Lstring_cstring_equal("true", val_copy.cstring)) {
                 value = dynval(_bool_, true);
                 type = BOOL;
-                Lstring_delete(event_value);
+                event_value = Lstring_delete(event_value);
             } else if (Lstring_cstring_equal("false", val_copy.cstring)) {
                 value = dynval(_bool_, false);
                 type = BOOL;
-                Lstring_delete(event_value);
+                event_value = Lstring_delete(event_value);
             } else {
                 if (Lstring_cstring_equal("", event_value.cstring)) {
                     value = dynval(_obj_, NULL);
                     type = NONE;
-                    Lstring_delete(event_value);
+                    event_value = Lstring_delete(event_value);
                 } else {
                     value = dynval(_str_, event_value);
                     type = STR;
                     // DO NOT DELETE IF ITS A STRING
-                    // Lstring_delete(event_value);
+                    // event_value = Lstring_delete(event_value);
                 }
             }
 
@@ -181,7 +181,14 @@ error:
 }
 #endif
 #ifdef __YAML_PARSE_MAIN__
-int main() {
+
+int test_dict() {
+    Dict out =
+        YamlParse_process_yaml_file("./assets/scene/startup.yaml")._dict_;
+    out = Dict_delete(out);
+}
+
+int test_init() {
     DynValue out = YamlParse_process_yaml_file("./assets/init.yaml");
     Dict dict = out._dict_;
     log_info("FINAL DICT");
@@ -197,5 +204,9 @@ int main() {
 
 error:
     Dict_delete(out._dict_);
+}
+int main() {
+    test_dict();
+    test_init();
 }
 #endif
