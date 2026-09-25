@@ -81,9 +81,9 @@ Scene Scene_new(Game game, char *yaml_path, Dict yaml_data, ValArray add_in) {
     Node current = NULL;
     check(node_list, "node list did not load");
     for (int i = 0; i < node_list->length; i++) {
-        // current = Node_from_dict(ValArray_get_at(node_list, i)._dict_);
-        // check(current, "current NODE is NULL");
-        // current->delete(current);
+        current = Node_from_dict(ValArray_get_at(node_list, i)._dict_);
+        check(current, "current NODE is NULL");
+        current->delete(current);
         // Scene_place_node(
         //     scene, current, Dict_get(current->init, "groups",
         //     EMPTYVAL)._arr_, Dict_get(current->init, "start",

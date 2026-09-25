@@ -128,7 +128,7 @@ Node Node_new() {
     node->parent = NULL;
     // owned field
     node->sprite = NULL;
-    // owned field
+    // owned field?
     node->init = NULL;
     node->children = ValArray_new();
     node->groups = ValArray_new();
@@ -166,8 +166,8 @@ Node Node_delete(Node node) {
         }
         node->children = ValArray_delete(node->children);
     }
-    if (node->init)
-        node->init = Dict_delete(node->init);
+    // if (node->init)
+    //     node->init = Dict_delete(node->init);
     if (node->sprite)
         Sprite_delete(node->sprite);
     if (node->id.cstring) {

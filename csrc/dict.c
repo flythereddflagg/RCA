@@ -287,13 +287,13 @@ Dict Dict_copy(Dict dict) {
         case NONE:
             Dict_set(copy, key, NONE, dynval(_obj_, NULL));
             break;
-        case DICT:
-            Dict_set(copy, key, DICT, dynval(_dict_, Dict_copy(dict->vals[i])));
-            break;
-        case ARR:
-            Dict_set(copy, key, ARR,
-                     dynval(_arr_, ValArray_copy(dict->vals[i])));
-            break;
+        // case DICT:
+        //     Dict_set(copy, key, DICT, dynval(_dict_, Dict_copy(dict->vals[i])));
+        //     break;
+        // case ARR:
+        //     Dict_set(copy, key, ARR,
+        //              dynval(_arr_, ValArray_copy(dict->vals[i])));
+        //     break;
         case STR:
             // TODO fix padding
             /*
