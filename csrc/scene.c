@@ -192,7 +192,7 @@ error:
 #ifdef __SCENE_MAIN__
 int main() {
     Scene scene = Scene_new(NULL, "./assets/scene/startup.yaml", NULL, NULL);
-
+    Dict_print(scene->init);
     scene = Scene_delete(scene);
     return 0;
 }

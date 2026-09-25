@@ -153,6 +153,51 @@ error:
 
 void Dict_print(Dict dict) {
     check(dict, "NULL dict supplied");
+    printf("{");
+
+    for (int i = 0; i < DICTSIZE; i++) {
+        if (!dict->keys[i].cstring || !dict->keys[i].cstring[0])
+            continue;
+        printf("\"%s\" : ", dict->keys[i].cstring);
+        switch (dict->types[i]) {
+        case NONE:
+            printf("null");
+            break;
+        case DICT:
+            Dict_print(dict->vals[i]._dict_);
+            break;
+        case ARR:
+            ValArray_print(dict->vals[i]._arr_);
+            break;
+        case STR:
+            printf("\""LSTRING_FMT"\"", Lstring_format(dict->vals[i]._str_));
+            break;
+        case INT:
+            printf("%d", dict->vals[i]._int_);
+            break;
+        case FLOAT:
+            printf("%f", dict->vals[i]._float_);
+            break;
+        case BOOL:
+            printf("%s", dict->vals[i]._bool_ ? "true" : "false");
+            break;
+        case OBJ:
+            printf("%p", dict->vals[i]._obj_);
+            break;
+        default:
+            sentinel("invalid type"); 
+            break;
+        }
+        printf(", ");
+
+    }
+    printf("\b\b}");
+error:
+    return;
+}
+
+void Dict_debug_print(Dict dict) {
+    check(dict, "NULL dict supplied");
     printf("{ ");
     printf("\n[ind]        key |  type                  val | next\n");
     printf("----------------------------------------------------\n");
@@ -181,7 +226,7 @@ void Dict_print(Dict dict) {
             https://stackoverflow.com/questions/276827/string-padding-in-c
              */
 
-            printf("  str \"%-19.*s", Lstring_format(dict->vals[i]._str_));
+            printf("  str \"%-19.*s\"", Lstring_format(dict->vals[i]._str_));
             break;
         case INT:
             printf("  int %20d", dict->vals[i]._int_);
@@ -207,6 +252,7 @@ void Dict_print(Dict dict) {
 error:
     return;
 }
+
 
 Dict Dict_new() {
     Dict dict = (Dict)malloc(sizeof(struct DictData));

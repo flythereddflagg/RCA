@@ -154,7 +154,8 @@ error:
     return -1;
 }
 void ValArray_print(ValArray arr) {
-    printf("{  ");
+    check(arr, "NULL arr supplied")
+    printf("[");
 
     for (int i = 0; i < arr->length; i++) {
         switch (arr->types[i]) {
@@ -184,11 +185,12 @@ void ValArray_print(ValArray arr) {
             printf("%p", arr->vals[i]._obj_);
             break;
         default:
-            sentinel("invalid type") break;
+            sentinel("invalid type");
+            break;
         }
         printf(", ");
     }
-    printf("\b\b }");
+    printf("\b\b]");
 error:
     return;
 }
@@ -212,7 +214,6 @@ int test_arr() {
     return 0;
 }
 int main() {
-    log_info("compile successful");
     test_arr();
     return 0;
 }

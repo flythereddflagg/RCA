@@ -175,8 +175,11 @@ Node Node_delete(Node node) {
     if (node->id.cstring)
         node->id = Lstring_delete(node->id);
     
-    if (node->type.cstring)
+    if (node->type.cstring){
+        debug("%p", node->type.cstring);
         node->type = Lstring_delete(node->type);
+    }
+        
     free(node);
 error:
     return NULL;
