@@ -130,26 +130,13 @@ Node Node_new() {
     node->sprite = NULL;
     // owned field?
     node->init = NULL;
-    node->children = ValArray_new();
-    node->groups = ValArray_new();
+    node->children = ValArray_new(); // dtype=Node
+    node->groups = ValArray_new(); // dtype=NodeGroup
     node->update = &Node_update;
     node->delete = &Node_delete;
 
 error:
     return node;
-}
-Node Node_from_dict(Dict init) {
-    Dict yaml = Dict_get(init, "yaml", EMPTYVAL)._dict_;
-    if (yaml) {
-        ;
-        // TODO write code to overwrite the data in yaml with the data in init
-    }
-    Node node = Node_new();
-    check(node, "node from dict failed");
-    node->init = init;
-    return node;
-error:
-    return NULL;
 }
 Node Node_delete(Node node) {
     check(node, "'node' is NULL");
@@ -166,6 +153,9 @@ Node Node_delete(Node node) {
         }
         node->children = ValArray_delete(node->children);
     }
+    if (node->groups) {
+        node->groups = ValArray_delete(node->groups);
+    }
     // if (node->init)
     //     node->init = Dict_delete(node->init);
     if (node->sprite)
@@ -181,6 +171,19 @@ Node Node_delete(Node node) {
 error:
     return NULL;
 }
+Node Node_from_dict(Dict init) {
+    Dict yaml = Dict_get(init, "yaml", EMPTYVAL)._dict_;
+    if (yaml) {
+        ;
+        // TODO write code to overwrite the data in yaml with the data in init
+    }
+    Node node = Node_new();
+    check(node, "node from dict failed");
+    node->init = init;
+    return node;
+error:
+    return NULL;
+}
 int Node_add(Node node, NodeGroup group) { return NodeGroup_add(group, node); }
 Node Node_remove(Node node, NodeGroup group) {
     return NodeGroup_remove(group, node);
@@ -188,12 +191,18 @@ Node Node_remove(Node node, NodeGroup group) {
 Node Node_kill(Node node) {
     check(node, "node is NULL");
     Node current = NULL;
+    Node child = NULL;
     check(node->groups, "node->groups is NULL");
     for (int i = 0; i < node->groups->length; i++) {
         current = NodeGroup_remove(
             (NodeGroup)ValArray_get_at(node->groups, i)._obj_, node);
     }
     check_debug(current, "Node Not removed from any NodeGroups");
+    // if you kill a parent. Kill all children too.
+    for (int i = 0; i < node->children->length; i++) {
+            child = (Node)ValArray_get_at(node->children, i)._obj_;
+            Node_kill(child);
+        }
 error:
     return node;
 }
