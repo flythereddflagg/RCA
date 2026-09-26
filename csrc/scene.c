@@ -36,13 +36,6 @@ struct SceneData {
     // Node bg_ref;
 };
 Scene Scene_new(Game game, char *yaml_path, Dict yaml_data, ValArray add_in) {
-    DynValue bg_vals[] = {dynval(_str_, to_Lstring("background"))};
-    DynType bg_types[] = {STR};
-    struct ValArrayData bg_gp_list =
-        (struct ValArrayData){.length = (int)sizeof(bg_vals) / sizeof(DynValue),
-                              .vals = (DynValue *)&(bg_vals[0]),
-                              .types = (DynType *)&(bg_types[0])};
-
     Scene scene = (Scene)malloc(sizeof(struct SceneData));
     check_mem(scene);
     scene->game = game;
@@ -50,47 +43,11 @@ Scene Scene_new(Game game, char *yaml_path, Dict yaml_data, ValArray add_in) {
     scene->occupied = false;
     scene->id = Lstring_new(yaml_path);
     scene->init =
-        yaml_data ? yaml_data : YamlParse_process_yaml_file(yaml_path)._dict_;
+        yaml_data ? Dict_copy(yaml_data) : YamlParse_process_yaml_file(yaml_path)._dict_;
     scene->draw_layers = Dict_get(scene->init, "layers", EMPTYVAL)._arr_;
     scene->groups = Dict_new();
     scene->all_nodes = NodeGroup_new("all_nodes");
     scene->active_nodes = NodeGroup_new("active_nodes");
-    // scene->bg_ref = NULL;
-    ValArray yaml_nodes = Dict_get(scene->init, "nodes", EMPTYVAL)._arr_;
-    if (add_in)
-        ValArray_extend(yaml_nodes, add_in);
-
-    // guarentee background exists
-    bool add_background_blank = false;
-    if (!ValArray_string_in(scene->draw_layers, "background")) {
-        add_background_blank = true;
-        ValArray_insert(scene->draw_layers, 0, STR,
-                        dynval(_str_, Lstring_new("background")));
-    }
-    // guarentee hud exists and is drawn last if not explicitly placed
-    if (!ValArray_string_in(scene->draw_layers, "hud")) {
-        ValArray_append(scene->draw_layers, STR,
-                        dynval(_str_, Lstring_new("hud")));
-    }
-    // guarentee a blank background sprite if none exists.
-    if (add_background_blank) {
-        // Scene_place_node(scene, Node_new(), (ValArray)&bg_gp_list, NULL,
-        // false);
-    }
-    ValArray node_list = Dict_get(scene->init, "nodes", EMPTYVAL)._arr_;
-    Node current = NULL;
-    check(node_list, "node list did not load");
-    for (int i = 0; i < node_list->length; i++) {
-        current = Node_from_dict(ValArray_get_at(node_list, i)._dict_);
-        check(current, "current NODE is NULL");
-        current->delete(current);
-        // Scene_place_node(
-        //     scene, current, Dict_get(current->init, "groups",
-        //     EMPTYVAL)._arr_, Dict_get(current->init, "start",
-        //     EMPTYVAL)._arr_, Dict_get(current->init, "active", dynval(_bool_,
-        //     true))._bool_);
-    }
-
     return scene;
 error:
     scene = Scene_delete(scene);

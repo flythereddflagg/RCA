@@ -274,54 +274,52 @@ Dict Dict_new() {
 error:
     return NULL;
 }
+ValArray ValArray_copy(ValArray arr);
 
 Dict Dict_copy(Dict dict) {
     Dict copy = Dict_new();
-    char *key;
+    check(dict, "dict to copy is NULL");
     check(copy, "Dict copy failed.");
+    char *key;
+    DynValue val;
     for (int i = 0; i < DICTSIZE; i++) {
         if (!dict->keys[i].cstring || !dict->keys[i].cstring[0])
             continue;
         key = dict->keys[i].cstring;
+        val = dict->vals[i];
         switch (dict->types[i]) {
         case NONE:
             Dict_set(copy, key, NONE, dynval(_obj_, NULL));
             break;
-        // case DICT:
-        //     Dict_set(copy, key, DICT, dynval(_dict_, Dict_copy(dict->vals[i])));
-        //     break;
-        // case ARR:
-        //     Dict_set(copy, key, ARR,
-        //              dynval(_arr_, ValArray_copy(dict->vals[i])));
-        //     break;
+        case DICT:
+            Dict_set(copy, key, DICT, dynval(_dict_, Dict_copy(val._dict_)));
+            Dict_set(copy, key, ARR, dynval(_arr_, ValArray_copy(val._arr_)));
+            break;
+        case ARR:
+            Dict_set(copy, key, ARR, dynval(_arr_, ValArray_copy(val._arr_)));
+            break;
         case STR:
-            // TODO fix padding
-            /*
-            The "%*.*s" can be placed before OR after your "%s", depending
-            desire for LEFT or RIGHT padding.
-            https://stackoverflow.com/questions/276827/string-padding-in-c
-             */
-
-            printf("  str \"%-19.*s\"", Lstring_format(dict->vals[i]._str_));
+            Dict_set(copy, key, STR,
+                     dynval(_str_, Lstring_new(val._str_.cstring)));
             break;
         case INT:
-            printf("  int %20d", dict->vals[i]._int_);
+            Dict_set(copy, key, INT, val);
             break;
         case FLOAT:
-            printf("float %20f", dict->vals[i]._float_);
+            Dict_set(copy, key, FLOAT, val);
             break;
         case BOOL:
-            printf(" bool %20s", dict->vals[i]._bool_ ? "true" : "false");
+            Dict_set(copy, key, BOOL, val);
             break;
         case OBJ:
-            printf("  obj %20p", dict->vals[i]._obj_);
+            Dict_set(copy, key, OBJ, val);
             break;
         default:
             sentinel("invalid type") break;
         }
     }
 error:
-    return dict;
+    return copy;
 }
 
 Dict Dict_delete(Dict dict) {

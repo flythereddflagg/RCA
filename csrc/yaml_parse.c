@@ -186,6 +186,7 @@ int test_dict() {
     Dict out =
         YamlParse_process_yaml_file("./assets/scene/startup.yaml")._dict_;
     out = Dict_delete(out);
+    return 0;
 }
 
 int test_init() {
@@ -204,9 +205,11 @@ int test_init() {
 
 error:
     Dict_delete(out._dict_);
+    return -1;
 }
 int main() {
     test_dict();
     test_init();
+    return 0;
 }
 #endif

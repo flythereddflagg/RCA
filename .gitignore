@@ -19,4 +19,5 @@ lib/
 .*/
 # IGNORE THE FOLLOWING FILES
 main
+mem_check_all.txt
 

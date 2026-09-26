@@ -155,7 +155,6 @@ error:
 }
 void ValArray_print(ValArray arr) {
     check(arr, "NULL arr supplied") printf("[");
-
     for (int i = 0; i < arr->length; i++) {
         switch (arr->types[i]) {
         case NONE:
@@ -192,6 +191,49 @@ void ValArray_print(ValArray arr) {
     printf("\b\b]");
 error:
     return;
+}
+
+Dict Dict_copy(Dict dict);
+
+ValArray ValArray_copy(ValArray arr) {
+    ValArray copy = ValArray_new();
+    check(copy, "ValArray copy failed.");
+    check(arr, "arr to copy is NULL");
+    DynValue val;
+    for (int i = 0; i < arr->length; i++) {
+        val = arr->vals[i];
+        switch (arr->types[i]) {
+        case NONE:
+            ValArray_append(copy, NONE, dynval(_obj_, NULL));
+            break;
+        case DICT:
+            ValArray_append(copy, DICT, dynval(_dict_, Dict_copy(val._dict_)));
+            break;
+        case ARR:
+            ValArray_append(copy, ARR, dynval(_arr_, ValArray_copy(val._arr_)));
+            break;
+        case STR:
+            ValArray_append(copy, STR,
+                            dynval(_str_, Lstring_new(val._str_.cstring)));
+            break;
+        case INT:
+            ValArray_append(copy, INT, val);
+            break;
+        case FLOAT:
+            ValArray_append(copy, FLOAT, val);
+            break;
+        case BOOL:
+            ValArray_append(copy, BOOL, val);
+            break;
+        case OBJ:
+            ValArray_append(copy, OBJ, val);
+            break;
+        default:
+            sentinel("invalid type") break;
+        }
+    }
+error:
+    return copy;
 }
 
 #ifdef __VALARRAY_MAIN__

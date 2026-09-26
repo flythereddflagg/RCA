@@ -4,6 +4,7 @@ SRC ?= ./csrc/main.c
 SRC_DIR = ./csrc
 INCLUDE_DIR = ./include
 RAYLIB_VERSION = 6.0
+TMP_TXT = mem_check_all.txt
 # TEST_SRC = csrc/bitmask.c
 LIBS = -L./lib -lm -lyaml 
 LIBS += -lraylib '-Wl,-rpath,$$ORIGIN/lib' # needed to point to .so files
@@ -93,6 +94,16 @@ test_all: $(SRC_DIR)/*.c
 		./$(OUT);\
 	done
 
+mem_all: $(SRC_DIR)/*.c
+	@echo "" > $(TMP_TXT)
+	for file in $^; do\
+		echo "-- BUILDING $$file --";\
+		$(CC) $(CFLAGS) $$file -o $(OUT) $(LIBS) $(INCLUDES) -DTEST_ALL;\
+		echo "-- BUILD COMMAND COMPLETE FOR $$file --";\
+		echo "-- BUILD COMMAND COMPLETE FOR $$file --" >> $(TMP_TXT);\
+		valgrind ./$(OUT) 2>> $(TMP_TXT);\
+	done
+	./valgrind_summary.sh
 
 test:
 	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LIBS) $(INCLUDES) -DTEST
@@ -128,6 +139,7 @@ clean:
 	rm -f *.AppImage
 	rm -f $(OUT)
 	rm -f *.o
+	rm -f $(TMP_TXT)
 
 clean_all: clean
 	rm -rf ./lib
