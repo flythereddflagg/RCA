@@ -33,7 +33,7 @@ struct SceneData {
     Dict groups; // dict of NodeGroup
     NodeGroup all_nodes;
     NodeGroup active_nodes;
-    // Node bg_ref;
+    Node bg_ref;
 };
 Scene Scene_new(Game game, char *yaml_path, Dict yaml_data, ValArray add_in) {
     Scene scene = (Scene)malloc(sizeof(struct SceneData));
@@ -42,12 +42,18 @@ Scene Scene_new(Game game, char *yaml_path, Dict yaml_data, ValArray add_in) {
     scene->paused = false;
     scene->occupied = false;
     scene->id = Lstring_new(yaml_path);
-    scene->init =
-        yaml_data ? Dict_copy(yaml_data) : YamlParse_process_yaml_file(yaml_path)._dict_;
+    scene->init = yaml_data ? Dict_copy(yaml_data)
+                            : YamlParse_process_yaml_file(yaml_path)._dict_;
+    if (add_in) {
+        ValArray node_list = Dict_get(scene->init, "nodes", EMPTYVAL)._arr_;
+        check(node_list, "node list is NULL");
+        ValArray_extend(node_list, add_in);
+    }
     scene->draw_layers = Dict_get(scene->init, "layers", EMPTYVAL)._arr_;
     scene->groups = Dict_new();
     scene->all_nodes = NodeGroup_new("all_nodes");
     scene->active_nodes = NodeGroup_new("active_nodes");
+    scene->bg_ref = NULL;
     return scene;
 error:
     scene = Scene_delete(scene);
@@ -130,6 +136,24 @@ error:
     return -1;
 }
 
+int Scene_setup(Scene scene) {
+    check(scene, "scene is NULL");
+    // guarentee background exists
+    check(scene->draw_layers, "scene->draw_layers is NULL");
+    bool add_background_blank = false;
+    if (!ValArray_has_string(scene->draw_layers, "background")) {
+        add_background_blank = true;
+        ValArray_insert(scene->draw_layers, 0, STR,
+                        dynval(_str_, to_Lstring("background")));
+    }
+    if (add_background_blank) {
+        // place node here
+    }
+    return 0;
+error:
+    return -1;
+}
+
 Node Scene_node_by_id(Scene scene, char *node_id) {
     Node node = NULL;
     Lstring id_str = LSTRING_NULL;
@@ -151,6 +175,7 @@ error:
 #ifdef __SCENE_MAIN__
 int main() {
     Scene scene = Scene_new(NULL, "./assets/scene/startup.yaml", NULL, NULL);
+    Scene_setup(scene);
     // Dict_print(scene->init);
     scene = Scene_delete(scene);
     return 0;

@@ -131,7 +131,7 @@ Node Node_new() {
     // owned field?
     node->init = NULL;
     node->children = ValArray_new(); // dtype=Node
-    node->groups = ValArray_new(); // dtype=NodeGroup
+    node->groups = ValArray_new();   // dtype=NodeGroup
     node->update = &Node_update;
     node->delete = &Node_delete;
 
@@ -200,9 +200,9 @@ Node Node_kill(Node node) {
     check_debug(current, "Node Not removed from any NodeGroups");
     // if you kill a parent. Kill all children too.
     for (int i = 0; i < node->children->length; i++) {
-            child = (Node)ValArray_get_at(node->children, i)._obj_;
-            Node_kill(child);
-        }
+        child = (Node)ValArray_get_at(node->children, i)._obj_;
+        Node_kill(child);
+    }
 error:
     return node;
 }

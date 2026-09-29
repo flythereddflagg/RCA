@@ -130,7 +130,7 @@ DynValue ValArray_remove(ValArray arr, int index) {
 error:
     return EMPTYVAL;
 }
-bool ValArray_string_in(ValArray arr, char *cstring) {
+bool ValArray_has_string(ValArray arr, char *cstring) {
     check(arr, "array is NULL");
     for (int i = 0; i < arr->length; i++) {
         if (STR != ValArray_type_at(arr, i))
