@@ -63,10 +63,10 @@ Scene Scene_delete(Scene scene) {
     if (scene) {
         scene->active_nodes = NodeGroup_delete(scene->active_nodes);
         scene->all_nodes = NodeGroup_delete(scene->all_nodes);
-        if (scene->groups){
+        if (scene->groups) {
             NodeGroup current = NULL;
-            for (int i = 0; i < DICTSIZE; i++){
-                current = (NodeGroup) scene->groups->vals[i]._obj_;
+            for (int i = 0; i < DICTSIZE; i++) {
+                current = (NodeGroup)scene->groups->vals[i]._obj_;
                 if (!current)
                     continue;
                 NodeGroup_delete(current);
@@ -147,8 +147,8 @@ error:
 int Scene_setup(Scene scene) {
     check(scene, "scene is NULL");
     char *group_name = NULL;
-        // guarentee background exists
-        check(scene->draw_layers, "scene->draw_layers is NULL");
+    // guarentee background exists
+    check(scene->draw_layers, "scene->draw_layers is NULL");
     bool add_background_blank = false;
     if (!ValArray_has_string(scene->draw_layers, "background")) {
         add_background_blank = true;
@@ -166,6 +166,28 @@ int Scene_setup(Scene scene) {
     }
     if (add_background_blank) {
         ; // place node here
+    }
+    /*
+    ``` python
+    if add_background_blank:
+        self.place_node(Decal(self, id = BG_REF), ["background"])
+    self.bg_ref = None
+
+    for node_init in self.init.get("nodes"):
+        if not self.bg_ref and len(self.background.sprites()) > 0:
+            self.bg_ref = self.background.sprites()[0]
+    */
+    ValArray nodes = (ValArray)Dict_get(scene->init, "nodes", EMPTYVAL)._obj_;
+    check(nodes, "nodes is NULL");
+    Dict node_init = NULL;
+    Node node = NULL;
+    for (int i = 0; i < nodes->length; i++) {
+        node_init = ValArray_get_at(nodes, i)._dict_;
+        // node = Node_from_dict(node_init); // TODO fix MEMORY LEAK HERE
+        // Scene_place_node(
+        //     node, Dict_get(node_init, "groups", EMPTYVAL)._arr_,
+        //     Dict_get(node_init, "start", EMPTYVAL)._arr_,
+        //     Dict_get(node_init, "active", dynval(_bool_, true))._bool_, );
     }
     return 0;
 error:
