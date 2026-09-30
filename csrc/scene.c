@@ -63,6 +63,15 @@ Scene Scene_delete(Scene scene) {
     if (scene) {
         scene->active_nodes = NodeGroup_delete(scene->active_nodes);
         scene->all_nodes = NodeGroup_delete(scene->all_nodes);
+        if (scene->groups){
+            NodeGroup current = NULL;
+            for (int i = 0; i < DICTSIZE; i++){
+                current = (NodeGroup) scene->groups->vals[i]._obj_;
+                if (!current)
+                    continue;
+                NodeGroup_delete(current);
+            }
+        }
         scene->groups = Dict_delete(scene->groups);
         scene->init = Dict_delete(scene->init);
         scene->id = Lstring_delete(scene->id);
@@ -138,16 +147,26 @@ error:
 
 int Scene_setup(Scene scene) {
     check(scene, "scene is NULL");
-    // guarentee background exists
-    check(scene->draw_layers, "scene->draw_layers is NULL");
+    char *group_name = NULL;
+        // guarentee background exists
+        check(scene->draw_layers, "scene->draw_layers is NULL");
     bool add_background_blank = false;
     if (!ValArray_has_string(scene->draw_layers, "background")) {
         add_background_blank = true;
         ValArray_insert(scene->draw_layers, 0, STR,
                         dynval(_str_, to_Lstring("background")));
     }
+    if (!ValArray_has_string(scene->draw_layers, "hud")) {
+        ValArray_append(scene->draw_layers, STR,
+                        dynval(_str_, to_Lstring("hud")));
+    }
+    for (int i = 0; i < scene->draw_layers->length; i++) {
+        group_name = ValArray_get_at(scene->draw_layers, i)._str_.cstring;
+        Dict_set(scene->groups, group_name, OBJ,
+                 dynval(_obj_, NodeGroup_new(group_name)));
+    }
     if (add_background_blank) {
-        // place node here
+        ; // place node here
     }
     return 0;
 error:
