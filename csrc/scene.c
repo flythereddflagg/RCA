@@ -127,7 +127,6 @@ int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,
 error:
     return -1;
 }
-
 int Scene_update(Scene scene) {
     check(scene, "Scene is null");
     if (scene->paused) {
