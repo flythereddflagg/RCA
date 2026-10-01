@@ -119,7 +119,7 @@ int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,
         }
     }
     if (start) {
-        check(node->sprite, "No  to set start vector");
+        check(node->sprite, "No sprite to set start vector");
         node->sprite->position = startvec;
     }
 
@@ -183,11 +183,12 @@ int Scene_setup(Scene scene) {
     Node node = NULL;
     for (int i = 0; i < nodes->length; i++) {
         node_init = ValArray_get_at(nodes, i)._dict_;
-        // node = Node_from_dict(node_init); // TODO fix MEMORY LEAK HERE
-        // Scene_place_node(
-        //     node, Dict_get(node_init, "groups", EMPTYVAL)._arr_,
-        //     Dict_get(node_init, "start", EMPTYVAL)._arr_,
-        //     Dict_get(node_init, "active", dynval(_bool_, true))._bool_, );
+        node = Node_from_dict(node_init); // TODO fix MEMORY LEAK HERE
+        // node = Node_delete(node);
+        Scene_place_node(scene,
+            node, Dict_get(node_init, "groups", EMPTYVAL)._arr_,
+            Dict_get(node_init, "start", EMPTYVAL)._arr_,
+            Dict_get(node_init, "active", dynval(_bool_, true))._bool_);
     }
     return 0;
 error:
@@ -214,7 +215,7 @@ error:
 
 #ifdef __SCENE_MAIN__
 int main() {
-    Scene scene = Scene_new(NULL, "./assets/scene/startup.yaml", NULL, NULL);
+    Scene scene = Scene_new(NULL, "./assets/scene/test_scene.yaml", NULL, NULL);
     Scene_setup(scene);
     // Dict_print(scene->init);
     scene = Scene_delete(scene);
