@@ -120,12 +120,16 @@ error:
 }
 DynValue ValArray_remove(ValArray arr, int index) {
     check(arr, "array is NULL");
+    check(arr->length > 0, "array is empty!");
     index = index < 0 ? arr->length + index % arr->length : index;
+    check(index < arr->length, "Index out of bounds for array of length %d",
+          arr->length);
     DynValue val = ValArray_get_at(arr, index);
     for (int i = index; i < arr->length - 1; i++) {
         arr->types[i] = arr->types[i + 1];
         arr->vals[i] = arr->vals[i + 1];
     }
+    arr->length -= 1;
     return val;
 error:
     return EMPTYVAL;
@@ -154,7 +158,8 @@ error:
     return -1;
 }
 void ValArray_print(ValArray arr) {
-    check(arr, "NULL arr supplied") printf("[");
+    check(arr, "NULL arr supplied"); 
+    printf("[  ");
     for (int i = 0; i < arr->length; i++) {
         switch (arr->types[i]) {
         case NONE:
@@ -241,6 +246,8 @@ int test_arr() {
     int len = 10;
     ValArray arr = ValArray_new();
     ValArray_print(arr);
+    printf("\n");
+
     for (int i = 0; i < len; i++) {
         ValArray_append(arr, INT, dynval(_int_, 0));
     }
@@ -249,8 +256,11 @@ int test_arr() {
 
     ValArray_print(arr);
     printf("\n");
-
+    debug("%d", ValArray_remove(arr, 3)._int_);
+    ValArray_print(arr);
+    printf("\n");
     arr = ValArray_delete(arr);
+    ValArray_print(arr); // should cause an error.
 
     return 0;
 }

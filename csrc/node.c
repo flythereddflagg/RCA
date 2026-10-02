@@ -70,14 +70,14 @@ Node NodeGroup_remove(NodeGroup group, Node node) {
     NodeGroup matched_nodegroup = NULL;
     check(group, "group is NULL");
     check(node, "node is NULL");
-    for (int i = 0; group->length; i++) {
+    for (int i = 0; i < group->length; i++) {
         if (node == (Node)ValArray_get_at(group, i)._obj_) {
             matched_node = (Node)ValArray_remove(group, i)._obj_;
             break;
         }
     }
     check(matched_node, "node not found!");
-    for (int i = 0; node->groups->length; i++) {
+    for (int i = 0; i < node->groups->length; i++) {
         if (group == (NodeGroup)ValArray_get_at(node->groups, i)._obj_) {
             matched_nodegroup =
                 (NodeGroup)ValArray_remove(node->groups, i)._obj_;
@@ -142,7 +142,6 @@ Node Node_delete(Node node) {
     check(node, "'node' is NULL");
     if (node->groups) {
         Node_kill(node);
-        // node->groups = ValArray_delete(node->groups);
     }
     if (node->children) {
         Node child = NULL;
@@ -190,19 +189,27 @@ Node Node_remove(Node node, NodeGroup group) {
 }
 Node Node_kill(Node node) {
     check(node, "node is NULL");
+    NodeGroup group = NULL;
     Node current = NULL;
     Node child = NULL;
     check(node->groups, "node->groups is NULL");
+    check_debug(node->groups->length > 0, "node is not in any groups");
     for (int i = 0; i < node->groups->length; i++) {
-        current = NodeGroup_remove(
-            (NodeGroup)ValArray_get_at(node->groups, i)._obj_, node);
+        group = ValArray_remove(node->groups, -1)._obj_;
+        for (int j = 0; j < group->length; i++) {
+            if (node == (Node)ValArray_get_at(group, i)._obj_) {
+                current = (Node)ValArray_remove(group, i)._obj_;
+                break;
+            }
+        }
     }
-    check_debug(current, "Node Not removed from any NodeGroups");
+    check(current, "Node Not removed from any NodeGroups");
     // if you kill a parent. Kill all children too.
     for (int i = 0; i < node->children->length; i++) {
         child = (Node)ValArray_get_at(node->children, i)._obj_;
         Node_kill(child);
     }
+    
 error:
     return node;
 }
@@ -259,13 +266,22 @@ error:
 #ifdef __NODE_MAIN__
 int main() {
     NodeGroup group = NodeGroup_new("cheesy boi");
+    NodeGroup group2 = NodeGroup_new("cheesy boi2");
 
     Node node = Node_new();
+    debug("deleting node");
     node = node->delete (node);
+    debug("remaking node");
     node = Node_new();
     Node_add_child(node, Node_new());
     Node_add(node, group);
+    NodeGroup_add(group2, node);
+    debug("killing node");
+    Node_kill(node);
+    debug("group->length: %d", group->length);
+    debug("group2->length: %d", group2->length);
     group = NodeGroup_delete(group);
+    group2 = NodeGroup_delete(group2);
     return 0;
 }
 #endif

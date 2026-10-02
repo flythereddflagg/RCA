@@ -185,8 +185,8 @@ int Scene_setup(Scene scene) {
         node_init = ValArray_get_at(nodes, i)._dict_;
         node = Node_from_dict(node_init); // TODO fix MEMORY LEAK HERE
         // node = Node_delete(node);
-        Scene_place_node(scene,
-            node, Dict_get(node_init, "groups", EMPTYVAL)._arr_,
+        Scene_place_node(
+            scene, node, Dict_get(node_init, "groups", EMPTYVAL)._arr_,
             Dict_get(node_init, "start", EMPTYVAL)._arr_,
             Dict_get(node_init, "active", dynval(_bool_, true))._bool_);
     }
