@@ -91,7 +91,7 @@ error:
 bool NodeGroup_has(NodeGroup group, Node node) {
     bool node_in_array = false;
     check(group, "group is NULL");
-    for (int i = 0; group->length; i++) {
+    for (int i = 0; i < group->length; i++) {
         if (node == ValArray_get_at(group, i)._obj_) {
             node_in_array = true;
             break;
