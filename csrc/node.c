@@ -33,20 +33,16 @@ Node Node_delete(Node node);
 Node Node_kill(Node node);
 Node Node_new();
 
-NodeGroup NodeGroup_new(char *id) {
+NodeGroup NodeGroup_new() {
     NodeGroup group = (NodeGroup)ValArray_new();
     check(group, "New Group is NULL");
-    // FIRST ELEMENT IS ALWAYS A STRING WITH THE GROUP ID
-    check(!ValArray_append(group, STR, dynval(_str_, Lstring_new(id))),
-          "ID append failed");
 error:
     return group;
 }
 NodeGroup NodeGroup_delete(NodeGroup group) {
     check(group, "Group to be deleted is NULL");
     Node current = NULL;
-    // starting at 1 because first element is always the string ID
-    for (int i = 1; i < group->length; i++) {
+    for (int i = 0; i < group->length; i++) {
         current = (Node)ValArray_get_at(group, i)._obj_;
         Node_kill(current);
         current->delete (current);
@@ -103,9 +99,7 @@ error:
 int NodeGroup_update(NodeGroup group) {
     check(group, "group is NULL");
     Node current = NULL;
-
-    // starting at 1 because first element is always the string ID
-    for (int i = 1; i < group->length; i++) {
+    for (int i = 0; i < group->length; i++) {
         current = (Node)ValArray_get_at(group, i)._obj_;
         current->update(current);
     }
@@ -145,10 +139,10 @@ Node Node_delete(Node node) {
     }
     if (node->children) {
         Node child = NULL;
+        int length = node->children->length;
         for (int i = 0; i < node->children->length; i++) {
-            child = (Node)ValArray_get_at(node->children, i)._obj_;
-            ValArray_set_at(node->children, i, NONE,
-                            dynval(_obj_, child->delete (child)));
+            child = (Node)ValArray_remove(node->children, -1)._obj_;
+            child->delete (child);
         }
         node->children = ValArray_delete(node->children);
     }
@@ -194,11 +188,13 @@ Node Node_kill(Node node) {
     Node child = NULL;
     check(node->groups, "node->groups is NULL");
     check_debug(node->groups->length > 0, "node is not in any groups");
-    for (int i = 0; i < node->groups->length; i++) {
+    int groups_length = node->groups->length;
+    for (int i = 0; i < groups_length; i++) {
         group = ValArray_remove(node->groups, -1)._obj_;
-        for (int j = 0; j < group->length; i++) {
-            if (node == (Node)ValArray_get_at(group, i)._obj_) {
-                current = (Node)ValArray_remove(group, i)._obj_;
+        debug("group %p", group);
+        for (int j = 0; j < group->length; j++) {
+            if (node == (Node)ValArray_get_at(group, j)._obj_) {
+                current = (Node)ValArray_remove(group, j)._obj_;
                 break;
             }
         }
@@ -209,7 +205,7 @@ Node Node_kill(Node node) {
         child = (Node)ValArray_get_at(node->children, i)._obj_;
         Node_kill(child);
     }
-    
+
 error:
     return node;
 }
@@ -265,8 +261,8 @@ error:
 
 #ifdef __NODE_MAIN__
 int main() {
-    NodeGroup group = NodeGroup_new("cheesy boi");
-    NodeGroup group2 = NodeGroup_new("cheesy boi2");
+    NodeGroup group = NodeGroup_new();
+    NodeGroup group2 = NodeGroup_new();
 
     Node node = Node_new();
     debug("deleting node");

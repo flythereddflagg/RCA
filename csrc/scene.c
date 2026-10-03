@@ -51,8 +51,8 @@ Scene Scene_new(Game game, char *yaml_path, Dict yaml_data, ValArray add_in) {
     }
     scene->draw_layers = Dict_get(scene->init, "layers", EMPTYVAL)._arr_;
     scene->groups = Dict_new();
-    scene->all_nodes = NodeGroup_new("all_nodes");
-    scene->active_nodes = NodeGroup_new("active_nodes");
+    scene->all_nodes = NodeGroup_new();
+    scene->active_nodes = NodeGroup_new();
     scene->bg_ref = NULL;
     return scene;
 error:
@@ -94,10 +94,10 @@ int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,
                              : (Vector2){0.0, 0.0};
     for (int i = 0; i < node->children->length; i++) {
         child = (Node)ValArray_get_at(node->children, i)._obj_;
-        Scene_place_node(
-            scene, child, Dict_get(child->init, "groups", EMPTYVAL)._arr_,
-            Dict_get(child->init, "start", EMPTYVAL)._arr_,
-            Dict_get(child->init, "active", dynval(_bool_, active))._bool_);
+        // Scene_place_node(
+        //     scene, child, Dict_get(child->init, "groups", EMPTYVAL)._arr_,
+        //     Dict_get(child->init, "start", EMPTYVAL)._arr_,
+        //     Dict_get(child->init, "active", dynval(_bool_, active))._bool_);
     }
 
     if (groups) {
@@ -109,7 +109,7 @@ int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,
                              ValArray_get_at(groups, i)._str_.cstring)) {
                 cur_grp = ValArray_get_at(groups, i)._str_;
                 Dict_set(scene->groups, cur_grp.cstring, OBJ,
-                         dynval(_obj_, NodeGroup_new(cur_grp.cstring)));
+                         dynval(_obj_, NodeGroup_new()));
             }
             nd_grp = (NodeGroup)Dict_get(
                          scene->groups,
@@ -162,7 +162,7 @@ int Scene_setup(Scene scene) {
     for (int i = 0; i < scene->draw_layers->length; i++) {
         group_name = ValArray_get_at(scene->draw_layers, i)._str_.cstring;
         Dict_set(scene->groups, group_name, OBJ,
-                 dynval(_obj_, NodeGroup_new(group_name)));
+                 dynval(_obj_, NodeGroup_new()));
     }
     if (add_background_blank) {
         ; // place node here
