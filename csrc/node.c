@@ -8,13 +8,18 @@
 #include "core.h"
 #include "dict.c"
 #include "sprite.c"
-#include "valarray.c"
+// #include "valarray.c"
 
 #define INHERIT_KEY "_inherit_"
 #define MISSING_TYPE "<MISSING TYPE>"
+#define GROUP_MAX_SIZE 100
 
 typedef struct NodeData *Node;
-typedef ValArray NodeGroup;
+typedef struct NodeGroupData *NodeGroup;
+
+struct NodeGroupData {
+    size_t length, Node *nodes
+};
 
 struct NodeData {
     Lstring type;
@@ -23,8 +28,9 @@ struct NodeData {
     Node parent;
     Sprite sprite;
     Dict init;
-    ValArray children;
-    ValArray groups;
+    NodeGroup children;
+    NodeGroup *groups;
+    size_t groups_length;
     int (*update)(const Node node);
     Node (*delete)(Node node);
 };
@@ -34,49 +40,69 @@ Node Node_kill(Node node);
 Node Node_new();
 
 NodeGroup NodeGroup_new() {
-    NodeGroup group = (NodeGroup)ValArray_new();
-    check(group, "New Group is NULL");
+    NodeGroup group = (NodeGroup)malloc(sizeof(Nodegroup));
+    *group = {.length = 0,
+              .nodes = (Node *)malloc(sizeof(Node) * GROUP_MAX_SIZE)};
 error:
     return group;
 }
 NodeGroup NodeGroup_delete(NodeGroup group) {
     check(group, "Group to be deleted is NULL");
     Node current = NULL;
-    for (int i = 0; i < group->length; i++) {
-        current = (Node)ValArray_get_at(group, i)._obj_;
-        Node_kill(current);
-        current->delete (current);
-        ValArray_set_at(group, i, NONE, EMPTYVAL);
+    if (group->nodes) {
+        for (size_t i = 0; i < group->length; i++) {
+            current = group->nodes[i];
+            group->nodes[i] = current->delete (current);
+        }
+        free(group->nodes);
     }
+    free(group);
 error:
-    return ValArray_delete(group);
+    return NULL
 }
-
 int NodeGroup_add(NodeGroup group, Node node) {
-    check(!ValArray_append(group, OBJ, dynval(_obj_, node)),
-          "NodeGroup_add failed");
-    check(!ValArray_append(node->groups, OBJ, dynval(_obj_, group)),
-          "Node_add failed");
+    check(group && group->nodes, "invalid group supplied");
+    check(node, "invalid node supplied");
+    check(group->length < GROUP_MAX_SIZE, "group is FULL");
+    check(node->groups_length < GROUP_MAX_SIZE,
+          "node cannot belong to any more groups");
+    group->nodes[group->length] = node;
+    group->length++;
+
+    node->groups[node->groups_length] = group;
+    node->groups_length++;
     return 0;
 error:
     return -1;
 }
+
 Node NodeGroup_remove(NodeGroup group, Node node) {
     Node matched_node = NULL;
     NodeGroup matched_nodegroup = NULL;
-    check(group, "group is NULL");
-    check(node, "node is NULL");
-    for (int i = 0; i < group->length; i++) {
-        if (node == (Node)ValArray_get_at(group, i)._obj_) {
-            matched_node = (Node)ValArray_remove(group, i)._obj_;
+    check(group && group->nodes, "invalid group");
+    check(node && node->groups, "invalid node");
+    for (size_t i = 0; i < group->length; i++) {
+        if (node == group->nodes[i]) {
+            matched_node = node;
+            group->nodes[i] = NULL;
+            for (size_t j = i; j < group->length - 1; j++) {
+                group->nodes[i] = group->nodes[i + 1];
+            }
+            group->nodes[group->length] = NULL;
+            group->length--;
             break;
         }
     }
     check(matched_node, "node not found!");
-    for (int i = 0; i < node->groups->length; i++) {
-        if (group == (NodeGroup)ValArray_get_at(node->groups, i)._obj_) {
-            matched_nodegroup =
-                (NodeGroup)ValArray_remove(node->groups, i)._obj_;
+    for (size_t i = 0; i < node->groups_length; i++) {
+        if (group == node->groups[i]) {
+            matched_group = group;
+            node->groups[i] = NULL;
+            for (size_t j = i; j < node->groups_length - 1; j++) {
+                node->groups[i] = node->groups[i + 1];
+            }
+            node->groups[node->groups_length] = NULL;
+            node->groups_length--;
             break;
         }
     }
@@ -84,10 +110,11 @@ Node NodeGroup_remove(NodeGroup group, Node node) {
 error:
     return matched_node;
 }
+// TODO update the code to NOT use a valarray CONTINUE HERE
 bool NodeGroup_has(NodeGroup group, Node node) {
     bool node_in_array = false;
     check(group, "group is NULL");
-    for (int i = 0; i < group->length; i++) {
+    for (size_t i = 0; i < group->length; i++) {
         if (node == ValArray_get_at(group, i)._obj_) {
             node_in_array = true;
             break;
@@ -99,7 +126,7 @@ error:
 int NodeGroup_update(NodeGroup group) {
     check(group, "group is NULL");
     Node current = NULL;
-    for (int i = 0; i < group->length; i++) {
+    for (size_t i = 0; i < group->length; i++) {
         current = (Node)ValArray_get_at(group, i)._obj_;
         current->update(current);
     }
@@ -139,8 +166,8 @@ Node Node_delete(Node node) {
     }
     if (node->children) {
         Node child = NULL;
-        int length = node->children->length;
-        for (int i = 0; i < node->children->length; i++) {
+        size_t length = node->children->length;
+        for (size_t i = 0; i < node->children->length; i++) {
             child = (Node)ValArray_remove(node->children, -1)._obj_;
             child->delete (child);
         }
@@ -188,11 +215,13 @@ Node Node_kill(Node node) {
     Node child = NULL;
     check(node->groups, "node->groups is NULL");
     check_debug(node->groups->length > 0, "node is not in any groups");
-    int groups_length = node->groups->length;
-    for (int i = 0; i < groups_length; i++) {
+    size_t groups_length = node->groups->length;
+    for (size_t i = 0; i < groups_length; i++) {
         group = ValArray_remove(node->groups, -1)._obj_;
-        debug("group %p", group);
-        for (int j = 0; j < group->length; j++) {
+        debug("group %p, length = %d", group, group->length);
+        check(group->length < 1000 && group->length > 0,
+              "WHAAAAT?") for (size_t j = 0; j < group->length; j++) {
+            // debug("%d", j);
             if (node == (Node)ValArray_get_at(group, j)._obj_) {
                 current = (Node)ValArray_remove(group, j)._obj_;
                 break;
@@ -201,7 +230,7 @@ Node Node_kill(Node node) {
     }
     check(current, "Node Not removed from any NodeGroups");
     // if you kill a parent. Kill all children too.
-    for (int i = 0; i < node->children->length; i++) {
+    for (size_t i = 0; i < node->children->length; i++) {
         child = (Node)ValArray_get_at(node->children, i)._obj_;
         Node_kill(child);
     }
@@ -210,7 +239,7 @@ error:
     return node;
 }
 bool Node_alive(Node node) {
-    for (int i = 0; i < node->groups->length; i++) {
+    for (size_t i = 0; i < node->groups->length; i++) {
         if (NodeGroup_has((NodeGroup)ValArray_get_at(node->groups, i)._obj_,
                           node))
             return true;
@@ -234,7 +263,7 @@ Node Node_child_by_id(Node node, char *id) {
     check(node, "given node is NULL");
     check(id, "given id is NULL");
     Lstring id_string = Lstring_new(id);
-    for (int i = 0; i < node->children->length; i++) {
+    for (size_t i = 0; i < node->children->length; i++) {
         if (Lstring_equal(
                 id_string,
                 ((Node)ValArray_get_at(node->children, i)._obj_)->id)) {
@@ -250,7 +279,7 @@ error:
 Node Node_remove_child(const Node node, Node child) {
     check(node, "given node is NULL");
     check(child, "given id is NULL");
-    for (int i = 0; i < node->children->length; i++) {
+    for (size_t i = 0; i < node->children->length; i++) {
         if (child == (Node)ValArray_get_at(node->children, i)._obj_) {
             return (Node)ValArray_remove(node->children, i)._obj_;
         }

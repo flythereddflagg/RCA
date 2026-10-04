@@ -66,7 +66,7 @@ DynValue ValArray_get_at(ValArray arr, int index) {
     // allows negative indexing
     check(arr, "array is NULL");
     index = index < 0 ? arr->length + index : index;
-    check(index < arr->length && index >= 0,
+    check(index < arr->length && index > (-arr->length),
           "index %d out of bounds for length %d", index, arr->length);
     return arr->vals[index];
 error:
@@ -77,7 +77,7 @@ DynType ValArray_type_at(ValArray arr, int index) {
     // allows negative indexing
     check(arr, "array is NULL");
     index = index < 0 ? arr->length + index : index;
-    check(index < arr->length && index >= 0,
+    check(index < arr->length && index > (-arr->length),
           "index %d out of bounds for length %d", index, arr->length);
     return arr->types[index];
 error:
@@ -87,7 +87,7 @@ error:
 int ValArray_set_at(ValArray arr, int index, DynType type, DynValue val) {
     check(arr, "array is NULL");
     index = index < 0 ? arr->length + index : index;
-    check(index < arr->length && index >= 0,
+    check(index < arr->length && index > (-arr->length),
           "index %d out of bounds for length %d", index, arr->length);
     arr->vals[index] = val;
     arr->types[index] = type;
@@ -107,7 +107,7 @@ error:
 int ValArray_insert(ValArray arr, int index, DynType type, DynValue val) {
     check(arr, "array is NULL");
     index = index < 0 ? arr->length + index : index;
-    check(index < arr->length && index >= 0,
+    check(index < arr->length && index > (-arr->length),
           "index %d out of bounds for length %d", index, arr->length);
     check(!ValArray_append(arr, NONE, EMPTYVAL), "insertion failed at append");
     for (int i = arr->length - 1; i > index; i--) {
@@ -126,7 +126,7 @@ DynValue ValArray_remove(ValArray arr, int index) {
     debug("arr -> %p", arr);
     debug("pre_index = %d, len = %d", index, arr->length);
     index = index < 0 ? arr->length + index : index;
-    check(index < arr->length && index >= 0,
+    check(index < arr->length && index > (-arr->length),
           "index %d out of bounds for length %d", index, arr->length);
     DynValue val = ValArray_get_at(arr, index);
     for (int i = index; i < arr->length - 1; i++) {
