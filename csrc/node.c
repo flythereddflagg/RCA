@@ -8,18 +8,16 @@
 #include "core.h"
 #include "dict.c"
 #include "sprite.c"
-// #include "valarray.c"
+#include "objlist.c"
 
 #define INHERIT_KEY "_inherit_"
 #define MISSING_TYPE "<MISSING TYPE>"
-#define GROUP_MAX_SIZE 100
 
 typedef struct NodeData *Node;
-typedef struct NodeGroupData *NodeGroup;
+typedef ObjList NodeGroup;
+typdef ObjList GroupList;
 
-struct NodeGroupData {
-    size_t length, Node *nodes
-};
+
 
 struct NodeData {
     Lstring type;
@@ -40,32 +38,24 @@ Node Node_kill(Node node);
 Node Node_new();
 
 NodeGroup NodeGroup_new() {
-    NodeGroup group = (NodeGroup)malloc(sizeof(Nodegroup));
-    *group = {.length = 0,
-              .nodes = (Node *)malloc(sizeof(Node) * GROUP_MAX_SIZE)};
-error:
-    return group;
+    return ObjList_new();
 }
 NodeGroup NodeGroup_delete(NodeGroup group) {
     check(group, "Group to be deleted is NULL");
     Node current = NULL;
-    if (group->nodes) {
-        for (size_t i = 0; i < group->length; i++) {
-            current = group->nodes[i];
-            group->nodes[i] = current->delete (current);
-        }
-        free(group->nodes);
+    size_t length = group->length;
+    for (size_t i = 0; i < length; i++) {
+        current = ObjList_at(group, i);
+        ObjList_set_at(group, i, current->delete (current));
     }
-    free(group);
+    return ObjList_delete(group);
 error:
     return NULL
 }
 int NodeGroup_add(NodeGroup group, Node node) {
-    check(group && group->nodes, "invalid group supplied");
-    check(node, "invalid node supplied");
-    check(group->length < GROUP_MAX_SIZE, "group is FULL");
-    check(node->groups_length < GROUP_MAX_SIZE,
-          "node cannot belong to any more groups");
+    check(group, "group is NULL");
+    check(node, "node is NULL");
+    // CONTINUE HERE WITH THE OBJLISTS
     group->nodes[group->length] = node;
     group->length++;
 
