@@ -15,17 +15,7 @@ typedef struct SceneData *Scene;
 typedef enum { UP, RIGHT, DOWN, LEFT } Compass;
 typedef struct SpriteData *Sprite;
 typedef struct LstringData Lstring;
-typedef struct LnodeData *Lnode;
-typedef struct ObjListData *ObjList;
-struct LnodeData {
-    void *obj;
-    Lnode next;
-}
 
-struct ObjListData {
-    Lnode length;
-    Lnode head;
-}
 struct LstringData {
     size_t length;
     char *cstring;
