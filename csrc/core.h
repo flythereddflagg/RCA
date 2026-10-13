@@ -6,6 +6,8 @@
     (DynValue) { ._obj_ = NULL }
 #define dynval(T, V)                                                           \
     (DynValue) { .T = V }
+#define LSTRING_FMT "%.*s"
+
 typedef struct DictData *Dict;
 typedef union DynValueData DynValue;
 typedef enum DynTypeData DynType;

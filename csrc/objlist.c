@@ -155,7 +155,7 @@ int ObjList_insert(ObjList list, size_t index, void *obj) {
 error:
     return -1;
 }
-void *ObjList_remove(ObjList list, size_t index) {
+void *ObjList_remove_at(ObjList list, size_t index) {
     void *out = NULL;
     check(list, "list is NULL");
     if (index == list->length - 1)
@@ -180,6 +180,23 @@ void *ObjList_remove(ObjList list, size_t index) {
     free(current);
     list->length--;
     return out;
+error:
+    return NULL;
+}
+void *ObjList_remove(ObjList list, void *obj) {
+    // remove by value of obj
+    check(list, "list is NULL");
+    Lnode current = list->head;
+    void *matched_obj = NULL;
+    for (size_t i = 0; i < list->length; i++) {
+        check(current, "current is NULL at postition %lu", i);
+        if (current->obj == obj) {
+            matched_obj = ObjList_remove_at(list, i);
+            return matched_obj;
+        }
+        current = current->next;
+    }
+    sentinel("object not found in list");
 error:
     return NULL;
 }
@@ -241,13 +258,13 @@ int main() {
     }
     debug("\n\n-- removing --\n");
 
-    debug("at %lu got '%s'", (size_t)2, (char *)ObjList_remove(list, 2));
-    debug("at %lu got '%s'", (size_t)0, (char *)ObjList_remove(list, 0));
-    debug("at %lu got '%s'", (size_t)5, (char *)ObjList_remove(list, 5));
-    debug("at %lu got '%s'", (size_t)3, (char *)ObjList_remove(list, 3));
-    debug("at %lu got '%s'", (size_t)2, (char *)ObjList_remove(list, 2));
+    debug("at %lu got '%s'", (size_t)2, (char *)ObjList_remove_at(list, 2));
+    debug("at %lu got '%s'", (size_t)0, (char *)ObjList_remove_at(list, 0));
+    debug("at %lu got '%s'", (size_t)5, (char *)ObjList_remove_at(list, 5));
+    debug("at %lu got '%s'", (size_t)3, (char *)ObjList_remove_at(list, 3));
+    debug("at %lu got '%s'", (size_t)2, (char *)ObjList_remove_at(list, 2));
     debug("at %lu got '%s'", list->length - 1,
-          (char *)ObjList_remove(list, list->length - 1));
+          (char *)ObjList_remove_at(list, list->length - 1));
     debug("\n\n-- after removing --\n");
     for (size_t i = 0; i < list->length; i++) {
         debug("at %lu got '%s'", i, (char *)ObjList_at(list, i));

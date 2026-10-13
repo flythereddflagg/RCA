@@ -7,17 +7,16 @@
 
 #include "core.h"
 #include "dict.c"
-#include "sprite.c"
+#include "lstring.c"
 #include "objlist.c"
+#include "sprite.c"
 
 #define INHERIT_KEY "_inherit_"
 #define MISSING_TYPE "<MISSING TYPE>"
 
 typedef struct NodeData *Node;
 typedef ObjList NodeGroup;
-typdef ObjList GroupList;
-
-
+typedef ObjList GroupList;
 
 struct NodeData {
     Lstring type;
@@ -27,7 +26,7 @@ struct NodeData {
     Sprite sprite;
     Dict init;
     NodeGroup children;
-    NodeGroup *groups;
+    GroupList groups;
     size_t groups_length;
     int (*update)(const Node node);
     Node (*delete)(Node node);
@@ -37,9 +36,7 @@ Node Node_delete(Node node);
 Node Node_kill(Node node);
 Node Node_new();
 
-NodeGroup NodeGroup_new() {
-    return ObjList_new();
-}
+NodeGroup NodeGroup_new() { return ObjList_new(); }
 NodeGroup NodeGroup_delete(NodeGroup group) {
     check(group, "Group to be deleted is NULL");
     Node current = NULL;
@@ -50,75 +47,41 @@ NodeGroup NodeGroup_delete(NodeGroup group) {
     }
     return ObjList_delete(group);
 error:
-    return NULL
+    return NULL;
 }
 int NodeGroup_add(NodeGroup group, Node node) {
     check(group, "group is NULL");
     check(node, "node is NULL");
-    // CONTINUE HERE WITH THE OBJLISTS
-    group->nodes[group->length] = node;
-    group->length++;
-
-    node->groups[node->groups_length] = group;
-    node->groups_length++;
+    check(!ObjList_push(group, node), "group add failed");
+    check(!ObjList_push(node->groups, group), "node add group failed");
     return 0;
 error:
     return -1;
 }
 
 Node NodeGroup_remove(NodeGroup group, Node node) {
-    Node matched_node = NULL;
-    NodeGroup matched_nodegroup = NULL;
-    check(group && group->nodes, "invalid group");
-    check(node && node->groups, "invalid node");
-    for (size_t i = 0; i < group->length; i++) {
-        if (node == group->nodes[i]) {
-            matched_node = node;
-            group->nodes[i] = NULL;
-            for (size_t j = i; j < group->length - 1; j++) {
-                group->nodes[i] = group->nodes[i + 1];
-            }
-            group->nodes[group->length] = NULL;
-            group->length--;
-            break;
-        }
-    }
-    check(matched_node, "node not found!");
-    for (size_t i = 0; i < node->groups_length; i++) {
-        if (group == node->groups[i]) {
-            matched_group = group;
-            node->groups[i] = NULL;
-            for (size_t j = i; j < node->groups_length - 1; j++) {
-                node->groups[i] = node->groups[i + 1];
-            }
-            node->groups[node->groups_length] = NULL;
-            node->groups_length--;
-            break;
-        }
-    }
-    check(matched_nodegroup, "group in node not found");
-error:
-    return matched_node;
-}
-// TODO update the code to NOT use a valarray CONTINUE HERE
-bool NodeGroup_has(NodeGroup group, Node node) {
-    bool node_in_array = false;
     check(group, "group is NULL");
-    for (size_t i = 0; i < group->length; i++) {
-        if (node == ValArray_get_at(group, i)._obj_) {
-            node_in_array = true;
-            break;
-        }
-    }
+    check(node, "node is NULL");
+    Node out = (Node)ObjList_remove(group, node);
+    check(!out, "group remove failed");
+    check(!ObjList_remove(node->groups, group), "node remove group failed.");
+    return out;
 error:
-    return node_in_array;
+    return NULL;
+}
+bool NodeGroup_has(NodeGroup group, Node node) {
+    return ObjList_has(group, node);
 }
 int NodeGroup_update(NodeGroup group) {
     check(group, "group is NULL");
-    Node current = NULL;
+    Lnode current = group->head;
+    Node node = NULL;
     for (size_t i = 0; i < group->length; i++) {
-        current = (Node)ValArray_get_at(group, i)._obj_;
-        current->update(current);
+        check(current, "current Lnode is NULL at postition %lu", i);
+        node = (Node)current->obj;
+        check(!node->update(node), "Node <" LSTRING_FMT "> failed to update",
+              Lstring_format(node->id));
+        current = current->next;
     }
     return 0;
 error:
@@ -141,8 +104,8 @@ Node Node_new() {
     node->sprite = NULL;
     // owned field?
     node->init = NULL;
-    node->children = ValArray_new(); // dtype=Node
-    node->groups = ValArray_new();   // dtype=NodeGroup
+    node->children = ObjList_new(); // dtype=Node
+    node->groups = ObjList_new();   // dtype=NodeGroup
     node->update = &Node_update;
     node->delete = &Node_delete;
 
@@ -157,16 +120,16 @@ Node Node_delete(Node node) {
     if (node->children) {
         Node child = NULL;
         size_t length = node->children->length;
-        for (size_t i = 0; i < node->children->length; i++) {
-            child = (Node)ValArray_remove(node->children, -1)._obj_;
+        for (size_t i = 0; i < length; i++) {
+            child = (Node)ObjList_pop(node->children);
             child->delete (child);
         }
-        node->children = ValArray_delete(node->children);
+        node->children = ObjList_delete(node->children);
     }
     if (node->groups) {
-        node->groups = ValArray_delete(node->groups);
+        node->groups = ObjList_delete(node->groups);
     }
-    // if (node->init)
+    // if (node->init) // do NOT delete because node does not own it
     //     node->init = Dict_delete(node->init);
     if (node->sprite)
         Sprite_delete(node->sprite);
@@ -200,41 +163,31 @@ Node Node_remove(Node node, NodeGroup group) {
 }
 Node Node_kill(Node node) {
     check(node, "node is NULL");
-    NodeGroup group = NULL;
-    Node current = NULL;
-    Node child = NULL;
     check(node->groups, "node->groups is NULL");
     check_debug(node->groups->length > 0, "node is not in any groups");
     size_t groups_length = node->groups->length;
+    NodeGroup group = NULL;
     for (size_t i = 0; i < groups_length; i++) {
-        group = ValArray_remove(node->groups, -1)._obj_;
-        debug("group %p, length = %d", group, group->length);
-        check(group->length < 1000 && group->length > 0,
-              "WHAAAAT?") for (size_t j = 0; j < group->length; j++) {
-            // debug("%d", j);
-            if (node == (Node)ValArray_get_at(group, j)._obj_) {
-                current = (Node)ValArray_remove(group, j)._obj_;
-                break;
-            }
-        }
+        group = ObjList_pop(node->groups);
+        check(ObjList_remove(group, node), "group remove failed");
     }
-    check(current, "Node Not removed from any NodeGroups");
+    check_debug(group, "Node Not removed from any NodeGroups");
     // if you kill a parent. Kill all children too.
+    Node child = NULL;
+    Lnode current = node->children->head;
     for (size_t i = 0; i < node->children->length; i++) {
-        child = (Node)ValArray_get_at(node->children, i)._obj_;
+        check(current, "current is NULL at postition %lu", i);
+        child = (Node)current->obj;
         Node_kill(child);
+        current = current->next;
     }
-
 error:
     return node;
 }
 bool Node_alive(Node node) {
-    for (size_t i = 0; i < node->groups->length; i++) {
-        if (NodeGroup_has((NodeGroup)ValArray_get_at(node->groups, i)._obj_,
-                          node))
-            return true;
-    }
-    check(!node->groups->length, "NODE-NODEGROUP inconsistency");
+    check(node, "Node is NULL");
+    check(node->groups, "Node groups is NULL");
+    return node->groups->length ? true : false;
 error:
     return false;
 }
@@ -242,8 +195,7 @@ int Node_add_child(const Node node, Node child) {
     check(node, "given node is NULL");
     check(child, "given id is NULL");
     child->parent = node;
-    check(!ValArray_append(node->children, OBJ, dynval(_obj_, child)),
-          "add child failed");
+    check(!ObjList_push(node->children, child), "add child failed");
     return 0;
 error:
     return -1;
@@ -253,14 +205,20 @@ Node Node_child_by_id(Node node, char *id) {
     check(node, "given node is NULL");
     check(id, "given id is NULL");
     Lstring id_string = Lstring_new(id);
+    Lnode current = node->children->head;
+    Node child = NULL;
     for (size_t i = 0; i < node->children->length; i++) {
-        if (Lstring_equal(
-                id_string,
-                ((Node)ValArray_get_at(node->children, i)._obj_)->id)) {
+        check(current, "current is NULL at postition %lu", i);
+        child = current->obj;
+        check(child, "child is NULL at position %lu", i);
+        if (Lstring_equal(id_string, child->id)) {
             id_string = Lstring_delete(id_string);
-            return (Node)ValArray_get_at(node->children, i)._obj_;
+            return child;
         }
+        current = current->next;
     }
+    sentinel("Child with id '" LSTRING_FMT "'not found!",
+             Lstring_format(child->id));
 error:
     id_string = Lstring_delete(id_string);
     return NULL;
@@ -269,11 +227,7 @@ error:
 Node Node_remove_child(const Node node, Node child) {
     check(node, "given node is NULL");
     check(child, "given id is NULL");
-    for (size_t i = 0; i < node->children->length; i++) {
-        if (child == (Node)ValArray_get_at(node->children, i)._obj_) {
-            return (Node)ValArray_remove(node->children, i)._obj_;
-        }
-    }
+    return (Node)ObjList_remove(node->children, child);
 error:
     return NULL;
 }
@@ -289,14 +243,19 @@ int main() {
     debug("remaking node");
     node = Node_new();
     Node_add_child(node, Node_new());
+    
     Node_add(node, group);
     NodeGroup_add(group2, node);
+    NodeGroup_add(group, (Node)ObjList_at(node->children, 0));
+    debug("group->length: %lu", group->length);
+    debug("group2->length: %lu", group2->length);
     debug("killing node");
-    Node_kill(node);
-    debug("group->length: %d", group->length);
-    debug("group2->length: %d", group2->length);
+    node = Node_kill(node);
+    debug("group->length: %lu", group->length);
+    debug("group2->length: %lu", group2->length);
     group = NodeGroup_delete(group);
     group2 = NodeGroup_delete(group2);
+    node->delete(node);
     return 0;
 }
 #endif

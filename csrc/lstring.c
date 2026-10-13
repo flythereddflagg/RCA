@@ -10,7 +10,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define MAX_LSTRING_LEN 1024
-#define LSTRING_FMT "%.*s"
 #define Lstring_format(str) (int)str.length, str.cstring
 #define LSTRING_NULL                                                           \
     (Lstring) { .length = 0, .cstring = NULL, .on_heap = false }
