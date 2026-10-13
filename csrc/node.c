@@ -13,6 +13,7 @@
 
 #define INHERIT_KEY "_inherit_"
 #define MISSING_TYPE "<MISSING TYPE>"
+#define MISSING_ID "<NO ID>"
 
 typedef struct NodeData *Node;
 typedef ObjList NodeGroup;
@@ -95,9 +96,9 @@ Node Node_new() {
     Node node = (Node)malloc(sizeof(struct NodeData));
     check_mem(node);
     // owned field
-    node->type = LSTRING_NULL; // NULL is uninitialized node i guess
+    node->type = to_Lstring(MISSING_TYPE);
     // owned field
-    node->id = LSTRING_NULL; // TODO figure out how to use SPRINTF here?
+    node->id = to_Lstring(MISSING_ID);
     node->scene = NULL;
     node->parent = NULL;
     // owned field
