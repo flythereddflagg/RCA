@@ -88,12 +88,12 @@ int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,
     NodeGroup_add(scene->all_nodes, node);
     if (active)
         NodeGroup_add(scene->active_nodes, node);
-    Node child = NULL;
     Vector2 startvec = start ? (Vector2){ValArray_get_at(start, 0)._float_,
                                          ValArray_get_at(start, 1)._float_}
                              : (Vector2){0.0, 0.0};
+    Node child = NULL;
     for (int i = 0; i < node->children->length; i++) {
-        child = (Node)ValArray_get_at(node->children, i)._obj_;
+        child = (Node)ObjList_at(node->children, i);
         // Scene_place_node(
         //     scene, child, Dict_get(child->init, "groups", EMPTYVAL)._arr_,
         //     Dict_get(child->init, "start", EMPTYVAL)._arr_,
@@ -202,7 +202,7 @@ Node Scene_node_by_id(Scene scene, char *node_id) {
     check(node_id, "node id is NULL");
     id_str = Lstring_new(node_id);
     for (int i = 0; i < scene->active_nodes->length; i++) {
-        node = (Node)ValArray_get_at(scene->active_nodes, i)._obj_;
+        node = (Node)ObjList_at(scene->active_nodes, i);
         if (node && Lstring_equal(id_str, node->id))
             break;
         else
