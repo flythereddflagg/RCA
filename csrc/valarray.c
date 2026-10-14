@@ -107,7 +107,7 @@ error:
 int ValArray_insert(ValArray arr, int index, DynType type, DynValue val) {
     check(arr, "array is NULL");
     index = index < 0 ? arr->length + index : index;
-    if (index == arr->length){
+    if (index == arr->length) {
         return ValArray_append(arr, type, val);
     }
     check(index < arr->length && index > (-arr->length),

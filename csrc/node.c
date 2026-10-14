@@ -38,18 +38,8 @@ Node Node_kill(Node node);
 Node Node_new();
 
 NodeGroup NodeGroup_new() { return ObjList_new(); }
-NodeGroup NodeGroup_delete(NodeGroup group) {
-    check(group, "Group to be deleted is NULL");
-    Node current = NULL;
-    size_t length = group->length;
-    for (size_t i = 0; i < length; i++) {
-        current = ObjList_at(group, i);
-        ObjList_set_at(group, i, current->delete (current));
-    }
-    return ObjList_delete(group);
-error:
-    return NULL;
-}
+NodeGroup NodeGroup_delete(NodeGroup group) { return ObjList_delete(group); }
+
 int NodeGroup_add(NodeGroup group, Node node) {
     check(group, "group is NULL");
     check(node, "node is NULL");
@@ -244,7 +234,7 @@ int main() {
     debug("remaking node");
     node = Node_new();
     Node_add_child(node, Node_new());
-    
+
     Node_add(node, group);
     NodeGroup_add(group2, node);
     NodeGroup_add(group, (Node)ObjList_at(node->children, 0));
@@ -256,7 +246,7 @@ int main() {
     debug("group2->length: %lu", group2->length);
     group = NodeGroup_delete(group);
     group2 = NodeGroup_delete(group2);
-    node->delete(node);
+    node->delete (node);
     return 0;
 }
 #endif
