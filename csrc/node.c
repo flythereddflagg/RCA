@@ -54,8 +54,8 @@ Node NodeGroup_remove(NodeGroup group, Node node) {
     check(group, "group is NULL");
     check(node, "node is NULL");
     Node out = (Node)ObjList_remove(group, node);
-    check(!out, "group remove failed");
-    check(!ObjList_remove(node->groups, group), "node remove group failed.");
+    check(out, "group remove failed");
+    check(ObjList_remove(node->groups, group), "node remove group failed.");
     return out;
 error:
     return NULL;

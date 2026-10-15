@@ -94,10 +94,10 @@ int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,
     Node child = NULL;
     for (int i = 0; i < node->children->length; i++) {
         child = (Node)ObjList_at(node->children, i);
-        // Scene_place_node(
-        //     scene, child, Dict_get(child->init, "groups", EMPTYVAL)._arr_,
-        //     Dict_get(child->init, "start", EMPTYVAL)._arr_,
-        //     Dict_get(child->init, "active", dynval(_bool_, active))._bool_);
+        Scene_place_node(
+            scene, child, Dict_get(child->init, "groups", EMPTYVAL)._arr_,
+            Dict_get(child->init, "start", EMPTYVAL)._arr_,
+            Dict_get(child->init, "active", dynval(_bool_, active))._bool_);
     }
 
     if (groups) {
@@ -183,8 +183,7 @@ int Scene_setup(Scene scene) {
     Node node = NULL;
     for (int i = 0; i < nodes->length; i++) {
         node_init = ValArray_get_at(nodes, i)._dict_;
-        node = Node_from_dict(node_init); // TODO fix MEMORY LEAK HERE
-        // node = Node_delete(node);
+        node = Node_from_dict(node_init);
         Scene_place_node(
             scene, node, Dict_get(node_init, "groups", EMPTYVAL)._arr_,
             Dict_get(node_init, "start", EMPTYVAL)._arr_,
@@ -194,7 +193,23 @@ int Scene_setup(Scene scene) {
 error:
     return -1;
 }
-
+int Scene_deconstruct(Scene scene) {
+    check(scene, "Scene is NULL");
+    check(scene->all_nodes, "scene->all_nodes is NULL");
+    // if save_scene:
+    //         self.game.saved_scenes[self.id] = self.serialize()
+    size_t length = scene->all_nodes->length;
+    Node current = NULL;
+    for (size_t i = 0; i < length; i++) {
+        current =
+            NodeGroup_remove(scene->all_nodes, scene->all_nodes->head->obj);
+        check(current, "current is NULL");
+        current->delete (current);
+    }
+    return 0;
+error:
+    return -1;
+}
 Node Scene_node_by_id(Scene scene, char *node_id) {
     Node node = NULL;
     Lstring id_str = LSTRING_NULL;
@@ -218,8 +233,11 @@ int main() {
     Scene scene = Scene_new(NULL, "./assets/scene/test_scene.yaml", NULL, NULL);
     Scene_setup(scene);
     // Dict_print(scene->init);
+    check(!Scene_deconstruct(scene), "deconstruct failed");
     scene = Scene_delete(scene);
     return 0;
+error:
+    return 23;
 }
 #endif
 #endif
