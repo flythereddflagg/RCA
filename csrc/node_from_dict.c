@@ -11,6 +11,7 @@
 #include "dict.c"
 #include "lstring.c"
 #include "node.c"
+#define MAX_KEY_LEN 100
 #define kf_pair(k, f)                                                          \
     (KeyFuncPair) { .key = k, .func = f }
 
@@ -43,11 +44,16 @@ KeyFuncPair SETUP_FUNCS[] = {
     kf_pair("Trigger", Node_setup)
 };
 
-size_t SETUP_FUNCS_SIZE = sizeof(SETUP_FUNCS) / sizeof(KeyFuncPair);
+size_t SETUP_FUNCS_LENGTH = sizeof(SETUP_FUNCS) / sizeof(KeyFuncPair);
 
 NodeFunc Node_get_setup(char *key){
     check(key, "key is NULL");
-    
+    for (size_t i = 0; i < SETUP_FUNCS_LENGTH; i++){
+        if (!strncmp(key, SETUP_FUNCS[i].key, MAX_KEY_LEN)){
+            return SETUP_FUNCS[i].func;
+        }
+    }
+    sentinel("Node type '%s' is not a valid type!");
 error:
     return NULL;
 }
@@ -59,10 +65,10 @@ Node Node_from_dict(Dict init) {
         // TODO write code to overwrite the data in yaml with the data in init
     }
     Node node = Node_new();
-    check(node, "node from dict failed");
+    check(node, "node INIT failed");
     node->init = init;
+    // CONTINUE HERE!
     
-    return node;
 error:
     return NULL;
 }
