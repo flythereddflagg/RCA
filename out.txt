@@ -1,0 +1,91 @@
+./assets/scene/alleyway.yaml:  type: Decal
+./assets/scene/alleyway.yaml:  type: Decal
+./assets/scene/alleyway.yaml:    type: Item
+./assets/scene/alleyway.yaml:  type: SoftDirt
+./assets/scene/alleyway.yaml:  - type: Animation2
+./assets/scene/alleyway.yaml:  type: Edge
+./assets/scene/alleyway.yaml:  type: Camera
+./assets/scene/alleyway.yaml:  type: Music
+./assets/scene/boss_room.yaml:  type: Decal
+./assets/scene/boss_room.yaml:#   type: Item
+./assets/scene/boss_room.yaml:  type: Edge
+./assets/scene/boss_room.yaml:  type: Edge
+./assets/scene/boss_room.yaml:  type: Camera
+./assets/scene/boss_room.yaml:  type: Decal
+./assets/scene/boss_room.yaml:  type: Music
+./assets/scene/corridor.yaml:  type: Decal
+./assets/scene/corridor.yaml:  type: Decal
+./assets/scene/corridor.yaml:  type: Edge
+./assets/scene/corridor.yaml:  type: Edge
+./assets/scene/corridor.yaml:  type: Camera
+./assets/scene/corridor.yaml:  type: Music
+./assets/scene/credits.yaml:  type: CutScene
+./assets/scene/credits.yaml:      type: Animation
+./assets/scene/credits.yaml:  type: TextRoll
+./assets/scene/credits.yaml:  type: Music
+./assets/scene/credits.yaml:  type: OpenUrlTrigger
+./assets/scene/credits.yaml:    type: Decal
+./assets/scene/forest.yaml:  type: Decal
+./assets/scene/forest.yaml:  type: Decal
+./assets/scene/forest.yaml:  type: Decal
+./assets/scene/forest.yaml:  type: Item
+./assets/scene/forest.yaml:  type: Gate
+./assets/scene/forest.yaml:    type: SFX
+./assets/scene/forest.yaml:  type: Item
+./assets/scene/forest.yaml:  type: Edge
+./assets/scene/forest.yaml:  type: Camera
+./assets/scene/forest.yaml:  type: Music
+./assets/scene/game_over.yaml:#   type: CutScene
+./assets/scene/game_over.yaml:#       type: Animation
+./assets/scene/game_over.yaml:  type: TextRoll
+./assets/scene/game_over.yaml:    type: Retry
+./assets/scene/game_over.yaml:  type: Music
+./assets/scene/intro.yaml:  type: TextBox
+./assets/scene/intro.yaml:  type: Trigger
+./assets/scene/mansion_yard.yaml:  type: Decal
+./assets/scene/mansion_yard.yaml:  type: Decal
+./assets/scene/mansion_yard.yaml:  type: Gate
+./assets/scene/mansion_yard.yaml:      type: Decal
+./assets/scene/mansion_yard.yaml:      type: Decal
+./assets/scene/mansion_yard.yaml:      type: SFX
+./assets/scene/mansion_yard.yaml:  type: Item
+./assets/scene/mansion_yard.yaml:  type: Edge
+./assets/scene/mansion_yard.yaml:  type: Edge
+./assets/scene/mansion_yard.yaml:  type: Edge
+./assets/scene/mansion_yard.yaml:  type: Camera
+./assets/scene/mansion_yard.yaml:#   type: Item
+./assets/scene/mansion_yard.yaml:  type: Music
+./assets/scene/prototype_room.yaml:  type: Decal
+./assets/scene/prototype_room.yaml:#   type: Camera
+./assets/scene/prototype_room.yaml:  type: Item
+./assets/scene/red_castle_valley.yaml:    type: Decal
+./assets/scene/red_castle_valley.yaml:    type: Decal
+./assets/scene/red_castle_valley.yaml:    type: Decal
+./assets/scene/red_castle_valley.yaml:  #   type: Item
+./assets/scene/red_castle_valley.yaml:  #   type: Item
+./assets/scene/red_castle_valley.yaml:  #   type: Item
+./assets/scene/red_castle_valley.yaml:  #   type: Decal
+./assets/scene/red_castle_valley.yaml:  #   type: Cactus
+./assets/scene/red_castle_valley.yaml:    type: Backpack
+./assets/scene/red_castle_valley.yaml:  #   type: Coin
+./assets/scene/red_castle_valley.yaml:      type: Item
+./assets/scene/red_castle_valley.yaml:    type: SoftDirt
+./assets/scene/red_castle_valley.yaml:    - type: Animation2
+./assets/scene/red_castle_valley.yaml:    type: Edge
+./assets/scene/red_castle_valley.yaml:    type: Edge
+./assets/scene/red_castle_valley.yaml:    type: Edge
+./assets/scene/red_castle_valley.yaml:    type: Music
+./assets/scene/red_castle_valley.yaml:    type: Camera
+./assets/scene/scene_template.yaml:  type: Decal
+./assets/scene/scene_template.yaml:  type: Decal <or subclass>
+./assets/scene/scene_template.yaml:  type: Edge
+./assets/scene/startup.yaml:  type: CutScene
+./assets/scene/startup.yaml:      type: Animation
+./assets/scene/startup.yaml:      type: Menu
+./assets/scene/startup.yaml:  type: Music
+./assets/scene/startup.yaml:#   type: Camera
+./assets/scene/test_scene.yaml:  type: Decal
+./assets/scene/test_scene.yaml:  type: Camera
+./assets/scene/text_test.yaml:  type: Decal
+./assets/scene/text_test.yaml:  type: Camera
+./assets/scene/text_test.yaml:  type: TextBox

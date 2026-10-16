@@ -37,6 +37,8 @@ Node Node_delete(Node node);
 Node Node_kill(Node node);
 Node Node_new();
 
+int Node_setup(Node node) { return 0; } // dummy setup function
+
 NodeGroup NodeGroup_new() { return ObjList_new(); }
 NodeGroup NodeGroup_delete(NodeGroup group) { return ObjList_delete(group); }
 
@@ -132,19 +134,6 @@ Node Node_delete(Node node) {
     }
 
     free(node);
-error:
-    return NULL;
-}
-Node Node_from_dict(Dict init) {
-    Dict yaml = Dict_get(init, "yaml", EMPTYVAL)._dict_;
-    if (yaml) {
-        ;
-        // TODO write code to overwrite the data in yaml with the data in init
-    }
-    Node node = Node_new();
-    check(node, "node from dict failed");
-    node->init = init;
-    return node;
 error:
     return NULL;
 }
