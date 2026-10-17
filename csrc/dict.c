@@ -33,19 +33,19 @@ error:
     return -1;
 }
 
-int Dict_get_index(const Dict self, const Lstring key) {
+int Dict_get_index(const Dict dict, const Lstring key) {
     // TODO reimplement this more simply
-    check(self, "invalid dict supplied");
+    check(dict, "invalid dict supplied");
     check(key.cstring && key.cstring[0], "invalid key '%s' supplied",
           key.cstring);
     int hash_i = Dict_hash(key), index = 0, i = 0;
     // debug("%d", hash_i);
 
     // if the key at that index is not empty follow the linked list to the end
-    while (self->next[hash_i] != NO_NEXT) {
-        if (Lstring_equal(key, self->keys[hash_i]))
+    while (dict->next[hash_i] != NO_NEXT) {
+        if (Lstring_equal(key, dict->keys[hash_i]))
             return hash_i;
-        hash_i = self->next[hash_i];
+        hash_i = dict->next[hash_i];
     }
     // debug("%d", hash_i);
 
@@ -54,8 +54,8 @@ int Dict_get_index(const Dict self, const Lstring key) {
     index = hash_i;
 
     for (i = 0; i < DICTSIZE; i++) {
-        if (Lstring_equal(key, self->keys[hash_i]) ||
-            !self->keys[index].cstring)
+        if (Lstring_equal(key, dict->keys[hash_i]) ||
+            !dict->keys[index].cstring)
             break;
         index++;
         // wrap around
@@ -65,7 +65,7 @@ int Dict_get_index(const Dict self, const Lstring key) {
     check(i < DICTSIZE, "Dict is full");
     // then if we needed to find another slot, we link to it in the previous one
     if (hash_i != index)
-        self->next[hash_i] = index;
+        dict->next[hash_i] = index;
 
     check(index >= 0 && index < DICTSIZE, "invalid index '%d' detected", index);
 
@@ -74,62 +74,62 @@ error:
     return -1;
 }
 
-int Dict_set(Dict self, char *cstring, DynType type, DynValue val) {
-    check(self, "invalid dict supplied");
+int Dict_set(Dict dict, char *cstring, DynType type, DynValue val) {
+    check(dict, "invalid dict supplied");
     check(cstring && cstring[0], "invalid key supplied: '%s'", cstring);
     Lstring key = Lstring_new(cstring);
-    int index = Dict_get_index(self, key);
+    int index = Dict_get_index(dict, key);
     check(index >= 0 && index < DICTSIZE, "Index error '%d'", index);
 
-    self->keys[index] = Lstring_delete(self->keys[index]);
-    if (self->types[index] == DICT)
-        self->vals[index]._dict_ = Dict_delete(self->vals[index]._dict_);
-    else if (self->types[index] == ARR)
-        self->vals[index]._arr_ = ValArray_delete(self->vals[index]._arr_);
-    else if (self->types[index] == STR)
-        self->vals[index]._str_ = Lstring_delete(self->vals[index]._str_);
+    dict->keys[index] = Lstring_delete(dict->keys[index]);
+    if (dict->types[index] == DICT)
+        dict->vals[index]._dict_ = Dict_delete(dict->vals[index]._dict_);
+    else if (dict->types[index] == ARR)
+        dict->vals[index]._arr_ = ValArray_delete(dict->vals[index]._arr_);
+    else if (dict->types[index] == STR)
+        dict->vals[index]._str_ = Lstring_delete(dict->vals[index]._str_);
     // then put in the new one
-    self->keys[index] = key;
-    self->types[index] = type;
-    self->vals[index] = val;
+    dict->keys[index] = key;
+    dict->types[index] = type;
+    dict->vals[index] = val;
     return 0;
 error:
     return -1;
 }
 
-int Dict_delkey(Dict self, char *cstring) {
-    check(self, "invalid dict supplied");
+int Dict_delkey(Dict dict, char *cstring) {
+    check(dict, "invalid dict supplied");
     check(cstring && cstring[0], "invalid key '%s' supplied", cstring);
     Lstring key = to_Lstring(cstring);
     int prev = Dict_hash(key), index = prev;
     // if keys do not match follow the linked list and error if we reach the end
-    while (!self->keys[index].cstring ||
-           Lstring_equal(key, self->keys[index])) {
-        check(self->next[index] != NO_NEXT, "'" LSTRING_FMT "' Key not found",
+    while (!dict->keys[index].cstring ||
+           Lstring_equal(key, dict->keys[index])) {
+        check(dict->next[index] != NO_NEXT, "'" LSTRING_FMT "' Key not found",
               Lstring_format(key));
         prev = index;
-        index = self->next[index];
+        index = dict->next[index];
     }
 
     // we now have the index which we erase saving the 'next' value
-    int tmp_next = self->next[index];
-    self->keys[index] = Lstring_delete(self->keys[index]);
-    self->next[index] = NO_NEXT;
+    int tmp_next = dict->next[index];
+    dict->keys[index] = Lstring_delete(dict->keys[index]);
+    dict->next[index] = NO_NEXT;
     // then we set the prev item to be the next
-    self->next[prev] = tmp_next;
+    dict->next[prev] = tmp_next;
     return 0;
 error:
     return -1;
 }
 
-DynValue Dict_get(Dict self, char *cstring, DynValue _default) {
-    check(self, "invalid dict supplied");
+DynValue Dict_get(Dict dict, char *cstring, DynValue _default) {
+    check(dict, "invalid dict supplied");
     check(cstring && cstring[0], "invalid key '%s' supplied", cstring);
     Lstring key = to_Lstring(cstring);
-    int index = Dict_get_index(self, key);
-    check_debug(Lstring_equal(self->keys[index], key),
+    int index = Dict_get_index(dict, key);
+    check_debug(Lstring_equal(dict->keys[index], key),
                 "key '" LSTRING_FMT "' not found!", Lstring_format(key));
-    return self->vals[index];
+    return dict->vals[index];
 
 error:
     return _default;

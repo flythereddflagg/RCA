@@ -37,6 +37,7 @@ struct NodeData {
 Node Node_delete(Node node);
 Node Node_kill(Node node);
 Node Node_new();
+Node Node_from_dict(Dict init);
 
 int Node_setup(Node node) { return 0; } // dummy setup function
 
@@ -108,13 +109,6 @@ Node Node_new() {
     // owned field?
     node->init = NULL;
     node->children = ObjList_new(); // dtype=Node
-    // ValArray children = Dict_get(node->init, "children", EMPTYVAL)._arr_;
-    // if (children){
-    //     Node child = NULL;
-    //     for (int i = 0; i < children->length; i++){
-    //         child = Node_from_dict(ValArray_get_at(children, i))
-    //     }
-    // } // CONTINUE WORKING ON THIS COMMENTED OUT CODE!
     node->groups = ObjList_new();   // dtype=NodeGroup
     node->update = &Node_update;
     node->delete = &Node_delete;
@@ -196,6 +190,25 @@ int Node_add_child(const Node node, Node child) {
     check(child, "given id is NULL");
     child->parent = node;
     check(!ObjList_push(node->children, child), "add child failed");
+    return 0;
+error:
+    return -1;
+}
+
+int Node_setup_children(Node node){
+    check(node, "Node is NULL");
+    check(node->init, "Node->init is NULL");
+    ValArray children = Dict_get(node->init, "children", EMPTYVAL)._arr_;
+    if (children){
+        Node child = NULL;
+        Dict child_init = NULL;
+        for (int i = 0; i < children->length; i++){
+            child_init = ValArray_get_at(children, i)._dict_;
+            check(child_init, "child_init is NULL");
+            child = Node_from_dict(child_init);
+            check(!Node_add_child(node, child), "add child failed");
+        }
+    }
     return 0;
 error:
     return -1;
@@ -287,6 +300,7 @@ Node Node_from_dict(Dict init) {
         Dict_get(node->init, "type", dynval(_str_, to_Lstring(MISSING_TYPE)))
             ._str_;
     node->parent = Dict_get(node->init, "parent", EMPTYVAL)._obj_;
+    check(!Node_setup_children(node), "children setup failed");
     NodeFunc node_setup_func = Node_get_setup(node->type.cstring);
     check(node_setup_func, "node_setup_func is NULL");
     check(!node_setup_func(node),
