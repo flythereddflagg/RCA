@@ -10,6 +10,7 @@
 #include "lstring.c"
 #include "objlist.c"
 #include "sprite.c"
+#include <string.h>
 
 #define INHERIT_KEY "_inherit_"
 #define MISSING_TYPE "<MISSING TYPE>"
@@ -81,15 +82,24 @@ error:
     return -1;
 }
 int NodeGroup_draw(NodeGroup group, Node surface) { return 0; }
+
+
+
+
 // ####################################################
+
+
+
+
+
 int Node_update(const Node node) { return 0; }
 
 Node Node_new() {
     Node node = (Node)malloc(sizeof(struct NodeData));
     check_mem(node);
-    // owned field
+    // owned field?? maybe not per 'node_from_dict.c'
     node->type = to_Lstring(MISSING_TYPE);
-    // owned field
+    // owned field?? maybe not per 'node_from_dict.c'
     node->id = to_Lstring(MISSING_ID);
     node->scene = NULL;
     node->parent = NULL;
@@ -98,6 +108,13 @@ Node Node_new() {
     // owned field?
     node->init = NULL;
     node->children = ObjList_new(); // dtype=Node
+    // ValArray children = Dict_get(node->init, "children", EMPTYVAL)._arr_;
+    // if (children){
+    //     Node child = NULL;
+    //     for (int i = 0; i < children->length; i++){
+    //         child = Node_from_dict(ValArray_get_at(children, i))
+    //     }
+    // } // CONTINUE WORKING ON THIS COMMENTED OUT CODE!
     node->groups = ObjList_new();   // dtype=NodeGroup
     node->update = &Node_update;
     node->delete = &Node_delete;
@@ -124,14 +141,17 @@ Node Node_delete(Node node) {
     }
     // if (node->init) // do NOT delete because node does not own it
     //     node->init = Dict_delete(node->init);
-    if (node->sprite)
-        Sprite_delete(node->sprite);
-    if (node->id.cstring) {
-        node->id = Lstring_delete(node->id);
-    }
-    if (node->type.cstring) {
-        node->type = Lstring_delete(node->type);
-    }
+
+    // all of the following should be released by a subclass
+
+    // if (node->sprite)
+    //     Sprite_delete(node->sprite);
+    // if (node->id.cstring) {
+    //     node->id = Lstring_delete(node->id);
+    // }
+    // if (node->type.cstring) {
+    //     node->type = Lstring_delete(node->type);
+    // }
 
     free(node);
 error:
@@ -212,7 +232,89 @@ error:
     return NULL;
 }
 
+
+// ####################################################
+
+
+#define MAX_KEY_LEN 100
+#define kf_pair(k, f)                                                          \
+    (KeyFuncPair) { .key = k, .func = f }
+
+typedef int (*NodeFunc)(Node node);
+typedef struct {
+    char *key;
+    NodeFunc func;
+} KeyFuncPair;
+
+KeyFuncPair SETUP_FUNCS[] = {
+    kf_pair("Node", Node_setup),     kf_pair("Animation", Node_setup),
+    kf_pair("Backpack", Node_setup), kf_pair("Cactus", Node_setup),
+    kf_pair("Camera", Node_setup),   kf_pair("Coin", Node_setup),
+    kf_pair("CutScene", Node_setup), kf_pair("Decal", Node_setup),
+    kf_pair("Edge", Node_setup),     kf_pair("Gate", Node_setup),
+    kf_pair("Item", Node_setup),     kf_pair("Menu", Node_setup),
+    kf_pair("Music", Node_setup),    kf_pair("OpenUrlTrigger", Node_setup),
+    kf_pair("Retry", Node_setup),    kf_pair("SFX", Node_setup),
+    kf_pair("SoftDirt", Node_setup), kf_pair("TextBox", Node_setup),
+    kf_pair("TextRoll", Node_setup), kf_pair("Trigger", Node_setup)};
+
+size_t SETUP_FUNCS_LENGTH = sizeof(SETUP_FUNCS) / sizeof(KeyFuncPair);
+
+NodeFunc Node_get_setup(char *key) {
+    check(key, "key is NULL");
+    for (size_t i = 0; i < SETUP_FUNCS_LENGTH; i++) {
+        if (!strncmp(key, SETUP_FUNCS[i].key, MAX_KEY_LEN)) {
+            return SETUP_FUNCS[i].func;
+        }
+    }
+    sentinel("Node type '%s' is not a known type!", key);
+error:
+    return NULL;
+}
+
+Node Node_from_dict(Dict init) {
+    Dict yaml = Dict_get(init, "yaml", EMPTYVAL)._dict_;
+    if (yaml) {
+        ;
+        // TODO write code to overwrite the data in yaml with the data in init
+    }
+    Node node = Node_new();
+    check(node, "node INIT failed");
+    node->init = init;
+    node->id =
+        Dict_get(node->init, "id", dynval(_str_, to_Lstring(MISSING_ID)))._str_;
+    node->type =
+        Dict_get(node->init, "type", dynval(_str_, to_Lstring(MISSING_TYPE)))
+            ._str_;
+    node->parent = Dict_get(node->init, "parent", EMPTYVAL)._obj_;
+    NodeFunc node_setup_func = Node_get_setup(node->type.cstring);
+    check(node_setup_func, "node_setup_func is NULL");
+    check(!node_setup_func(node),
+          "node setup failed for node '" LSTRING_FMT "'",
+          Lstring_format(node->id));
+    return node;
+error:
+    if (node)
+        node = Node_delete(node);
+    return NULL;
+}
+
+
 #ifdef __NODE_MAIN__
+
+#include "yaml_parse.c"
+int test_node_from_dict() {
+    DynValue out =
+        YamlParse_process_yaml_file("./assets/scene/test_scene.yaml");
+    Dict scene_init = out._dict_;
+    Dict node_init =
+        ValArray_get_at(Dict_get(scene_init, "nodes", EMPTYVAL)._arr_, 0)
+            ._dict_;
+    Node node = Node_from_dict(node_init);
+    node = Node_delete(node);
+    Dict_delete(scene_init);
+    return 0;
+}
 int main() {
     NodeGroup group = NodeGroup_new();
     NodeGroup group2 = NodeGroup_new();
@@ -236,6 +338,7 @@ int main() {
     group = NodeGroup_delete(group);
     group2 = NodeGroup_delete(group2);
     node->delete (node);
+    test_node_from_dict();
     return 0;
 }
 #endif
