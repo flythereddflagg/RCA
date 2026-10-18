@@ -8,6 +8,7 @@
     (DynValue) { .T = V }
 #define LSTRING_FMT "%.*s"
 
+typedef struct NodeData *Node;
 typedef struct DictData *Dict;
 typedef union DynValueData DynValue;
 typedef enum DynTypeData DynType;
@@ -17,6 +18,28 @@ typedef struct SceneData *Scene;
 typedef enum { UP, RIGHT, DOWN, LEFT } Compass;
 typedef struct SpriteData *Sprite;
 typedef struct LstringData Lstring;
+
+// forward delcar all setup functions
+int Node_setup(Node node);
+int Backpack_setup(Node node);
+int Camera_setup(Node node);
+int CutScene_setup(Node node);
+int Edge_setup(Node node);
+int Item_setup(Node node);
+int Music_setup(Node node);
+int Retry_setup(Node node);
+int SoftDirt_setup(Node node);
+int TextRoll_setup(Node node);
+int Animation_setup(Node node);
+int Cactus_setup(Node node);
+int Coin_setup(Node node);
+int Decal_setup(Node node);
+int Gate_setup(Node node);
+int Menu_setup(Node node);
+int OpenUrlTrigger_setup(Node node);
+int SFX_setup(Node node);
+int TextBox_setup(Node node);
+int Trigger_setup(Node node);
 
 struct LstringData {
     size_t length;

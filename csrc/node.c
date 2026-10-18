@@ -16,7 +16,6 @@
 #define MISSING_TYPE "<MISSING TYPE>"
 #define MISSING_ID "<NO ID>"
 
-typedef struct NodeData *Node;
 typedef ObjList NodeGroup;
 typedef ObjList GroupList;
 
@@ -84,14 +83,7 @@ error:
 }
 int NodeGroup_draw(NodeGroup group, Node surface) { return 0; }
 
-
-
-
 // ####################################################
-
-
-
-
 
 int Node_update(const Node node) { return 0; }
 
@@ -195,14 +187,14 @@ error:
     return -1;
 }
 
-int Node_setup_children(Node node){
+int Node_setup_children(Node node) {
     check(node, "Node is NULL");
     check(node->init, "Node->init is NULL");
     ValArray children = Dict_get(node->init, "children", EMPTYVAL)._arr_;
-    if (children){
+    if (children) {
         Node child = NULL;
         Dict child_init = NULL;
-        for (int i = 0; i < children->length; i++){
+        for (int i = 0; i < children->length; i++) {
             child_init = ValArray_get_at(children, i)._dict_;
             check(child_init, "child_init is NULL");
             child = Node_from_dict(child_init);
@@ -245,9 +237,7 @@ error:
     return NULL;
 }
 
-
 // ####################################################
-
 
 #define MAX_KEY_LEN 100
 #define kf_pair(k, f)                                                          \
@@ -263,7 +253,7 @@ KeyFuncPair SETUP_FUNCS[] = {
     kf_pair("Node", Node_setup),     kf_pair("Animation", Node_setup),
     kf_pair("Backpack", Node_setup), kf_pair("Cactus", Node_setup),
     kf_pair("Camera", Node_setup),   kf_pair("Coin", Node_setup),
-    kf_pair("CutScene", Node_setup), kf_pair("Decal", Node_setup),
+    kf_pair("CutScene", Node_setup), kf_pair("Decal", Decal_setup),
     kf_pair("Edge", Node_setup),     kf_pair("Gate", Node_setup),
     kf_pair("Item", Node_setup),     kf_pair("Menu", Node_setup),
     kf_pair("Music", Node_setup),    kf_pair("OpenUrlTrigger", Node_setup),
@@ -312,7 +302,6 @@ error:
         node = Node_delete(node);
     return NULL;
 }
-
 
 #ifdef __NODE_MAIN__
 
