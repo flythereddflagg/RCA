@@ -19,7 +19,7 @@ typedef enum { UP, RIGHT, DOWN, LEFT } Compass;
 typedef struct SpriteData *Sprite;
 typedef struct LstringData Lstring;
 
-// forward delcar all setup functions
+// forward delcare all setup functions
 int Node_setup(Node node);
 int Backpack_setup(Node node);
 int Camera_setup(Node node);

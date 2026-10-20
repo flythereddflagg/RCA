@@ -1,7 +1,7 @@
 import re
+import pathlib
 
-
-def make_header(cfile_name):
+def make_header(cfile_name:str):
     with open(cfile_name) as f:
         src_file = f.read()
     prog = re.compile(r"\n[A-Za-z0-9\_]*\s[A-Za-z0-9\_\*]*\(.*\)\s\{")
@@ -39,3 +39,9 @@ def make_header(cfile_name):
     return file_text
     
 print(make_header("./csrc/node.c"))
+
+for filename in pathlib.Path('./csrc/').glob("*.c"):
+    print(filename)
+    file_txt = make_header(str(filename))
+    with open(str(filename).replace(".c", ".h"), 'w') as f:
+        f.write(file_txt)
