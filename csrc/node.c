@@ -1,13 +1,9 @@
-#ifndef __NODE_C__
-#define __NODE_C__
-#ifndef __MAIN__
-#define __MAIN__
-#define __NODE_MAIN__
-#endif
+
 
 #include "dbg.h"
 #include "lstring.h"
 #include "node.h"
+#include "nodelist.h"
 
 #include "dict.h"
 #include "lstring.h"
@@ -20,22 +16,7 @@
 #define MISSING_TYPE "<MISSING TYPE>"
 #define MISSING_ID "<NO ID>"
 
-typedef ObjList NodeGroup;
-typedef ObjList GroupList;
 
-struct NodeData {
-    Lstring type;
-    Lstring id;
-    Scene scene;
-    Node parent;
-    Sprite sprite;
-    Dict init;
-    NodeGroup children;
-    GroupList groups;
-    size_t groups_length;
-    int (*update)(const Node node);
-    Node (*delete)(Node node);
-};
 
 Node Node_delete(Node node);
 Node Node_kill(Node node);
@@ -243,41 +224,6 @@ error:
 
 // ####################################################
 
-#define MAX_KEY_LEN 100
-#define kf_pair(k, f)                                                          \
-    (KeyFuncPair) { .key = k, .func = f }
-
-typedef int (*NodeFunc)(Node node);
-typedef struct {
-    char *key;
-    NodeFunc func;
-} KeyFuncPair;
-
-KeyFuncPair SETUP_FUNCS[] = {
-    kf_pair("Node", Node_setup),     kf_pair("Animation", Node_setup),
-    kf_pair("Backpack", Node_setup), kf_pair("Cactus", Node_setup),
-    kf_pair("Camera", Node_setup),   kf_pair("Coin", Node_setup),
-    kf_pair("CutScene", Node_setup), kf_pair("Decal", Decal_setup),
-    kf_pair("Edge", Node_setup),     kf_pair("Gate", Node_setup),
-    kf_pair("Item", Node_setup),     kf_pair("Menu", Node_setup),
-    kf_pair("Mus.h", Node_setup),    kf_pair("OpenUrlTrigger", Node_setup),
-    kf_pair("Retry", Node_setup),    kf_pair("SFX", Node_setup),
-    kf_pair("SoftDirt", Node_setup), kf_pair("TextBox", Node_setup),
-    kf_pair("TextRoll", Node_setup), kf_pair("Trigger", Node_setup)};
-
-size_t SETUP_FUNCS_LENGTH = sizeof(SETUP_FUNCS) / sizeof(KeyFuncPair);
-
-NodeFunc Node_get_setup(char *key) {
-    check(key, "key is NULL");
-    for (size_t i = 0; i < SETUP_FUNCS_LENGTH; i++) {
-        if (!strncmp(key, SETUP_FUNCS[i].key, MAX_KEY_LEN)) {
-            return SETUP_FUNCS[i].func;
-        }
-    }
-    sentinel("Node type '%s' is not a known type!", key);
-error:
-    return NULL;
-}
 
 Node Node_from_dict(Dict init) {
     Dict yaml = Dict_get(init, "yaml", EMPTYVAL)._dict_;
@@ -348,5 +294,4 @@ int main() {
     test_node_from_dict();
     return 0;
 }
-#endif
 #endif

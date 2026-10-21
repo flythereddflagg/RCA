@@ -1,0 +1,3 @@
+ csrc/input.c
+ csrc/node.c csrc/objlist.c csrc/dict.c csrc/lstring.c csrc/sprite.c
+ csrc/bitmask.c csrc/scene.c csrc/engine.c csrc/yaml_parse.c

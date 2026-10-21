@@ -2,25 +2,36 @@
 #define __NODE_H__
 #include "objlist.h"
 #include "dict.h"
+#include "sprite.h"
+typedef struct NodeData *Node;
+#include "scene.h"
+#define MAX_KEY_LEN 100
+
 typedef ObjList NodeGroup;
 typedef ObjList GroupList;
-typedef struct NodeData *Node;
-typedef int (*NodeFunc)(Node node);
-typedef struct {
-    char *key;
-    NodeFunc func;
-} KeyFuncPair;
-
-
-#define MAX_KEY_LEN 100
-#define kf_pair(k, f)                                                          \
-    (KeyFuncPair) { .key = k, .func = f }
 
 typedef int (*NodeFunc)(Node node);
 typedef struct {
     char *key;
     NodeFunc func;
 } KeyFuncPair;
+typedef ObjList NodeGroup;
+typedef ObjList GroupList;
+
+struct NodeData {
+    Lstring type;
+    Lstring id;
+    Scene scene;
+    Node parent;
+    Sprite sprite;
+    Dict init;
+    NodeGroup children;
+    GroupList groups;
+    size_t groups_length;
+    int (*update)(const Node node);
+    Node (*delete)(Node node);
+};
+
 int Node_setup(Node node);
 NodeGroup NodeGroup_new();
 NodeGroup NodeGroup_delete(NodeGroup group);

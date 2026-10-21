@@ -1,25 +1,11 @@
-#ifndef __DICT_C__
-#define __DICT_C__
-#ifndef __MAIN__
-#define __MAIN__
-#define __DICT_MAIN__
-#endif
 
 
+#include "dbg.h"
 #include "lstring.h"
 #include "dict.h"
 #include <stdlib.h>
 #include <string.h>
-#define DICTSIZE 256
-#define HASHPRIME 31
-#define NO_NEXT -1
 
-struct DictData {
-    Lstring *keys;
-    DynType *types;
-    DynValue *vals;
-    int *next;
-};
 
 int Dict_hash(const Lstring key) {
     check(key.cstring && key.cstring[0], "invalid key to hash %s", key.cstring);
@@ -380,4 +366,4 @@ int main() {
     return 0;
 }
 #endif
-#endif
+

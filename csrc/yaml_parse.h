@@ -1,6 +1,7 @@
 #ifndef __YAML_PARSE_H__
 #define __YAML_PARSE_H__
-
+#include <yaml.h>
+#include "dict.h"
 typedef enum { YAML_NO_STATE, YAML_MAP_STATE, YAML_SEQ_STATE } yaml_state_t;
 typedef struct {
     DynValue value;

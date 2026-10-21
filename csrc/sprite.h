@@ -5,6 +5,11 @@
 
 typedef struct SpriteData *Sprite;
 
+struct SpriteData {
+    Texture2D image;
+    BitMask mask;
+    Vector2 position;
+};
 Sprite Sprite_delete(Sprite self);
 Sprite Sprite_new(char *image_path, Vector2 position);
 int Sprite_set_image(Sprite self, Image img);

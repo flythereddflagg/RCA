@@ -1,11 +1,6 @@
-#ifndef __ENGINE_C__
-#define __ENGINE_C__
-#ifndef __MAIN__
-#define __MAIN__
-#define __ENGINE_MAIN__
-#endif
 
 
+#include "dbg.h"
 #include "raylib.h"
 #include <stdbool.h>
 
@@ -13,7 +8,6 @@
 #include "node.h"
 #include "scene.h"
 
-#include "dict.h"
 #include "dict.h"
 #include "yaml_parse.h"
 #include <stdlib.h>
@@ -176,5 +170,4 @@ int Game_run(Game game) {
 
 #ifdef __ENGINE_MAIN__
 int main() { return 0; }
-#endif
 #endif

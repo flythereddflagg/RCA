@@ -1,10 +1,16 @@
 #ifndef __DICT_H__
 #define __DICT_H__
 #include "lstring.h"
+#define DICTSIZE 256
+#define HASHPRIME 31
+#define NO_NEXT -1
 #define dynval(T, V)                                                           \
     (DynValue) { .T = V }
 #define EMPTYVAL                                                               \
     (DynValue) { ._obj_ = NULL }
+
+
+
 typedef struct DictData *Dict;
 typedef union DynValueData DynValue;
 typedef enum DynTypeData DynType;
@@ -21,6 +27,12 @@ union DynValueData {
     bool _bool_;
     void *_obj_;
     // NULL none;
+};
+struct DictData {
+    Lstring *keys;
+    DynType *types;
+    DynValue *vals;
+    int *next;
 };
 void Dict_print(Dict dict);
 Dict Dict_delete(Dict dict);

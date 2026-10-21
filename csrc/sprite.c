@@ -1,23 +1,13 @@
-#ifndef __DECAL_C__
-#define __DECAL_C__
-#ifndef __MAIN__
-#define __MAIN__
-#define __DECAL_MAIN__
-#endif
+
+#include "sprite.h"
 #include "bitmask.h"
 
 
 #include "raylib.h"
+#include "dbg.h"
 
 #include <stdlib.h>
 
-typedef struct SpriteData *Sprite;
-
-struct SpriteData {
-    Texture2D image;
-    BitMask mask;
-    Vector2 position;
-};
 
 Sprite Sprite_delete(Sprite self) {
     check(self, "'self' is NULL");
@@ -45,7 +35,6 @@ int Sprite_set_image(Sprite self, Image img) { return 0; }
 
 int Sprite_set_mask(Sprite self, BitMask mask) { return 0; }
 
-#endif
 #ifdef __DECAL_MAIN__
 int main() { return 0; }
 #endif

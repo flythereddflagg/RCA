@@ -1,11 +1,6 @@
-#ifndef __INPUT_C__
-#define __INPUT_C__
-#ifndef __MAIN__
-#define __MAIN__
-#define __INPUT_MAIN__
-#endif
 
 
+#include "dbg.h"
 #include "raylib.h"
 #include "yaml_parse.h"
 #include <stdbool.h>
@@ -119,7 +114,6 @@ error:
     return self;
 }
 
-#endif
 #ifdef __INPUT_MAIN__
 
 // NOTE: Gamepad name ID depends on drivers and OS

@@ -1,10 +1,7 @@
-#ifndef __SCENE_C__
-#define __SCENE_C__
-#ifndef __MAIN__
-#define __MAIN__
-#define __SCENE_MAIN__
-#endif
 
+
+#include "dbg.h"
+#include "scene.h"
 #include "dict.h"
 #include "lstring.h"
 #include "node.h"
@@ -239,5 +236,4 @@ int main() {
 error:
     return 23;
 }
-#endif
 #endif

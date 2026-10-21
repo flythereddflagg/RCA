@@ -1,11 +1,8 @@
-#ifndef __OBJLIST_C__
-#define __OBJLIST_C__
-#ifndef __MAIN__
-#define __MAIN__
-#define __OBJLIST_MAIN__
-#endif
+
+
 
 #include "objlist.h"
+#include "dbg.h"
 #include <stdlib.h>
 
 
@@ -276,4 +273,4 @@ int main() {
     return 0;
 }
 #endif
-#endif
+

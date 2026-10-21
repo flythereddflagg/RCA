@@ -13,7 +13,7 @@ LIBS += -lraylib '-Wl,-rpath,$$ORIGIN/lib' # needed to point to .so files
 # LIBS += -l:libraylib.so.600
 # LIBS += -l:libraylib.a
 
-ALL_SRC = $(shell gcc $(SRC) -MM -I./include -I./csrc | sed -e 's/.h/.c/g' -e 's/include\/[a-z]*\.c//g' -e 's/[a-z]*\.o:\s//g')
+ALL_SRC = $(shell gcc $(SRC) -MM -I./include -I./csrc | sed -e 's/include\/[a-z]*\.h //g' -e 's/[a-z]*\.o:\s//g' -e 's/csrc\/[a-z]*\.c//g' -e 's/.h/.c/g')
 
 ifeq ($(OS),Windows_NT)
 	LIBS += -lgdi32 -lwinmm -Wl,--defsym,stat64i32=_stat64

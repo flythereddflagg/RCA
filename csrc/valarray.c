@@ -1,9 +1,4 @@
-#ifndef __VALARRAY_C__
-#define __VALARRAY_C__
-#ifndef __MAIN__
-#define __MAIN__
-#define __VALARRAY_MAIN__
-#endif
+
 
 
 #include "dict.h"
@@ -271,5 +266,4 @@ int main() {
     test_arr();
     return 0;
 }
-#endif
 #endif

@@ -1,14 +1,11 @@
-#ifndef __LSTRING_C__
-#define __LSTRING_C__
-#ifndef __MAIN__
-#define __MAIN__
-#define __LSTRING_MAIN__
-#endif
 
+
+#include "dbg.h"
 #include "lstring.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 Lstring to_Lstring(char *cstring) {
@@ -61,7 +58,7 @@ bool Lstring_cstring_equal(char *str, char *other) {
     return equal;
 }
 
-#endif
+
 #ifdef __LSTRING_MAIN__
 int main() {
     Lstring str = Lstring_new("Its a string!");

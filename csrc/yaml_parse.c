@@ -1,28 +1,18 @@
-#ifndef __YAML_PARSE_C__
-#define __YAML_PARSE_C__
-#ifndef __MAIN__
-#define __MAIN__
-#define __YAML_PARSE_MAIN__
-#endif
+
 
 #include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <yaml.h>
-
+#include "yaml_parse.h"
+#include "dbg.h"
 #include "dict.h"
 #include "lstring.h"
 #include "dict.h"
 #define MAX_NESTING_DEPTH 10
 
-typedef enum { YAML_NO_STATE, YAML_MAP_STATE, YAML_SEQ_STATE } yaml_state_t;
 
-typedef struct {
-    DynValue value;
-    DynType type;
-} DynTypeVal;
 
 DynTypeVal YamlParse_parse_value(yaml_event_t event) {
     /*
@@ -179,7 +169,7 @@ error:
     cur_key = Lstring_delete(cur_key);
     return out_obj;
 }
-#endif
+
 #ifdef __YAML_PARSE_MAIN__
 
 int test_dict() {

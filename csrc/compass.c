@@ -1,9 +1,4 @@
-#ifndef __COMPASS_C__
-#define __COMPASS_C__
-#ifndef __MAIN__
-#define __MAIN__
-#define __COMPASS_MAIN__
-#endif
+
 
 #include "raylib.h"
 
@@ -27,7 +22,6 @@ Vector2 unit(Compass dir) {
     }
 }
 
-#endif
 
 #ifdef __COMPASS_MAIN__
 int main() { return 0; }

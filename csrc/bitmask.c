@@ -1,10 +1,6 @@
-#ifndef __BITMASK_C__
-#define __BITMASK_C__
-#ifndef __MAIN__
-#define __MAIN__
-#define __BITMASK_MAIN__
-#endif
 
+
+#include "dbg.h"
 
 #include "raylib.h"
 #include <stdbool.h>
@@ -120,7 +116,6 @@ bool BitMask_collide(BitMask self, BitMask other, Vector2 offset) {
     return false;
 } // TODO optimize this
 
-#endif
 #ifdef __BITMASK_MAIN__
 
 #include <stdio.h>
