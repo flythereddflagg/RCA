@@ -4,7 +4,7 @@
 #define __MAIN__
 #define __YAML_PARSE_MAIN__
 #endif
-#include "core.h"
+
 #include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -12,9 +12,9 @@
 #include <string.h>
 #include <yaml.h>
 
-#include "dict.c"
-#include "lstring.c"
-#include "valarray.c"
+#include "dict.h"
+#include "lstring.h"
+#include "dict.h"
 #define MAX_NESTING_DEPTH 10
 
 typedef enum { YAML_NO_STATE, YAML_MAP_STATE, YAML_SEQ_STATE } yaml_state_t;

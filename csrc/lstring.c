@@ -4,15 +4,12 @@
 #define __MAIN__
 #define __LSTRING_MAIN__
 #endif
-#include "core.h"
 
+#include "lstring.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX_LSTRING_LEN 1024
-#define Lstring_format(str) (int)str.length, str.cstring
-#define LSTRING_NULL                                                           \
-    (Lstring) { .length = 0, .cstring = NULL, .on_heap = false }
+
 
 Lstring to_Lstring(char *cstring) {
     // return an Lstring without copying and allocating new memory.

@@ -4,20 +4,11 @@
 #define __MAIN__
 #define __OBJLIST_MAIN__
 #endif
-#include "core.h"
+
+#include "objlist.h"
 #include <stdlib.h>
 
-typedef struct LnodeData *Lnode;
-typedef struct ObjListData *ObjList;
-struct LnodeData {
-    void *obj;
-    Lnode next;
-};
-struct ObjListData {
-    size_t length;
-    Lnode head;
-    Lnode tail;
-};
+
 
 ObjList ObjList_new() {
     ObjList list = (ObjList)malloc(sizeof(struct ObjListData));

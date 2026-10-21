@@ -1,8 +1,19 @@
 #ifndef __OBJLIST_H__
 #define __OBJLIST_H__
-
+#include <stddef.h>
+#include <stdbool.h>
 typedef struct LnodeData *Lnode;
 typedef struct ObjListData *ObjList;
+
+struct LnodeData {
+    void *obj;
+    Lnode next;
+};
+struct ObjListData {
+    size_t length;
+    Lnode head;
+    Lnode tail;
+};
 
 ObjList ObjList_new();
 int ObjList_push(ObjList list, void *obj);

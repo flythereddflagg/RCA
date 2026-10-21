@@ -1,3 +1,3 @@
 
-#include "core.h"
-#include "node.c"
+
+#include "node.h"

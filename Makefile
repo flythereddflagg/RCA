@@ -13,6 +13,8 @@ LIBS += -lraylib '-Wl,-rpath,$$ORIGIN/lib' # needed to point to .so files
 # LIBS += -l:libraylib.so.600
 # LIBS += -l:libraylib.a
 
+ALL_SRC = $(shell gcc $(SRC) -MM -I./include -I./csrc | sed -e 's/.h/.c/g' -e 's/include\/[a-z]*\.c//g' -e 's/[a-z]*\.o:\s//g')
+
 ifeq ($(OS),Windows_NT)
 	LIBS += -lgdi32 -lwinmm -Wl,--defsym,stat64i32=_stat64
 	OUT = main.exe
@@ -104,9 +106,9 @@ mem_all: $(SRC_DIR)/*.c
 		valgrind ./$(OUT) 2>> $(TMP_TXT);\
 	done
 	./valgrind_summary.sh
-
+# gcc $(SRC) -MM -I./include -I./csrc | sed -e 's/.h/.c/g' -e 's/include\/[a-z]*\.c//g' -e 's/[a-z]*\.o:\s//g'
 test:
-	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LIBS) $(INCLUDES) -DTEST
+	$(CC) $(CFLAGS) $(ALL_SRC) -o $(OUT) $(LIBS) $(INCLUDES) -DTEST
 	@echo "-- BUILD COMMAND COMPLETE --"
 	./$(OUT)
 

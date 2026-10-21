@@ -5,13 +5,17 @@
 #define __NODE_MAIN__
 #endif
 
-#include "core.h"
-#include "dict.c"
-#include "lstring.c"
-#include "objlist.c"
-#include "sprite.c"
-#include <string.h>
+#include "dbg.h"
+#include "lstring.h"
+#include "node.h"
 
+#include "dict.h"
+#include "lstring.h"
+#include "objlist.h"
+#include "sprite.h"
+#include "scene.h"
+#include <string.h>
+#include <stdlib.h>
 #define INHERIT_KEY "_inherit_"
 #define MISSING_TYPE "<MISSING TYPE>"
 #define MISSING_ID "<NO ID>"
@@ -256,7 +260,7 @@ KeyFuncPair SETUP_FUNCS[] = {
     kf_pair("CutScene", Node_setup), kf_pair("Decal", Decal_setup),
     kf_pair("Edge", Node_setup),     kf_pair("Gate", Node_setup),
     kf_pair("Item", Node_setup),     kf_pair("Menu", Node_setup),
-    kf_pair("Music", Node_setup),    kf_pair("OpenUrlTrigger", Node_setup),
+    kf_pair("Mus.h", Node_setup),    kf_pair("OpenUrlTrigger", Node_setup),
     kf_pair("Retry", Node_setup),    kf_pair("SFX", Node_setup),
     kf_pair("SoftDirt", Node_setup), kf_pair("TextBox", Node_setup),
     kf_pair("TextRoll", Node_setup), kf_pair("Trigger", Node_setup)};
@@ -305,7 +309,7 @@ error:
 
 #ifdef __NODE_MAIN__
 
-#include "yaml_parse.c"
+#include "yaml_parse.h"
 int test_node_from_dict() {
     DynValue out =
         YamlParse_process_yaml_file("./assets/scene/test_scene.yaml");

@@ -1,14 +1,26 @@
 #ifndef __NODE_H__
 #define __NODE_H__
-
+#include "objlist.h"
+#include "dict.h"
 typedef ObjList NodeGroup;
 typedef ObjList GroupList;
+typedef struct NodeData *Node;
 typedef int (*NodeFunc)(Node node);
 typedef struct {
     char *key;
     NodeFunc func;
 } KeyFuncPair;
 
+
+#define MAX_KEY_LEN 100
+#define kf_pair(k, f)                                                          \
+    (KeyFuncPair) { .key = k, .func = f }
+
+typedef int (*NodeFunc)(Node node);
+typedef struct {
+    char *key;
+    NodeFunc func;
+} KeyFuncPair;
 int Node_setup(Node node);
 NodeGroup NodeGroup_new();
 NodeGroup NodeGroup_delete(NodeGroup group);

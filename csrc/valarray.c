@@ -5,9 +5,9 @@
 #define __VALARRAY_MAIN__
 #endif
 
-#include "core.h"
-#include "dict.c"
-#include "lstring.c"
+
+#include "dict.h"
+#include "lstring.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,11 +16,7 @@
 #define HASHPRIME 31
 #define NO_NEXT -1
 
-struct ValArrayData {
-    int length;
-    DynValue *vals;
-    DynType *types;
-};
+
 
 ValArray ValArray_new() {
     // check(length > 0, "invalid length supplied");

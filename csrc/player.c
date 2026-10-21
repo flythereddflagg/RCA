@@ -4,7 +4,7 @@
 #define __MAIN__
 #define __PLAYER_MAIN__
 #endif
-#include "core.h"
+
 
 #include <stdlib.h>
 

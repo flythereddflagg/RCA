@@ -5,9 +5,9 @@
 #define __INPUT_MAIN__
 #endif
 
-#include "core.h"
+
 #include "raylib.h"
-#include "yaml_parse.c"
+#include "yaml_parse.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>

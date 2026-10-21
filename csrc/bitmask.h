@@ -1,6 +1,6 @@
 #ifndef __BITMASK_H__
 #define __BITMASK_H__
-
+#include <stdint.h>
 typedef struct BitMaskData *BitMask;
 
 BitMask BitMask_delete(BitMask self);

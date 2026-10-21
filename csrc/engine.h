@@ -1,6 +1,7 @@
 #ifndef __ENGINE_H__
 #define __ENGINE_H__
-
+#include "scene.h"
+typedef struct GameData *Game;
 RenderTexture2D Game_init_screen(Dict settings);
 void Game_draw_frame(Game self);
 Game Game_new(const char *init_path);

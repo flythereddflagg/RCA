@@ -4,7 +4,7 @@ int main() { return 0; }
 #ifndef __MAIN__
 #define __MAIN__
 
-#include "engine.c"
+#include "engine.h"
 
 #define INIT_PATH "./assets/init.yaml"
 

@@ -5,17 +5,18 @@
 #define __ENGINE_MAIN__
 #endif
 
-#include "core.h"
+
 #include "raylib.h"
 #include <stdbool.h>
 
-#include "input.c"
-#include "node.c"
-#include "scene.c"
+#include "input.h"
+#include "node.h"
+#include "scene.h"
 
-#include "dict.c"
-#include "valarray.c"
-#include "yaml_parse.c"
+#include "dict.h"
+#include "dict.h"
+#include "yaml_parse.h"
+#include <stdlib.h>
 
 #define MAX_INPUTS 6
 #define SPEED 200

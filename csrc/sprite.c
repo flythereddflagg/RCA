@@ -4,9 +4,9 @@
 #define __MAIN__
 #define __DECAL_MAIN__
 #endif
-#include "bitmask.c"
+#include "bitmask.h"
 
-#include "core.h"
+
 #include "raylib.h"
 
 #include <stdlib.h>

@@ -4,12 +4,12 @@
 #define __MAIN__
 #define __SCENE_MAIN__
 #endif
-#include "core.h"
-#include "dict.c"
-#include "lstring.c"
-#include "node.c"
-#include "valarray.c"
-#include "yaml_parse.c"
+
+#include "dict.h"
+#include "lstring.h"
+#include "node.h"
+#include "dict.h"
+#include "yaml_parse.h"
 #include <stdbool.h>
 #define BG_REF "bg_ref"
 

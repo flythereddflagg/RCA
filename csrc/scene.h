@@ -1,5 +1,7 @@
 #ifndef __SCENE_H__
 #define __SCENE_H__
+typedef struct SceneData *Scene;
+#include "engine.h"
 
 Scene Scene_new(Game game, char *yaml_path, Dict yaml_data, ValArray add_in);
 Scene Scene_delete(Scene scene);

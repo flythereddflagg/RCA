@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <yaml.h>
 
-#include "core.h"
+
 
 #define MAX_NESTING_DEPTH 10
 

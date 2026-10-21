@@ -4,7 +4,7 @@
 #define __MAIN__
 #define __COMPASS_MAIN__
 #endif
-#include "core.h"
+
 #include "raylib.h"
 
 Vector2 unit(Compass dir) {

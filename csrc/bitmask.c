@@ -5,7 +5,7 @@
 #define __BITMASK_MAIN__
 #endif
 
-#include "core.h"
+
 #include "raylib.h"
 #include <stdbool.h>
 #include <stdint.h>

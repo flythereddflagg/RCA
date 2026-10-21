@@ -5,9 +5,9 @@
 #define __DICT_MAIN__
 #endif
 
-#include "core.h"
-#include "lstring.c"
-#include "valarray.c"
+
+#include "lstring.h"
+#include "dict.h"
 #include <stdlib.h>
 #include <string.h>
 #define DICTSIZE 256
