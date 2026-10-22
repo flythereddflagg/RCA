@@ -1,5 +1,0 @@
-gcc ./csrc/engine.c -MM -I./include -I./csrc | sed -e 's/include\/[a-z]*\.h //g' -e 's/[a-z]*\.o:\s//g' -e 's/csrc\/[a-z]*\.c//g' -e 's/.h/.c/g' -e 's/ \\//g' > tst.txt 
- 
- csrc/input.c
- csrc/node.c csrc/objlist.c csrc/dict.c csrc/lstring.c csrc/sprite.c
- csrc/bitmask.c csrc/scene.c csrc/engine.c csrc/yaml_parse.c
