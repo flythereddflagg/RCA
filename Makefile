@@ -15,23 +15,6 @@ LIBS += -lraylib '-Wl,-rpath,$$ORIGIN/lib' # needed to point to .so files
 
 ALL_DEPS = $(shell gcc $(SRC) -MM -I./include -I./csrc | sed -e 's/include\/[a-z]*\.h //g' -e 's/[a-z]*\.o:\s//g' -e 's/csrc\/[a-z]*\.c//g' -e 's/.h/.c/g' -e 's/ \\//g')
 
-
-
-ALL_MAINS = $(shell find $(SRC_DIR)/*.c | sed -e 'y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/' -e 's/.*CSRC\//__/g' -e 's/\.C/_MAIN__/g')
-
-ALL_C = $(shell find $(SRC_DIR)/*.c)
-
-# COMP_ALL = $(foreach (file, directive), ($(ALL_C), $(ALL_MAINS)), \
-# 	echo "-- BUILDING $(file) --";\
-# 	$(CC) $(CFLAGS) $(file) -o $(OUT) $(LIBS) $(INCLUDES)\
-# 	-DTEST_ALL -D$(directive);\
-# 	echo "-- BUILD COMMAND COMPLETE FOR $(file) --";\
-# 	./$(OUT);\
-# )
-
-COMP_ALL = $(foreach (file, directive), ($(ALL_C), $(ALL_MAINS)), \
-	echo  $$file with $$directive;\
-)
 ifeq ($(OS),Windows_NT)
 	LIBS += -lgdi32 -lwinmm -Wl,--defsym,stat64i32=_stat64
 	OUT = main.exe
@@ -105,12 +88,17 @@ build:
 	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LIBS) $(INCLUDES)
 	@echo "-- BUILD COMMAND COMPLETE --"
 
-test_all: $(ALL_C)
-	$(COMP_ALL)
+test_all: $(SRC_DIR)/*.c
+	for file in $^; do\
+		echo "-- BUILDING $$file --";\
+		$(CC) $(CFLAGS) $$file -o $(OUT) $(LIBS) $(INCLUDES) -DTEST_ALL;\
+		echo "-- BUILD COMMAND COMPLETE FOR $$file --";\
+		./$(OUT);\
+	done
 
-mem_all: $(ALL_MAINS_SRC)
+mem_all: $(SRC_DIR)/*.c
 	@echo "" > $(TMP_TXT)
-	for file, directive in $^; do\
+	for file in $^; do\
 		echo "-- BUILDING $$file --";\
 		$(CC) $(CFLAGS) $$file -o $(OUT) $(LIBS) $(INCLUDES) -DTEST_ALL;\
 		echo "-- BUILD COMMAND COMPLETE FOR $$file --";\
