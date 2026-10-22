@@ -1,7 +1,7 @@
 #ifndef __SPRITE_H__
 #define __SPRITE_H__
-#include "raylib.h"
 #include "bitmask.h"
+#include "raylib.h"
 
 typedef struct SpriteData *Sprite;
 

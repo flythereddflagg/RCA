@@ -1,11 +1,8 @@
 
 
-
 #include "objlist.h"
 #include "dbg.h"
 #include <stdlib.h>
-
-
 
 ObjList ObjList_new() {
     ObjList list = (ObjList)malloc(sizeof(struct ObjListData));
@@ -273,4 +270,3 @@ int main() {
     return 0;
 }
 #endif
-

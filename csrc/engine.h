@@ -1,8 +1,8 @@
 #ifndef __ENGINE_H__
 #define __ENGINE_H__
+#include "dict.h"
 #include "raylib.h"
 #include "scene.h"
-#include "dict.h"
 typedef struct GameData *Game;
 RenderTexture2D Game_init_screen(Dict settings);
 void Game_draw_frame(Game self);

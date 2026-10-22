@@ -1,7 +1,7 @@
 #ifndef __NODE_H__
 #define __NODE_H__
-#include "objlist.h"
 #include "dict.h"
+#include "objlist.h"
 #include "sprite.h"
 typedef struct NodeData *Node;
 #include "scene.h"
@@ -11,10 +11,6 @@ typedef ObjList NodeGroup;
 typedef ObjList GroupList;
 
 typedef int (*NodeFunc)(Node node);
-typedef struct {
-    char *key;
-    NodeFunc func;
-} KeyFuncPair;
 typedef ObjList NodeGroup;
 typedef ObjList GroupList;
 

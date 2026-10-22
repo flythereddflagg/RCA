@@ -2,12 +2,10 @@
 #include "sprite.h"
 #include "bitmask.h"
 
-
-#include "raylib.h"
 #include "dbg.h"
+#include "raylib.h"
 
 #include <stdlib.h>
-
 
 Sprite Sprite_delete(Sprite self) {
     check(self, "'self' is NULL");

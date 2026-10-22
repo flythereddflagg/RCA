@@ -1,23 +1,19 @@
 
 
-#include "dbg.h"
-#include "lstring.h"
 #include "node.h"
-#include "nodelist.h"
-
+#include "dbg.h"
 #include "dict.h"
-#include "valarray.h"
 #include "lstring.h"
+#include "nodelist.h"
 #include "objlist.h"
-#include "sprite.h"
 #include "scene.h"
-#include <string.h>
+#include "sprite.h"
+#include "valarray.h"
 #include <stdlib.h>
+#include <string.h>
 #define INHERIT_KEY "_inherit_"
 #define MISSING_TYPE "<MISSING TYPE>"
 #define MISSING_ID "<NO ID>"
-
-
 
 Node Node_delete(Node node);
 Node Node_kill(Node node);
@@ -224,7 +220,6 @@ error:
 }
 
 // ####################################################
-
 
 Node Node_from_dict(Dict init) {
     Dict yaml = Dict_get(init, "yaml", EMPTYVAL)._dict_;

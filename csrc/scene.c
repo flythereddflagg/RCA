@@ -1,11 +1,10 @@
 
 
-#include "dbg.h"
 #include "scene.h"
+#include "dbg.h"
 #include "dict.h"
 #include "lstring.h"
 #include "node.h"
-#include "dict.h"
 #include "yaml_parse.h"
 #include <stdbool.h>
 #define BG_REF "bg_ref"

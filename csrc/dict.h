@@ -9,8 +9,6 @@
 #define EMPTYVAL                                                               \
     (DynValue) { ._obj_ = NULL }
 
-
-
 typedef struct DictData *Dict;
 typedef union DynValueData DynValue;
 typedef enum DynTypeData DynType;

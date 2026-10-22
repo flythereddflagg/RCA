@@ -22,7 +22,6 @@ Vector2 unit(Compass dir) {
     }
 }
 
-
 #ifdef __COMPASS_MAIN__
 int main() { return 0; }
 #endif

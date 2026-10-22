@@ -1,12 +1,11 @@
 
 
-#include "dbg.h"
 #include "lstring.h"
+#include "dbg.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 
 Lstring to_Lstring(char *cstring) {
     // return an Lstring without copying and allocating new memory.
@@ -57,7 +56,6 @@ bool Lstring_cstring_equal(char *str, char *other) {
     o = Lstring_delete(o);
     return equal;
 }
-
 
 #ifdef __LSTRING_MAIN__
 int main() {

@@ -1,7 +1,7 @@
 #ifndef __OBJLIST_H__
 #define __OBJLIST_H__
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 typedef struct LnodeData *Lnode;
 typedef struct ObjListData *ObjList;
 
