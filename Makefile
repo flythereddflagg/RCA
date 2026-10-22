@@ -13,8 +13,25 @@ LIBS += -lraylib '-Wl,-rpath,$$ORIGIN/lib' # needed to point to .so files
 # LIBS += -l:libraylib.so.600
 # LIBS += -l:libraylib.a
 
-ALL_SRC = $(shell gcc $(SRC) -MM -I./include -I./csrc | sed -e 's/include\/[a-z]*\.h //g' -e 's/[a-z]*\.o:\s//g' -e 's/csrc\/[a-z]*\.c//g' -e 's/.h/.c/g')
+ALL_DEPS = $(shell gcc $(SRC) -MM -I./include -I./csrc | sed -e 's/include\/[a-z]*\.h //g' -e 's/[a-z]*\.o:\s//g' -e 's/csrc\/[a-z]*\.c//g' -e 's/.h/.c/g' -e 's/ \\//g')
 
+
+
+ALL_MAINS = $(shell find $(SRC_DIR)/*.c | sed -e 'y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/' -e 's/.*CSRC\//__/g' -e 's/\.C/_MAIN__/g')
+
+ALL_C = $(shell find $(SRC_DIR)/*.c)
+
+# COMP_ALL = $(foreach (file, directive), ($(ALL_C), $(ALL_MAINS)), \
+# 	echo "-- BUILDING $(file) --";\
+# 	$(CC) $(CFLAGS) $(file) -o $(OUT) $(LIBS) $(INCLUDES)\
+# 	-DTEST_ALL -D$(directive);\
+# 	echo "-- BUILD COMMAND COMPLETE FOR $(file) --";\
+# 	./$(OUT);\
+# )
+
+COMP_ALL = $(foreach (file, directive), ($(ALL_C), $(ALL_MAINS)), \
+	echo  $$file with $$directive;\
+)
 ifeq ($(OS),Windows_NT)
 	LIBS += -lgdi32 -lwinmm -Wl,--defsym,stat64i32=_stat64
 	OUT = main.exe
@@ -88,17 +105,12 @@ build:
 	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LIBS) $(INCLUDES)
 	@echo "-- BUILD COMMAND COMPLETE --"
 
-test_all: $(SRC_DIR)/*.c
-	for file in $^; do\
-		echo "-- BUILDING $$file --";\
-		$(CC) $(CFLAGS) $$file -o $(OUT) $(LIBS) $(INCLUDES) -DTEST_ALL;\
-		echo "-- BUILD COMMAND COMPLETE FOR $$file --";\
-		./$(OUT);\
-	done
+test_all: $(ALL_C)
+	$(COMP_ALL)
 
-mem_all: $(SRC_DIR)/*.c
+mem_all: $(ALL_MAINS_SRC)
 	@echo "" > $(TMP_TXT)
-	for file in $^; do\
+	for file, directive in $^; do\
 		echo "-- BUILDING $$file --";\
 		$(CC) $(CFLAGS) $$file -o $(OUT) $(LIBS) $(INCLUDES) -DTEST_ALL;\
 		echo "-- BUILD COMMAND COMPLETE FOR $$file --";\
@@ -106,9 +118,9 @@ mem_all: $(SRC_DIR)/*.c
 		valgrind ./$(OUT) 2>> $(TMP_TXT);\
 	done
 	./valgrind_summary.sh
-# gcc $(SRC) -MM -I./include -I./csrc | sed -e 's/.h/.c/g' -e 's/include\/[a-z]*\.c//g' -e 's/[a-z]*\.o:\s//g'
+
 test:
-	$(CC) $(CFLAGS) $(ALL_SRC) -o $(OUT) $(LIBS) $(INCLUDES) -DTEST
+	$(CC) $(CFLAGS) $(ALL_DEPS) -o $(OUT) $(LIBS) $(INCLUDES) -DTEST -D$(MAIN_DIRECTIVE)
 	@echo "-- BUILD COMMAND COMPLETE --"
 	./$(OUT)
 

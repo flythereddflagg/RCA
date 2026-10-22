@@ -9,6 +9,7 @@
 #include "scene.h"
 
 #include "dict.h"
+#include "valarray.h"
 #include "yaml_parse.h"
 #include <stdlib.h>
 

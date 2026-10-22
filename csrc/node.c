@@ -6,6 +6,7 @@
 #include "nodelist.h"
 
 #include "dict.h"
+#include "valarray.h"
 #include "lstring.h"
 #include "objlist.h"
 #include "sprite.h"

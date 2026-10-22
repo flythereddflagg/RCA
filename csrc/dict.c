@@ -3,6 +3,7 @@
 #include "dbg.h"
 #include "lstring.h"
 #include "dict.h"
+#include "valarray.h"
 #include <stdlib.h>
 #include <string.h>
 
