@@ -3,6 +3,10 @@
 #include "bitmask.h"
 #include "raylib.h"
 
+#include "dbg.h"
+#include "raylib.h"
+
+#include <stdlib.h>
 typedef struct SpriteData *Sprite;
 
 struct SpriteData {

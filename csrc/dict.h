@@ -1,6 +1,10 @@
 #ifndef __DICT_H__
 #define __DICT_H__
 #include "lstring.h"
+#include "dbg.h"
+#include "valarray.h"
+#include <stdlib.h>
+#include <string.h>
 #define DICTSIZE 256
 #define HASHPRIME 31
 #define NO_NEXT -1

@@ -1,49 +1,5 @@
 
-
-#include "dbg.h"
-#include "raylib.h"
-#include "yaml_parse.h"
-#include <stdbool.h>
-#include <stdlib.h>
-#include <string.h>
-#define MAX_INPUTS 6
-#define MAX_CONTROLLERS 4
-// #define ACTION_NAME_LEN 8
-
-typedef struct {
-    // char name[ACTION_NAME_LEN];
-    int id;
-    double val;
-} Action;
-
-typedef enum {
-    BUTTON_UP = KEY_UP,
-    BUTTON_DOWN = KEY_DOWN,
-    BUTTON_LEFT = KEY_LEFT,
-    BUTTON_RIGHT = KEY_RIGHT,
-    BUTTON_S = KEY_V,
-    BUTTON_E = KEY_SPACE,
-    BUTTON_W = KEY_C,
-    BUTTON_N = KEY_X,
-    START = KEY_ENTER,
-    SELECT = KEY_P
-} Action_name;
-
-typedef struct InputData *Input;
-
-struct InputData {
-    void *parent;
-    void *key_bind;
-    bool log_input;
-    void (*update)(Input self);
-    Input (*delete)(Input self);
-    Action actions[MAX_INPUTS];
-    Action held[MAX_INPUTS];
-    Action last_actions[MAX_INPUTS];
-    Action new_actions[MAX_INPUTS];
-    void *controllers[MAX_CONTROLLERS];
-    void *input_log;
-};
+#include "input.h"
 
 void Input_hot_plug_check(Input self) { ; }
 

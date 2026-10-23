@@ -1,21 +1,4 @@
-
-
-#include "dbg.h"
-
-#include "raylib.h"
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdlib.h>
-
-#define DEFAULT_THRESHOLD 128
-
-typedef struct BitMaskData *BitMask;
-
-struct BitMaskData {
-    uint32_t width;
-    uint32_t height;
-    uint8_t *data;
-};
+#include "bitmask.h"
 
 BitMask BitMask_delete(BitMask self) {
     check(self, "'self' is NULL");

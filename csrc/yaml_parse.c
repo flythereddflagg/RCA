@@ -1,15 +1,7 @@
 
 
 #include "yaml_parse.h"
-#include "dbg.h"
-#include "dict.h"
-#include "lstring.h"
-#include <ctype.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#define MAX_NESTING_DEPTH 10
+
 
 DynTypeVal YamlParse_parse_value(yaml_event_t event) {
     /*

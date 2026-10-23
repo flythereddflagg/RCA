@@ -1,6 +1,7 @@
 
 
 #include "raylib.h"
+#include "compass.h"
 
 Vector2 unit(Compass dir) {
     switch (dir) {

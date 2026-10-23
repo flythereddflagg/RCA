@@ -1,11 +1,6 @@
 
 #include "sprite.h"
-#include "bitmask.h"
 
-#include "dbg.h"
-#include "raylib.h"
-
-#include <stdlib.h>
 
 Sprite Sprite_delete(Sprite self) {
     check(self, "'self' is NULL");
@@ -33,6 +28,6 @@ int Sprite_set_image(Sprite self, Image img) { return 0; }
 
 int Sprite_set_mask(Sprite self, BitMask mask) { return 0; }
 
-#ifdef __DECAL_MAIN__
+#ifdef __SPRITE_MAIN__
 int main() { return 0; }
 #endif

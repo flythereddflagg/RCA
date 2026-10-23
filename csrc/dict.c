@@ -1,11 +1,7 @@
 
 
 #include "dict.h"
-#include "dbg.h"
-#include "lstring.h"
-#include "valarray.h"
-#include <stdlib.h>
-#include <string.h>
+
 
 int Dict_hash(const Lstring key) {
     check(key.cstring && key.cstring[0], "invalid key to hash %s", key.cstring);

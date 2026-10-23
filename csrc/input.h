@@ -1,5 +1,13 @@
 #ifndef __INPUT_H__
 #define __INPUT_H__
+#include "dbg.h"
+#include "raylib.h"
+#include "yaml_parse.h"
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAX_INPUTS 6
+#define MAX_CONTROLLERS 4
 
 typedef struct {
     // char name[ACTION_NAME_LEN];
@@ -19,6 +27,20 @@ typedef enum {
     SELECT = KEY_P
 } Action_name;
 typedef struct InputData *Input;
+
+struct InputData {
+    void *parent;
+    void *key_bind;
+    bool log_input;
+    void (*update)(Input self);
+    Input (*delete)(Input self);
+    Action actions[MAX_INPUTS];
+    Action held[MAX_INPUTS];
+    Action last_actions[MAX_INPUTS];
+    Action new_actions[MAX_INPUTS];
+    void *controllers[MAX_CONTROLLERS];
+    void *input_log;
+};
 
 void Input_hot_plug_check(Input self);
 bool Input_in_last_actions(Input self, Action a);

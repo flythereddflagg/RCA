@@ -1,7 +1,10 @@
 #ifndef __LSTRING_H__
 #define __LSTRING_H__
+#include "dbg.h"
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #define MAX_LSTRING_LEN 1024
 #define Lstring_format(str) (int)str.length, str.cstring
 #define LSTRING_NULL                                                           \

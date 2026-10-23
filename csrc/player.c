@@ -1,6 +1,6 @@
 
+#include "player.h"
 
-#include <stdlib.h>
 
 typedef struct PlayerData *Player;
 

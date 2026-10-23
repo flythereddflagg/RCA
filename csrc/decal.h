@@ -1,4 +1,4 @@
-#ifndef __DECAL_H__
-#define __DECAL_H__
+#ifndef DECAL_H
+#define DECAL_H
 
 #endif

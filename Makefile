@@ -13,7 +13,7 @@ LIBS += -lraylib '-Wl,-rpath,$$ORIGIN/lib' # needed to point to .so files
 # LIBS += -l:libraylib.so.600
 # LIBS += -l:libraylib.a
 
-ALL_DEPS = $(shell gcc $(SRC) -MM -I./include -I./csrc | sed -e 's/include\/[a-z]*\.h //g' -e 's/[a-z]*\.o:\s//g' -e 's/csrc\/[a-z]*\.c//g' -e 's/.h/.c/g' -e 's/ \\//g')
+ALL_DEPS = $(shell gcc $(SRC) -MM -I./include -I./csrc | sed -e 's/include\/[a-z_]*\.h//g' -e 's/[a-z_]*\.o:\s//g' -e 's/csrc\/[a-z_]*\.c//g' -e 's/.h/.c/g' -e 's/ \\//g')
 MAIN_DIRECTIVE = $(shell echo "$(SRC)" | sed -e 'y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/' -e 's/.*CSRC\//__/g' -e 's/\.C/_MAIN__/g')
 
 ifeq ($(OS),Windows_NT)
