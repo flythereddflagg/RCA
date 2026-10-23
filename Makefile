@@ -14,7 +14,8 @@ LIBS += -lraylib '-Wl,-rpath,$$ORIGIN/lib' # needed to point to .so files
 # LIBS += -l:libraylib.a
 
 ALL_DEPS = $(shell gcc $(SRC) -MM -I./include -I./csrc | sed -e 's/include\/[a-z_]*\.h//g' -e 's/[a-z_]*\.o:\s//g' -e 's/csrc\/[a-z_]*\.c//g' -e 's/.h/.c/g' -e 's/ \\//g')
-MAIN_DIRECTIVE = $(shell echo "$(SRC)" | sed -e 'y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/' -e 's/.*CSRC\//__/g' -e 's/\.C/_MAIN__/g')
+# MAIN_DIRECTIVE = $(shell echo "$(SRC)" | sed -e 'y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/' -e 's/.*CSRC\//__/g' -e 's/\.C/_MAIN__/g')
+MAIN_DIRECTIVE ?=
 
 ifeq ($(OS),Windows_NT)
 	LIBS += -lgdi32 -lwinmm -Wl,--defsym,stat64i32=_stat64
@@ -44,6 +45,14 @@ all:help
 
 help:
 	@echo "Usage: make [build|run|clean|clean_all|get_raylib|help|python|flatpak|appimage]"
+
+core: $(SRC_DIR)/*.c
+	for file in $^; do\
+		echo "-- BUILDING $$file --";\
+		$(CC) $(CFLAGS) -c $$file -o $$file.o $(LIBS) $(INCLUDES);\
+		echo "-- BUILD COMMAND COMPLETE FOR $$file --";\
+	done
+	ar rcs ./lib/librca_core.a $(SRC_DIR)/*.o
 
 # get version 6.0 of raylib
 # TODO get the right version of raylib by system detection.
@@ -109,7 +118,8 @@ mem_all: $(SRC_DIR)/*.c
 	./valgrind_summary.sh
 
 test:
-	$(CC) $(CFLAGS) $(ALL_DEPS) -o $(OUT) $(LIBS) $(INCLUDES) -DTEST -D$(MAIN_DIRECTIVE)
+	$(CC) $(CFLAGS) ./tests/test_core.c -o $(OUT) $(LIBS) -lrca_core \
+		$(INCLUDES) -DTEST -D__$(MAIN_DIRECTIVE)_MAIN__
 	@echo "-- BUILD COMMAND COMPLETE --"
 	./$(OUT)
 
@@ -141,7 +151,8 @@ clean:
 	rm -rf ./.flatpak-builder
 	rm -f *.AppImage
 	rm -f $(OUT)
-	rm -f *.o
+	rm -f ./csrc/*.o
+	rm -f *.a
 	rm -f $(TMP_TXT)
 
 clean_all: clean
