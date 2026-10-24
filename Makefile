@@ -106,12 +106,12 @@ test_all: core $(SRC_DIR)/*.c
 		./$(OUT);\
 	done
 
-mem_all: $(SRC_DIR)/*.c
+mem_all: core $(SRC_DIR)/*.c
 	@echo "" > $(TMP_TXT)
-	for file in $^; do\
-		echo "-- BUILDING $$file --";\
-		$(CC) $(CFLAGS) $$file -o $(OUT) $(LIBS) $(INCLUDES) -DTEST_ALL;\
-		echo "-- BUILD COMMAND COMPLETE FOR $$file --";\
+	for directive in $(CORE_TESTS); do\
+		echo "-- BUILDING $$directive --";\
+		$(CC) $(CFLAGS) ./tests/test_core.c -o $(OUT) -lrca_core $(LIBS) \
+		$(INCLUDES) -DTEST -D$$directive;\
 		echo "-- BUILD COMMAND COMPLETE FOR $$file --" >> $(TMP_TXT);\
 		valgrind ./$(OUT) 2>> $(TMP_TXT);\
 	done

@@ -1,19 +1,8 @@
 
 
 #include "node.h"
-#include "dbg.h"
-#include "dict.h"
-#include "lstring.h"
 #include "nodelist.h"
-#include "objlist.h"
-#include "scene.h"
-#include "sprite.h"
-#include "valarray.h"
-#include <stdlib.h>
-#include <string.h>
-#define INHERIT_KEY "_inherit_"
-#define MISSING_TYPE "<MISSING TYPE>"
-#define MISSING_ID "<NO ID>"
+
 
 Node Node_delete(Node node);
 Node Node_kill(Node node);
@@ -246,6 +235,18 @@ Node Node_from_dict(Dict init) {
 error:
     if (node)
         node = Node_delete(node);
+    return NULL;
+}
+
+NodeFunc Node_get_setup(char *key) {
+    check(key, "key is NULL");
+    for (size_t i = 0; i < SETUP_FUNCS_LENGTH; i++) {
+        if (!strncmp(key, SETUP_FUNCS[i].key, MAX_KEY_LEN)) {
+            return SETUP_FUNCS[i].func;
+        }
+    }
+    sentinel("Node type '%s' is not a known type!", key);
+error:
     return NULL;
 }
 

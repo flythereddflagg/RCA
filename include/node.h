@@ -1,11 +1,21 @@
 #ifndef __NODE_H__
 #define __NODE_H__
 #include "dict.h"
-#include "objlist.h"
 #include "sprite.h"
+#include "dbg.h"
+#include "dict.h"
+#include "lstring.h"
+#include "objlist.h"
+#include "valarray.h"
+#include <stdlib.h>
+#include <string.h>
+#include "objlist.h"
 typedef struct NodeData *Node;
 #include "scene.h"
 #define MAX_KEY_LEN 100
+#define INHERIT_KEY "_inherit_"
+#define MISSING_TYPE "<MISSING TYPE>"
+#define MISSING_ID "<NO ID>"
 
 typedef ObjList NodeGroup;
 typedef ObjList GroupList;
@@ -49,6 +59,8 @@ Node Node_child_by_id(Node node, char *id);
 Node Node_remove_child(const Node node, Node child);
 NodeFunc Node_get_setup(char *key);
 Node Node_from_dict(Dict init);
+
+NodeFunc Node_get_setup(char *key);
 int test_node_from_dict();
 
 #endif
