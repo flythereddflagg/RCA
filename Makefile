@@ -48,7 +48,7 @@ help:
 core: $(SRC_DIR)/*.c
 	for file in $^; do\
 		echo "-- BUILDING $$file --";\
-		$(CC) $(CFLAGS) -c $$file -o $$file.o $(LIBS) $(INCLUDES);\
+		$(CC) $(CFLAGS) -c $$file -o $$file.o $(INCLUDES);\
 		echo "-- BUILD COMMAND COMPLETE FOR $$file --";\
 	done
 	ar rcs ./lib/librca_core.a $(SRC_DIR)/*.o
@@ -100,7 +100,7 @@ build:
 test_all: core $(SRC_DIR)/*.c
 	for directive in $(CORE_TESTS); do\
 		echo "-- BUILDING $$directive --";\
-		$(CC) $(CFLAGS) ./tests/test_core.c -o $(OUT) $(LIBS) -lrca_core \
+		$(CC) $(CFLAGS) ./tests/test_core.c -o $(OUT) -lrca_core $(LIBS) \
 		$(INCLUDES) -DTEST -D$$directive;\
 		echo "-- BUILD COMMAND COMPLETE FOR $$directive --";\
 		./$(OUT);\
@@ -118,8 +118,8 @@ mem_all: $(SRC_DIR)/*.c
 	./valgrind_summary.sh
 
 test:
-	$(CC) $(CFLAGS) ./tests/test_core.c -o $(OUT) $(LIBS) -lrca_core \
-		$(INCLUDES) -DTEST -D__$(MAIN_DIRECTIVE)_MAIN__
+	$(CC) $(CFLAGS) ./tests/test_core.c -o $(OUT)  \
+		$(INCLUDES) -DTEST -D__$(MAIN_DIRECTIVE)_MAIN__ -lrca_core $(LIBS) 
 	@echo "-- BUILD COMMAND COMPLETE --"
 	./$(OUT)
 

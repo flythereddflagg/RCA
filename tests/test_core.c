@@ -631,6 +631,7 @@ int main() {
 #endif
 #ifdef __YAML_PARSE_MAIN__
 #include "yaml_parse.h"
+#include <yaml.h>
 int test_dict() {
     Dict out =
         YamlParse_process_yaml_file("./assets/scene/startup.yaml")._dict_;
