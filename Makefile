@@ -12,8 +12,7 @@ LIBS += -lraylib '-Wl,-rpath,$$ORIGIN/lib' # needed to point to .so files
 # LIBS += -l:libraylib.so.6.0.0
 # LIBS += -l:libraylib.so.600
 # LIBS += -l:libraylib.a
-
-ALL_DEPS = $(shell gcc $(SRC) -MM -I./include -I./csrc | sed -e 's/include\/[a-z_]*\.h//g' -e 's/[a-z_]*\.o:\s//g' -e 's/csrc\/[a-z_]*\.c//g' -e 's/.h/.c/g' -e 's/ \\//g')
+CORE_TESTS = $(shell grep "__.*_MAIN__" ./tests/test_core.c | sed -e "s/#ifdef //g")
 # MAIN_DIRECTIVE = $(shell echo "$(SRC)" | sed -e 'y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/' -e 's/.*CSRC\//__/g' -e 's/\.C/_MAIN__/g')
 MAIN_DIRECTIVE ?=
 
@@ -98,11 +97,12 @@ build:
 	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LIBS) $(INCLUDES)
 	@echo "-- BUILD COMMAND COMPLETE --"
 
-test_all: $(SRC_DIR)/*.c
-	for file in $^; do\
-		echo "-- BUILDING $$file --";\
-		$(CC) $(CFLAGS) $$file -o $(OUT) $(LIBS) $(INCLUDES) -DTEST_ALL;\
-		echo "-- BUILD COMMAND COMPLETE FOR $$file --";\
+test_all: core $(SRC_DIR)/*.c
+	for directive in $(CORE_TESTS); do\
+		echo "-- BUILDING $$directive --";\
+		$(CC) $(CFLAGS) ./tests/test_core.c -o $(OUT) $(LIBS) -lrca_core \
+		$(INCLUDES) -DTEST -D$$directive;\
+		echo "-- BUILD COMMAND COMPLETE FOR $$directive --";\
 		./$(OUT);\
 	done
 

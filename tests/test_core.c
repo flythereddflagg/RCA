@@ -43,6 +43,7 @@ int main() { return 0; }
 int main() {return 0;}
 #endif
 #ifdef __DICT_MAIN__
+#include "dict.h"
 int test_dict() {
     log_info("compile successful");
     Dict dict = Dict_new();
@@ -77,10 +78,11 @@ int main() {
 }
 #endif
 #ifdef __ENGINE_MAIN__
+#include "engine.h"
 int main() { return 0; }
 #endif
 #ifdef __INPUT_MAIN__
-
+#include "input.h"
 // NOTE: Gamepad name ID depends on drivers and OS
 #define XBOX_ALIAS_1 "xbox"
 #define XBOX_ALIAS_2 "x-box"
@@ -457,6 +459,7 @@ int raylib_main(void) {
 }
 #endif
 #ifdef __LSTRING_MAIN__
+#include "lstring.h"
 int main() {
     Lstring str = Lstring_new("Its a string!");
     Lstring str2 = Lstring_new("Its a string?");
@@ -473,7 +476,7 @@ int main() {
 }
 #endif
 #ifdef __NODE_MAIN__
-
+#include "node.h"
 #include "yaml_parse.h"
 int test_node_from_dict() {
     DynValue out =
@@ -515,6 +518,7 @@ int main() {
 }
 #endif
 #ifdef __OBJLIST_MAIN__
+#include "objlist.h"
 int main() {
     ObjList list = ObjList_new();
     ObjList_push(list, "cheese");
@@ -576,9 +580,11 @@ int main() {
 }
 #endif
 #ifdef __PLAYER_MAIN__
+#include "player.h"
 int main() { return 0; }
 #endif
 #ifdef __SCENE_MAIN__
+#include "scene.h"
 int main() {
     Scene scene = Scene_new(NULL, "./assets/scene/test_scene.yaml", NULL, NULL);
     Scene_setup(scene);
@@ -591,9 +597,11 @@ error:
 }
 #endif
 #ifdef __SPRITE_MAIN__
+#include "sprite.h"
 int main() { return 0; }
 #endif
 #ifdef __VALARRAY_MAIN__
+#include "valarray.h"
 int test_arr() {
     int len = 10;
     ValArray arr = ValArray_new();
@@ -622,7 +630,7 @@ int main() {
 }
 #endif
 #ifdef __YAML_PARSE_MAIN__
-
+#include "yaml_parse.h"
 int test_dict() {
     Dict out =
         YamlParse_process_yaml_file("./assets/scene/startup.yaml")._dict_;

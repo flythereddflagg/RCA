@@ -1,9 +1,37 @@
 #ifndef __ENGINE_H__
 #define __ENGINE_H__
+typedef struct GameData *Game;
 #include "dict.h"
 #include "raylib.h"
+
+#include "dbg.h"
+#include "raylib.h"
+#include <stdbool.h>
+
+#include "input.h"
+#include "node.h"
 #include "scene.h"
-typedef struct GameData *Game;
+
+#include "dict.h"
+#include "valarray.h"
+#include "yaml_parse.h"
+#include <stdlib.h>
+
+#define MAX_INPUTS 6
+#define SPEED 200
+
+struct GameData {
+    Dict settings;
+    bool debug;
+    bool running;
+    bool paused;
+    Input input;
+    RenderTexture2D draw_surface;
+    Image icon;
+    Scene scene;
+    Scene *saved_scenes;
+};
+
 RenderTexture2D Game_init_screen(Dict settings);
 void Game_draw_frame(Game self);
 Game Game_new(const char *init_path);
