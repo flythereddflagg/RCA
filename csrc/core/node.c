@@ -3,10 +3,6 @@
 #include "node.h"
 #include "nodelist.h"
 
-Node Node_delete(Node node);
-Node Node_kill(Node node);
-Node Node_new();
-Node Node_from_dict(Dict init);
 
 int Node_setup(Node node) { return 0; } // dummy setup function
 
