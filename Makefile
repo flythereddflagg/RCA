@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -g -Wall #-fanalyzer
-SRC ?= ./csrc/main.c
+SRC ?= ./csrc/**/*.c ./csrc/*.c
 SRC_DIR = ./csrc
 INCLUDE_DIR = ./include
 RAYLIB_VERSION = 6.0
