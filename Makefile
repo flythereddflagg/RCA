@@ -61,7 +61,8 @@ clean:
 	rm -rf ./.flatpak-builder
 	rm -f *.AppImage
 	rm -f $(OUT)
-	rm -rf $(SRC_DIR)/*.o
+	rm -f $(SRC_DIR)/**/*.o
+	rm -f $(SRC_DIR)/*.o
 	rm -f *.a
 	rm -f $(TMP_TXT)
 
