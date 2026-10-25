@@ -1,7 +1,7 @@
 #ifndef __VALARRAY_H__
 #define __VALARRAY_H__
-#include "dict.h"
 #include "dbg.h"
+#include "dict.h"
 #include "lstring.h"
 #include <stdbool.h>
 #include <stdlib.h>

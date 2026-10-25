@@ -2,7 +2,6 @@
 
 #include "lstring.h"
 
-
 Lstring to_Lstring(char *cstring) {
     // return an Lstring without copying and allocating new memory.
     // This can be risky.

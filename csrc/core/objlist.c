@@ -1,6 +1,5 @@
 #include "objlist.h"
 
-
 ObjList ObjList_new() {
     ObjList list = (ObjList)malloc(sizeof(struct ObjListData));
     check_mem(list);

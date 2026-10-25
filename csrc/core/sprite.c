@@ -1,7 +1,6 @@
 
 #include "sprite.h"
 
-
 Sprite Sprite_delete(Sprite self) {
     check(self, "'self' is NULL");
     UnloadTexture(self->image);

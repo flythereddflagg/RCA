@@ -3,7 +3,6 @@
 #include "node.h"
 #include "nodelist.h"
 
-
 Node Node_delete(Node node);
 Node Node_kill(Node node);
 Node Node_new();

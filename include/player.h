@@ -1,7 +1,7 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
-#include <stdlib.h>
 #include "dbg.h"
+#include <stdlib.h>
 
 typedef struct PlayerData *Player;
 

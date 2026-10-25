@@ -2,7 +2,6 @@
 
 #include "dict.h"
 
-
 int Dict_hash(const Lstring key) {
     check(key.cstring && key.cstring[0], "invalid key to hash %s", key.cstring);
     char hash = 0;

@@ -1,7 +1,6 @@
 
 #include "player.h"
 
-
 typedef struct PlayerData *Player;
 
 struct PlayerData {

@@ -35,23 +35,62 @@ else
 	endif
 	
 endif
-INCLUDES = -I$(INCLUDE_DIR) -I$(SRC_DIR)
+INCLUDES = -I$(INCLUDE_DIR)
 VALGRIND_OPTS ?=
 
 .PHONY: all clean clean_all build run get_raylib help python flatpak appimage
 
 all:help
 
-help:
-	@echo "Usage: make [build|run|clean|clean_all|get_raylib|help|python|flatpak|appimage]"
+appimage:
+	mkdir -p ./dist/AppDir/usr/bin
+	cp ./docs/RCA.desktop ./dist/AppDir/
+	cp ./assets/block/game_icon_rev1.png ./dist/AppDir/
+	cp -r ./build/exe.linux-x86_64-3.12/* ./dist/AppDir/
+	cp ./docs/AppRun ./dist/AppDir/
+	chmod +x ./dist/AppDir/AppRun
+	ARCH=x86_64 ~/appimages/appimagetool-x86_64.AppImage ./dist/AppDir RCA.AppImage
 
-core: $(SRC_DIR)/*.c
+build:
+	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LIBS) $(INCLUDES)
+	@echo "-- BUILD COMMAND COMPLETE --"
+
+clean:
+	rm -rf ./build
+	rm -rf ./dist
+	rm -rf ./.flatpak-builder
+	rm -f *.AppImage
+	rm -f $(OUT)
+	rm -rf $(SRC_DIR)/*.o
+	rm -f *.a
+	rm -f $(TMP_TXT)
+
+clean_all: clean
+	rm -rf ./lib
+	rm -rf ./.raylib
+	rm -rf **.tar*
+	rm -rf **.zip*
+
+core: $(SRC_DIR)/core/*.c
 	for file in $^; do\
 		echo "-- BUILDING $$file --";\
 		$(CC) $(CFLAGS) -c $$file -o $$file.o $(INCLUDES);\
 		echo "-- BUILD COMMAND COMPLETE FOR $$file --";\
 	done
-	ar rcs ./lib/librca_core.a $(SRC_DIR)/*.o
+	ar rcs ./lib/librca_core.a $(SRC_DIR)/core/*.o
+
+debug:
+	gdb ./$(OUT) -ex run -ex bt
+
+
+flatpak:
+	flatpak-builder --force-clean ./dist io.github.flythereddflagg.rca.yml
+	flatpak build-import-bundle ./dist io.github.flythereddflagg.rca
+
+format:
+	clang-format -i $(SRC_DIR)/**/*.*
+	clang-format -i $(SRC_DIR)/*.*
+	clang-format -i $(INCLUDE_DIR)/*.*
 
 # get version 6.0 of raylib
 # TODO get the right version of raylib by system detection.
@@ -77,36 +116,10 @@ get_raylib_web:
 
 get_deps: clean_all get_raylib
 
-web:
-	emcc -o game.html ./csrc/main.c -Os -Wall ./lib -I./csrc -I./include -L. -L./lib -s USE_GLFW=3 -DPLATFORM_WEB
+help:
+	@echo "Usage: make [COMMAND]"
 
-format:
-	clang-format -i $(SRC_DIR)/*.*
-	clang-format -i $(INCLUDE_DIR)/*.*
-
-preprocess:
-	$(CC) $(CFLAGS) -E $(SRC) -o $(OUT).o $(INCLUDES)
-
-obj:
-	$(CC) $(CFLAGS) -c $(SRC) -o $(OUT).o $(INCLUDES)
-
-debug:
-	gdb ./$(OUT) -ex run -ex bt
-
-build:
-	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LIBS) $(INCLUDES)
-	@echo "-- BUILD COMMAND COMPLETE --"
-
-test_all: core $(SRC_DIR)/*.c
-	for directive in $(CORE_TESTS); do\
-		echo "-- BUILDING $$directive --";\
-		$(CC) $(CFLAGS) ./tests/test_core.c -o $(OUT) -lrca_core $(LIBS) \
-		$(INCLUDES) -DTEST -D$$directive;\
-		echo "-- BUILD COMMAND COMPLETE FOR $$directive --";\
-		./$(OUT);\
-	done
-
-mem_all: core $(SRC_DIR)/*.c
+mem_all: core
 	@echo "" > $(TMP_TXT)
 	for directive in $(CORE_TESTS); do\
 		echo "-- BUILDING $$directive --";\
@@ -117,47 +130,35 @@ mem_all: core $(SRC_DIR)/*.c
 	done
 	./valgrind_summary.sh
 
+mem_check: test
+	valgrind ./$(OUT) $(VALGRIND_OPTS)
+
+obj:
+	$(CC) $(CFLAGS) -c $(SRC) -o $(OUT).o $(INCLUDES)
+
+preprocess:
+	$(CC) $(CFLAGS) -E $(SRC) -o $(OUT).o $(INCLUDES)
+
+python:
+	python setup.py build
+
+run: build
+	./$(OUT)
+
 test:
 	$(CC) $(CFLAGS) ./tests/test_core.c -o $(OUT)  \
 		$(INCLUDES) -DTEST -D__$(MAIN_DIRECTIVE)_MAIN__ -lrca_core $(LIBS) 
 	@echo "-- BUILD COMMAND COMPLETE --"
 	./$(OUT)
 
-mem_check: test
-	valgrind ./$(OUT) $(VALGRIND_OPTS)
+test_all: core $(SRC_DIR)/*.c
+	for directive in $(CORE_TESTS); do\
+		echo "-- BUILDING $$directive --";\
+		$(CC) $(CFLAGS) ./tests/test_core.c -o $(OUT) -lrca_core $(LIBS) \
+		$(INCLUDES) -DTEST -D$$directive;\
+		echo "-- BUILD COMMAND COMPLETE FOR $$directive --";\
+		./$(OUT);\
+	done
 
-run: build
-	./$(OUT)
-
-python:
-	python setup.py build
-
-flatpak:
-	flatpak-builder --force-clean ./dist io.github.flythereddflagg.rca.yml
-	flatpak build-import-bundle ./dist io.github.flythereddflagg.rca
-
-appimage:
-	mkdir -p ./dist/AppDir/usr/bin
-	cp ./docs/RCA.desktop ./dist/AppDir/
-	cp ./assets/block/game_icon_rev1.png ./dist/AppDir/
-	cp -r ./build/exe.linux-x86_64-3.12/* ./dist/AppDir/
-	cp ./docs/AppRun ./dist/AppDir/
-	chmod +x ./dist/AppDir/AppRun
-	ARCH=x86_64 ~/appimages/appimagetool-x86_64.AppImage ./dist/AppDir RCA.AppImage
-
-clean:
-	rm -rf ./build
-	rm -rf ./dist
-	rm -rf ./.flatpak-builder
-	rm -f *.AppImage
-	rm -f $(OUT)
-	rm -f ./csrc/*.o
-	rm -f *.a
-	rm -f $(TMP_TXT)
-
-clean_all: clean
-	rm -rf ./lib
-	rm -rf ./.raylib
-	rm -rf **.tar*
-	rm -rf **.zip*
-
+web:
+	emcc -o game.html ./csrc/main.c -Os -Wall ./lib -I./csrc -I./include -L. -L./lib -s USE_GLFW=3 -DPLATFORM_WEB

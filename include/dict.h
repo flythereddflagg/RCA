@@ -1,7 +1,7 @@
 #ifndef __DICT_H__
 #define __DICT_H__
-#include "lstring.h"
 #include "dbg.h"
+#include "lstring.h"
 #include "valarray.h"
 #include <stdlib.h>
 #include <string.h>

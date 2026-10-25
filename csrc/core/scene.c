@@ -2,7 +2,6 @@
 
 #include "scene.h"
 
-
 struct SceneData {
     Game game;
     bool paused;

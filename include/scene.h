@@ -1,10 +1,9 @@
 #ifndef __SCENE_H__
 #define __SCENE_H__
 typedef struct SceneData *Scene;
-#include "engine.h"
-#include "node.h"
 #include "dbg.h"
 #include "dict.h"
+#include "engine.h"
 #include "lstring.h"
 #include "node.h"
 #include "yaml_parse.h"

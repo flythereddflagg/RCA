@@ -1,15 +1,13 @@
 #ifndef __NODE_H__
 #define __NODE_H__
-#include "dict.h"
-#include "sprite.h"
 #include "dbg.h"
 #include "dict.h"
 #include "lstring.h"
 #include "objlist.h"
+#include "sprite.h"
 #include "valarray.h"
 #include <stdlib.h>
 #include <string.h>
-#include "objlist.h"
 typedef struct NodeData *Node;
 #include "scene.h"
 #define MAX_KEY_LEN 100
