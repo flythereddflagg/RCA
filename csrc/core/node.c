@@ -3,7 +3,6 @@
 #include "node.h"
 #include "nodelist.h"
 
-
 int Node_setup(Node node) { return 0; } // dummy setup function
 
 NodeGroup NodeGroup_new() { return ObjList_new(); }

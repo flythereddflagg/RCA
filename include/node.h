@@ -17,8 +17,6 @@ typedef ObjList GroupList;
 #define MISSING_TYPE "<MISSING TYPE>"
 #define MISSING_ID "<NO ID>"
 
-
-
 typedef int (*NodeFunc)(Node node);
 
 struct NodeData {

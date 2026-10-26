@@ -33,7 +33,7 @@ struct GameData {
 };
 
 RenderTexture2D Game_init_screen(Dict settings);
-void Game_draw_frame(Game self);
+int Game_draw_frame(Game game);
 Game Game_new(const char *init_path);
 Game Game_delete(Game game);
 Scene Game_load_scene(Game game, char *yaml_path, ValArray add_in);

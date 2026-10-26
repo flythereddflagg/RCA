@@ -28,7 +28,7 @@ error:
     return v_screen;
 }
 
-void Game_draw_frame(Game game) {
+int Game_draw_frame(Game game) {
     check(game, "game is NULL");
 
     RenderTexture2D v_screen = game->draw_surface;
@@ -50,10 +50,9 @@ void Game_draw_frame(Game game) {
     Node node = NULL;
     BeginTextureMode(v_screen);
     ClearBackground(BLACK);
-    for (int i = 0; i < nodes->length; i++){
-        node = (Node) current->obj;
-        DrawTexture(node->sprite->image,
-                    node->sprite->position.x,
+    for (int i = 0; i < nodes->length; i++) {
+        node = (Node)current->obj;
+        DrawTexture(node->sprite->image, node->sprite->position.x,
                     node->sprite->position.y, WHITE);
         current = current->next;
     }
@@ -73,7 +72,9 @@ void Game_draw_frame(Game game) {
                    0.0f, // rotation
                    WHITE);
     EndDrawing();
-error:;
+    return 0;
+error:
+    return -1;
 }
 
 Game Game_new(const char *init_path) {

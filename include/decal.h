@@ -1,11 +1,11 @@
 #ifndef DECAL_H
 #define DECAL_H
+#include "dict.h"
 #include "lstring.h"
 #include "node.h"
-#include "dict.h"
+#include "raylib.h"
 #include "sprite.h"
 #include <stdlib.h>
-#include "raylib.h"
 
 typedef struct DecalData *Decal;
 
