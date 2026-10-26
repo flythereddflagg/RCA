@@ -10,6 +10,19 @@ typedef struct SceneData *Scene;
 #include <stdbool.h>
 #define BG_REF "bg_ref"
 
+struct SceneData {
+    Game game;
+    bool paused;
+    bool occupied;
+    Lstring id;
+    Dict init;
+    ValArray draw_layers;
+    Dict groups; // dict of NodeGroup
+    NodeGroup all_nodes;
+    NodeGroup active_nodes;
+    Node bg_ref;
+};
+
 // TODO implement Scene logic
 Scene Scene_delete(Scene);
 int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,

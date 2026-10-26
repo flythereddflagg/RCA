@@ -56,18 +56,14 @@ int Node_update(const Node node) { return 0; }
 Node Node_new() {
     Node node = (Node)malloc(sizeof(struct NodeData));
     check_mem(node);
-    // owned field?? maybe not per 'node_from_dict.c'
     node->type = to_Lstring(MISSING_TYPE);
-    // owned field?? maybe not per 'node_from_dict.c'
     node->id = to_Lstring(MISSING_ID);
     node->scene = NULL;
     node->parent = NULL;
-    // owned field
     node->sprite = NULL;
-    // owned field?
     node->init = NULL;
-    node->children = ObjList_new(); // dtype=Node
-    node->groups = ObjList_new();   // dtype=NodeGroup
+    node->children = ObjList_new(); // dtype=Node (OWNED FIELD)
+    node->groups = ObjList_new();   // dtype=NodeGroup (OWNED FIELD)
     node->update = &Node_update;
     node->delete = &Node_delete;
 

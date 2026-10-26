@@ -9,18 +9,17 @@
 #include <stdlib.h>
 #include <string.h>
 typedef struct NodeData *Node;
+typedef ObjList NodeGroup;
+typedef ObjList GroupList;
 #include "scene.h"
 #define MAX_KEY_LEN 100
 #define INHERIT_KEY "_inherit_"
 #define MISSING_TYPE "<MISSING TYPE>"
 #define MISSING_ID "<NO ID>"
 
-typedef ObjList NodeGroup;
-typedef ObjList GroupList;
+
 
 typedef int (*NodeFunc)(Node node);
-typedef ObjList NodeGroup;
-typedef ObjList GroupList;
 
 struct NodeData {
     Lstring type;
@@ -29,6 +28,7 @@ struct NodeData {
     Node parent;
     Sprite sprite;
     Dict init;
+    void *attr; // extra attributes to be added by child classes
     NodeGroup children;
     GroupList groups;
     size_t groups_length;

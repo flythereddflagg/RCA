@@ -2,18 +2,6 @@
 
 #include "scene.h"
 
-struct SceneData {
-    Game game;
-    bool paused;
-    bool occupied;
-    Lstring id;
-    Dict init;
-    ValArray draw_layers;
-    Dict groups; // dict of NodeGroup
-    NodeGroup all_nodes;
-    NodeGroup active_nodes;
-    Node bg_ref;
-};
 Scene Scene_new(Game game, char *yaml_path, Dict yaml_data, ValArray add_in) {
     Scene scene = (Scene)malloc(sizeof(struct SceneData));
     check_mem(scene);

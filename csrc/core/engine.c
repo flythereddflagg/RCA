@@ -28,8 +28,10 @@ error:
     return v_screen;
 }
 
-void Game_draw_frame(Game self) {
-    RenderTexture2D v_screen = self->draw_surface;
+void Game_draw_frame(Game game) {
+    check(game, "game is NULL");
+
+    RenderTexture2D v_screen = game->draw_surface;
     double window_aspect_ratio = 1.0f * GetScreenWidth() / GetScreenHeight();
     double virtual_aspect_ratio =
         1.0f * v_screen.texture.width / v_screen.texture.height;
@@ -40,12 +42,22 @@ void Game_draw_frame(Game self) {
                             ? GetScreenWidth() / virtual_aspect_ratio
                             : GetScreenHeight());
     // draw everyting to the virtual screen
+    // TODO get all nodes as draw layers to draw
+    check(game->scene, "scene is NULL");
+    check(game->scene->all_nodes, "all nodes does not exist");
+    NodeGroup nodes = game->scene->all_nodes;
+    Lnode current = nodes->head;
+    Node node = NULL;
     BeginTextureMode(v_screen);
     ClearBackground(BLACK);
-    // for (int i = 0; i < nodes->len; i++)
-    //     DrawTexture(nodes->arr[i]->->image,
-    //                 nodes->arr[i]->->position.x,
-    //                 nodes->arr[i]->->position.y, WHITE);
+    for (int i = 0; i < nodes->length; i++){
+        node = (Node) current->obj;
+        DrawTexture(node->sprite->image,
+                    node->sprite->position.x,
+                    node->sprite->position.y, WHITE);
+        current = current->next;
+    }
+
     EndTextureMode();
 
     // then scale virtual screen to fit and then draw to the actual screen
@@ -61,6 +73,7 @@ void Game_draw_frame(Game self) {
                    0.0f, // rotation
                    WHITE);
     EndDrawing();
+error:;
 }
 
 Game Game_new(const char *init_path) {
@@ -95,7 +108,7 @@ Game Game_delete(Game game) {
     return NULL;
 }
 Scene Game_load_scene(Game game, char *yaml_path, ValArray add_in) {
-
+    // CONTINUE HERE
     return NULL;
 }
 
