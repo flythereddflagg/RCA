@@ -1,73 +1,75 @@
 
 #include "input.h"
 
-void Input_hot_plug_check(Input self) { ; }
+void Input_hot_plug_check(Input input) { ; }
 
-bool Input_in_last_actions(Input self, Action a) {
+bool Input_in_last_actions(Input input, Action a) {
     for (int i = 0; i < MAX_INPUTS; i++)
-        if (self->last_actions[i].id == a.id)
+        if (input->last_actions[i].id == a.id)
             return true;
     return false;
 }
 
-bool Input_in_held(Input self, Action a) {
+bool Input_in_held(Input input, Action a) {
     for (int i = 0; i < MAX_INPUTS; i++)
-        if (self->held[i].id == a.id)
+        if (input->held[i].id == a.id)
             return true;
     return false;
 }
 
-void Input_update(Input self) {
-    Input_hot_plug_check(self);
+int Input_update(Input input) {
+    check(input, "input object is NULL");
+    Input_hot_plug_check(input);
     // TODO -3- add more player controls player one only for now
     // int player_number = 0;
     int key1 = 0;
     // TODO need to figure out controller input. rn only keyboard
     for (int i = 0; i < MAX_INPUTS; i++) {
         key1 = GetKeyPressed();
-        self->actions[i] = (Action){.id = key1, .val = key1 ? 1.0f : 0.0f};
+        input->actions[i] = (Action){.id = key1, .val = key1 ? 1.0f : 0.0f};
     }
     // update held
     for (int i = 0; i < MAX_INPUTS; i++)
-        if (Input_in_last_actions(self, self->actions[i]))
-            self->held[i] = self->actions[i];
+        if (Input_in_last_actions(input, input->actions[i]))
+            input->held[i] = input->actions[i];
         else
-            self->held[i] = (Action){.id = KEY_NULL, .val = 0.0f};
+            input->held[i] = (Action){.id = KEY_NULL, .val = 0.0f};
     // update last actions
     for (int i = 0; i < MAX_INPUTS; i++)
-        self->last_actions[i] = self->actions[i];
+        input->last_actions[i] = input->actions[i];
     // update new actions
     for (int i = 0; i < MAX_INPUTS; i++)
-        if (Input_in_held(self, self->actions[i]))
-            self->new_actions[i] = (Action){.id = KEY_NULL, .val = 0.0f};
+        if (Input_in_held(input, input->actions[i]))
+            input->new_actions[i] = (Action){.id = KEY_NULL, .val = 0.0f};
         else
-            self->new_actions[i] = self->actions[i];
+            input->new_actions[i] = input->actions[i];
+    return 0;
+error:
+    return -1;
 }
 
-Input Input_delete(Input self) {
-    check(self, "'self' is NULL");
-    free(self);
+Input Input_delete(Input input) {
+    check(input, "'input' is NULL");
+    free(input);
 error:
     return NULL;
 }
 
-void Input_clear(Input self) {
-    memset(self->actions, 0, sizeof(self->actions));
-    memset(self->held, 0, sizeof(self->held));
-    memset(self->last_actions, 0, sizeof(self->last_actions));
-    memset(self->new_actions, 0, sizeof(self->new_actions));
+void Input_clear(Input input) {
+    memset(input->actions, 0, sizeof(input->actions));
+    memset(input->held, 0, sizeof(input->held));
+    memset(input->last_actions, 0, sizeof(input->last_actions));
+    memset(input->new_actions, 0, sizeof(input->new_actions));
 }
 
 Input Input_new(void *parent) {
-    Input self = (Input)malloc(sizeof(struct InputData));
-    check_mem(self);
-    self->update = &Input_update;
-    self->delete = &Input_delete;
-    memset(self->controllers, 0, sizeof(self->controllers));
-    Input_clear(self);
+    Input input = (Input)malloc(sizeof(struct InputData));
+    check_mem(input);
+    memset(input->controllers, 0, sizeof(input->controllers));
+    Input_clear(input);
 
 error:
-    return self;
+    return input;
 }
 
 #ifdef __INPUT_MAIN__

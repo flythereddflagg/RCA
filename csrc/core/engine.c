@@ -124,9 +124,9 @@ error:
 }
 
 int Game_loop_steps(Game game) {
-    Input_update(game->input);
+    check(!Input_update(game->input), "Input error");
     check(!Game_logic(game), "Game Logic error");
-    Game_draw_frame(game);
+    check(!Game_draw_frame(game), "Draw error");
     return 0;
 error:
     return -1;
@@ -147,14 +147,14 @@ int Game_run(Game game) {
     while (game->running) {
         if (WindowShouldClose())
             game->running = false;
-        Game_loop_steps(game);
+        check(!Game_loop_steps(game), "Game Loop Error");
     }
 #endif
 
     return 0;
 
-    // error:
-    //     return 1;
+error:
+    return -1;
 }
 
 #ifdef __ENGINE_MAIN__

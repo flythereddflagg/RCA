@@ -32,8 +32,6 @@ struct InputData {
     void *parent;
     void *key_bind;
     bool log_input;
-    void (*update)(Input self);
-    Input (*delete)(Input self);
     Action actions[MAX_INPUTS];
     Action held[MAX_INPUTS];
     Action last_actions[MAX_INPUTS];
@@ -45,7 +43,7 @@ struct InputData {
 void Input_hot_plug_check(Input self);
 bool Input_in_last_actions(Input self, Action a);
 bool Input_in_held(Input self, Action a);
-void Input_update(Input self);
+int Input_update(Input self);
 Input Input_delete(Input self);
 void Input_clear(Input self);
 Input Input_new(void *parent);
