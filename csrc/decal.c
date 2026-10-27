@@ -5,7 +5,7 @@ int Decal_setup(Node node) {
     check(Lstring_equal(node->type, to_Lstring("Decal")),
           "Node->type is '" LSTRING_FMT "', not Decal",
           Lstring_format(node->type));
-    check(node->sprite, "Node sprite is NULL");
+    // check(node->sprite, "Node sprite is NULL");
     node->update = Decal_update;
     node->delete = Decal_delete;
     node->attr = (Decal)malloc(sizeof(struct DecalData));
