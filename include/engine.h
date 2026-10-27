@@ -36,7 +36,7 @@ RenderTexture2D Game_init_screen(Dict settings);
 int Game_draw_frame(Game game);
 Game Game_new(const char *init_path);
 Game Game_delete(Game game);
-Scene Game_load_scene(Game game, char *yaml_path, ValArray add_in);
+int Game_load_scene(Game game, char *yaml_path, ValArray add_in);
 int Game_logic(Game game);
 int Game_loop_steps(Game game);
 int Game_run(Game game);

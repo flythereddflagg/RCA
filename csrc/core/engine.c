@@ -98,6 +98,10 @@ error:
 }
 Game Game_delete(Game game) {
     if (game) {
+        if (game->scene){
+            Scene_deconstruct(game->scene);
+            game->scene = Scene_delete(game->scene);
+        }
         UnloadImage(game->icon);
         UnloadRenderTexture(game->draw_surface);
         game->input = Input_delete(game->input);
@@ -108,9 +112,13 @@ Game Game_delete(Game game) {
 
     return NULL;
 }
-Scene Game_load_scene(Game game, char *yaml_path, ValArray add_in) {
-    // CONTINUE HERE
-    return NULL;
+int Game_load_scene(Game game, char *yaml_path, ValArray add_in) {
+    game->scene = Scene_new(game, "./assets/scene/test_scene.yaml", NULL, NULL);
+    check(game->scene, "scene is NULL");
+    Scene_setup(game->scene);
+    return 0;
+error:
+    return -1;
 }
 
 int Game_logic(Game game) {
@@ -133,9 +141,10 @@ error:
 }
 
 int Game_run(Game game) {
-    Game_load_scene(
+    int rc = Game_load_scene(
         game, Dict_get(game->settings, "initial_scene", EMPTYVAL)._str_.cstring,
         Dict_get(game->settings, "init_add_in", EMPTYVAL)._arr_);
+    check(!rc, "Game load scene failed.");
 
 #if defined(PLATFORM_WEB)
     emscripten_set_main_loop_arg(
