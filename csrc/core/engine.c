@@ -98,7 +98,7 @@ error:
 }
 Game Game_delete(Game game) {
     if (game) {
-        if (game->scene){
+        if (game->scene) {
             Scene_deconstruct(game->scene);
             game->scene = Scene_delete(game->scene);
         }

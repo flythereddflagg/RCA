@@ -4,27 +4,27 @@
 typedef struct PlayerData *Player;
 
 struct PlayerData {
-    void (*update)(const void *self);
-    void (*delete)(void *self);
+    void (*update)(const void *player);
+    void (*delete)(void *player);
 };
 
-void Player_update(const void *self) {
-    // Player node = (Player) self;
+void Player_update(const void *player) {
+    // Player node = (Player) player;
     // statements...
     ;
 }
 
-void Player_delete(void *self) { free(self); }
+void Player_delete(void *player) { free(player); }
 
 Player Player_new() {
-    Player self = (Player)malloc(sizeof(struct PlayerData));
-    check_mem(self);
+    Player player = (Player)malloc(sizeof(struct PlayerData));
+    check_mem(player);
 
-    self->update = &Player_update;
-    self->delete = &Player_delete;
+    player->update = &Player_update;
+    player->delete = &Player_delete;
 
 error:
-    return self;
+    return player;
 }
 
 #ifdef __PLAYER_MAIN__

@@ -5,8 +5,8 @@
 
 typedef struct PlayerData *Player;
 
-void Player_update(const void *self);
-void Player_delete(void *self);
+void Player_update(const void *player);
+void Player_delete(void *player);
 Player Player_new();
 
 #endif

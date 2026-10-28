@@ -1,31 +1,51 @@
 
 #include "sprite.h"
 
-Sprite Sprite_delete(Sprite self) {
-    check(self, "'self' is NULL");
-    UnloadTexture(self->image);
-    if (self->mask) {
-        BitMask_delete(self->mask);
+Sprite Sprite_delete(Sprite sprite) {
+    check(sprite, "'sprite' is NULL");
+    UnloadTexture(sprite->image);
+    if (sprite->mask) {
+        BitMask_delete(sprite->mask);
     }
-    free(self);
+    free(sprite);
 error:
     return NULL;
 }
 
 Sprite Sprite_new(char *image_path, Vector2 position) {
-    Sprite self = (Sprite)malloc(sizeof(struct SpriteData));
-    check_mem(self);
-    self->image = LoadTexture(image_path);
-    self->mask = NULL;
-    self->position = position;
+    Sprite sprite = (Sprite)malloc(sizeof(struct SpriteData));
+    check_mem(sprite);
+    sprite->image = LoadTexture(image_path);
+    sprite->mask = NULL;
+    sprite->position = position;
 
 error:
-    return self;
+    return sprite;
 }
 
-int Sprite_set_image(Sprite self, Image img) { return 0; }
+Texture2D Sprite_set_image(Sprite sprite, Image img) {
+    /*returns the old image so it can be deleted, null otherwise*/
+    check(sprite, "sprite is NULL");
+    check(img.data, "Image is invalid");
+    Texture2D to_return = sprite->image;
+    sprite->image = LoadTextureFromImage(img);
+    check(IsTextureValid(sprite->image), "Invalid image loaded");
+    return to_return;
+error:
+    return (Texture2D){
+        .id = 0, .width = 0, .height = 0, .mipmaps = 0, .format = 0};
+}
 
-int Sprite_set_mask(Sprite self, BitMask mask) { return 0; }
+BitMask Sprite_set_mask(Sprite sprite, BitMask mask) {
+    /*returns the old mask so it can be deleted, null otherwise*/
+    check(sprite, "sprite is NULL");
+    check(mask, "mask is NULL");
+    BitMask to_return = sprite->mask;
+    sprite->mask = mask;
+    return to_return;
+error:
+    return NULL;
+}
 
 #ifdef __SPRITE_MAIN__
 int main() { return 0; }

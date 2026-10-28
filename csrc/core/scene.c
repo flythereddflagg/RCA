@@ -137,12 +137,12 @@ int Scene_setup(Scene scene) {
     /*
     ``` python
     if add_background_blank:
-        self.place_node(Decal(self, id = BG_REF), ["background"])
-    self.bg_ref = None
+        scene.place_node(Decal(scene, id = BG_REF), ["background"])
+    scene.bg_ref = None
 
-    for node_init in self.init.get("nodes"):
-        if not self.bg_ref and len(self.background.sprites()) > 0:
-            self.bg_ref = self.background.sprites()[0]
+    for node_init in scene.init.get("nodes"):
+        if not scene.bg_ref and len(scene.background.sprites()) > 0:
+            scene.bg_ref = scene.background.sprites()[0]
     */
     ValArray nodes = (ValArray)Dict_get(scene->init, "nodes", EMPTYVAL)._obj_;
     check(nodes, "nodes is NULL");
@@ -164,7 +164,7 @@ int Scene_deconstruct(Scene scene) {
     check(scene, "Scene is NULL");
     check(scene->all_nodes, "scene->all_nodes is NULL");
     // if save_scene:
-    //         self.game.saved_scenes[self.id] = self.serialize()
+    //         scene.game.saved_scenes[scene.id] = scene.serialize()
     size_t length = scene->all_nodes->length;
     Node current = NULL;
     for (size_t i = 0; i < length; i++) {

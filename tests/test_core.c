@@ -39,9 +39,6 @@ int main() {
 #ifdef __COMPASS_MAIN__
 int main() { return 0; }
 #endif
-#ifdef __DECAL_MAIN__
-int main() {return 0;}
-#endif
 #ifdef __DICT_MAIN__
 #include "dict.h"
 int test_dict() {

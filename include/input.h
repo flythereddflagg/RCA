@@ -40,12 +40,12 @@ struct InputData {
     void *input_log;
 };
 
-void Input_hot_plug_check(Input self);
-bool Input_in_last_actions(Input self, Action a);
-bool Input_in_held(Input self, Action a);
-int Input_update(Input self);
-Input Input_delete(Input self);
-void Input_clear(Input self);
+void Input_hot_plug_check(Input input);
+bool Input_in_last_actions(Input input, Action a);
+bool Input_in_held(Input input, Action a);
+int Input_update(Input input);
+Input Input_delete(Input input);
+void Input_clear(Input input);
 Input Input_new(void *parent);
 int raylib_main(void);
 
