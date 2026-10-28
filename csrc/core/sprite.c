@@ -46,7 +46,3 @@ BitMask Sprite_set_mask(Sprite sprite, BitMask mask) {
 error:
     return NULL;
 }
-
-#ifdef __SPRITE_MAIN__
-int main() { return 0; }
-#endif
