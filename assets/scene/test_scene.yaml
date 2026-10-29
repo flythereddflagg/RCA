@@ -4,7 +4,8 @@ nodes:
   - solid
   - background
   id: boss room
-  image: ./assets/scene/boss_room/boss_room.png
+  image: ./assets/scene/world_map/room_map.png
+  # image: ./assets/scene/boss_room/boss_room.png
   mask: ./assets/scene/boss_room/boss_room_mask.png
   type: Decal
 # - id: camera
