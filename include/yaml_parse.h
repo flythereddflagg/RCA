@@ -18,7 +18,5 @@ typedef struct {
 
 DynTypeVal YamlParse_parse_value(yaml_event_t event);
 DynValue YamlParse_process_yaml_file(const char *filename);
-int test_dict();
-int test_init();
 
 #endif

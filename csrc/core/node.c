@@ -201,10 +201,12 @@ error:
 // ####################################################
 
 Node Node_from_dict(Dict init) {
-    Dict yaml = Dict_get(init, "yaml", EMPTYVAL)._dict_;
+    char *yaml = Dict_get(init, "yaml", EMPTYVAL)._str_.cstring;
     if (yaml) {
-        ;
-        // TODO write code to overwrite the data in yaml with the data in init
+        Dict new_yaml_dict = YamlParse_process_yaml_file(yaml)._dict_;
+        check(!Dict_update_with(new_yaml_dict, init), "yaml update failed");
+        init = Dict_delete(init);
+        init = new_yaml_dict;
     }
     Node node = Node_new();
     check(node, "node INIT failed");

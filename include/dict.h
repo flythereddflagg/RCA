@@ -44,6 +44,7 @@ int Dict_set(Dict dict, char *cstring, DynType type, DynValue val);
 int Dict_delkey(Dict dict, char *cstring);
 DynValue Dict_get(Dict dict, char *cstring, DynValue _default);
 bool Dict_key_in(Dict dict, char *key);
+int Dict_update_with(Dict dict, Dict new_dict);
 void Dict_print(Dict dict);
 void Dict_debug_print(Dict dict);
 Dict Dict_new();

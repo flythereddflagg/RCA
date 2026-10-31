@@ -132,6 +132,30 @@ error:
     return false;
 }
 
+int Dict_update_with(Dict dict, Dict new_dict) {
+    /*
+     * overwrites values in 'dict' with those in 'new_dict', passing ownership
+     * of those objects from the new on to the current 'dict' by "softly"
+     * deleting them from the 'new_dict'
+     */
+    check(dict, "dict is null");
+    check(new_dict, "new_dict dict is null");
+    for (int i = 0; i < DICTSIZE; i++) {
+        if (!new_dict->keys[i].cstring) {
+            continue;
+        }
+        check(!Dict_set(dict, new_dict->keys[i].cstring, new_dict->types[i],
+                        new_dict->vals[i]),
+              "dict update failed on key '%s'", new_dict->keys[i].cstring);
+        new_dict->keys[i] = LSTRING_NULL;
+        new_dict->types[i] = 0;
+        new_dict->vals[i] = EMPTYVAL;
+    }
+    return 0;
+error:
+    return -1;
+}
+
 void Dict_print(Dict dict) {
     check(dict, "NULL dict supplied");
     printf("{");
@@ -326,38 +350,3 @@ Dict Dict_delete(Dict dict) {
     }
     return NULL;
 }
-
-#ifdef __DICT_MAIN__
-int test_dict() {
-    log_info("compile successful");
-    Dict dict = Dict_new();
-    Dict_set(dict, "pickle", INT, dynval(_int_, 25));
-    Dict_set(dict, "cheese", STR, dynval(_str_, Lstring_new("23")));
-    Dict_set(dict, "crackers", STR,
-             dynval(_str_, Lstring_new("holy guacamole")));
-    Dict_set(dict, "crackers2", STR,
-             dynval(_str_, Lstring_new("holy guacamole")));
-    Dict_print(dict);
-    Dict_delkey(dict, "pickle");
-    Dict_print(dict);
-    Dict_set(dict, "pickle", FLOAT, dynval(_float_, 26.2));
-    Dict_print(dict);
-    Dict_delkey(dict, "pickl");
-    debug("getting value of pickle as %f",
-          Dict_get(dict, "pickle", EMPTYVAL)._float_);
-    Dict_set(dict, "cheese", OBJ, dynval(_obj_, dict));
-    Dict_print(dict);
-    Dict_delkey(dict, "pickle");
-    Dict_delkey(dict, "cheese");
-    Dict_delkey(dict, "crackers");
-    Dict_print(dict);
-    dict = Dict_delete(dict);
-    return 0;
-}
-
-int main() {
-    log_info("compile successful");
-    test_dict();
-    return 0;
-}
-#endif
