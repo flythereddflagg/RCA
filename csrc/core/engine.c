@@ -115,7 +115,7 @@ Game Game_delete(Game game) {
 int Game_load_scene(Game game, char *yaml_path, ValArray add_in) {
     game->scene = Scene_new(game, "./assets/scene/test_scene.yaml", NULL, NULL);
     check(game->scene, "scene is NULL");
-    Scene_setup(game->scene);
+    check(!Scene_setup(game->scene), "scene setup failed");
     return 0;
 error:
     return -1;

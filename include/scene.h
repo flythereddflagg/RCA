@@ -23,7 +23,6 @@ struct SceneData {
     Node bg_ref;
 };
 
-// TODO implement Scene logic
 Scene Scene_delete(Scene);
 int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,
                      bool active);

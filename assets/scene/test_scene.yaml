@@ -8,7 +8,9 @@ nodes:
   # image: ./assets/scene/boss_room/boss_room.png
   mask: ./assets/scene/boss_room/boss_room_mask.png
   type: Decal
-# - id: camera
-#   type: Camera
-#   groups:
-#   - other
+- yaml: ./assets/actor/player.yaml
+  # start: [704,230] # red castle valley
+  start: [200,200] # boss room
+  groups:
+    - foreground
+    - player

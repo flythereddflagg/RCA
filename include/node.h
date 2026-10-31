@@ -56,7 +56,4 @@ Node Node_remove_child(const Node node, Node child);
 NodeFunc Node_get_setup(char *key);
 Node Node_from_dict(Dict init);
 
-NodeFunc Node_get_setup(char *key);
-int test_node_from_dict();
-
 #endif

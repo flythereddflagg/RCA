@@ -12,19 +12,11 @@ int Player_setup(Node node) {
     node->attr = (Player)malloc(sizeof(struct PlayerData));
     check_mem(node->attr);
     Player player = (Player)node->attr;
-    player->rotation = 0.0;
-    player->init_scale =
-        Dict_get(node->init, "scale", dynval(_float_, 1))._float_;
-    player->scale = 1.0;
-    player->image_path =
-        Dict_get(node->init, "image", dynval(_str_, LSTRING_NULL))._str_;
-    player->mask_path =
-        Dict_get(node->init, "mask", dynval(_str_, LSTRING_NULL))._str_;
-    player->original = NULL; // TODO update this later with image
-    node->sprite = Sprite_new(player->image_path.cstring, (Vector2){0.0, 0.0});
+    player->move = NULL; // TODO implement move
+    player->speed = DEFAULT_SPEED;
+    player->damage_direction = (Vector2){0.0, 1.0};
+    player->state = to_Lstring(DEFAULT_STATE);
     return 0;
-    // TODO decide how to compose objects. With just children? Or do we have a
-    // separate thing where we make the children out of other Nodes?
 error:
     return -1;
 }
