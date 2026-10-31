@@ -576,10 +576,6 @@ int main() {
     return 0;
 }
 #endif
-#ifdef __PLAYER_MAIN__
-#include "player.h"
-int main() { return 0; }
-#endif
 #ifdef __SCENE_MAIN__
 #include "scene.h"
 int main() {

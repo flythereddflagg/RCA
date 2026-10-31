@@ -26,7 +26,7 @@ struct NodeData {
     Node parent;
     Sprite sprite;
     Dict init;
-    void *attr; // extra attributes to be added by child classes
+    void *attr; // extra attributes to be added by "inherited" node types
     NodeGroup children;
     GroupList groups;
     size_t groups_length;
