@@ -201,6 +201,7 @@ error:
 // ####################################################
 
 Node Node_from_dict(Dict init) {
+    Node node = NULL;
     char *yaml = Dict_get(init, "yaml", EMPTYVAL)._str_.cstring;
     if (yaml) {
         Dict new_yaml_dict = YamlParse_process_yaml_file(yaml)._dict_;
