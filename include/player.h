@@ -1,13 +1,12 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 #include "dbg.h"
+#include "lstring.h"
+#include "node.h"
 #include "raylib.h"
 #include <stdlib.h>
-#include "node.h"
-#include "lstring.h"
 #define DEFAULT_SPEED 130
 #define DEFAULT_STATE "idle"
-
 
 typedef struct PlayerData *Player;
 

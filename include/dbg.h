@@ -1,6 +1,6 @@
 /*
 Zed A. Shaw's Awesome Debug Macros
-Annotated by Mark Redd
+Adapted by Mark Redd
 */
 
 #ifndef __dbg_h__
@@ -25,7 +25,7 @@ Annotated by Mark Redd
 #else
 #define debug(M, ...)                                                          \
     fprintf(stderr,                                                            \
-            "[" C_GREEN "DEBUG" C_RESET "] %s:%d: in_function: %s) " M "\n",   \
+            "[" C_GREEN "DEBUG" C_RESET "] (%s:%d: in_function: %s) " M "\n",  \
             __FILE__, __LINE__, __FUNCTION__, ##__VA_ARGS__)
 #endif
 
