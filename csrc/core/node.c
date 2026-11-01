@@ -140,7 +140,7 @@ error:
 }
 int Node_add_child(const Node node, Node child) {
     check(node, "given node is NULL");
-    check(child, "given id is NULL");
+    check(child, "given child is NULL");
     child->parent = node;
     check(!ObjList_push(node->children, child), "add child failed");
     return 0;
@@ -159,6 +159,7 @@ int Node_setup_children(Node node) {
             child_init = ValArray_get_at(children, i)._dict_;
             check(child_init, "child_init is NULL");
             child = Node_from_dict(child_init);
+            check(child, "child Node from dict failed");
             check(!Node_add_child(node, child), "add child failed");
         }
     }
@@ -209,7 +210,7 @@ Node Node_from_dict(Dict init) {
         init = Dict_delete(init);
         init = new_yaml_dict;
     }
-    Node node = Node_new();
+    node = Node_new();
     check(node, "node INIT failed");
     node->init = init;
     node->id =
@@ -243,45 +244,3 @@ error:
     return NULL;
 }
 
-#ifdef __NODE_MAIN__
-
-#include "yaml_parse.h"
-int test_node_from_dict() {
-    DynValue out =
-        YamlParse_process_yaml_file("./assets/scene/test_scene.yaml");
-    Dict scene_init = out._dict_;
-    Dict node_init =
-        ValArray_get_at(Dict_get(scene_init, "nodes", EMPTYVAL)._arr_, 0)
-            ._dict_;
-    Node node = Node_from_dict(node_init);
-    node = Node_delete(node);
-    Dict_delete(scene_init);
-    return 0;
-}
-int main() {
-    NodeGroup group = NodeGroup_new();
-    NodeGroup group2 = NodeGroup_new();
-
-    Node node = Node_new();
-    debug("deleting node");
-    node = node->delete (node);
-    debug("remaking node");
-    node = Node_new();
-    Node_add_child(node, Node_new());
-
-    Node_add(node, group);
-    NodeGroup_add(group2, node);
-    NodeGroup_add(group, (Node)ObjList_at(node->children, 0));
-    debug("group->length: %lu", group->length);
-    debug("group2->length: %lu", group2->length);
-    debug("killing node");
-    node = Node_kill(node);
-    debug("group->length: %lu", group->length);
-    debug("group2->length: %lu", group2->length);
-    group = NodeGroup_delete(group);
-    group2 = NodeGroup_delete(group2);
-    node->delete (node);
-    test_node_from_dict();
-    return 0;
-}
-#endif

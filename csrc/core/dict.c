@@ -132,24 +132,25 @@ error:
     return false;
 }
 
-int Dict_update_with(Dict dict, Dict new_dict) {
+int Dict_update_with(Dict dict, Dict new_vals) {
     /*
-     * overwrites values in 'dict' with those in 'new_dict', passing ownership
+     * overwrites values in 'dict' with those in 'new_vals', passing ownership
      * of those objects from the new on to the current 'dict' by "softly"
-     * deleting them from the 'new_dict'
+     * deleting them from the 'new_vals'
      */
     check(dict, "dict is null");
-    check(new_dict, "new_dict dict is null");
+    check(new_vals, "new_vals dict is null");
     for (int i = 0; i < DICTSIZE; i++) {
-        if (!new_dict->keys[i].cstring) {
+        if (!new_vals->keys[i].cstring) {
             continue;
         }
-        check(!Dict_set(dict, new_dict->keys[i].cstring, new_dict->types[i],
-                        new_dict->vals[i]),
-              "dict update failed on key '%s'", new_dict->keys[i].cstring);
-        new_dict->keys[i] = LSTRING_NULL;
-        new_dict->types[i] = 0;
-        new_dict->vals[i] = EMPTYVAL;
+        check(!Dict_set(dict, new_vals->keys[i].cstring, new_vals->types[i],
+                        new_vals->vals[i]),
+              "dict update failed on key '%s'", new_vals->keys[i].cstring);
+        new_vals->keys[i] = LSTRING_NULL;
+        new_vals->types[i] = NONE;
+        new_vals->vals[i] = EMPTYVAL;
+        new_vals->next[i] = NO_NEXT;
     }
     return 0;
 error:
@@ -271,7 +272,7 @@ Dict Dict_new() {
 
     for (int i = 0; i < DICTSIZE; i++) {
         dict->keys[i] = LSTRING_NULL;
-        dict->types[i] = 0;
+        dict->types[i] = NONE;
         dict->vals[i] = EMPTYVAL;
         dict->next[i] = NO_NEXT;
     }
