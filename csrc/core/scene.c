@@ -61,10 +61,12 @@ int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,
     Node child = NULL;
     for (int i = 0; i < node->children->length; i++) {
         child = (Node)ObjList_at(node->children, i);
-        Scene_place_node(
-            scene, child, Dict_get(child->init, "groups", EMPTYVAL)._arr_,
-            Dict_get(child->init, "start", EMPTYVAL)._arr_,
-            Dict_get(child->init, "active", dynval(_bool_, active))._bool_);
+        check(
+            !Scene_place_node(
+                scene, child, Dict_get(child->init, "groups", EMPTYVAL)._arr_,
+                Dict_get(child->init, "start", EMPTYVAL)._arr_,
+                Dict_get(child->init, "active", dynval(_bool_, active))._bool_),
+            "placing child failed");
     }
 
     if (groups) {
@@ -171,6 +173,9 @@ int Scene_deconstruct(Scene scene) {
     size_t length = scene->all_nodes->length;
     Node current = NULL;
     for (size_t i = 0; i < length; i++) {
+        if (!scene->all_nodes->length) {
+            break; // needed because sometimes delete removes more than 1 node
+        }
         current =
             NodeGroup_remove(scene->all_nodes, scene->all_nodes->head->obj);
         check(current, "current is NULL");

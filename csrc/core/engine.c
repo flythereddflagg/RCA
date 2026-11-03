@@ -45,18 +45,32 @@ int Game_draw_frame(Game game) {
     // TODO get all nodes as draw layers to draw
     check(game->scene, "scene is NULL");
     check(game->scene->all_nodes, "all nodes does not exist");
-    NodeGroup nodes = game->scene->all_nodes;
-    Lnode current = nodes->head;
+    NodeGroup nodes = NULL;
+    Lnode current = NULL;
     Node node = NULL;
+    Lstring layer_name = LSTRING_NULL;
     BeginTextureMode(v_screen);
     ClearBackground(BLACK);
-    for (int i = 0; i < nodes->length; i++) {
-        node = (Node)current->obj;
-        DrawTexture(node->sprite->image, node->sprite->position.x,
-                    node->sprite->position.y, WHITE);
-        current = current->next;
+    for (int j = 0; j < game->scene->draw_layers->length; j++) {
+        layer_name = ValArray_get_at(game->scene->draw_layers, j)._str_;
+        check(layer_name.cstring, "layer name is NULL at %d", j);
+        nodes = (NodeGroup)Dict_get(game->scene->groups, layer_name.cstring,
+                                    EMPTYVAL)
+                    ._obj_;
+        check(nodes, "nodes is NULL at %d", j);
+        current = nodes->head;
+        for (int i = 0; i < nodes->length; i++) {
+            node = (Node)current->obj;
+            if (!node->sprite) {
+                log_err("node with id %s has sprite that is is NULL",
+                        node->id.cstring);
+                continue;
+            }
+            DrawTexture(node->sprite->image, node->sprite->position.x,
+                        node->sprite->position.y, WHITE);
+            current = current->next;
+        }
     }
-
     EndTextureMode();
 
     // then scale virtual screen to fit and then draw to the actual screen
