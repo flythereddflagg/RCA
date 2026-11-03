@@ -86,19 +86,6 @@ Node Node_delete(Node node) {
     if (node->groups) {
         node->groups = ObjList_delete(node->groups);
     }
-    // if (node->init) // do NOT delete because node does not own it
-    //     node->init = Dict_delete(node->init);
-
-    // all of the following should be released by a subclass
-
-    // if (node->sprite)
-    //     Sprite_delete(node->sprite);
-    // if (node->id.cstring) {
-    //     node->id = Lstring_delete(node->id);
-    // }
-    // if (node->type.cstring) {
-    //     node->type = Lstring_delete(node->type);
-    // }
 
     free(node);
 error:

@@ -150,6 +150,7 @@ int Scene_setup(Scene scene) {
     Node node = NULL;
     for (int i = 0; i < nodes->length; i++) {
         node_init = ValArray_get_at(nodes, i)._dict_;
+        check(node_init, "getting node_init from ValArray failed");
         node = Node_from_dict(node_init);
         check(node, "node from dict failed");
         check(!Scene_place_node(
