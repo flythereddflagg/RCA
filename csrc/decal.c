@@ -1,5 +1,7 @@
 
 #include "decal.h"
+// TODO make decal and sprite the same thing? I.e. NOT a node? just something we
+// can add to a node?
 int Decal_setup(Node node) {
     check(node, "Node is NULL");
     check(Lstring_equal(node->type, to_Lstring("Decal")),

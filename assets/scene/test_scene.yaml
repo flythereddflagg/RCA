@@ -1,4 +1,4 @@
-layers: []
+layers: [foreground]
 nodes:
 - groups:
   - solid
@@ -10,7 +10,7 @@ nodes:
   type: Decal
 - yaml: ./assets/actor/player.yaml
   # start: [704,230] # red castle valley
-  start: [200,200] # boss room
+  start: [0,0] # boss room
   groups:
     - foreground
     - player

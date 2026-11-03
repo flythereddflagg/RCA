@@ -16,6 +16,11 @@ int Player_setup(Node node) {
     player->speed = DEFAULT_SPEED;
     player->damage_direction = (Vector2){0.0, 1.0};
     player->state = to_Lstring(DEFAULT_STATE);
+    Lstring img_path =
+        Dict_get(node->init, "image", dynval(_str_, LSTRING_NULL))._str_;
+    node->sprite = Sprite_new(img_path.cstring, (Vector2){0.0, 0.0});
+    // TODO add mask
+    debug("groups %s", Dict_get(node->init, "groups", EMPTYVAL)._str_.cstring);
     return 0;
 error:
     return -1;
