@@ -136,7 +136,7 @@ int Dict_update_with(Dict dict, Dict new_vals) {
     /*
      * overwrites values in 'dict' with those in 'new_vals', passing ownership
      * of those objects from the new on to the current 'dict' by "softly"
-     * deleting them from the 'new_vals'
+     * deleting them from the 'new_vals' and clearing out the keys.
      */
     check(dict, "dict is null");
     check(new_vals, "new_vals dict is null");
@@ -147,6 +147,7 @@ int Dict_update_with(Dict dict, Dict new_vals) {
         check(!Dict_set(dict, new_vals->keys[i].cstring, new_vals->types[i],
                         new_vals->vals[i]),
               "dict update failed on key '%s'", new_vals->keys[i].cstring);
+        Lstring_delete(new_vals->keys[i]);
         new_vals->keys[i] = LSTRING_NULL;
         new_vals->types[i] = NONE;
         new_vals->vals[i] = EMPTYVAL;
@@ -159,7 +160,7 @@ error:
 
 void Dict_print(Dict dict) {
     check(dict, "NULL dict supplied");
-    printf("{");
+    printf("{  ");
 
     for (int i = 0; i < DICTSIZE; i++) {
         if (!dict->keys[i].cstring || !dict->keys[i].cstring[0])

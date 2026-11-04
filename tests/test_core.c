@@ -44,6 +44,8 @@ int main() { return 0; }
 int test_dict() {
     log_info("compile successful");
     Dict dict = Dict_new();
+    Dict dict2 = Dict_new();
+    
     Dict_set(dict, "pickle", INT, dynval(_int_, 25));
     Dict_set(dict, "cheese", STR, dynval(_str_, Lstring_new("23")));
     Dict_set(dict, "crackers", STR,
@@ -64,7 +66,25 @@ int test_dict() {
     Dict_delkey(dict, "cheese");
     Dict_delkey(dict, "crackers");
     Dict_print(dict);
+    // dict 2
+    Dict_set(dict2, "noob", INT, dynval(_int_, 25));
+    Dict_set(dict2, "cheese", STR, dynval(_str_, Lstring_new("24")));
+    Dict_set(dict2, "crackers", STR,
+             dynval(_str_, Lstring_new("holy guacamolesdkajf")));
+
+    Dict_print(dict);
+    printf("\n\n");
+    Dict_print(dict2);
+    Dict_update_with(dict, dict2);
+    log_info("new dict");
+    printf("\n\n");
+    Dict_print(dict);
+    printf("\n\n");
+    Dict_print(dict2);
+    printf("\n\n");
     dict = Dict_delete(dict);
+    
+    dict2 = Dict_delete(dict2);
     return 0;
 }
 
