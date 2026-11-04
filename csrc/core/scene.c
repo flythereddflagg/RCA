@@ -48,7 +48,7 @@ Scene Scene_delete(Scene scene) {
 }
 
 int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,
-                     bool active) {
+                     const bool active) {
     check(scene, "scene is NULL");
     check(node, "node is NULL");
     node->scene = scene;
@@ -68,7 +68,34 @@ int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,
                 Dict_get(child->init, "active", dynval(_bool_, active))._bool_),
             "placing child failed");
     }
+    Node sprite_instance = Node_child_by_id(node, "sprite");
+    // groups ONLY get applied to the sprite UNLESS there is no sprite
+    if (!sprite_instance) {
+        if (groups) {
+            NodeGroup nd_grp = NULL;
+            Lstring cur_grp = LSTRING_NULL;
+            for (int i = 0; i < groups->length; i++) {
+                // groups is a ValArray of strings
+                if (!Dict_key_in(scene->groups,
+                                 ValArray_get_at(groups, i)._str_.cstring)) {
+                    cur_grp = ValArray_get_at(groups, i)._str_;
+                    Dict_set(scene->groups, cur_grp.cstring, OBJ,
+                             dynval(_obj_, NodeGroup_new()));
+                }
+                nd_grp = (NodeGroup)Dict_get(
+                             scene->groups,
+                             ValArray_get_at(groups, i)._str_.cstring, EMPTYVAL)
+                             ._obj_;
+                NodeGroup_add(nd_grp, node);
+            }
+        }
+        return 0;
+    }
 
+    sprite_instance->scene = scene;
+    if (active) {
+        NodeGroup_add(scene->active_nodes, sprite_instance);
+    }
     if (groups) {
         NodeGroup nd_grp = NULL;
         Lstring cur_grp = LSTRING_NULL;
@@ -84,14 +111,14 @@ int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,
                          scene->groups,
                          ValArray_get_at(groups, i)._str_.cstring, EMPTYVAL)
                          ._obj_;
-            NodeGroup_add(nd_grp, node);
+            NodeGroup_add(nd_grp, sprite_instance);
         }
     }
     if (start) {
         check(node->sprite, "No sprite to set start vector");
         node->sprite->position = startvec;
     }
-
+    // should we check that sprite instance is in multiple draw layers?
     return 0;
 error:
     return -1;
