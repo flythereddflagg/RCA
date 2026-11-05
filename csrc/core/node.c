@@ -171,8 +171,7 @@ Node Node_child_by_id(Node node, char *id) {
         }
         current = current->next;
     }
-    sentinel("Child with id '" LSTRING_FMT "'not found!",
-             Lstring_format(child->id));
+    debug("Child with id '%s' not found!", id);
 error:
     id_string = Lstring_delete(id_string);
     return NULL;
@@ -193,8 +192,11 @@ Node Node_from_dict(Dict init) {
     char *yaml = Dict_get(init, "yaml", EMPTYVAL)._str_.cstring;
     if (yaml) {
         Dict new_yaml_dict = YamlParse_process_yaml_file(yaml)._dict_;
-        check(!Dict_update_with(new_yaml_dict, init), "yaml update failed");
-        init = new_yaml_dict;
+        // // sync the two dicts
+        check(!Dict_sync_with(new_yaml_dict, init), "yaml update failed");
+        // then clear and delete the new dict to transfer ownership of the items
+        check(!Dict_clear(new_yaml_dict), "yaml clear failed");
+        new_yaml_dict = Dict_delete(new_yaml_dict);
     }
     node = Node_new();
     check(node, "node INIT failed");

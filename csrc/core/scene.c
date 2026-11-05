@@ -93,6 +93,7 @@ int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,
     }
 
     sprite_instance->scene = scene;
+
     if (active) {
         NodeGroup_add(scene->active_nodes, sprite_instance);
     }

@@ -63,6 +63,7 @@ int Dict_set(Dict dict, char *cstring, DynType type, DynValue val) {
     check(index >= 0 && index < DICTSIZE, "Index error '%d'", index);
 
     dict->keys[index] = Lstring_delete(dict->keys[index]);
+    // if a substruct exists, delete it
     if (dict->types[index] == DICT)
         dict->vals[index]._dict_ = Dict_delete(dict->vals[index]._dict_);
     else if (dict->types[index] == ARR)
@@ -132,11 +133,10 @@ error:
     return false;
 }
 
-int Dict_update_with(Dict dict, Dict new_vals) {
+int Dict_sync_with(Dict dict, Dict new_vals) {
     /*
-     * overwrites values in 'dict' with those in 'new_vals', passing ownership
-     * of those objects from the new on to the current 'dict' by "softly"
-     * deleting them from the 'new_vals' and clearing out the keys.
+     * overwrites values in 'dict' with those in 'new_vals', it then copies all
+     * data from dict into new_vals so that both dicts are "synced"
      */
     check(dict, "dict is null");
     check(new_vals, "new_vals dict is null");
@@ -148,10 +148,28 @@ int Dict_update_with(Dict dict, Dict new_vals) {
                         new_vals->vals[i]),
               "dict update failed on key '%s'", new_vals->keys[i].cstring);
         Lstring_delete(new_vals->keys[i]);
-        new_vals->keys[i] = LSTRING_NULL;
-        new_vals->types[i] = NONE;
-        new_vals->vals[i] = EMPTYVAL;
-        new_vals->next[i] = NO_NEXT;
+    }
+    for (int i = 0; i < DICTSIZE; i++) {
+        dict->keys[i] = new_vals->keys[i];
+        dict->types[i] = new_vals->types[i];
+        dict->vals[i] = new_vals->vals[i];
+        dict->next[i] = new_vals->next[i];
+    }
+    return 0;
+error:
+    return -1;
+}
+
+int Dict_clear(Dict dict) {
+    /*
+     * clears dict of values so ownership is relinquished. USE WITH CAUTION
+     */
+    check(dict, "dict is null");
+    for (int i = 0; i < DICTSIZE; i++) {
+        dict->keys[i] = LSTRING_NULL;
+        dict->types[i] = NONE;
+        dict->vals[i] = EMPTYVAL;
+        dict->next[i] = NO_NEXT;
     }
     return 0;
 error:

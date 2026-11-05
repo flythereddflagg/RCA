@@ -20,14 +20,17 @@ error:
 }
 ValArray ValArray_delete(ValArray arr) {
     if (arr) {
-        for (int i = 0; i < arr->length; i++) {
-            if (arr->types[i] == DICT)
-                Dict_delete(arr->vals[i]._dict_);
-            else if (arr->types[i] == ARR)
-                ValArray_delete(arr->vals[i]._arr_);
-            else if (arr->types[i] == STR)
-                Lstring_delete(arr->vals[i]._str_);
+        if (arr->types && arr->vals) {
+            for (int i = 0; i < arr->length; i++) {
+                if (arr->types[i] == DICT)
+                    Dict_delete(arr->vals[i]._dict_);
+                else if (arr->types[i] == ARR)
+                    ValArray_delete(arr->vals[i]._arr_);
+                else if (arr->types[i] == STR)
+                    Lstring_delete(arr->vals[i]._str_);
+            }
         }
+
         if (arr->vals) {
             free(arr->vals);
             arr->vals = NULL;

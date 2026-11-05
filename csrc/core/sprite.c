@@ -15,6 +15,7 @@ error:
 Sprite Sprite_new(char *image_path, Vector2 position) {
     Sprite sprite = (Sprite)malloc(sizeof(struct SpriteData));
     check_mem(sprite);
+    debug("image path: %s", image_path);
     sprite->image = LoadTexture(image_path);
     sprite->mask = NULL;
     sprite->position = position;

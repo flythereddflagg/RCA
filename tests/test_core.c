@@ -75,7 +75,7 @@ int test_dict() {
     Dict_print(dict);
     printf("\n\n");
     Dict_print(dict2);
-    Dict_update_with(dict, dict2);
+    Dict_sync_with(dict, dict2);
     log_info("new dict");
     printf("\n\n");
     Dict_print(dict);
