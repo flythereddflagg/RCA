@@ -150,10 +150,10 @@ int Dict_sync_with(Dict dict, Dict new_vals) {
         Lstring_delete(new_vals->keys[i]);
     }
     for (int i = 0; i < DICTSIZE; i++) {
-        dict->keys[i] = new_vals->keys[i];
-        dict->types[i] = new_vals->types[i];
-        dict->vals[i] = new_vals->vals[i];
-        dict->next[i] = new_vals->next[i];
+        new_vals->keys[i] = dict->keys[i];
+        new_vals->types[i] = dict->types[i];
+        new_vals->vals[i] = dict->vals[i];
+        new_vals->next[i] = dict->next[i];
     }
     return 0;
 error:

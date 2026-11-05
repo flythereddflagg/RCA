@@ -93,6 +93,6 @@ children:
     type: Decal
     image: ./assets/actor/larry/larry_base.png
     mask: ./assets/actor/larry/larry_base_mask.png
-    groups:
-      - foreground
+    # groups:
+    #   - foreground
 
