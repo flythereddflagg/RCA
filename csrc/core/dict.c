@@ -178,7 +178,7 @@ error:
 
 void Dict_print(Dict dict) {
     check(dict, "NULL dict supplied");
-    printf("{  ");
+    printf("{");
 
     for (int i = 0; i < DICTSIZE; i++) {
         if (!dict->keys[i].cstring || !dict->keys[i].cstring[0])

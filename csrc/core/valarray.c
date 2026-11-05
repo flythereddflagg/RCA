@@ -149,7 +149,7 @@ error:
 }
 void ValArray_print(ValArray arr) {
     check(arr, "NULL arr supplied");
-    printf("[  ");
+    printf("[");
     for (int i = 0; i < arr->length; i++) {
         switch (arr->types[i]) {
         case NONE:
@@ -187,8 +187,6 @@ void ValArray_print(ValArray arr) {
 error:
     return;
 }
-
-Dict Dict_copy(Dict dict);
 
 ValArray ValArray_copy(ValArray arr) {
     ValArray copy = ValArray_new();

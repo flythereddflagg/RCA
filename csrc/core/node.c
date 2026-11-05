@@ -197,6 +197,7 @@ Node Node_from_dict(Dict init) {
         // then clear and delete the new dict to transfer ownership of the items
         check(!Dict_clear(new_yaml_dict), "yaml clear failed");
         new_yaml_dict = Dict_delete(new_yaml_dict);
+        Dict_print(init);
     }
     node = Node_new();
     check(node, "node INIT failed");
