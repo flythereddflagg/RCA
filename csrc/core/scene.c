@@ -116,8 +116,8 @@ int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,
         }
     }
     if (start) {
-        check(node->sprite, "No sprite to set start vector");
-        node->sprite->position = startvec;
+        check(sprite_instance->sprite, "No sprite to set start vector");
+        sprite_instance->sprite->position = startvec;
     }
     // should we check that sprite instance is in multiple draw layers?
     return 0;

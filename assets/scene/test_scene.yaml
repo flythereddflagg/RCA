@@ -10,7 +10,7 @@ nodes:
   type: Decal
 - yaml: ./assets/actor/player.yaml
   # start: [704,230] # red castle valley
-  start: [0,0] # boss room
+  start: [100,100] # boss room
   groups:
     - foreground
     - player

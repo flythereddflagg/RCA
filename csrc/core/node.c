@@ -171,7 +171,7 @@ Node Node_child_by_id(Node node, char *id) {
         }
         current = current->next;
     }
-    debug("Child with id '%s' not found!", id);
+    debug("Child with id '%s' not found in node '%s'!", id, node->id.cstring);
 error:
     id_string = Lstring_delete(id_string);
     return NULL;
@@ -198,6 +198,7 @@ Node Node_from_dict(Dict init) {
         check(!Dict_clear(new_yaml_dict), "yaml clear failed");
         new_yaml_dict = Dict_delete(new_yaml_dict);
         Dict_print(init);
+        printf("\n");
     }
     node = Node_new();
     check(node, "node INIT failed");
