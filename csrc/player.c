@@ -30,4 +30,14 @@ Node Player_delete(Node node) {
 error:
     return NULL;
 }
-int Player_update(Node node) { return 0; }
+int Player_update(Node node) {
+    check(!Player_apply_input(node), "Apply input failed");
+
+    return 0;
+error:
+    return -1;
+}
+int Player_apply_input(Node node) {
+    // CONTINUE HERE
+    return 0;
+}
