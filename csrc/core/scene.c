@@ -55,8 +55,8 @@ int Scene_place_node(Scene scene, Node node, ValArray groups, ValArray start,
     NodeGroup_add(scene->all_nodes, node);
     if (active)
         NodeGroup_add(scene->active_nodes, node);
-    Vector2 startvec = start ? (Vector2){ValArray_get_at(start, 0)._float_,
-                                         ValArray_get_at(start, 1)._float_}
+    Vector2 startvec = start ? (Vector2){ValArray_get_at(start, 0)._int_,
+                                         ValArray_get_at(start, 1)._int_}
                              : (Vector2){0.0, 0.0};
     Node child = NULL;
     for (int i = 0; i < node->children->length; i++) {
