@@ -38,6 +38,7 @@ error:
     return -1;
 }
 int Player_apply_input(Node node) {
-    // CONTINUE HERE
+    Input game_input = node->scene->game->input;
+    // continue here
     return 0;
 }
