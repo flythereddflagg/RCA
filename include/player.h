@@ -19,5 +19,6 @@ struct PlayerData {
 int Player_setup(Node node);
 Node Player_delete(Node node);
 int Player_update(Node node);
+int Player_apply_input(Node node);
 
 #endif

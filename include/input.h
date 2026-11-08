@@ -9,11 +9,6 @@
 #define MAX_INPUTS 6
 #define MAX_CONTROLLERS 4
 
-typedef struct {
-    // char name[ACTION_NAME_LEN];
-    int id;
-    double val;
-} Action;
 typedef enum {
     BUTTON_UP = KEY_UP,
     BUTTON_DOWN = KEY_DOWN,
@@ -26,6 +21,11 @@ typedef enum {
     START = KEY_ENTER,
     SELECT = KEY_P
 } Action_name;
+typedef struct {
+    // char name[ACTION_NAME_LEN];
+    Action_name id;
+    double val;
+} Action;
 typedef struct InputData *Input;
 
 struct InputData {
@@ -47,6 +47,5 @@ int Input_update(Input input);
 Input Input_delete(Input input);
 void Input_clear(Input input);
 Input Input_new(void *parent);
-int raylib_main(void);
 
 #endif

@@ -38,7 +38,39 @@ error:
     return -1;
 }
 int Player_apply_input(Node node) {
+    check(node, "node is NULL");
     Input game_input = node->scene->game->input;
+    check(game_input, "game input is NULL");
+    Action action = game_input->actions[0];
+    Sprite sprite = Node_child_by_id(node, "sprite")->sprite;
+    double movment_dist =
+        (1.0f * ((Player)(node->attr))->speed) /
+                Dict_get(node->scene->game->settings, "FPS", EMPTYVAL)._int_;
+    for (int i = 0; i < MAX_INPUTS; i++) {
+        action = game_input->actions[i];
+        switch (action.id) {
+        case BUTTON_UP:
+            sprite->position.y -= movment_dist;
+            break;
+
+        case BUTTON_DOWN:
+            sprite->position.y += movment_dist;
+            break;
+
+        case BUTTON_LEFT:
+            sprite->position.x -= movment_dist;
+            break;
+
+        case BUTTON_RIGHT:
+            sprite->position.x += movment_dist;
+            break;
+
+        default:
+            break;
+        }
+    }
     // continue here
     return 0;
+error:
+    return -1;
 }

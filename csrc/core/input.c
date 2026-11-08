@@ -24,10 +24,15 @@ int Input_update(Input input) {
     // int player_number = 0;
     int key1 = 0;
     // TODO need to figure out controller input. rn only keyboard
+    printf("{");
     for (int i = 0; i < MAX_INPUTS; i++) {
-        key1 = GetKeyPressed();
+        key1 = IsKeyDown(input->actions[i].id) ? input->actions[i].id : GetKeyPressed();
+        
         input->actions[i] = (Action){.id = key1, .val = key1 ? 1.0f : 0.0f};
+        printf("%d ", input->actions[i].id);
     }
+    printf("\b}\n");
+
     // update held
     for (int i = 0; i < MAX_INPUTS; i++)
         if (Input_in_last_actions(input, input->actions[i]))
