@@ -6,13 +6,14 @@
 #include "raylib.h"
 #include "raymath.h"
 #include <stdlib.h>
+#include "move.h"
 #define DEFAULT_SPEED 130
 #define DEFAULT_STATE "idle"
 
 typedef struct PlayerData *Player;
 
 struct PlayerData {
-    void *move;
+    Move move;
     double speed;
     Vector2 damage_direction;
     Lstring state;

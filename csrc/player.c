@@ -12,7 +12,7 @@ int Player_setup(Node node) {
     node->attr = (Player)malloc(sizeof(struct PlayerData));
     check_mem(node->attr);
     Player player = (Player)node->attr;
-    player->move = NULL; // TODO implement move
+    player->move = Move_new(Node_child_by_id(node, "sprite")->sprite, NULL);
     player->speed = DEFAULT_SPEED;
     player->damage_direction = (Vector2){0.0, 1.0};
     player->state = to_Lstring(DEFAULT_STATE);
@@ -22,6 +22,10 @@ error:
 }
 Node Player_delete(Node node) {
     check(node, "node is NULL");
+    Player player = (Player) node->attr;
+    if(player->move){
+        player->move = Move_delete(player->move);
+    }
     if (node->attr) {
         free(node->attr);
         node->attr = NULL;
@@ -72,6 +76,7 @@ int Player_apply_input(Node node) {
     sprite->position = Vector2Add(
         sprite->position,
         Vector2Scale(Vector2Normalize(movement_direction), movment_dist));
+        // continue here to implement movement
     return 0;
 error:
     return -1;
