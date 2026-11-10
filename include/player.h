@@ -4,6 +4,7 @@
 #include "lstring.h"
 #include "node.h"
 #include "raylib.h"
+#include "raymath.h"
 #include <stdlib.h>
 #define DEFAULT_SPEED 130
 #define DEFAULT_STATE "idle"

@@ -45,31 +45,33 @@ int Player_apply_input(Node node) {
     Sprite sprite = Node_child_by_id(node, "sprite")->sprite;
     double movment_dist =
         (1.0f * ((Player)(node->attr))->speed) /
-                Dict_get(node->scene->game->settings, "FPS", EMPTYVAL)._int_;
+        Dict_get(node->scene->game->settings, "FPS", EMPTYVAL)._int_;
+    Vector2 movement_direction = Vector2Zero();
     for (int i = 0; i < MAX_INPUTS; i++) {
         action = game_input->actions[i];
         switch (action.id) {
         case BUTTON_UP:
-            sprite->position.y -= movment_dist;
+            movement_direction.y -= action.val / 2.0f; // for isometric movement
             break;
 
         case BUTTON_DOWN:
-            sprite->position.y += movment_dist;
+            movement_direction.y += action.val / 2.0f;
             break;
 
         case BUTTON_LEFT:
-            sprite->position.x -= movment_dist;
+            movement_direction.x -= action.val;
             break;
 
         case BUTTON_RIGHT:
-            sprite->position.x += movment_dist;
-            break;
+            movement_direction.x += action.val;
 
         default:
             break;
         }
     }
-    // continue here
+    sprite->position = Vector2Add(
+        sprite->position,
+        Vector2Scale(Vector2Normalize(movement_direction), movment_dist));
     return 0;
 error:
     return -1;
