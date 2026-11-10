@@ -55,7 +55,7 @@ int Player_apply_input(Node node) {
             break;
 
         case BUTTON_DOWN:
-            movement_direction.y += action.val / 2.0f;
+            movement_direction.y += action.val / 2.0f; // for isometric movement
             break;
 
         case BUTTON_LEFT:
