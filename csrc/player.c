@@ -64,8 +64,8 @@ int Player_apply_input(Node node) {
             break;
         }
     }
-    check(!Move_move(player->move, movement_direction, 0.0,
-                     1.0f * player->speed, true, true),
+    check(!Move_move(player->move, movement_direction, 0.0, player->speed, true,
+                     true),
           "Player Move failed");
     return 0;
 error:
