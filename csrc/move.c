@@ -36,7 +36,8 @@ int Move_move(Move move, Vector2 direction, double distance, double speed,
             move->sprite->position, Vector2Scale(direction, distance));
     }
     if (reject_foreground) {
-        Move_foreground_rejection(move, direction, distance);
+        check(!Move_foreground_rejection(move, direction, distance),
+              "Move_foreground_rejection failed");
     }
     return 0;
 error:
@@ -44,5 +45,44 @@ error:
 }
 
 int Move_foreground_rejection(Move move, Vector2 direction, double distance) {
+    check((move && move->sprite && move->sprite->parent &&
+           move->sprite->parent->scene->groups),
+          "NULL encountered when checking foreground rejection");
+    Dict scene_groups = move->sprite->parent->scene->groups;
+    if (!Dict_key_in(scene_groups, "solid") || (!direction.x && !direction.y) ||
+        (!distance)) {
+        return 0;
+    }
+    Sprite hitmask_sprite =
+        move->hitmask_sprite ? move->hitmask_sprite : move->sprite;
+    NodeGroup solids =
+        (NodeGroup)Dict_get(scene_groups, "solid", EMPTYVAL)._obj_;
+    while (Move_collide_any(move, hitmask_sprite, solids)) {
+        move->sprite->position =
+            Vector2Add(move->sprite->position, Vector2Scale(direction, -1.0f));
+        if (move->hitmask_sprite) {
+            move->hitmask_sprite->position = Vector2Add(
+                move->sprite->position, Vector2Scale(direction, -1.0f));
+        }
+    }
     return 0;
+error:
+    return -1;
+}
+
+bool Move_collide_any(Move move, Sprite sprite, NodeGroup group) {
+    Lnode current = group->head;
+    Node node = NULL;
+    for (size_t i = 0; i < group->length; i++) {
+        check(current, "current Lnode is NULL at postition %lu", i);
+        node = (Node)current->obj;
+        if (BitMask_collide(
+                node->sprite->mask, sprite->mask,
+                Vector2Subtract(node->sprite->position, sprite->position))) {
+            return true;
+        }
+        current = current->next;
+    }
+error:
+    return false;
 }

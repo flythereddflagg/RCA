@@ -5,9 +5,7 @@ nodes:
   - background
   id: boss room
   image: ./assets/scene/world_map/room_map.png
-  # image: assets/scene/mansion_yard/mansion_model.png
-  # image: ./assets/scene/boss_room/boss_room.png
-  mask: ./assets/scene/boss_room/boss_room_mask.png
+  mask: ./assets/scene/world_map/room_map_mask.png
   type: Decal
 - yaml: ./assets/actor/player.yaml
   # start: [704,230] # red castle valley

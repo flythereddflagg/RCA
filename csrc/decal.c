@@ -22,7 +22,13 @@ int Decal_setup(Node node) {
     decal->mask_path =
         Dict_get(node->init, "mask", dynval(_str_, LSTRING_NULL))._str_;
     decal->original = NULL; // TODO update this later with image
-    node->sprite = Sprite_new(decal->image_path.cstring, (Vector2){0.0, 0.0});
+    node->sprite = Sprite_new(decal->image_path.cstring, Vector2Zero(), node);
+    if (decal->mask_path.cstring) {
+        Image img = LoadImage(decal->mask_path.cstring);
+        Sprite_set_mask(node->sprite,
+                        BitMask_from_image(img, DEFAULT_THRESHOLD));
+        UnloadImage(img);
+    }
     return 0;
 error:
     return -1;

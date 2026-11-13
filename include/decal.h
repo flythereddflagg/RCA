@@ -1,9 +1,12 @@
 #ifndef DECAL_H
 #define DECAL_H
+
+#include "bitmask.h"
 #include "dict.h"
 #include "lstring.h"
 #include "node.h"
 #include "raylib.h"
+#include "raymath.h"
 #include "sprite.h"
 #include <stdlib.h>
 

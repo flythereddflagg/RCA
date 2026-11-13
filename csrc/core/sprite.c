@@ -12,10 +12,11 @@ error:
     return NULL;
 }
 
-Sprite Sprite_new(char *image_path, Vector2 position) {
+Sprite Sprite_new(char *image_path, Vector2 position, Node parent) {
     Sprite sprite = (Sprite)malloc(sizeof(struct SpriteData));
     check_mem(sprite);
     debug("image path: %s", image_path);
+    sprite->parent = parent;
     sprite->image = LoadTexture(image_path);
     sprite->mask = NULL;
     sprite->position = position;
@@ -38,7 +39,7 @@ error:
 }
 
 BitMask Sprite_set_mask(Sprite sprite, BitMask mask) {
-    /*returns the old mask so it can be deleted, null otherwise*/
+    /*returns the old mask so it can be deleted, null on error*/
     check(sprite, "sprite is NULL");
     check(mask, "mask is NULL");
     BitMask to_return = sprite->mask;

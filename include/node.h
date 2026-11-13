@@ -4,7 +4,6 @@
 #include "dict.h"
 #include "lstring.h"
 #include "objlist.h"
-#include "sprite.h"
 #include "valarray.h"
 #include <stdlib.h>
 #include <string.h>
@@ -12,6 +11,7 @@ typedef struct NodeData *Node;
 typedef ObjList NodeGroup;
 typedef ObjList GroupList;
 #include "scene.h"
+#include "sprite.h"
 #define MAX_KEY_LEN 100
 #define INHERIT_KEY "_inherit_"
 #define MISSING_TYPE "<MISSING TYPE>"
