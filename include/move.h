@@ -3,6 +3,7 @@
 #include "raylib.h"
 #include "raymath.h"
 #include "sprite.h"
+#include <math.h>
 #include <stdbool.h>
 #include <stdlib.h>
 typedef struct MoveData *Move;

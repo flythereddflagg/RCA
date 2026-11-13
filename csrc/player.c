@@ -22,8 +22,8 @@ error:
 }
 Node Player_delete(Node node) {
     check(node, "node is NULL");
-    Player player = (Player) node->attr;
-    if(player->move){
+    Player player = (Player)node->attr;
+    if (player->move) {
         player->move = Move_delete(player->move);
     }
     if (node->attr) {
@@ -41,43 +41,34 @@ int Player_update(Node node) {
 error:
     return -1;
 }
+
+#define direction_button_case(_button_, _dir_, _oper_)                         \
+    case _button_:                                                             \
+        movement_direction._dir_ = movement_direction._dir_ _oper_ action.val; \
+        break
 int Player_apply_input(Node node) {
+    Player player = (Player)(node->attr);
     check(node, "node is NULL");
     Input game_input = node->scene->game->input;
     check(game_input, "game input is NULL");
     Action action = game_input->actions[0];
-    Sprite sprite = Node_child_by_id(node, "sprite")->sprite;
-    double movment_dist =
-        (1.0f * ((Player)(node->attr))->speed) /
-        Dict_get(node->scene->game->settings, "FPS", EMPTYVAL)._int_;
     Vector2 movement_direction = Vector2Zero();
     for (int i = 0; i < MAX_INPUTS; i++) {
         action = game_input->actions[i];
         switch (action.id) {
-        case BUTTON_UP:
-            movement_direction.y -= action.val / 2.0f; // for isometric movement
-            break;
-
-        case BUTTON_DOWN:
-            movement_direction.y += action.val / 2.0f; // for isometric movement
-            break;
-
-        case BUTTON_LEFT:
-            movement_direction.x -= action.val;
-            break;
-
-        case BUTTON_RIGHT:
-            movement_direction.x += action.val;
-
+            direction_button_case(BUTTON_UP, y, -);
+            direction_button_case(BUTTON_DOWN, y, +);
+            direction_button_case(BUTTON_LEFT, x, -);
+            direction_button_case(BUTTON_RIGHT, x, +);
         default:
             break;
         }
     }
-    sprite->position = Vector2Add(
-        sprite->position,
-        Vector2Scale(Vector2Normalize(movement_direction), movment_dist));
-        // continue here to implement movement
+    check(!Move_move(player->move, movement_direction, 0.0,
+                     1.0f * player->speed, true, true),
+          "Player Move failed");
     return 0;
 error:
     return -1;
 }
+#undef direction_button_case

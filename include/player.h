@@ -2,11 +2,11 @@
 #define __PLAYER_H__
 #include "dbg.h"
 #include "lstring.h"
+#include "move.h"
 #include "node.h"
 #include "raylib.h"
 #include "raymath.h"
 #include <stdlib.h>
-#include "move.h"
 #define DEFAULT_SPEED 130
 #define DEFAULT_STATE "idle"
 
