@@ -75,16 +75,6 @@ int Move_foreground_rejection(Move move, Vector2 direction, double distance) {
         }
         step /= 2.0f;
     }
-
-    // while (Move_collide_any(move, hitmask_sprite, solids)) {
-    //     move->sprite->position =
-    //         Vector2Add(move->sprite->position, Vector2Scale(direction,
-    //         -1.0f));
-    //     if (move->hitmask_sprite) {
-    //         move->hitmask_sprite->position = Vector2Add(
-    //             move->sprite->position, Vector2Scale(direction, -1.0f));
-    //     }
-    // }
     return 0;
 error:
     return -1;
