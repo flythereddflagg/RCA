@@ -57,14 +57,34 @@ int Move_foreground_rejection(Move move, Vector2 direction, double distance) {
         move->hitmask_sprite ? move->hitmask_sprite : move->sprite;
     NodeGroup solids =
         (NodeGroup)Dict_get(scene_groups, "solid", EMPTYVAL)._obj_;
-    while (Move_collide_any(move, hitmask_sprite, solids)) {
-        move->sprite->position =
-            Vector2Add(move->sprite->position, Vector2Scale(direction, -1.0f));
+
+    if (!Move_collide_any(move, hitmask_sprite, solids)) {
+        return 0;
+    }
+    double step = distance / 2.0f;
+    double tol = 0.005f;
+    double mul = 1.0f;
+
+    while (step / distance > tol) {
+        mul = Move_collide_any(move, hitmask_sprite, solids) ? -1.0f : 1.0f;
+        move->sprite->position = Vector2Add(
+            move->sprite->position, Vector2Scale(direction, mul * step));
         if (move->hitmask_sprite) {
             move->hitmask_sprite->position = Vector2Add(
-                move->sprite->position, Vector2Scale(direction, -1.0f));
+                move->sprite->position, Vector2Scale(direction, mul * step));
         }
+        step /= 2.0f;
     }
+
+    // while (Move_collide_any(move, hitmask_sprite, solids)) {
+    //     move->sprite->position =
+    //         Vector2Add(move->sprite->position, Vector2Scale(direction,
+    //         -1.0f));
+    //     if (move->hitmask_sprite) {
+    //         move->hitmask_sprite->position = Vector2Add(
+    //             move->sprite->position, Vector2Scale(direction, -1.0f));
+    //     }
+    // }
     return 0;
 error:
     return -1;
