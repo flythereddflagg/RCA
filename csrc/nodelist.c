@@ -1,11 +1,12 @@
 #include "nodelist.h"
+#include "camera.h"
 #include "decal.h"
 #include "player.h"
 
 KeyFuncPair SETUP_FUNCS[] = {
     kf_pair("Node", Node_setup),       kf_pair("Animation", Node_setup),
     kf_pair("Backpack", Node_setup),   kf_pair("Cactus", Node_setup),
-    kf_pair("Camera", Node_setup),     kf_pair("Coin", Node_setup),
+    kf_pair("Camera", Camera_setup),   kf_pair("Coin", Node_setup),
     kf_pair("CutScene", Node_setup),   kf_pair("Decal", Decal_setup),
     kf_pair("Edge", Node_setup),       kf_pair("Gate", Node_setup),
     kf_pair("HitMask", Node_setup),    kf_pair("Inventory", Node_setup),

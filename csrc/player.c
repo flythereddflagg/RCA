@@ -6,7 +6,6 @@ int Player_setup(Node node) {
     check(Lstring_equal(node->type, to_Lstring("Player")),
           "Node->type is '" LSTRING_FMT "', not Player",
           Lstring_format(node->type));
-    // check(node->sprite, "Node sprite is NULL");
     node->update = Player_update;
     node->delete = Player_delete;
     node->attr = (Player)malloc(sizeof(struct PlayerData));
