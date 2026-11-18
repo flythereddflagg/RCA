@@ -23,7 +23,13 @@ int Camera_setup(Node node) {
     }
     
 }
-int Camera_update(Node node);
+int Camera_update(Node node){
+    check(node, "node is NULL");
+    
+    return 0;
+error:
+    return -1;
+}
 Node Camera_delete(Node node) {
     check(node, "node is NULL");
 
