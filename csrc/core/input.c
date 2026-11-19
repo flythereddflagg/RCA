@@ -20,7 +20,7 @@ bool Input_in_held(Input input, Action a) {
 int Input_update(Input input) {
     check(input, "input object is NULL");
     Input_hot_plug_check(input);
-    // TODO -3- add more player controls player one only for now
+    // maybe do -3- add more player controls player one only for now
     // int player_number = 0;
     int key1 = 0;
     // TODO need to figure out controller input. rn only keyboard

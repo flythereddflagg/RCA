@@ -5,7 +5,7 @@ import pygame as pg
 from .node import Node
 from .tools import vec, diff_vec
 
-# TODO -3- make adaptive camera the follows the player and gives them better FOV in the direction they are facing.
+# maybe do -3- make adaptive camera the follows the player and gives them better FOV in the direction they are facing.
 
 
 class Camera(Node):

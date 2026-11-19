@@ -132,7 +132,7 @@ class Inventory(Node):
             slot_rect = self.slot_sprites.sprites()[slot_index].rect
             self.marker.rect.center = slot_rect.center
         
-        # TODO -3- refine as we go but this code is temporary and was just to get a hud going
+        # maybe do -3- refine as we go but this code is temporary and was just to get a hud going
         self.parent.scene.hud.add(self.life_meter)
         amount_to_block_out = self.hp / self.hp_max
         surface = pg.Surface(self.life_meter.rect.size, flags=pg.SRCALPHA)
@@ -280,7 +280,7 @@ class Inventory(Node):
             "scale": INV_SCALE
         })
         self.slot_sprites.add(new_slot)
-        # TODO -1- fix this to use place node
+        # maybe do -1- fix this to use place node
         new_slot.add(self.scene.all_nodes)
         return self.slots[-1]
 

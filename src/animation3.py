@@ -45,7 +45,7 @@ class Animation3(Node):
         self.frame_index = 0 # index of the current frame
         self.frame_time = 1 # duration of the current frame
         self.path_prefix = self.init.get('path_prefix', "./")
-        # TODO -4- evaluate if we need strict mode?
+        # maybe do -4- evaluate if we need strict mode?
         self.strict = self.init.get("strict", True) # set keyerror on fail
         self.sequence = iter(self.init.get("sequence", []))
         self.load_animation()
@@ -104,7 +104,7 @@ class Animation3(Node):
 
 
     def set_state(self, state:str, direction=None):
-        # TODO -4- evaluate if we need strict mode?
+        # maybe do -4- evaluate if we need strict mode?
         current:Reel = self.animation[state]
             
         set_reel = False

@@ -100,7 +100,7 @@ class Scene():
         
 
     def place_node(self, node:Node, groups=None, start=None, active=True):
-        # TODO -1- children are not dependent on parent groups. Change this
+        # maybe do -1- children are not dependent on parent groups. Change this
         node.scene = self
         self.all_nodes.add(node)
         if active:
@@ -182,7 +182,7 @@ class Scene():
 
 
     def deconstruct(self, save_scene=True):
-        # TODO -4- deconstruct scene can probably be simplified; use ALL nodes?
+        # maybe do -4- deconstruct scene can probably be simplified; use ALL nodes?
         if save_scene:
             self.game.saved_scenes[self.id] = self.serialize()
 

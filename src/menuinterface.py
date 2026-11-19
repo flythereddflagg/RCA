@@ -26,7 +26,7 @@ class MenuInterface(Node):
         self.selection = [a.strip() for a in self.text.split("\n")]
         self.n_choices = len(self.selection)
         self.selected = 0
-        # TODO -1- these should be a node each
+        # maybe do -1- these should be a node each
         self.select_sfx = pg.mixer.Sound("./assets/sfx/select.mp3")
         self.selected_sfx = pg.mixer.Sound("./assets/sfx/selected.mp3")
         

@@ -109,7 +109,7 @@ class Rosie2(Decal):
             
             if self.scene.node_by_id("meatball") not in self.scene.active_nodes:
                 node = self.scene.node_by_id("meatball")
-                node.kill() # TODO -3- understand: why did this fix meatball placement?
+                node.kill() # maybe do -3- understand: why did this fix meatball placement?
                 self.scene.place_node(
                     node, 
                     groups=["foreground", "foe", "paused"],
@@ -172,7 +172,7 @@ class Rosie2(Decal):
 
 
     def advance_sequence(self, sequence:str=None):
-        # TODO -2- This does not accomodate single values
+        # maybe do -2- This does not accomodate single values
         if sequence is not None:
             seq_list = self.init.get("sequence")
             self.talk_state = sequence

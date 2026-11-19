@@ -25,7 +25,7 @@ class SFX(Node):
 
     
     def pause_play(self, *args, **kwargs):
-        # TODO -4- get pause play to work?
+        # maybe do -4- get pause play to work?
         self.length = self.sound.get_length()
         self.start_time = pg.time.get_ticks()
         pg.mixer.music.pause()

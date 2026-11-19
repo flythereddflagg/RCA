@@ -29,14 +29,14 @@ class Player(Node):
 
 
     def update(self):
-        # TODO -1- make this more permanant
+        # maybe do -1- make this more permanant
         if self.state == "shovel":
             if self.shovel_fx.sound.get_num_channels() == 0:
                 self.shovel_fx.play()
         if self.state == "sword":
             if self.sword_fx.sound.get_num_channels() == 0:
                 self.sword_fx.play()
-                # TODO -4- add SFX for sword hit?
+                # maybe do -4- add SFX for sword hit?
         self.apply_input()
         self.check_signals()
         self.check_collision()
@@ -108,7 +108,7 @@ class Player(Node):
                 speed=3*self.speed, 
                 change_direction=False
             )
-        # TODO -1- refine how damage works including Iframes, knockback and stuff like that.
+        # maybe do -1- refine how damage works including Iframes, knockback and stuff like that.
         # split damage into knockback and other various states that need to be applied
 
 

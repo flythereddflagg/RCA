@@ -47,7 +47,7 @@ class OptionsMenu(MenuInterface):
         if not self.active:
             self.kill()
             return
-        self.textbox.sprite.rect.center = self.scene.game.get_center() # TODO -4- this feels unecessary
+        self.textbox.sprite.rect.center = self.scene.game.get_center() # maybe do -4- this feels unecessary
         self.place_indicator()
         if self.up_pressed():
             self.go_up()

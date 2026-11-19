@@ -1,4 +1,5 @@
 #include "move.h"
+// TODO implement wall sliding for smooth movement
 
 Move Move_new(Sprite sprite, Sprite hitmask_sprite) {
     Move move = (Move)malloc(sizeof(struct MoveData));

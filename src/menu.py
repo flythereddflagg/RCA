@@ -91,7 +91,7 @@ class Menu(MenuInterface):
         if self.textbox.sprite.image.get_alpha() >= 255:
             self.added = True
             return
-        # TODO -4- this effect sucks and depends on frame rate. Fix?
+        # maybe do -4- this effect sucks and depends on frame rate. Fix?
         self.textbox.sprite.image.set_alpha(self.textbox.sprite.image.get_alpha() + 1)
 
 

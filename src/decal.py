@@ -16,7 +16,7 @@ class Original:
     mask:pg.mask.Mask
     size:tuple
 
-# TODO -3- merge Decal into Node code as they overlap too much to ignore.
+# maybe do -3- merge Decal into Node code as they overlap too much to ignore.
 class Decal(Node):
     """
     Decal is the "Sprite" class in that

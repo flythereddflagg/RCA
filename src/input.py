@@ -102,7 +102,7 @@ class Input():
 
 
     def update(self):
-        # TODO -3- add more player controls player one only for now
+        # maybe do -3- add more player controls player one only for now
         self.hot_plug_check()
         player_number = 0
         events = pg.event.get()
@@ -185,7 +185,7 @@ class Input():
                 if abs(norm) >= DEAD_ZONE:
                     actions.append((action, abs(norm)))
         
-        # TODO -4- this is a hackey solution but will allow Dpad to be read as if it is joystick
+        # maybe do -4- this is a hackey solution but will allow Dpad to be read as if it is joystick
         actions = [
             (action[2:], val) if action.startswith("D_")
             else (action, val)

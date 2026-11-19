@@ -57,8 +57,8 @@ class SelectMenu(MenuInterface):
             vec(self.scene.game.get_center())
             + vec([-60, -50])
         )# self.textbox.sprite.rect.center = self.scene.game.get_center() 
-        # TODO -4- this feels uncecssary
-        self.place_indicator() # TODO -4- this feels uncecssary
+        # maybe do -4- this feels uncecssary
+        self.place_indicator() # maybe do -4- this feels uncecssary
         super().open_menu()
         self.scene.place_node(self.controls, groups=["hud"], start=self.controls.init['start'])
         self.scene.place_node(self.keyboard, groups=["hud"], start=self.keyboard.init['start'])

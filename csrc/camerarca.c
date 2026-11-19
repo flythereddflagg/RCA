@@ -28,7 +28,27 @@ error:
 }
 int CameraRCA_update(Node node) {
     check(node, "node is NULL");
-
+    check(node->attr, "node->attr is NULL");
+    CameraRCA camera = (CameraRCA)node->attr;
+    Node player_node = NULL; // TODO get play implement
+    // bool player_node = true;
+    if (!player_node) {
+        NodeGroup background =
+            (NodeGroup)Dict_get(node->scene->groups, "background", EMPTYVAL)
+                ._obj_;
+        check(background, "background NodeGroup failed to retreive");
+        Vector2 move_vec = ((Node)ObjList_at(background, 0))->sprite->position;
+        check(!CameraRCA_pan(node, move_vec), "Pan Failed");
+        return 0;
+    }
+    CameraRCA_follow_player(node);
+    if (camera->shaking) {
+        // TODO flesh out camera shaking 
+    }
+    if (!Dict_get(node->scene->game->settings, "DEBUG", dynval(_bool_, false))
+             ._bool_) {
+        CameraRCA_stop_at_border(node);
+    }
     return 0;
 error:
     return -1;
