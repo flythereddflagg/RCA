@@ -53,11 +53,11 @@ Node CameraRCA_delete(Node node) {
 error:
     return NULL;
 }
-int CameraRCA_pan(Node node, Vector2 vector);
-int CameraRCA_screenshake(Node node, double length, double scale);
-int CameraRCA_follow_player(Node node);
-int CameraRCA_add_slack(Node node, Vector2 vector, double slack);
-int CameraRCA_stop_at_border(Node node);
-int CameraRCA_center_player(Node node);
-int CameraRCA_zoom_by(Node node, double factor);
-int CameraRCA_zoom_abs(Node node, double scale);
+int CameraRCA_pan(Node node, Vector2 vector) { return 0; }
+int CameraRCA_screenshake(Node node, double length, double scale) { return 0; }
+int CameraRCA_follow_player(Node node) { return 0; }
+int CameraRCA_add_slack(Node node, Vector2 vector, double slack) { return 0; }
+int CameraRCA_stop_at_border(Node node) { return 0; }
+int CameraRCA_center_player(Node node) { return 0; }
+int CameraRCA_zoom_by(Node node, double factor) { return 0; }
+int CameraRCA_zoom_abs(Node node, double scale) { return 0; }
