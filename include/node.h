@@ -54,6 +54,6 @@ int Node_setup_children(Node node);
 Node Node_child_by_id(Node node, char *id);
 Node Node_remove_child(const Node node, Node child);
 NodeFunc Node_get_setup(char *key);
-Node Node_from_dict(Dict init);
+Node Node_from_dict(Scene scene, Dict init);
 
 #endif

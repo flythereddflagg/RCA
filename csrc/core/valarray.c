@@ -109,8 +109,6 @@ error:
 DynValue ValArray_remove(ValArray arr, int index) {
     check(arr, "array is NULL");
     check(arr->length > 0, "array is empty!");
-    debug("arr -> %p", arr);
-    debug("pre_index = %d, len = %d", index, arr->length);
     index = index < 0 ? arr->length + index : index;
     check(index < arr->length && index > (-arr->length),
           "index %d out of bounds for length %d", index, arr->length);

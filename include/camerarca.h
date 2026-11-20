@@ -5,6 +5,7 @@ typedef struct CameraRCAData *CameraRCA;
 #include "node.h"
 #include "objlist.h"
 #include "raylib.h"
+#include "raymath.h"
 #include "valarray.h"
 
 struct CameraRCAData {

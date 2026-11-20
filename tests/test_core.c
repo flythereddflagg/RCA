@@ -499,7 +499,7 @@ int test_node_from_dict() {
     Dict node_init =
         ValArray_get_at(Dict_get(scene_init, "nodes", EMPTYVAL)._arr_, 0)
             ._dict_;
-    Node node = Node_from_dict(node_init);
+    Node node = Node_from_dict(NULL, init);
     node = Node_delete(node);
     Dict_delete(scene_init);
     return 0;

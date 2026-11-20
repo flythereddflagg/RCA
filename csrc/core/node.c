@@ -145,7 +145,8 @@ int Node_setup_children(Node node) {
         for (int i = 0; i < children->length; i++) {
             child_init = ValArray_get_at(children, i)._dict_;
             check(child_init, "child_init is NULL");
-            child = Node_from_dict(child_init);
+            child = Node_from_dict(node->scene, child_init);
+            ;
             check(child, "child Node from dict failed");
             check(!Node_add_child(node, child), "add child failed");
         }
@@ -187,7 +188,7 @@ error:
 
 // ####################################################
 
-Node Node_from_dict(Dict init) {
+Node Node_from_dict(Scene scene, Dict init) {
     Node node = NULL;
     char *yaml = Dict_get(init, "yaml", EMPTYVAL)._str_.cstring;
     if (yaml) {
@@ -207,6 +208,7 @@ Node Node_from_dict(Dict init) {
         Dict_get(node->init, "type", dynval(_str_, to_Lstring(MISSING_TYPE)))
             ._str_;
     node->parent = Dict_get(node->init, "parent", EMPTYVAL)._obj_;
+    node->scene = scene;
     check(!Node_setup_children(node), "children setup failed");
     NodeFunc node_setup_func = Node_get_setup(node->type.cstring);
     check(node_setup_func, "node_setup_func is NULL");

@@ -43,7 +43,7 @@ int CameraRCA_update(Node node) {
     }
     CameraRCA_follow_player(node);
     if (camera->shaking) {
-        // TODO flesh out camera shaking 
+        // TODO flesh out camera shaking
     }
     if (!Dict_get(node->scene->game->settings, "DEBUG", dynval(_bool_, false))
              ._bool_) {
@@ -73,7 +73,32 @@ Node CameraRCA_delete(Node node) {
 error:
     return NULL;
 }
-int CameraRCA_pan(Node node, Vector2 vector) { return 0; }
+int CameraRCA_pan(Node node, Vector2 vector) {
+    if (!vector.x && !vector.y) {
+        return 0;
+    }
+    check(node, "node is NULL");
+    check(node->attr, "node->attr is NULL");
+    CameraRCA camera = (CameraRCA)node->attr;
+    Vector2 reverse_vector = Vector2Scale(vector, -1.0f);
+    NodeGroup group = NULL;
+    Lnode current = NULL;
+    for (int i = 0; i < camera->mobile_groups->length; i++) {
+        group = (NodeGroup)Dict_get(
+                    node->scene->groups,
+                    camera->mobile_groups->vals[i]._str_.cstring, EMPTYVAL)
+                    ._obj_;
+        current = group->head;
+        for (size_t j = 0; j < group->length; j++) {
+            Vector2Add(((Node)current->obj)->sprite->position, reverse_vector);
+            current = current->next;
+        }
+    }
+
+    return 0;
+error:
+    return -1;
+}
 int CameraRCA_screenshake(Node node, double length, double scale) { return 0; }
 int CameraRCA_follow_player(Node node) { return 0; }
 int CameraRCA_add_slack(Node node, Vector2 vector, double slack) { return 0; }

@@ -181,8 +181,9 @@ int Scene_setup(Scene scene) {
     for (int i = 0; i < nodes->length; i++) {
         node_init = ValArray_get_at(nodes, i)._dict_;
         check(node_init, "getting node_init from ValArray failed");
-        node = Node_from_dict(node_init);
+        node = Node_from_dict(scene, node_init);
         check(node, "node from dict failed");
+        debug("placing node ID: %s", node->id.cstring);
         check(!Scene_place_node(
                   scene, node, Dict_get(node_init, "groups", EMPTYVAL)._arr_,
                   Dict_get(node_init, "start", EMPTYVAL)._arr_,
