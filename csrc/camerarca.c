@@ -30,8 +30,7 @@ int CameraRCA_update(Node node) {
     check(node, "node is NULL");
     check(node->attr, "node->attr is NULL");
     CameraRCA camera = (CameraRCA)node->attr;
-    Node player_node = NULL; // TODO get play implement
-    // bool player_node = true;
+    Node player_node = Scene_get_player(node->scene, 0);
     if (!player_node) {
         NodeGroup background =
             (NodeGroup)Dict_get(node->scene->groups, "background", EMPTYVAL)
@@ -99,8 +98,18 @@ int CameraRCA_pan(Node node, Vector2 vector) {
 error:
     return -1;
 }
+
+int CameraRCA_follow_player(Node node) {
+    check(node, "node is NULL");Q
+    Node player = Scene_get_player(node->scene);
+    check(player, "Player is NULL");
+    // CONTINTUE HERE
+    return 0;
+error:
+    return -1;
+}
+
 int CameraRCA_screenshake(Node node, double length, double scale) { return 0; }
-int CameraRCA_follow_player(Node node) { return 0; }
 int CameraRCA_add_slack(Node node, Vector2 vector, double slack) { return 0; }
 int CameraRCA_stop_at_border(Node node) { return 0; }
 int CameraRCA_center_player(Node node) { return 0; }

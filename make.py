@@ -7,7 +7,8 @@ CC = "gcc"
 CFLAGS = "-g -Wall"
 SRC = "./csrc/**/*.c ./csrc/*.c"
 SRC_DIR = "./csrc"
-INCLUDES = "-I./include"
+INCLUDE_DIR = "./include"
+INCLUDES = f"-I{INCLUDE_DIR}"
 RAYLIB_VERSION = "6.0"
 TMP_TXT = "mem_check_all.txt"
 
@@ -47,7 +48,11 @@ def clean(): pass
 def clean_all(): pass
 def core(): pass
 def debug(): pass
-def format(): pass
+def format():
+    RUN_CMD(f"clang-format -i {SRC_DIR}/**/*.*")
+    RUN_CMD(f"clang-format -i {SRC_DIR}/*.*")
+    RUN_CMD(f"clang-format -i {INCLUDE_DIR}/*.*")
+
 def get_raylib(): pass
 def get_raylib_web(): pass
 def get_deps(): pass

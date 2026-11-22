@@ -232,6 +232,18 @@ error:
     return node;
 }
 
+Node Scene_get_player(Scene scene, int player_number) {
+    Node player = NULL;
+    check(scene, "Scene is NULL");
+    check(!player_number, "invalid player number, got %d",
+          player_number); // TEMP
+    NodeGroup playergroup = Dict_get(scene->groups, "player", EMPTYVAL)._obj_;
+    player = ObjList_at(playergroup, player_number);
+error:
+    return player;
+;
+}
+
 #ifdef __SCENE_MAIN__
 int main() {
     Scene scene = Scene_new(NULL, "./assets/scene/test_scene.yaml", NULL, NULL);
