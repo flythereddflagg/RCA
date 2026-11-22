@@ -241,7 +241,7 @@ Node Scene_get_player(Scene scene, int player_number) {
     player = ObjList_at(playergroup, player_number);
 error:
     return player;
-;
+    ;
 }
 
 #ifdef __SCENE_MAIN__

@@ -38,5 +38,6 @@ int Scene_update(Scene scene);
 int Scene_setup(Scene scene);
 int Scene_deconstruct(Scene scene);
 Node Scene_node_by_id(Scene scene, char *node_id);
+Node Scene_get_player(Scene, int player_number);
 
 #endif

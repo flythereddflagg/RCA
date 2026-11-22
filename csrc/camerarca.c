@@ -100,10 +100,19 @@ error:
 }
 
 int CameraRCA_follow_player(Node node) {
-    check(node, "node is NULL");Q
-    Node player = Scene_get_player(node->scene);
+    check(node, "node is NULL");
+    Node player = Scene_get_player(node->scene, 0);
     check(player, "Player is NULL");
-    // CONTINTUE HERE
+    Vector2 player_center =
+        Vector2Add(player->sprite->position,
+                    (Vector2){player->sprite->image.width / 2,
+                              player->sprite->image.height / 2});
+    Vector2 screen_center =
+        (Vector2){node->scene->game->draw_surface.texture.width / 2,
+                  node->scene->game->draw_surface.texture.height / 2};
+    Vector2 move_xy = Vector2Subtract(player_center, screen_center);
+    // add_slack here
+    CameraRCA_pan(node, move_xy);
     return 0;
 error:
     return -1;
