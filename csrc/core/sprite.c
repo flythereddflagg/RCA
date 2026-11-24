@@ -48,3 +48,21 @@ BitMask Sprite_set_mask(Sprite sprite, BitMask mask) {
 error:
     return NULL;
 }
+
+
+bool Sprite_collide_any(Sprite sprite, NodeGroup group) {
+    Lnode current = group->head;
+    Node node = NULL;
+    for (size_t i = 0; i < group->length; i++) {
+        check(current, "current Lnode is NULL at postition %lu", i);
+        node = (Node)current->obj;
+        if (BitMask_collide(
+                node->sprite->mask, sprite->mask,
+                Vector2Subtract(node->sprite->position, sprite->position))) {
+            return true;
+        }
+        current = current->next;
+    }
+error:
+    return false;
+}

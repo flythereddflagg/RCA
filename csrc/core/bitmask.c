@@ -89,6 +89,7 @@ void BitMask_print(BitMask mask) {
 }
 
 bool BitMask_collide(BitMask mask, BitMask other, Vector2 offset) {
+    check(mask && other, "invalid masks supplied");
     for (int y = 0; y < mask->height; y++)
         for (int x = 0; x < mask->width; x++)
             if (x + offset.x >= 0 && y + offset.y >= 0 &&
@@ -96,6 +97,7 @@ bool BitMask_collide(BitMask mask, BitMask other, Vector2 offset) {
                 BitMask_get(mask, x, y) &&
                 BitMask_get(other, x + offset.x, y + offset.y))
                 return true;
+error:
     return false;
 } // TODO optimize this
 

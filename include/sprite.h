@@ -5,6 +5,7 @@ typedef struct SpriteData *Sprite;
 #include "dbg.h"
 #include "node.h"
 #include "raylib.h"
+#include "raymath.h"
 #include <stdlib.h>
 
 struct SpriteData {
@@ -17,5 +18,7 @@ Sprite Sprite_delete(Sprite sprite);
 Sprite Sprite_new(char *image_path, Vector2 position, Node parent);
 Texture2D Sprite_set_image(Sprite sprite, Image img);
 BitMask Sprite_set_mask(Sprite sprite, BitMask mask);
+bool Sprite_collide_any(Sprite sprite, NodeGroup group);
+
 
 #endif

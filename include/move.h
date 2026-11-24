@@ -20,6 +20,5 @@ int Move_move(Move move, Vector2 direction, double distance, double speed,
               bool reject_foreground, bool change_direction);
 
 int Move_foreground_rejection(Move move, Vector2 direction, double distance);
-bool Move_collide_any(Move move, Sprite sprite, NodeGroup group);
 
 #endif
