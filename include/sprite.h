@@ -20,5 +20,4 @@ Texture2D Sprite_set_image(Sprite sprite, Image img);
 BitMask Sprite_set_mask(Sprite sprite, BitMask mask);
 bool Sprite_collide_any(Sprite sprite, NodeGroup group);
 
-
 #endif

@@ -80,5 +80,3 @@ int Move_foreground_rejection(Move move, Vector2 direction, double distance) {
 error:
     return -1;
 }
-
-

@@ -49,7 +49,6 @@ error:
     return NULL;
 }
 
-
 bool Sprite_collide_any(Sprite sprite, NodeGroup group) {
     Lnode current = group->head;
     Node node = NULL;

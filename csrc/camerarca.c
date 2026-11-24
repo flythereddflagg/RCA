@@ -89,7 +89,8 @@ int CameraRCA_pan(Node node, Vector2 vector) {
                     ._obj_;
         current = group->head;
         for (size_t j = 0; j < group->length; j++) {
-            Vector2Add(((Node)current->obj)->sprite->position, reverse_vector);
+            ((Node)current->obj)->sprite->position = Vector2Add(
+                ((Node)current->obj)->sprite->position, reverse_vector);
             current = current->next;
         }
     }
@@ -103,15 +104,16 @@ int CameraRCA_follow_player(Node node) {
     check(node, "node is NULL");
     Node player = Scene_get_player(node->scene, 0);
     check(player, "Player is NULL");
-    Vector2 player_center =
-        Vector2Add(player->sprite->position,
-                    (Vector2){player->sprite->image.width / 2,
-                              player->sprite->image.height / 2});
+    Vector2 player_center = Vector2Add(
+        player->sprite->position, (Vector2){player->sprite->image.width / 2,
+                                            player->sprite->image.height / 2});
     Vector2 screen_center =
         (Vector2){node->scene->game->draw_surface.texture.width / 2,
                   node->scene->game->draw_surface.texture.height / 2};
     Vector2 move_xy = Vector2Subtract(player_center, screen_center);
     // add_slack here
+    move_xy = CameraRCA_add_slack(node, move_xy, 100.0f);
+
     CameraRCA_pan(node, move_xy);
     return 0;
 error:
@@ -119,7 +121,9 @@ error:
 }
 
 int CameraRCA_screenshake(Node node, double length, double scale) { return 0; }
-int CameraRCA_add_slack(Node node, Vector2 vector, double slack) { return 0; }
+Vector2 CameraRCA_add_slack(Node node, Vector2 vector, double slack) {
+    return vector;
+}
 int CameraRCA_stop_at_border(Node node) { return 0; }
 int CameraRCA_center_player(Node node) { return 0; }
 int CameraRCA_zoom_by(Node node, double factor) { return 0; }
