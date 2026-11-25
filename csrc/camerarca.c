@@ -111,9 +111,7 @@ int CameraRCA_follow_player(Node node) {
         (Vector2){node->scene->game->draw_surface.texture.width / 2,
                   node->scene->game->draw_surface.texture.height / 2};
     Vector2 move_xy = Vector2Subtract(player_center, screen_center);
-    // add_slack here
-    move_xy = CameraRCA_add_slack(node, move_xy, 100.0f);
-
+    // move_xy = CameraRCA_add_slack(move_xy, 100.0f);
     CameraRCA_pan(node, move_xy);
     return 0;
 error:
@@ -121,8 +119,24 @@ error:
 }
 
 int CameraRCA_screenshake(Node node, double length, double scale) { return 0; }
-Vector2 CameraRCA_add_slack(Node node, Vector2 vector, double slack) {
-    return vector;
+
+Vector2 CameraRCA_add_slack(Vector2 vector, double slack) {
+    double movex = vector.x, movey = vector.y;
+    double pos_neg = 0;
+    if (fabs(movex) > slack) {
+        pos_neg = movex > 0.0f ? 1.0f : -1.0f;
+        movex = pos_neg * (fabs(movex) - slack);
+    } else {
+        movex = 0;
+    }
+    if (fabs(movey) > slack) {
+        pos_neg = movey > 0.0f ? 1.0f : -1.0f;
+        movex = pos_neg * (fabs(movey) - slack);
+    } else {
+        movey = 0;
+    }
+
+    return (Vector2){movex, movey};
 }
 int CameraRCA_stop_at_border(Node node) { return 0; }
 int CameraRCA_center_player(Node node) { return 0; }

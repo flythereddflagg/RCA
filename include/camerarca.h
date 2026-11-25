@@ -7,6 +7,7 @@ typedef struct CameraRCAData *CameraRCA;
 #include "raylib.h"
 #include "raymath.h"
 #include "valarray.h"
+#include <math.h>
 
 struct CameraRCAData {
     ValArray mobile_groups;
@@ -21,7 +22,7 @@ Node CameraRCA_delete(Node node);
 int CameraRCA_pan(Node node, Vector2 vector);
 int CameraRCA_screenshake(Node node, double length, double scale);
 int CameraRCA_follow_player(Node node);
-Vector2 CameraRCA_add_slack(Node node, Vector2 vector, double slack);
+Vector2 CameraRCA_add_slack(Vector2 vector, double slack);
 int CameraRCA_stop_at_border(Node node);
 int CameraRCA_center_player(Node node);
 int CameraRCA_zoom_by(Node node, double factor);
