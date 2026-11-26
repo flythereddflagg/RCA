@@ -3,7 +3,7 @@
 typedef struct SceneData *Scene;
 #include "dbg.h"
 #include "dict.h"
-#include "engine.h"
+#include "game.h"
 #include "lstring.h"
 #include "node.h"
 #include "yaml_parse.h"
@@ -39,5 +39,6 @@ int Scene_setup(Scene scene);
 int Scene_deconstruct(Scene scene);
 Node Scene_node_by_id(Scene scene, char *node_id);
 Node Scene_get_player(Scene, int player_number);
+Node Scene_get_background(Scene scene);
 
 #endif

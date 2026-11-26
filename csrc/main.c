@@ -1,7 +1,7 @@
 #ifndef __MAIN__
 #define __MAIN__
 
-#include "engine.h"
+#include "game.h"
 
 #define INIT_PATH "./assets/init.yaml"
 

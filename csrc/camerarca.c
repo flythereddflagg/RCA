@@ -104,13 +104,12 @@ int CameraRCA_follow_player(Node node) {
     check(node, "node is NULL");
     Node player = Scene_get_player(node->scene, 0);
     check(player, "Player is NULL");
-    Vector2 player_center = Vector2Add(
-        player->sprite->position, (Vector2){player->sprite->image.width / 2,
-                                            player->sprite->image.height / 2});
-    Vector2 screen_center =
-        (Vector2){node->scene->game->draw_surface.texture.width / 2,
-                  node->scene->game->draw_surface.texture.height / 2};
-    Vector2 move_xy = Vector2Subtract(player_center, screen_center);
+    Vector2 player_center =
+        Vector2Add(player->sprite->position,
+                   (Vector2){player->sprite->image.width / 2.0f,
+                             player->sprite->image.height / 2.0f});
+    Vector2 move_xy =
+        Vector2Subtract(player_center, Game_get_center(node->scene->game));
     move_xy = CameraRCA_add_slack(move_xy, 100.0f);
     CameraRCA_pan(node, move_xy);
     return 0;
@@ -148,14 +147,30 @@ int CameraRCA_stop_at_border(Node node) {
     double background_h = bg_ref->sprite->image.height;
     // if background is smaller than screen size, center it in the frame and
     // do not do anything else
-    // if (background_w > screen_w || ) // CONTINUE HERE!
+    if (background_w < screen_w || background_h < screen_h) {
+        Vector2 move_xy = Vector2Subtract(bg_ref->sprite->position,
+                                          Game_get_center(node->scene->game));
+        check(!CameraRCA_pan(node, move_xy), "pan failed");
+        return 0;
+    }
 
+    Vector2 back_xy = Vector2Zero();
+    if (bg_ref->sprite->position.x > 0) {
+        back_xy.x = bg_ref->sprite->position.x;
+    } else if (bg_ref->sprite->position.x + background_w < screen_w) {
+        back_xy.x = bg_ref->sprite->position.x + background_w - screen_w;
+    }
+
+    if (bg_ref->sprite->position.y > 0) {
+        back_xy.y = bg_ref->sprite->position.y;
+    } else if (bg_ref->sprite->position.y + background_h < screen_h) {
+        back_xy.y = bg_ref->sprite->position.y + background_h - screen_h;
+    }
+    check(!CameraRCA_pan(node, back_xy), "pan failed");
     return 0;
 error:
     return -1;
 }
-int CameraRCA_center_player(Node node) { return 0; }
-int CameraRCA_zoom_by(Node node, double factor) { return 0; }
-int CameraRCA_zoom_abs(Node node, double scale) { return 0; }
+
 
 // TODO add logic that pans camera infront of where the player is looking.

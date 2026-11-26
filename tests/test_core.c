@@ -92,7 +92,7 @@ int main() {
 }
 #endif
 #ifdef __ENGINE_MAIN__
-#include "engine.h"
+#include "game.h"
 int main() { return 0; }
 #endif
 #ifdef __INPUT_MAIN__

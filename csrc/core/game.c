@@ -1,6 +1,4 @@
-
-
-#include "engine.h"
+#include "game.h"
 
 RenderTexture2D Game_init_screen(Dict settings) {
     SetTraceLogLevel(LOG_WARNING);
@@ -180,6 +178,10 @@ error:
     return -1;
 }
 
-#ifdef __ENGINE_MAIN__
-int main() { return 0; }
-#endif
+Vector2 Game_get_center(Game game) {
+    check(game, "game is NULL");
+    return (Vector2){game->draw_surface.texture.width / 2.0f,
+                     game->draw_surface.texture.height / 2.0f};
+error:
+    return Vector2Zero();
+}

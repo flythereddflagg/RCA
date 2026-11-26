@@ -40,5 +40,6 @@ int Game_load_scene(Game game, char *yaml_path, ValArray add_in);
 int Game_logic(Game game);
 int Game_loop_steps(Game game);
 int Game_run(Game game);
+Vector2 Game_get_center(Game game);
 
 #endif
