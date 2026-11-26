@@ -236,12 +236,21 @@ Node Scene_get_player(Scene scene, int player_number) {
     Node player = NULL;
     check(scene, "Scene is NULL");
     check(!player_number, "invalid player number, got %d",
-          player_number); // TEMP
+          player_number); // TEMP PLAYER MUST BE 0 for now
     NodeGroup playergroup = Dict_get(scene->groups, "player", EMPTYVAL)._obj_;
     player = ObjList_at(playergroup, player_number);
 error:
     return player;
-    ;
+}
+
+Node Scene_get_background(Scene scene) {
+    Node background_ref = NULL;
+    check(scene, "Scene is NULL");
+    NodeGroup background_group =
+        Dict_get(scene->groups, "background", EMPTYVAL)._obj_;
+    background_ref = ObjList_at(background_group, 0);
+error:
+    return background_ref;
 }
 
 #ifdef __SCENE_MAIN__

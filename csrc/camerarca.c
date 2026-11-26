@@ -138,7 +138,24 @@ Vector2 CameraRCA_add_slack(Vector2 vector, double slack) {
 
     return (Vector2){movex, movey};
 }
-int CameraRCA_stop_at_border(Node node) { return 0; }
+int CameraRCA_stop_at_border(Node node) {
+    check(node, "node is NULL");
+    double screen_w = node->scene->game->draw_surface.texture.width;
+    double screen_h = node->scene->game->draw_surface.texture.height;
+    Node bg_ref = Scene_get_background(node->scene);
+    check(bg_ref, "retreiving background node failed");
+    double background_w = bg_ref->sprite->image.width;
+    double background_h = bg_ref->sprite->image.height;
+    // if background is smaller than screen size, center it in the frame and
+    // do not do anything else
+    if (background_w > screen_w || )
+
+    return 0;
+error:
+    return -1;
+}
 int CameraRCA_center_player(Node node) { return 0; }
 int CameraRCA_zoom_by(Node node, double factor) { return 0; }
 int CameraRCA_zoom_abs(Node node, double scale) { return 0; }
+
+// TODO add logic that pans camera infront of where the player is looking.

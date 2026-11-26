@@ -3,7 +3,7 @@ nodes:
 - groups:
   # - solid
   - background
-  id: boss room
+  id: background
   # image: ./assets/scene/world_map/room_map.png
   image: ./assets/scene/red_castle_valley/iso_render.png
   # mask: ./assets/scene/world_map/room_map_mask.png
