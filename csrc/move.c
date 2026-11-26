@@ -21,7 +21,7 @@ int Move_move(Move move, Vector2 direction, double distance, double speed,
               bool reject_foreground, bool change_direction) {
     check(move, "move is NULL");
     direction = Vector2Normalize(direction);
-    direction.y /= 2.0; // for isometric movement
+    direction.y /= 2.0f; // for isometric movement
     if (change_direction) {
         move->direction = direction;
     }

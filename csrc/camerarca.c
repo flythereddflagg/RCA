@@ -111,7 +111,7 @@ int CameraRCA_follow_player(Node node) {
         (Vector2){node->scene->game->draw_surface.texture.width / 2,
                   node->scene->game->draw_surface.texture.height / 2};
     Vector2 move_xy = Vector2Subtract(player_center, screen_center);
-    // move_xy = CameraRCA_add_slack(move_xy, 100.0f);
+    move_xy = CameraRCA_add_slack(move_xy, 100.0f);
     CameraRCA_pan(node, move_xy);
     return 0;
 error:
@@ -127,13 +127,13 @@ Vector2 CameraRCA_add_slack(Vector2 vector, double slack) {
         pos_neg = movex > 0.0f ? 1.0f : -1.0f;
         movex = pos_neg * (fabs(movex) - slack);
     } else {
-        movex = 0;
+        movex = 0.0f;
     }
-    if (fabs(movey) > slack) {
+    if (fabs(movey) > (slack / 2.0)) {
         pos_neg = movey > 0.0f ? 1.0f : -1.0f;
-        movex = pos_neg * (fabs(movey) - slack);
+        movey = pos_neg * (fabs(movey) - (slack / 2.0));
     } else {
-        movey = 0;
+        movey = 0.0f;
     }
 
     return (Vector2){movex, movey};
