@@ -148,7 +148,7 @@ int CameraRCA_stop_at_border(Node node) {
     double background_h = bg_ref->sprite->image.height;
     // if background is smaller than screen size, center it in the frame and
     // do not do anything else
-    if (background_w > screen_w || )
+    // if (background_w > screen_w || ) // CONTINUE HERE!
 
     return 0;
 error:
