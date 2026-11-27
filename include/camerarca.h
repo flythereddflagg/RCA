@@ -5,6 +5,7 @@ typedef struct CameraRCAData *CameraRCA;
 #include "game.h"
 #include "node.h"
 #include "objlist.h"
+#include "player.h"
 #include "raylib.h"
 #include "raymath.h"
 #include "scene.h"
@@ -26,5 +27,5 @@ int CameraRCA_screenshake(Node node, double length, double scale);
 int CameraRCA_follow_player(Node node);
 Vector2 CameraRCA_add_slack(Vector2 vector, double slack);
 int CameraRCA_stop_at_border(Node node);
-
+int CameraRCA_player_fov(Node node);
 #endif

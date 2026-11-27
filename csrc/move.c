@@ -22,7 +22,7 @@ int Move_move(Move move, Vector2 direction, double distance, double speed,
     check(move, "move is NULL");
     direction = Vector2Normalize(direction);
     direction.y /= 2.0f; // for isometric movement
-    if (change_direction) {
+    if (change_direction && (direction.x || direction.y)) {
         move->direction = direction;
     }
     distance += speed * GetFrameTime();

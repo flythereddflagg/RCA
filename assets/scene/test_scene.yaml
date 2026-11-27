@@ -17,5 +17,7 @@ nodes:
 - id: camera
   type: Camera
   slack: 100
+  fov: dynamic
+  smoothing: 0.05
   groups: [paused]
   # zoom: 1.5

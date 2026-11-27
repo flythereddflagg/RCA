@@ -40,7 +40,13 @@ int CameraRCA_update(Node node) {
         check(!CameraRCA_pan(node, move_vec), "Pan Failed");
         return 0;
     }
-    CameraRCA_follow_player(node);
+    if (Lstring_equal(Dict_get(node->init, "fov", EMPTYVAL)._str_,
+                      to_Lstring("dynamic"))) {
+        CameraRCA_player_fov(node);
+    } else {
+        CameraRCA_follow_player(node);
+    }
+
     if (camera->shaking) {
         // TODO flesh out camera shaking
     }
@@ -104,14 +110,50 @@ int CameraRCA_follow_player(Node node) {
     check(node, "node is NULL");
     Node player = Scene_get_player(node->scene, 0);
     check(player, "Player is NULL");
+    double slack = Dict_get(node->init, "slack", EMPTYVAL)._int_;
+    check(slack >= 0, "slack must be non-negative");
+
     Vector2 player_center =
         Vector2Add(player->sprite->position,
                    (Vector2){player->sprite->image.width / 2.0f,
                              player->sprite->image.height / 2.0f});
     Vector2 move_xy =
         Vector2Subtract(player_center, Game_get_center(node->scene->game));
-    move_xy = CameraRCA_add_slack(move_xy, 100.0f);
+    move_xy = CameraRCA_add_slack(move_xy, slack);
     CameraRCA_pan(node, move_xy);
+    return 0;
+error:
+    return -1;
+}
+
+int CameraRCA_player_fov(Node node) {
+    check(node, "node is NULL");
+    Node player = Scene_get_player(node->scene, 0);
+    check(player, "Player is NULL");
+    double factor = Dict_get(node->init, "smoothing", EMPTYVAL)._float_;
+    check(factor <= 1 && factor > 0, "invalid smoothing factor");
+    double slack = Dict_get(node->init, "slack", EMPTYVAL)._int_;
+    check(slack >= 0, "slack must be non-negative");
+    Vector2 player_center =
+        Vector2Add(player->sprite->position,
+                   (Vector2){player->sprite->image.width / 2.0f,
+                             player->sprite->image.height / 2.0f});
+    Vector2 center_screen_to_player =
+        Vector2Subtract(player_center, Game_get_center(node->scene->game));
+    Vector2 movement_direction =
+        Vector2Normalize(((Player)player->parent->attr)->move->direction);
+
+    
+    Vector2 relative_camera_position = Vector2Scale(movement_direction, slack);
+    Vector2 pan_to =
+        Vector2Add(center_screen_to_player, relative_camera_position);
+    if (Vector2LengthSqr(pan_to) < 1.0){
+        // to avoid pointless calculation for floats
+        return 0;
+    }
+    // debug("pan_to {%f, %f}", pan_to.x,
+    //       pan_to.y);
+    CameraRCA_pan(node, Vector2Scale(pan_to, factor));
     return 0;
 error:
     return -1;
@@ -172,5 +214,3 @@ error:
     return -1;
 }
 
-
-// TODO add logic that pans camera infront of where the player is looking.
