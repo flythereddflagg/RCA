@@ -7,7 +7,9 @@
 #include "raylib.h"
 #include "raymath.h"
 #include <stdlib.h>
-#define DEFAULT_SPEED 130
+// #define DEFAULT_SPEED 130
+#define DEFAULT_SPEED 400
+
 #define DEFAULT_STATE "idle"
 
 typedef struct PlayerData *Player;

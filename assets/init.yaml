@@ -11,9 +11,9 @@ LOG_INPUT: true # for recreating bugs (See input.py)
 MUSIC: true # in debug mode, MUSIC = False silences all music.
 
 ### SCREEN/GAME WINDOW CONSTANTS ###
-RESOLUTION: 360
+RESOLUTION: 720
 ASPECT_RATIO: [16,9]
-SCALE: 2
+SCALE: 1
 icon: ./assets/block/game_icon_rev1.png
 title: Red Castle Avenger
 

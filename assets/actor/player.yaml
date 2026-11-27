@@ -91,7 +91,7 @@ children:
   #         force quit: <backspace>
   - id: sprite
     type: Decal
-    image: ./assets/actor/larry/larry_base.png
+    image: ./assets/actor/larry/larry_base3x.png
     mask: ./assets/actor/larry/larry_base_mask.png
     # groups:
     #   - foreground
