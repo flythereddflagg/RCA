@@ -5,7 +5,7 @@
 #include "valarray.h"
 #include <string.h>
 
-DynVal Json_parse_file(char* filename);
+DynValue Json_parse_file(char* filename);
 
 
 #endif
